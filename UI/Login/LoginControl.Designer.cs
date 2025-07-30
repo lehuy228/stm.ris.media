@@ -49,10 +49,10 @@ namespace PrintToPACSDemo.UI.Login
             this._lbChangePassword.Appearance.ForeColor = System.Drawing.Color.SteelBlue;
             this._lbChangePassword.Appearance.Options.UseFont = true;
             this._lbChangePassword.Appearance.Options.UseForeColor = true;
-            this._lbChangePassword.Location = new System.Drawing.Point(226, 125);
-            this._lbChangePassword.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this._lbChangePassword.Location = new System.Drawing.Point(282, 148);
+            this._lbChangePassword.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this._lbChangePassword.Name = "_lbChangePassword";
-            this._lbChangePassword.Size = new System.Drawing.Size(89, 14);
+            this._lbChangePassword.Size = new System.Drawing.Size(107, 18);
             this._lbChangePassword.TabIndex = 18;
             this._lbChangePassword.Text = "Đổi mật khẩu?";
             this._lbChangePassword.Click += new System.EventHandler(this._lbChangePassword_Click);
@@ -63,10 +63,10 @@ namespace PrintToPACSDemo.UI.Login
             | System.Windows.Forms.AnchorStyles.Right)));
             this._btnLogin.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             this._btnLogin.Appearance.Options.UseFont = true;
-            this._btnLogin.Location = new System.Drawing.Point(12, 95);
-            this._btnLogin.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this._btnLogin.Location = new System.Drawing.Point(15, 113);
+            this._btnLogin.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this._btnLogin.Name = "_btnLogin";
-            this._btnLogin.Size = new System.Drawing.Size(305, 24);
+            this._btnLogin.Size = new System.Drawing.Size(381, 28);
             this._btnLogin.TabIndex = 17;
             this._btnLogin.Text = "ĐĂNG NHẬP";
             this._btnLogin.Click += new System.EventHandler(this.buttonLogin_Click);
@@ -74,11 +74,11 @@ namespace PrintToPACSDemo.UI.Login
             // _cbShowPass
             // 
             this._cbShowPass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._cbShowPass.Location = new System.Drawing.Point(205, 69);
-            this._cbShowPass.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this._cbShowPass.Location = new System.Drawing.Point(256, 82);
+            this._cbShowPass.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this._cbShowPass.Name = "_cbShowPass";
             this._cbShowPass.Properties.Caption = "Hiện mật khẩu";
-            this._cbShowPass.Size = new System.Drawing.Size(111, 20);
+            this._cbShowPass.Size = new System.Drawing.Size(139, 22);
             this._cbShowPass.TabIndex = 16;
             this._cbShowPass.Click += new System.EventHandler(this.checkboxShowPass_CheckedChanged);
             // 
@@ -86,10 +86,10 @@ namespace PrintToPACSDemo.UI.Login
             // 
             this.labelControl2.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             this.labelControl2.Appearance.Options.UseFont = true;
-            this.labelControl2.Location = new System.Drawing.Point(15, 49);
-            this.labelControl2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.labelControl2.Location = new System.Drawing.Point(19, 58);
+            this.labelControl2.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(58, 14);
+            this.labelControl2.Size = new System.Drawing.Size(68, 18);
             this.labelControl2.TabIndex = 15;
             this.labelControl2.Text = "Mật khẩu";
             // 
@@ -98,23 +98,23 @@ namespace PrintToPACSDemo.UI.Login
             this._txtPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._txtPassword.EditValue = "";
-            this._txtPassword.Location = new System.Drawing.Point(88, 46);
-            this._txtPassword.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this._txtPassword.Location = new System.Drawing.Point(110, 55);
+            this._txtPassword.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this._txtPassword.Name = "_txtPassword";
             this._txtPassword.Properties.Appearance.BackColor = System.Drawing.Color.White;
             this._txtPassword.Properties.Appearance.Options.UseBackColor = true;
             this._txtPassword.Properties.PasswordChar = '*';
-            this._txtPassword.Size = new System.Drawing.Size(229, 22);
+            this._txtPassword.Size = new System.Drawing.Size(286, 24);
             this._txtPassword.TabIndex = 14;
             // 
             // labelControl1
             // 
             this.labelControl1.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             this.labelControl1.Appearance.Options.UseFont = true;
-            this.labelControl1.Location = new System.Drawing.Point(15, 14);
-            this.labelControl1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.labelControl1.Location = new System.Drawing.Point(19, 17);
+            this.labelControl1.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(59, 14);
+            this.labelControl1.Size = new System.Drawing.Size(72, 18);
             this.labelControl1.TabIndex = 13;
             this.labelControl1.Text = "Tài khoản";
             // 
@@ -123,12 +123,12 @@ namespace PrintToPACSDemo.UI.Login
             this._txtUsername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._txtUsername.EditValue = "";
-            this._txtUsername.Location = new System.Drawing.Point(88, 12);
-            this._txtUsername.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this._txtUsername.Location = new System.Drawing.Point(110, 14);
+            this._txtUsername.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this._txtUsername.Name = "_txtUsername";
             this._txtUsername.Properties.Appearance.BackColor = System.Drawing.Color.White;
             this._txtUsername.Properties.Appearance.Options.UseBackColor = true;
-            this._txtUsername.Size = new System.Drawing.Size(229, 22);
+            this._txtUsername.Size = new System.Drawing.Size(286, 24);
             this._txtUsername.TabIndex = 12;
             // 
             // LoginControl
@@ -137,7 +137,7 @@ namespace PrintToPACSDemo.UI.Login
             this.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(165)))), ((int)(((byte)(169)))));
             this.Appearance.Options.UseFont = true;
             this.Appearance.Options.UseForeColor = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._lbChangePassword);
             this.Controls.Add(this._btnLogin);
@@ -146,8 +146,9 @@ namespace PrintToPACSDemo.UI.Login
             this.Controls.Add(this._txtPassword);
             this.Controls.Add(this.labelControl1);
             this.Controls.Add(this._txtUsername);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "LoginControl";
-            this.Size = new System.Drawing.Size(331, 145);
+            this.Size = new System.Drawing.Size(414, 172);
             ((System.ComponentModel.ISupportInitialize)(this._cbShowPass.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._txtPassword.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._txtUsername.Properties)).EndInit();

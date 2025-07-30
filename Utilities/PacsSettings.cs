@@ -1,11 +1,5 @@
 ﻿using Leadtools.Dicom.Scu;
 using PrintToPACS.Utilities;
-using PrintToPACSDemo.AnPhat.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PrintToPACSDemo.UI
@@ -15,7 +9,6 @@ namespace PrintToPACSDemo.UI
         private static MySettings _mySettings;
         private static PerformedProcedureStepScu _pps = new PerformedProcedureStepScu { AETitle = "LEAD_CLIENT" };
         private static DicomScp _scp;
-        private static Staff _staff;
 
         private static readonly object _lock = new object();
         private static readonly object _lockScp = new object();
@@ -60,28 +53,6 @@ namespace PrintToPACSDemo.UI
                 lock (_lockScp)
                 {
                     _scp = value;
-                }
-            }
-        }
-
-        public static Staff Staff
-        {
-            get
-            {
-                lock (_lockStaff)
-                {
-                    if (_staff == null)
-                    {
-                        _staff = new Staff();
-                    }
-                    return _staff;
-                }
-            }
-            set
-            {
-                lock (_lockStaff)
-                {
-                    _staff = value;
                 }
             }
         }

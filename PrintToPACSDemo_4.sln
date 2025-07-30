@@ -1,26 +1,58 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.8.34330.188
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.35931.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrintToPACSDemo_4", "PrintToPACSDemo_4.csproj", "{AFB485AC-7485-40C8-B75C-2434A6D21E59}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaToPacs.Entitys", "..\Anphat\Tài liệu ứng dụng test\MediaToPacs.Entitys\MediaToPacs.Entitys.csproj", "{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STMMedicalConnection.AuthSDK", "..\Anphat\Tài liệu ứng dụng test\STMMedicalConnection.AuthSDK\STMMedicalConnection.AuthSDK.csproj", "{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AFB485AC-7485-40C8-B75C-2434A6D21E59}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{AFB485AC-7485-40C8-B75C-2434A6D21E59}.Debug|x64.ActiveCfg = Debug|x64
 		{AFB485AC-7485-40C8-B75C-2434A6D21E59}.Debug|x64.Build.0 = Debug|x64
 		{AFB485AC-7485-40C8-B75C-2434A6D21E59}.Debug|x86.ActiveCfg = Debug|x86
 		{AFB485AC-7485-40C8-B75C-2434A6D21E59}.Debug|x86.Build.0 = Debug|x86
+		{AFB485AC-7485-40C8-B75C-2434A6D21E59}.Release|Any CPU.ActiveCfg = Release|x86
 		{AFB485AC-7485-40C8-B75C-2434A6D21E59}.Release|x64.ActiveCfg = Release|x64
 		{AFB485AC-7485-40C8-B75C-2434A6D21E59}.Release|x64.Build.0 = Release|x64
 		{AFB485AC-7485-40C8-B75C-2434A6D21E59}.Release|x86.ActiveCfg = Release|x86
 		{AFB485AC-7485-40C8-B75C-2434A6D21E59}.Release|x86.Build.0 = Release|x86
+		{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}.Debug|x64.Build.0 = Debug|Any CPU
+		{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}.Debug|x86.Build.0 = Debug|Any CPU
+		{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}.Release|x64.ActiveCfg = Release|Any CPU
+		{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}.Release|x64.Build.0 = Release|Any CPU
+		{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}.Release|x86.ActiveCfg = Release|Any CPU
+		{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}.Release|x86.Build.0 = Release|Any CPU
+		{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}.Debug|x64.Build.0 = Debug|Any CPU
+		{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}.Debug|x86.Build.0 = Debug|Any CPU
+		{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}.Release|x64.ActiveCfg = Release|Any CPU
+		{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}.Release|x64.Build.0 = Release|Any CPU
+		{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}.Release|x86.ActiveCfg = Release|Any CPU
+		{A4BDDD93-257A-4A0A-832E-223F30B0B9D3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

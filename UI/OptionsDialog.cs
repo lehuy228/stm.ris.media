@@ -141,6 +141,8 @@ namespace PrintToPACSDemo
         private DataGridViewCheckBoxColumn ColumnTls;
         private DataGridViewButtonColumn TestServer;
         private DataGridViewCheckBoxColumn DefaultServer;
+        private DevExpress.XtraEditors.PanelControl panelControl1;
+        private DevExpress.XtraEditors.PanelControl panelControl2;
         private DevExpress.XtraEditors.SimpleButton _btnBrowseTempDir;
 
         #endregion
@@ -182,6 +184,7 @@ namespace PrintToPACSDemo
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionsDialog));
             this._groupBoxClient = new System.Windows.Forms.GroupBox();
             this._textBoxClientAE = new DevExpress.XtraEditors.TextEdit();
             this._labelClientAE = new DevExpress.XtraEditors.LabelControl();
@@ -213,16 +216,20 @@ namespace PrintToPACSDemo
             this._tbStorePage = new System.Windows.Forms.TabPage();
             this._tbOptions = new DevExpress.XtraTab.XtraTabControl();
             this._tpApplicationOptions = new DevExpress.XtraTab.XtraTabPage();
-            this._btnBrowseTempDir = new DevExpress.XtraEditors.SimpleButton();
-            this._ckAutoDelete = new DevExpress.XtraEditors.CheckEdit();
-            this.label3 = new DevExpress.XtraEditors.LabelControl();
+            this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            this._lblPrinterName = new DevExpress.XtraEditors.LabelControl();
+            this._txtPrinterName = new DevExpress.XtraEditors.TextEdit();
             this._btnRename = new DevExpress.XtraEditors.SimpleButton();
+            this._ckAutoDelete = new DevExpress.XtraEditors.CheckEdit();
             this._gpDicomType = new System.Windows.Forms.GroupBox();
             this._btnBrowseSCPDF = new DevExpress.XtraEditors.SimpleButton();
+            this._btnBrowseTempDir = new DevExpress.XtraEditors.SimpleButton();
+            this.label3 = new DevExpress.XtraEditors.LabelControl();
             this._btnBrowseSCGray = new DevExpress.XtraEditors.SimpleButton();
             this._btnBrowseSCColor = new DevExpress.XtraEditors.SimpleButton();
             this._btnBrowseSC = new DevExpress.XtraEditors.SimpleButton();
             this.label2 = new DevExpress.XtraEditors.LabelControl();
+            this._txtTempDir = new DevExpress.XtraEditors.TextEdit();
             this._cmbSCColor = new DevExpress.XtraEditors.ComboBoxEdit();
             this._cmbSCGray = new DevExpress.XtraEditors.ComboBoxEdit();
             this._cmbSC = new DevExpress.XtraEditors.ComboBoxEdit();
@@ -235,10 +242,8 @@ namespace PrintToPACSDemo
             this._txtSCGray = new DevExpress.XtraEditors.TextEdit();
             this._txtSCColor = new DevExpress.XtraEditors.TextEdit();
             this._txtSC = new DevExpress.XtraEditors.TextEdit();
-            this._txtTempDir = new DevExpress.XtraEditors.TextEdit();
-            this._txtPrinterName = new DevExpress.XtraEditors.TextEdit();
-            this._lblPrinterName = new DevExpress.XtraEditors.LabelControl();
             this._tpDicomOptions = new DevExpress.XtraTab.XtraTabPage();
+            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this._groupBoxClient.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._textBoxClientAE.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._textBoxKeyPassword.Properties)).BeginInit();
@@ -250,8 +255,12 @@ namespace PrintToPACSDemo
             ((System.ComponentModel.ISupportInitialize)(this._tbOptions)).BeginInit();
             this._tbOptions.SuspendLayout();
             this._tpApplicationOptions.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
+            this.panelControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._txtPrinterName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._ckAutoDelete.Properties)).BeginInit();
             this._gpDicomType.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._txtTempDir.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._cmbSCColor.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._cmbSCGray.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._cmbSC.Properties)).BeginInit();
@@ -259,34 +268,35 @@ namespace PrintToPACSDemo
             ((System.ComponentModel.ISupportInitialize)(this._txtSCGray.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._txtSCColor.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._txtSC.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._txtTempDir.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._txtPrinterName.Properties)).BeginInit();
             this._tpDicomOptions.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
+            this.panelControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // _groupBoxClient
             // 
             this._groupBoxClient.Controls.Add(this._textBoxClientAE);
             this._groupBoxClient.Controls.Add(this._labelClientAE);
-            this._groupBoxClient.Location = new System.Drawing.Point(22, 27);
+            this._groupBoxClient.Dock = System.Windows.Forms.DockStyle.Top;
+            this._groupBoxClient.Location = new System.Drawing.Point(3, 3);
             this._groupBoxClient.Name = "_groupBoxClient";
-            this._groupBoxClient.Size = new System.Drawing.Size(882, 98);
+            this._groupBoxClient.Size = new System.Drawing.Size(772, 72);
             this._groupBoxClient.TabIndex = 1;
             this._groupBoxClient.TabStop = false;
             this._groupBoxClient.Text = "Client Information";
             // 
             // _textBoxClientAE
             // 
-            this._textBoxClientAE.Location = new System.Drawing.Point(198, 38);
+            this._textBoxClientAE.Location = new System.Drawing.Point(170, 28);
             this._textBoxClientAE.Name = "_textBoxClientAE";
-            this._textBoxClientAE.Size = new System.Drawing.Size(657, 24);
+            this._textBoxClientAE.Size = new System.Drawing.Size(563, 22);
             this._textBoxClientAE.TabIndex = 1;
             // 
             // _labelClientAE
             // 
-            this._labelClientAE.Location = new System.Drawing.Point(22, 44);
+            this._labelClientAE.Location = new System.Drawing.Point(19, 32);
             this._labelClientAE.Name = "_labelClientAE";
-            this._labelClientAE.Size = new System.Drawing.Size(139, 18);
+            this._labelClientAE.Size = new System.Drawing.Size(117, 15);
             this._labelClientAE.TabIndex = 0;
             this._labelClientAE.Text = "PrintToPACS AE Title:";
             // 
@@ -294,79 +304,79 @@ namespace PrintToPACSDemo
             // 
             this._labelHint.Appearance.ForeColor = System.Drawing.Color.Blue;
             this._labelHint.Appearance.Options.UseForeColor = true;
-            this._labelHint.Location = new System.Drawing.Point(420, 141);
+            this._labelHint.Location = new System.Drawing.Point(360, 104);
             this._labelHint.Name = "_labelHint";
-            this._labelHint.Size = new System.Drawing.Size(198, 18);
+            this._labelHint.Size = new System.Drawing.Size(154, 15);
             this._labelHint.TabIndex = 15;
             this._labelHint.Text = "<== Use \'test\'  for client.pem";
             // 
             // _textBoxKeyPassword
             // 
-            this._textBoxKeyPassword.Location = new System.Drawing.Point(197, 136);
+            this._textBoxKeyPassword.Location = new System.Drawing.Point(169, 101);
             this._textBoxKeyPassword.Name = "_textBoxKeyPassword";
-            this._textBoxKeyPassword.Size = new System.Drawing.Size(204, 24);
+            this._textBoxKeyPassword.Size = new System.Drawing.Size(175, 22);
             this._textBoxKeyPassword.TabIndex = 14;
             // 
             // _textBoxPrivateKey
             // 
-            this._textBoxPrivateKey.Location = new System.Drawing.Point(197, 89);
+            this._textBoxPrivateKey.Location = new System.Drawing.Point(169, 66);
             this._textBoxPrivateKey.Name = "_textBoxPrivateKey";
-            this._textBoxPrivateKey.Size = new System.Drawing.Size(658, 24);
+            this._textBoxPrivateKey.Size = new System.Drawing.Size(564, 22);
             this._textBoxPrivateKey.TabIndex = 12;
             // 
             // _buttonPrivateKey
             // 
-            this._buttonPrivateKey.Location = new System.Drawing.Point(148, 89);
+            this._buttonPrivateKey.Location = new System.Drawing.Point(127, 66);
             this._buttonPrivateKey.Name = "_buttonPrivateKey";
-            this._buttonPrivateKey.Size = new System.Drawing.Size(41, 28);
+            this._buttonPrivateKey.Size = new System.Drawing.Size(35, 21);
             this._buttonPrivateKey.TabIndex = 11;
             this._buttonPrivateKey.Click += new System.EventHandler(this._buttonPrivateKey_Click);
             // 
             // _labelPrivateKey
             // 
-            this._labelPrivateKey.Location = new System.Drawing.Point(22, 89);
+            this._labelPrivateKey.Location = new System.Drawing.Point(19, 66);
             this._labelPrivateKey.Name = "_labelPrivateKey";
-            this._labelPrivateKey.Size = new System.Drawing.Size(79, 18);
+            this._labelPrivateKey.Size = new System.Drawing.Size(63, 15);
             this._labelPrivateKey.TabIndex = 10;
             this._labelPrivateKey.Text = "Private Key:";
             // 
             // _labelPrivateKeyPassword
             // 
-            this._labelPrivateKeyPassword.Location = new System.Drawing.Point(22, 136);
+            this._labelPrivateKeyPassword.Location = new System.Drawing.Point(19, 101);
             this._labelPrivateKeyPassword.Name = "_labelPrivateKeyPassword";
-            this._labelPrivateKeyPassword.Size = new System.Drawing.Size(96, 18);
+            this._labelPrivateKeyPassword.Size = new System.Drawing.Size(80, 15);
             this._labelPrivateKeyPassword.TabIndex = 13;
             this._labelPrivateKeyPassword.Text = "Key Password:";
             // 
             // _textBoxClientCertificate
             // 
-            this._textBoxClientCertificate.Location = new System.Drawing.Point(197, 41);
+            this._textBoxClientCertificate.Location = new System.Drawing.Point(169, 31);
             this._textBoxClientCertificate.Name = "_textBoxClientCertificate";
-            this._textBoxClientCertificate.Size = new System.Drawing.Size(658, 24);
+            this._textBoxClientCertificate.Size = new System.Drawing.Size(564, 22);
             this._textBoxClientCertificate.TabIndex = 9;
             // 
             // _buttonClientCertificate
             // 
-            this._buttonClientCertificate.Location = new System.Drawing.Point(148, 42);
+            this._buttonClientCertificate.Location = new System.Drawing.Point(127, 31);
             this._buttonClientCertificate.Name = "_buttonClientCertificate";
-            this._buttonClientCertificate.Size = new System.Drawing.Size(41, 28);
+            this._buttonClientCertificate.Size = new System.Drawing.Size(35, 21);
             this._buttonClientCertificate.TabIndex = 8;
             this._buttonClientCertificate.Click += new System.EventHandler(this._buttonClientCertificate_Click);
             // 
             // _labelCertificate
             // 
-            this._labelCertificate.Location = new System.Drawing.Point(22, 47);
+            this._labelCertificate.Location = new System.Drawing.Point(19, 35);
             this._labelCertificate.Name = "_labelCertificate";
-            this._labelCertificate.Size = new System.Drawing.Size(69, 18);
+            this._labelCertificate.Size = new System.Drawing.Size(57, 15);
             this._labelCertificate.TabIndex = 7;
             this._labelCertificate.Text = "Certificate:";
             // 
             // buttonOK
             // 
             this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOK.Location = new System.Drawing.Point(334, 787);
+            this.buttonOK.Location = new System.Drawing.Point(18, 11);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(122, 33);
+            this.buttonOK.Size = new System.Drawing.Size(105, 25);
             this.buttonOK.TabIndex = 2;
             this.buttonOK.Text = "&OK";
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
@@ -375,9 +385,9 @@ namespace PrintToPACSDemo
             // 
             this.buttonCancel.CausesValidation = false;
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(464, 787);
+            this.buttonCancel.Location = new System.Drawing.Point(129, 11);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(136, 33);
+            this.buttonCancel.Size = new System.Drawing.Size(116, 25);
             this.buttonCancel.TabIndex = 3;
             this.buttonCancel.Text = "&Cancel";
             // 
@@ -417,7 +427,6 @@ namespace PrintToPACSDemo
             this.ColumnIP.HeaderText = "Server IP Address";
             this.ColumnIP.MinimumWidth = 6;
             this.ColumnIP.Name = "ColumnIP";
-            this.ColumnIP.Width = 125;
             // 
             // ColumnPort
             // 
@@ -425,7 +434,6 @@ namespace PrintToPACSDemo
             this.ColumnPort.HeaderText = "Server Port";
             this.ColumnPort.MinimumWidth = 6;
             this.ColumnPort.Name = "ColumnPort";
-            this.ColumnPort.Width = 125;
             // 
             // ColumnTimeout
             // 
@@ -433,7 +441,6 @@ namespace PrintToPACSDemo
             this.ColumnTimeout.HeaderText = "Timeout (sec)";
             this.ColumnTimeout.MinimumWidth = 6;
             this.ColumnTimeout.Name = "ColumnTimeout";
-            this.ColumnTimeout.Width = 125;
             // 
             // ColumnTls
             // 
@@ -443,7 +450,6 @@ namespace PrintToPACSDemo
             this.ColumnTls.Name = "ColumnTls";
             this.ColumnTls.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ColumnTls.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.ColumnTls.Width = 125;
             // 
             // TestServer
             // 
@@ -487,9 +493,10 @@ namespace PrintToPACSDemo
             this._groupBoxSecurity.Controls.Add(this._labelPrivateKey);
             this._groupBoxSecurity.Controls.Add(this._textBoxPrivateKey);
             this._groupBoxSecurity.Controls.Add(this._buttonPrivateKey);
-            this._groupBoxSecurity.Location = new System.Drawing.Point(23, 136);
+            this._groupBoxSecurity.Dock = System.Windows.Forms.DockStyle.Top;
+            this._groupBoxSecurity.Location = new System.Drawing.Point(3, 75);
             this._groupBoxSecurity.Name = "_groupBoxSecurity";
-            this._groupBoxSecurity.Size = new System.Drawing.Size(881, 198);
+            this._groupBoxSecurity.Size = new System.Drawing.Size(772, 145);
             this._groupBoxSecurity.TabIndex = 16;
             this._groupBoxSecurity.TabStop = false;
             this._groupBoxSecurity.Text = "Security";
@@ -499,50 +506,52 @@ namespace PrintToPACSDemo
             this._tbServers.Controls.Add(this._tbSCPQuerypage);
             this._tbServers.Controls.Add(this._tbMWLQueryPage);
             this._tbServers.Controls.Add(this._tbStorePage);
-            this._tbServers.Location = new System.Drawing.Point(23, 360);
+            this._tbServers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._tbServers.Location = new System.Drawing.Point(3, 220);
             this._tbServers.Name = "_tbServers";
             this._tbServers.SelectedIndex = 0;
-            this._tbServers.Size = new System.Drawing.Size(887, 346);
+            this._tbServers.Size = new System.Drawing.Size(772, 259);
             this._tbServers.TabIndex = 17;
             this._tbServers.SelectedIndexChanged += new System.EventHandler(this._tbServers_SelectedIndexChanged);
             this._tbServers.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this._tbServers_Selecting);
             // 
             // _tbSCPQuerypage
             // 
-            this._tbSCPQuerypage.Location = new System.Drawing.Point(5, 29);
+            this._tbSCPQuerypage.AutoScroll = true;
+            this._tbSCPQuerypage.Location = new System.Drawing.Point(4, 24);
             this._tbSCPQuerypage.Name = "_tbSCPQuerypage";
             this._tbSCPQuerypage.Padding = new System.Windows.Forms.Padding(3);
-            this._tbSCPQuerypage.Size = new System.Drawing.Size(877, 312);
+            this._tbSCPQuerypage.Size = new System.Drawing.Size(764, 231);
             this._tbSCPQuerypage.TabIndex = 0;
             this._tbSCPQuerypage.Text = "Query Servers";
             this._tbSCPQuerypage.UseVisualStyleBackColor = true;
             // 
             // _tbMWLQueryPage
             // 
-            this._tbMWLQueryPage.Location = new System.Drawing.Point(5, 29);
+            this._tbMWLQueryPage.Location = new System.Drawing.Point(4, 24);
             this._tbMWLQueryPage.Name = "_tbMWLQueryPage";
             this._tbMWLQueryPage.Padding = new System.Windows.Forms.Padding(3);
-            this._tbMWLQueryPage.Size = new System.Drawing.Size(877, 312);
+            this._tbMWLQueryPage.Size = new System.Drawing.Size(764, 284);
             this._tbMWLQueryPage.TabIndex = 1;
             this._tbMWLQueryPage.Text = "MWL Servers";
             this._tbMWLQueryPage.UseVisualStyleBackColor = true;
             // 
             // _tbStorePage
             // 
-            this._tbStorePage.Location = new System.Drawing.Point(5, 29);
+            this._tbStorePage.Location = new System.Drawing.Point(4, 24);
             this._tbStorePage.Name = "_tbStorePage";
             this._tbStorePage.Padding = new System.Windows.Forms.Padding(3);
-            this._tbStorePage.Size = new System.Drawing.Size(877, 312);
+            this._tbStorePage.Size = new System.Drawing.Size(764, 284);
             this._tbStorePage.TabIndex = 2;
             this._tbStorePage.Text = "PACS Storage Servers";
             this._tbStorePage.UseVisualStyleBackColor = true;
             // 
             // _tbOptions
             // 
-            this._tbOptions.Location = new System.Drawing.Point(16, 18);
+            this._tbOptions.Location = new System.Drawing.Point(0, 0);
             this._tbOptions.Name = "_tbOptions";
             this._tbOptions.SelectedTabPage = this._tpApplicationOptions;
-            this._tbOptions.Size = new System.Drawing.Size(925, 761);
+            this._tbOptions.Size = new System.Drawing.Size(786, 514);
             this._tbOptions.TabIndex = 18;
             this._tbOptions.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this._tpApplicationOptions,
@@ -550,57 +559,72 @@ namespace PrintToPACSDemo
             // 
             // _tpApplicationOptions
             // 
-            this._tpApplicationOptions.Controls.Add(this._btnBrowseTempDir);
+            this._tpApplicationOptions.Controls.Add(this.panelControl2);
             this._tpApplicationOptions.Controls.Add(this._ckAutoDelete);
-            this._tpApplicationOptions.Controls.Add(this.label3);
-            this._tpApplicationOptions.Controls.Add(this._btnRename);
             this._tpApplicationOptions.Controls.Add(this._gpDicomType);
-            this._tpApplicationOptions.Controls.Add(this._txtTempDir);
-            this._tpApplicationOptions.Controls.Add(this._txtPrinterName);
-            this._tpApplicationOptions.Controls.Add(this._lblPrinterName);
             this._tpApplicationOptions.Name = "_tpApplicationOptions";
             this._tpApplicationOptions.Padding = new System.Windows.Forms.Padding(3);
-            this._tpApplicationOptions.Size = new System.Drawing.Size(915, 723);
+            this._tpApplicationOptions.Size = new System.Drawing.Size(778, 482);
             this._tpApplicationOptions.Text = "Application Options";
             // 
-            // _btnBrowseTempDir
+            // panelControl2
             // 
-            this._btnBrowseTempDir.Location = new System.Drawing.Point(370, 405);
-            this._btnBrowseTempDir.Name = "_btnBrowseTempDir";
-            this._btnBrowseTempDir.Size = new System.Drawing.Size(45, 28);
-            this._btnBrowseTempDir.TabIndex = 31;
+            this.panelControl2.Controls.Add(this._lblPrinterName);
+            this.panelControl2.Controls.Add(this._txtPrinterName);
+            this.panelControl2.Controls.Add(this._btnRename);
+            this.panelControl2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelControl2.Location = new System.Drawing.Point(3, 3);
+            this.panelControl2.Name = "panelControl2";
+            this.panelControl2.Size = new System.Drawing.Size(772, 59);
+            this.panelControl2.TabIndex = 32;
             // 
-            // _ckAutoDelete
+            // _lblPrinterName
             // 
-            this._ckAutoDelete.Location = new System.Drawing.Point(26, 689);
-            this._ckAutoDelete.Name = "_ckAutoDelete";
-            this._ckAutoDelete.Properties.Caption = "Auto delete Images after successful transfer";
-            this._ckAutoDelete.Size = new System.Drawing.Size(389, 22);
-            this._ckAutoDelete.TabIndex = 26;
+            this._lblPrinterName.Location = new System.Drawing.Point(20, 20);
+            this._lblPrinterName.Name = "_lblPrinterName";
+            this._lblPrinterName.Size = new System.Drawing.Size(151, 15);
+            this._lblPrinterName.TabIndex = 0;
+            this._lblPrinterName.Text = "DICOM Printer Driver Name";
             // 
-            // label3
+            // _txtPrinterName
             // 
-            this.label3.Location = new System.Drawing.Point(131, 405);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(189, 18);
-            this.label3.TabIndex = 23;
-            this.label3.Text = "DICOM Temporary Directory";
+            this._txtPrinterName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._txtPrinterName.Location = new System.Drawing.Point(177, 17);
+            this._txtPrinterName.Name = "_txtPrinterName";
+            this._txtPrinterName.Properties.Appearance.BackColor = System.Drawing.Color.Gainsboro;
+            this._txtPrinterName.Properties.Appearance.Options.UseBackColor = true;
+            this._txtPrinterName.Properties.ReadOnly = true;
+            this._txtPrinterName.Size = new System.Drawing.Size(459, 22);
+            this._txtPrinterName.TabIndex = 1;
             // 
             // _btnRename
             // 
-            this._btnRename.Location = new System.Drawing.Point(636, 28);
+            this._btnRename.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnRename.Location = new System.Drawing.Point(642, 16);
             this._btnRename.Name = "_btnRename";
-            this._btnRename.Size = new System.Drawing.Size(122, 26);
+            this._btnRename.Size = new System.Drawing.Size(125, 23);
             this._btnRename.TabIndex = 22;
             this._btnRename.Text = "Rename";
+            // 
+            // _ckAutoDelete
+            // 
+            this._ckAutoDelete.Location = new System.Drawing.Point(27, 609);
+            this._ckAutoDelete.Name = "_ckAutoDelete";
+            this._ckAutoDelete.Properties.Caption = "Auto delete Images after successful transfer";
+            this._ckAutoDelete.Size = new System.Drawing.Size(400, 20);
+            this._ckAutoDelete.TabIndex = 26;
             // 
             // _gpDicomType
             // 
             this._gpDicomType.Controls.Add(this._btnBrowseSCPDF);
+            this._gpDicomType.Controls.Add(this._btnBrowseTempDir);
+            this._gpDicomType.Controls.Add(this.label3);
             this._gpDicomType.Controls.Add(this._btnBrowseSCGray);
             this._gpDicomType.Controls.Add(this._btnBrowseSCColor);
             this._gpDicomType.Controls.Add(this._btnBrowseSC);
             this._gpDicomType.Controls.Add(this.label2);
+            this._gpDicomType.Controls.Add(this._txtTempDir);
             this._gpDicomType.Controls.Add(this._cmbSCColor);
             this._gpDicomType.Controls.Add(this._cmbSCGray);
             this._gpDicomType.Controls.Add(this._cmbSC);
@@ -613,90 +637,113 @@ namespace PrintToPACSDemo
             this._gpDicomType.Controls.Add(this._txtSCGray);
             this._gpDicomType.Controls.Add(this._txtSCColor);
             this._gpDicomType.Controls.Add(this._txtSC);
-            this._gpDicomType.Location = new System.Drawing.Point(26, 91);
+            this._gpDicomType.Location = new System.Drawing.Point(6, 81);
             this._gpDicomType.Name = "_gpDicomType";
-            this._gpDicomType.Size = new System.Drawing.Size(883, 226);
+            this._gpDicomType.Size = new System.Drawing.Size(769, 201);
             this._gpDicomType.TabIndex = 7;
             this._gpDicomType.TabStop = false;
             this._gpDicomType.Text = "DICOM type";
             // 
             // _btnBrowseSCPDF
             // 
-            this._btnBrowseSCPDF.Location = new System.Drawing.Point(377, 170);
+            this._btnBrowseSCPDF.Location = new System.Drawing.Point(323, 125);
             this._btnBrowseSCPDF.Name = "_btnBrowseSCPDF";
-            this._btnBrowseSCPDF.Size = new System.Drawing.Size(44, 28);
+            this._btnBrowseSCPDF.Size = new System.Drawing.Size(38, 21);
             this._btnBrowseSCPDF.TabIndex = 30;
+            // 
+            // _btnBrowseTempDir
+            // 
+            this._btnBrowseTempDir.Location = new System.Drawing.Point(315, 156);
+            this._btnBrowseTempDir.Name = "_btnBrowseTempDir";
+            this._btnBrowseTempDir.Size = new System.Drawing.Size(46, 25);
+            this._btnBrowseTempDir.TabIndex = 31;
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(18, 161);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(154, 15);
+            this.label3.TabIndex = 23;
+            this.label3.Text = "DICOM Temporary Directory";
             // 
             // _btnBrowseSCGray
             // 
-            this._btnBrowseSCGray.Location = new System.Drawing.Point(377, 130);
+            this._btnBrowseSCGray.Location = new System.Drawing.Point(323, 95);
             this._btnBrowseSCGray.Name = "_btnBrowseSCGray";
-            this._btnBrowseSCGray.Size = new System.Drawing.Size(44, 28);
+            this._btnBrowseSCGray.Size = new System.Drawing.Size(38, 21);
             this._btnBrowseSCGray.TabIndex = 29;
             // 
             // _btnBrowseSCColor
             // 
-            this._btnBrowseSCColor.Location = new System.Drawing.Point(377, 89);
+            this._btnBrowseSCColor.Location = new System.Drawing.Point(323, 66);
             this._btnBrowseSCColor.Name = "_btnBrowseSCColor";
-            this._btnBrowseSCColor.Size = new System.Drawing.Size(44, 28);
+            this._btnBrowseSCColor.Size = new System.Drawing.Size(38, 21);
             this._btnBrowseSCColor.TabIndex = 28;
             // 
             // _btnBrowseSC
             // 
-            this._btnBrowseSC.Location = new System.Drawing.Point(377, 49);
+            this._btnBrowseSC.Location = new System.Drawing.Point(323, 36);
             this._btnBrowseSC.Name = "_btnBrowseSC";
-            this._btnBrowseSC.Size = new System.Drawing.Size(44, 28);
+            this._btnBrowseSC.Size = new System.Drawing.Size(38, 21);
             this._btnBrowseSC.TabIndex = 27;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(730, 23);
+            this.label2.Location = new System.Drawing.Point(626, 17);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(83, 18);
+            this.label2.Size = new System.Drawing.Size(73, 15);
             this.label2.TabIndex = 20;
             this.label2.Text = "Compression";
             // 
+            // _txtTempDir
+            // 
+            this._txtTempDir.Location = new System.Drawing.Point(374, 158);
+            this._txtTempDir.Name = "_txtTempDir";
+            this._txtTempDir.Size = new System.Drawing.Size(377, 22);
+            this._txtTempDir.TabIndex = 2;
+            this._txtTempDir.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
             // _cmbSCColor
             // 
-            this._cmbSCColor.Location = new System.Drawing.Point(730, 91);
+            this._cmbSCColor.Location = new System.Drawing.Point(626, 67);
             this._cmbSCColor.Name = "_cmbSCColor";
             this._cmbSCColor.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this._cmbSCColor.Size = new System.Drawing.Size(140, 24);
+            this._cmbSCColor.Size = new System.Drawing.Size(120, 22);
             this._cmbSCColor.TabIndex = 19;
             // 
             // _cmbSCGray
             // 
-            this._cmbSCGray.Location = new System.Drawing.Point(730, 130);
+            this._cmbSCGray.Location = new System.Drawing.Point(626, 95);
             this._cmbSCGray.Name = "_cmbSCGray";
             this._cmbSCGray.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this._cmbSCGray.Size = new System.Drawing.Size(140, 24);
+            this._cmbSCGray.Size = new System.Drawing.Size(120, 22);
             this._cmbSCGray.TabIndex = 18;
             // 
             // _cmbSC
             // 
-            this._cmbSC.Location = new System.Drawing.Point(730, 51);
+            this._cmbSC.Location = new System.Drawing.Point(626, 38);
             this._cmbSC.Name = "_cmbSC";
             this._cmbSC.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this._cmbSC.Size = new System.Drawing.Size(140, 24);
+            this._cmbSC.Size = new System.Drawing.Size(120, 22);
             this._cmbSC.TabIndex = 16;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(377, 23);
+            this.label1.Location = new System.Drawing.Point(323, 17);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 18);
+            this.label1.Size = new System.Drawing.Size(52, 15);
             this.label1.TabIndex = 15;
             this.label1.Text = "Template";
             // 
             // _rdPDF
             // 
             this._rdPDF.AutoSize = true;
-            this._rdPDF.Location = new System.Drawing.Point(21, 171);
+            this._rdPDF.Location = new System.Drawing.Point(18, 126);
             this._rdPDF.Name = "_rdPDF";
-            this._rdPDF.Size = new System.Drawing.Size(108, 22);
+            this._rdPDF.Size = new System.Drawing.Size(92, 19);
             this._rdPDF.TabIndex = 14;
             this._rdPDF.Text = "DICOM PDF";
             this._rdPDF.UseVisualStyleBackColor = true;
@@ -704,9 +751,9 @@ namespace PrintToPACSDemo
             // _rdGrayScale
             // 
             this._rdGrayScale.AutoSize = true;
-            this._rdGrayScale.Location = new System.Drawing.Point(21, 132);
+            this._rdGrayScale.Location = new System.Drawing.Point(18, 97);
             this._rdGrayScale.Name = "_rdGrayScale";
-            this._rdGrayScale.Size = new System.Drawing.Size(302, 22);
+            this._rdGrayScale.Size = new System.Drawing.Size(256, 19);
             this._rdGrayScale.TabIndex = 13;
             this._rdGrayScale.Text = "Secondary Capture Multi-Frame Grayscale";
             this._rdGrayScale.UseVisualStyleBackColor = true;
@@ -714,9 +761,9 @@ namespace PrintToPACSDemo
             // _rdColored
             // 
             this._rdColored.AutoSize = true;
-            this._rdColored.Location = new System.Drawing.Point(21, 92);
+            this._rdColored.Location = new System.Drawing.Point(18, 67);
             this._rdColored.Name = "_rdColored";
-            this._rdColored.Size = new System.Drawing.Size(271, 22);
+            this._rdColored.Size = new System.Drawing.Size(231, 19);
             this._rdColored.TabIndex = 12;
             this._rdColored.Text = "Secondary Capture Multi-Frame Color";
             this._rdColored.UseVisualStyleBackColor = true;
@@ -725,9 +772,9 @@ namespace PrintToPACSDemo
             // 
             this._rdSecondaryCapture.AutoSize = true;
             this._rdSecondaryCapture.Checked = true;
-            this._rdSecondaryCapture.Location = new System.Drawing.Point(21, 53);
+            this._rdSecondaryCapture.Location = new System.Drawing.Point(18, 39);
             this._rdSecondaryCapture.Name = "_rdSecondaryCapture";
-            this._rdSecondaryCapture.Size = new System.Drawing.Size(153, 22);
+            this._rdSecondaryCapture.Size = new System.Drawing.Size(129, 19);
             this._rdSecondaryCapture.TabIndex = 11;
             this._rdSecondaryCapture.TabStop = true;
             this._rdSecondaryCapture.Text = "Secondary Capture";
@@ -735,84 +782,68 @@ namespace PrintToPACSDemo
             // 
             // _txtSCPDF
             // 
-            this._txtSCPDF.Location = new System.Drawing.Point(436, 170);
+            this._txtSCPDF.Location = new System.Drawing.Point(374, 125);
             this._txtSCPDF.Name = "_txtSCPDF";
-            this._txtSCPDF.Size = new System.Drawing.Size(269, 24);
+            this._txtSCPDF.Size = new System.Drawing.Size(230, 22);
             this._txtSCPDF.TabIndex = 10;
             this._txtSCPDF.Tag = "3";
             // 
             // _txtSCGray
             // 
-            this._txtSCGray.Location = new System.Drawing.Point(436, 130);
+            this._txtSCGray.Location = new System.Drawing.Point(374, 95);
             this._txtSCGray.Name = "_txtSCGray";
-            this._txtSCGray.Size = new System.Drawing.Size(269, 24);
+            this._txtSCGray.Size = new System.Drawing.Size(230, 22);
             this._txtSCGray.TabIndex = 9;
             this._txtSCGray.Tag = "2";
             // 
             // _txtSCColor
             // 
-            this._txtSCColor.Location = new System.Drawing.Point(436, 91);
+            this._txtSCColor.Location = new System.Drawing.Point(374, 67);
             this._txtSCColor.Name = "_txtSCColor";
-            this._txtSCColor.Size = new System.Drawing.Size(269, 24);
+            this._txtSCColor.Size = new System.Drawing.Size(230, 22);
             this._txtSCColor.TabIndex = 8;
             this._txtSCColor.Tag = "1";
             this._txtSCColor.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
             // _txtSC
             // 
-            this._txtSC.Location = new System.Drawing.Point(436, 51);
+            this._txtSC.Location = new System.Drawing.Point(374, 38);
             this._txtSC.Name = "_txtSC";
-            this._txtSC.Size = new System.Drawing.Size(269, 24);
+            this._txtSC.Size = new System.Drawing.Size(230, 22);
             this._txtSC.TabIndex = 7;
             this._txtSC.Tag = "0";
             // 
-            // _txtTempDir
-            // 
-            this._txtTempDir.Location = new System.Drawing.Point(423, 405);
-            this._txtTempDir.Name = "_txtTempDir";
-            this._txtTempDir.Size = new System.Drawing.Size(486, 24);
-            this._txtTempDir.TabIndex = 2;
-            this._txtTempDir.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
-            // 
-            // _txtPrinterName
-            // 
-            this._txtPrinterName.Location = new System.Drawing.Point(251, 30);
-            this._txtPrinterName.Name = "_txtPrinterName";
-            this._txtPrinterName.Properties.Appearance.BackColor = System.Drawing.Color.Gainsboro;
-            this._txtPrinterName.Properties.Appearance.Options.UseBackColor = true;
-            this._txtPrinterName.Properties.ReadOnly = true;
-            this._txtPrinterName.Size = new System.Drawing.Size(377, 24);
-            this._txtPrinterName.TabIndex = 1;
-            // 
-            // _lblPrinterName
-            // 
-            this._lblPrinterName.Location = new System.Drawing.Point(26, 35);
-            this._lblPrinterName.Name = "_lblPrinterName";
-            this._lblPrinterName.Size = new System.Drawing.Size(181, 18);
-            this._lblPrinterName.TabIndex = 0;
-            this._lblPrinterName.Text = "DICOM Printer Driver Name";
-            // 
             // _tpDicomOptions
             // 
+            this._tpDicomOptions.AutoScroll = true;
+            this._tpDicomOptions.Controls.Add(this._tbServers);
             this._tpDicomOptions.Controls.Add(this._groupBoxSecurity);
             this._tpDicomOptions.Controls.Add(this._groupBoxClient);
-            this._tpDicomOptions.Controls.Add(this._tbServers);
             this._tpDicomOptions.Name = "_tpDicomOptions";
             this._tpDicomOptions.Padding = new System.Windows.Forms.Padding(3);
-            this._tpDicomOptions.Size = new System.Drawing.Size(915, 723);
+            this._tpDicomOptions.Size = new System.Drawing.Size(778, 482);
             this._tpDicomOptions.Text = "PACS Settings";
+            // 
+            // panelControl1
+            // 
+            this.panelControl1.Controls.Add(this.buttonCancel);
+            this.panelControl1.Controls.Add(this.buttonOK);
+            this.panelControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelControl1.Location = new System.Drawing.Point(0, 519);
+            this.panelControl1.Name = "panelControl1";
+            this.panelControl1.Size = new System.Drawing.Size(786, 48);
+            this.panelControl1.TabIndex = 19;
             // 
             // OptionsDialog
             // 
             this.AcceptButton = this.buttonOK;
-            this.AutoScaleBaseSize = new System.Drawing.Size(7, 19);
+            this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(819, 669);
+            this.ClientSize = new System.Drawing.Size(786, 567);
             this.Controls.Add(this._tbOptions);
-            this.Controls.Add(this.buttonOK);
-            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.panelControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.IconOptions.Image = global::PrintToPACSDemo.Properties.Resources.logo;
+            this.IconOptions.Image = ((System.Drawing.Image)(resources.GetObject("OptionsDialog.IconOptions.Image")));
             this.Name = "OptionsDialog";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -831,10 +862,14 @@ namespace PrintToPACSDemo
             ((System.ComponentModel.ISupportInitialize)(this._tbOptions)).EndInit();
             this._tbOptions.ResumeLayout(false);
             this._tpApplicationOptions.ResumeLayout(false);
-            this._tpApplicationOptions.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
+            this.panelControl2.ResumeLayout(false);
+            this.panelControl2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._txtPrinterName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._ckAutoDelete.Properties)).EndInit();
             this._gpDicomType.ResumeLayout(false);
             this._gpDicomType.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._txtTempDir.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._cmbSCColor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._cmbSCGray.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._cmbSC.Properties)).EndInit();
@@ -842,9 +877,9 @@ namespace PrintToPACSDemo
             ((System.ComponentModel.ISupportInitialize)(this._txtSCGray.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._txtSCColor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._txtSC.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._txtTempDir.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._txtPrinterName.Properties)).EndInit();
             this._tpDicomOptions.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
+            this.panelControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

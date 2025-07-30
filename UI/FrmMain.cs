@@ -40,6 +40,8 @@ using System.Data;
 using System.Linq;
 using PrintToPACSDemo.UI.Conclusion;
 using VisioForge.Core.Helpers;
+using DevExpress.XtraEditors;
+using MediaToPacs.Entitys.Domain;
 
 namespace PrintToPACSDemo
 {
@@ -165,6 +167,8 @@ namespace PrintToPACSDemo
         private ModalityWorklistResult result;
         private MPPSNCreate mppsCreate;
         private WorkListTable _workListTable;
+
+
         public FrmMain(WorkListTable workListTable, ModalityWorklistResult result, MPPSNCreate mppsCreate)
         {
             try
@@ -259,6 +263,8 @@ namespace PrintToPACSDemo
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
+            propertyGridControl1.OptionsBehavior.PropertySort = DevExpress.XtraVerticalGrid.PropertySort.Alphabetical;
+            propertyGridControl1.SelectedObject = new MedicalReport();
             //
             // Add Excluded Tags
             //
@@ -300,6 +306,7 @@ namespace PrintToPACSDemo
                 this.Close();
             }
         }
+
 
         private void InitTranfer(ModalityWorklistResult result)
         {
@@ -637,9 +644,9 @@ namespace PrintToPACSDemo
                 _pictureBox.Image.Dispose();
                 _pictureBox.Image = null;
             }
-            _btnNext.Enabled = false;
-            _btnPrev.Enabled = false;
-            _lblPageInfo.Text = "";
+            //_btnNext.Enabled = false;
+            //_btnPrev.Enabled = false;
+            //_lblPageInfo.Text = "";
             UpdateToolBarState();
         }
 
@@ -705,7 +712,7 @@ namespace PrintToPACSDemo
                 ClearList();
                 EnableNextPrevious();
                 UpdateToolBarState();
-                _lblPageInfo.Text = "";
+                //_lblPageInfo.Text = "";
             }
             catch (Exception Ex)
             {
@@ -777,12 +784,24 @@ namespace PrintToPACSDemo
             }
         }
 
-        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        private async void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             try
             {
                 FinilizeScreenCapture();
                 FinilizeTwain();
+            }
+            catch (Exception)
+            {
+                //MessageBox.Show("Closing Form " + Ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private async void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            try
+            {
+                await _CameraControl.VideoCapture1.StopAsync();
             }
             catch (Exception)
             {
@@ -1006,7 +1025,7 @@ namespace PrintToPACSDemo
             if (_mySettings._settings.StoreServers.serverList.Length == 0)
                 return;
 
-            MyServer server = _mySettings._settings.StoreServers.serverList[_cbStoreServers.SelectedIndex];
+            MyServer server = _mySettings._settings.StoreServers.serverList[toolStripComboBoxStoreServer.SelectedIndex];
             string strTemp, strMessage = string.Empty;
             strTemp = Path.GetTempFileName();
 
@@ -1265,7 +1284,7 @@ namespace PrintToPACSDemo
 
             EnableNextPrevious();
             UpdateToolBarState();
-            _lblPageInfo.Text = "";
+            //_lblPageInfo.Text = "";
         }
 
         private void _miResetInfo_Click(object sender, EventArgs e)
@@ -1350,7 +1369,7 @@ namespace PrintToPACSDemo
 
         private void _cbSevers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MyServer server = (_cbStoreServers.SelectedItem as MyServer);
+            MyServer server = (toolStripComboBoxStoreServer.SelectedItem as MyServer);
         }
 
         private void _toolBtnScreenCapture_Click(object sender, EventArgs e)
@@ -1469,13 +1488,9 @@ namespace PrintToPACSDemo
             _pgDicomInfo.ShowCommands = true;
             _pgDicomInfo.ShowTagInfo = true;
             _pgDicomInfo.ShowUsageImages = true;
-            _pgDicomInfo.Size = new System.Drawing.Size(388, 213);
             _pgDicomInfo.TabIndex = 0;
-            _tbTableLayout.Controls.Add(_panelImageList, 0, 2);
-            _tbTableLayout.SetColumnSpan(_panelImageList, 2);
             _pgDicomInfo.ToolbarVisible = false;
             _pgDicomInfo.BeforeAddElement += new EventHandler<BeforeAddElementEventArgs>(_pgDicomInfo_BeforeAddElement);
-
             _tbPropertyGrid.Controls.Add(_pgDicomInfo, 0, 1);
             _panelImageList.Controls.Add(_lstBoxPages);
             _lstBoxPages.ViewMode = ThumbMode.Condensed;
@@ -1495,8 +1510,8 @@ namespace PrintToPACSDemo
             _pictureBox.InteractiveMode = Leadtools.WinForms.RasterViewerInteractiveMode.ZoomTo;
             _pictureBox.MouseMove += new MouseEventHandler(_pictureBox_MouseMove);
             //_pgSearchSCP.SelectedObject = _findQuery;
-            _tbPicture.Controls.Add(_pictureBox, 0, 2);
-            _tbPicture.SetColumnSpan(_pictureBox, 4);
+            //_tbPicture.Controls.Add(_pictureBox, 0, 2);
+            //_tbPicture.SetColumnSpan(_pictureBox, 4);
             _pgDicomInfo.ShowTagInfo = false;
             _pgDicomInfo.ShowCommands = false;
             _pgDicomInfo.CommandsVisibleIfAvailable = false;
@@ -1590,7 +1605,7 @@ namespace PrintToPACSDemo
                 }
 
                 EnableNextPrevious();
-                _lblPageInfo.Text = "";
+                //_lblPageInfo.Text = "";
             }
         }
 
@@ -1801,16 +1816,17 @@ namespace PrintToPACSDemo
 
         private void UpdateComboBoxes()
         {
-            int iStoreIndex = _cbStoreServers.SelectedIndex;
+            int iStoreIndex = toolStripComboBoxStoreServer.SelectedIndex;
 
-            if (_cbStoreServers.Properties.Items.Count != 0)
-                if (_cbStoreServers.Properties.Items.Count > iStoreIndex && iStoreIndex >= 0)
-                    _cbStoreServers.SelectedIndex = iStoreIndex;
+            if (toolStripComboBoxStoreServer.Items.Count != 0)
+            {
+                if (toolStripComboBoxStoreServer.Items.Count > iStoreIndex && iStoreIndex >= 0)
+                    toolStripComboBoxStoreServer.SelectedIndex = iStoreIndex;
+                else if (toolStripComboBoxStoreServer.Items.Count > _mySettings._settings.DefaultStoreServer)
+                    toolStripComboBoxStoreServer.SelectedIndex = _mySettings._settings.DefaultStoreServer;
                 else
-                   if (_cbStoreServers.Properties.Items.Count > _mySettings._settings.DefaultStoreServer)
-                    _cbStoreServers.SelectedIndex = _mySettings._settings.DefaultStoreServer;
-                else
-                    _cbStoreServers.SelectedIndex = 0;
+                    toolStripComboBoxStoreServer.SelectedIndex = 0;
+            }
         }
 
         public void EnableItems(bool enable, string strCaption, string strBtnCaption)
@@ -1830,13 +1846,14 @@ namespace PrintToPACSDemo
                 _lstBoxPages.Enabled = enable;
                 //_tbDicomInfo.Enabled = enable;
                 _cmbSopClasses.Enabled = enable;
-                _cbStoreServers.Enabled = enable;
+                //_cbStoreServers.Enabled = enable;
+                toolStripComboBoxStoreServer.Enabled = enable;
                 _btnPushToPACS.Enabled = enable;
                 _btnCreateConclusion.Enabled = enable;
                 _toolbarMain.Enabled = enable;
                 _pgDicomInfo.Enabled = enable;
                 //_btnPACSSettings.Enabled = enable;
-                _btnOpenImage.Enabled = enable;
+                //_btnOpenImage.Enabled = enable;
                 if (enable)
                 {
                     UpdateToolBarState();
@@ -1889,39 +1906,39 @@ namespace PrintToPACSDemo
 
         private void EnableNextPrevious()
         {
-            _btnNext.Enabled = true;
-            _btnPrev.Enabled = true;
+            //_btnNext.Enabled = true;
+            //_btnPrev.Enabled = true;
 
-            if (_lstBoxPages.Items.Count == 0)
-            {
-                _btnPrev.Enabled = false;
-                _btnNext.Enabled = false;
-                return;
-            }
+            //if (_lstBoxPages.Items.Count == 0)
+            //{
+            //    _btnPrev.Enabled = false;
+            //    _btnNext.Enabled = false;
+            //    return;
+            //}
 
-            if (_lstBoxPages.ViewMode == ThumbMode.Condensed)
-            {
-                if (_lstBoxPages.SelectedItemGroupIndex < 0)
-                {
-                    _btnPrev.Enabled = false;
-                    _btnNext.Enabled = false;
-                    return;
-                }
-                if (_lstBoxPages.SelectedItemGroupIndex <= 0)
-                    _btnPrev.Enabled = false;
+            //if (_lstBoxPages.ViewMode == ThumbMode.Condensed)
+            //{
+            //    if (_lstBoxPages.SelectedItemGroupIndex < 0)
+            //    {
+            //        _btnPrev.Enabled = false;
+            //        _btnNext.Enabled = false;
+            //        return;
+            //    }
+            //    if (_lstBoxPages.SelectedItemGroupIndex <= 0)
+            //        _btnPrev.Enabled = false;
 
-                if (_lstBoxPages.SelectedItemGroupIndex == _lstBoxPages.GetSelectedImageCollection().Images.Count - 1)
-                    _btnNext.Enabled = false;
-            }
-            else
-            {
-                if (_lstBoxPages.SelectedIndex <= 0)
-                    _btnPrev.Enabled = false;
+            //    if (_lstBoxPages.SelectedItemGroupIndex == _lstBoxPages.GetSelectedImageCollection().Images.Count - 1)
+            //        _btnNext.Enabled = false;
+            //}
+            //else
+            //{
+            //    if (_lstBoxPages.SelectedIndex <= 0)
+            //        _btnPrev.Enabled = false;
 
-                if (_lstBoxPages.SelectedIndex == _lstBoxPages.Items.Count - 1)
-                    _btnNext.Enabled = false;
+            //    if (_lstBoxPages.SelectedIndex == _lstBoxPages.Items.Count - 1)
+            //        _btnNext.Enabled = false;
 
-            }
+            //}
         }
 
         private void ScalePicture(PrintToPACSDemo.UI.ListImageBox.ImageItem item)
@@ -1945,11 +1962,11 @@ namespace PrintToPACSDemo
 
         private void UpdateLabel(int iSelectedindex)
         {
-            try
-            {
-                _lblPageInfo.Text = "Page " + (iSelectedindex).ToString() + " / " + (_lstBoxPages.GetGroupImageItems().Count).ToString();
-            }
-            catch { _lblPageInfo.Text = ""; }
+            //try
+            //{
+            //    _lblPageInfo.Text = "Page " + (iSelectedindex).ToString() + " / " + (_lstBoxPages.GetGroupImageItems().Count).ToString();
+            //}
+            //catch { _lblPageInfo.Text = ""; }
         }
 
         private void InitClass()
@@ -2021,7 +2038,7 @@ namespace PrintToPACSDemo
             }
             else
             {
-                AddAction(sAction, sActionColor);
+                //AddAction(sAction, sActionColor);
                 PacsSettings.LogWindow.RichTextBox.AppendText(sLogText);
                 PacsSettings.LogWindow.RichTextBox.AppendText(_sNewline);
                 TextBoxTraceListener.SendMessage(PacsSettings.LogWindow.RichTextBox.Handle, TextBoxTraceListener.WM_VSCROLL, TextBoxTraceListener.SB_BOTTOM, 0);
@@ -2042,18 +2059,18 @@ namespace PrintToPACSDemo
 
         private void AddAction(string action)
         {
-            System.Drawing.Color oldColor = logWindow.RichTextBox.SelectionColor;
-            if (action == "")
-            {
-                return;
-            }
-            logWindow.RichTextBox.SelectionLength = 0;
-            logWindow.RichTextBox.SelectionStart = logWindow.RichTextBox.Text.Length;
-            logWindow.RichTextBox.SelectionColor = Color.Blue;
-            logWindow.RichTextBox.SelectionFont = new Font(logWindow.RichTextBox.SelectionFont, FontStyle.Bold);
-            logWindow.RichTextBox.AppendText(action + ": ");
+            //System.Drawing.Color oldColor = logWindow.RichTextBox.SelectionColor;
+            //if (action == "")
+            //{
+            //    return;
+            //}
+            //logWindow.RichTextBox.SelectionLength = 0;
+            //logWindow.RichTextBox.SelectionStart = logWindow.RichTextBox.Text.Length;
+            //logWindow.RichTextBox.SelectionColor = Color.Blue;
+            //logWindow.RichTextBox.SelectionFont = new Font(logWindow.RichTextBox.SelectionFont, FontStyle.Bold);
+            //logWindow.RichTextBox.AppendText(action + ": ");
 
-            logWindow.RichTextBox.SelectionColor = oldColor;
+            //logWindow.RichTextBox.SelectionColor = oldColor;
         }
 
         public delegate void StartUpdateDelegate(DataGridView lv);
@@ -2071,7 +2088,7 @@ namespace PrintToPACSDemo
 
         private void SetServersComboBox(bool bSelectDefault)
         {
-            _cbStoreServers.Properties.Items.Clear();
+            toolStripComboBoxStoreServer.Items.Clear();
             MyServer[] list;
             int defaultserver = 0;
 
@@ -2080,21 +2097,21 @@ namespace PrintToPACSDemo
 
             if (list.Length == 0)
             {
-                _toolBtnStoreToPacs.Enabled = _miStoreToPACS.Enabled = _grpStoreServers.Enabled = false;
+                //_toolBtnStoreToPacs.Enabled = _miStoreToPACS.Enabled = _grpStoreServers.Enabled = false;
             }
             else
             {
-                _miStoreToPACS.Enabled = _grpStoreServers.Enabled = true;
+                //_miStoreToPACS.Enabled = _grpStoreServers.Enabled = true;
                 UpdateToolBarState();
                 foreach (MyServer server in list)
                 {
-                    _cbStoreServers.Properties.Items.Add(server);
+                    toolStripComboBoxStoreServer.Items.Add(server);
                 }
                 if (bSelectDefault)
                     if (defaultserver < list.Length)
-                        _cbStoreServers.SelectedIndex = defaultserver;
+                        toolStripComboBoxStoreServer.SelectedIndex = defaultserver;
                     else
-                        _cbStoreServers.SelectedIndex = 0;
+                        toolStripComboBoxStoreServer.SelectedIndex = 0;
             }
         }
 
@@ -2814,7 +2831,7 @@ namespace PrintToPACSDemo
             server.Port = storeserver._port;
             server.Timeout = storeserver._timeout;
             MyServer s = null;
-            s = (MyServer)(_cbStoreServers.SelectedItem);
+            s = (MyServer)(toolStripComboBoxStoreServer.SelectedItem);
             bStored = false;
 
             CreateCStoreObject(s);
@@ -2980,7 +2997,6 @@ namespace PrintToPACSDemo
             //    tableLayoutPanelInfo.Visible = false;
             //    panelInfo.Controls.Add(cameraControl);
             //}
-
         }
 
         //private void VideoRoll_Click(object sender, EventArgs e)
@@ -3067,7 +3083,6 @@ namespace PrintToPACSDemo
             //{
             //    Console.WriteLine(ex.Message);
             //}
-
         }
 
         static Bitmap ChangeBitDepth(Image originalImage)
@@ -3085,7 +3100,6 @@ namespace PrintToPACSDemo
         }
 
         private bool isCreateConclusion = false;
-        private PrintToPACSDemo.AnPhatData.Conclusion conclusion;
 
         private void _btnCreateConclusion_Click(object sender, EventArgs e)
         {
@@ -3112,24 +3126,24 @@ namespace PrintToPACSDemo
 
             if (!isCreateConclusion)
             {
-                conclusion = new PrintToPACSDemo.AnPhatData.Conclusion()
-                {
-                    PatientID = result.PatientId.Trim(),
-                    PatientName = result.PatientName.Full.ToString().Trim(),
-                    PatientDoB = result.PatientBirthDate.Value,
-                    PatientGender = result.PatientSex,
-                    MedicalImagingCode = result.AccessionNumber,
-                    ImagingServiceCode = "0001",
-                    StudyInstanceUID = result.StudyInstanceUid.Trim(),
-                    MedicalImagingCreateAt = result.ScheduledProcedureStepSequence[0].ScheduledProcedureStepStartDate.Value,
-                    MedicalImagingReportedAt = mppsCreate.PerformedProcedureStepEndTime.Value,
-                    DeviveName = !result.ScheduledProcedureStepSequence[0].ScheduledStationAeTitle.IsNullOrEmpty() ? result.ScheduledProcedureStepSequence[0].ScheduledStationAeTitle : string.Empty,
-                    HealthIdentificationCode = "",
-                    OrderingPhysician = result.RequestingPhysician.Full.Trim(),
-                    Radiologist = !result.ReferringPysician.Full.IsNullOrEmpty() ? result.ReferringPysician.Full : string.Empty,
-                    Technicians = !result.ScheduledProcedureStepSequence[0].ScheduledPerformingPhysician.Full.IsNullOrEmpty() ? result.ScheduledProcedureStepSequence[0].ScheduledPerformingPhysician.Full : string.Empty,
-                };
-                ConclusionForm createConclusion = new ConclusionForm(conclusion, conclusionImages);
+                //conclusion = new PrintToPACSDemo.AnPhatData.Conclusion()
+                //{
+                //    PatientID = result.PatientId.Trim(),
+                //    PatientName = result.PatientName.Full.ToString().Trim(),
+                //    PatientDoB = result.PatientBirthDate.Value,
+                //    PatientGender = result.PatientSex,
+                //    MedicalImagingCode = result.AccessionNumber,
+                //    ImagingServiceCode = "0001",
+                //    StudyInstanceUID = result.StudyInstanceUid.Trim(),
+                //    MedicalImagingCreateAt = result.ScheduledProcedureStepSequence[0].ScheduledProcedureStepStartDate.Value,
+                //    MedicalImagingReportedAt = mppsCreate.PerformedProcedureStepEndTime.Value,
+                //    DeviveName = !result.ScheduledProcedureStepSequence[0].ScheduledStationAeTitle.IsNullOrEmpty() ? result.ScheduledProcedureStepSequence[0].ScheduledStationAeTitle : string.Empty,
+                //    HealthIdentificationCode = "",
+                //    OrderingPhysician = result.RequestingPhysician.Full.Trim(),
+                //    Radiologist = !result.ReferringPysician.Full.IsNullOrEmpty() ? result.ReferringPysician.Full : string.Empty,
+                //    Technicians = !result.ScheduledProcedureStepSequence[0].ScheduledPerformingPhysician.Full.IsNullOrEmpty() ? result.ScheduledProcedureStepSequence[0].ScheduledPerformingPhysician.Full : string.Empty,
+                //};
+                ConclusionForm createConclusion = new ConclusionForm( conclusionImages);
                 createConclusion.FormClosed += CreateConclusion_FormClosed;
                 createConclusion.Name = "Conclusion";
                 createConclusion.Show(this);
@@ -3239,6 +3253,31 @@ namespace PrintToPACSDemo
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void xtraTabPage1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void labelControl5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelControl11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textEdit9_EditValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textEdit7_EditValueChanged(object sender, EventArgs e)
+        {
+
         }
 
         void CreateCStoreObject(MyServer server)

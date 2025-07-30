@@ -20,12 +20,11 @@ using Leadtools.Dicom.Common.DataTypes;
 using Leadtools.Dicom.Common.Extensions;
 using PrintToPACSDemo.UI.CameraUI;
 using System.Drawing;
-using Microsoft.Office.Interop.Word;
 using Application = System.Windows.Forms.Application;
 using Font = System.Drawing.Font;
 using VisioForge.Core.VideoCapture;
-using VisioForge.Libs.DirectShowLib;
 using DevExpress.XtraGrid.Views.Grid;
+using System.Threading.Tasks;
 
 namespace PrintToPACSDemo.UI
 {
@@ -35,7 +34,7 @@ namespace PrintToPACSDemo.UI
         private MyQueryRetrieveScu _find;
         private FrmOperation _frmOperation;
         private FrmMain _frmMain;
-        private Form _frmCamera = new Form(); //Mở lên khi 2 màn hình
+        private Form _frmCamera = new Form(); 
 
         private DicomFindQuery _findQuery = new DicomFindQuery();
         private PatientBasedQuery _pbQuery = new PatientBasedQuery();
@@ -72,12 +71,15 @@ namespace PrintToPACSDemo.UI
             }
         }
 
-        private void WorkListTable_Load(object sender, EventArgs e)
+        private async void WorkListTable_Load(object sender, EventArgs e)
         {
-            InitializeForm();
-            SetServersComboBox(true);
-            _cbCapture.SelectedIndex = 0;
-            _cbStartEnd.Checked = false;
+                    InitializeForm();
+                    SetServersComboBox(true);
+                    _cbCapture.SelectedIndex = 0;
+                    _cbStartEnd.Checked = false;
+             
+            
+
         }
 
         private void WorkListTable_FormClosing(object sender, FormClosingEventArgs e)
@@ -579,96 +581,96 @@ namespace PrintToPACSDemo.UI
         }
 
         private ProcedureStep ProcedureStepDelete;
-        private void LoadCapture(FrmMain frmMain)
-        {
-            CameraControl cameraControl = new CameraControl(_cbCapture.Text)
-            ;
-            MediaPlayerControl mediaPlayerControl;
-            cameraControl.Dock = DockStyle.Fill;
+        //private void LoadCapture(FrmMain frmMain)
+        //{
+        //    CameraControl cameraControl = new CameraControl(_cbCapture.Text);
+        //    MediaPlayerControl mediaPlayerControl;
+        //    cameraControl.Dock = DockStyle.Fill;
 
-            //
-            //Sự kiện quay click vào video thu được sau khi capture
-            //
-            frmMain.VideoRoll_Click += (o, i) =>
-            {
-                try
-                {
-                    PictureBox pictureBox = o as PictureBox;
-                    cameraControl.Visible = false;
-                    cameraControl.VideoCapture1.StopAsync();
+        //    //
+        //    //Sự kiện quay click vào video thu được sau khi capture
+        //    //
+        //    frmMain.VideoRoll_Click += (o, i) =>
+        //    {
+        //        try
+        //        {
+        //            PictureBox pictureBox = o as PictureBox;
+        //            cameraControl.Visible = false;
+        //            cameraControl.VideoCapture1.StopAsync();
 
-                    mediaPlayerControl = new MediaPlayerControl(pictureBox.Tag.ToString());
-                    mediaPlayerControl.Dock = DockStyle.Fill;
+        //            mediaPlayerControl = new MediaPlayerControl(pictureBox.Tag.ToString());
+        //            mediaPlayerControl.Dock = DockStyle.Fill;
 
-                    mediaPlayerControl.SnapshotMedia_Click += (s, e) =>
-                    {
-                        _frmMain.LoadRasterImage(mediaPlayerControl.SnapshotMedia);
-                    };
-                    mediaPlayerControl.BackCamera_Click += (s, e) =>
-                    {
-                        cameraControl.VideoCapture1.StartAsync();
-                        cameraControl.Visible = true;
-                        if (Screen.AllScreens.Length > 1)
-                        {
-                            _frmCamera.Controls.Remove(mediaPlayerControl);
-                        }
-                        else
-                        {
-                            _frmMain.panelInfo.Controls.Remove(mediaPlayerControl);
-                        }
-                    };
+        //            mediaPlayerControl.SnapshotMedia_Click += (s, e) =>
+        //            {
+        //                _frmMain.LoadRasterImage(mediaPlayerControl.SnapshotMedia);
+        //            };
+        //            mediaPlayerControl.BackCamera_Click += (s, e) =>
+        //            {
+        //                cameraControl.VideoCapture1.StartAsync();
+        //                cameraControl.Visible = true;
+        //                if (Screen.AllScreens.Length > 1)
+        //                {
+        //                    _frmCamera.Controls.Remove(mediaPlayerControl);
+        //                }
+        //                else
+        //                {
+        //                    _frmMain.panelCamera.Controls.Remove(mediaPlayerControl);
+        //                }
+        //            };
 
-                    if (Screen.AllScreens.Length > 1)
-                    {
-                        _frmCamera.Controls.Add(mediaPlayerControl);
-                    }
-                    else
-                    {
-                        _frmMain.panelInfo.Controls.Add(mediaPlayerControl);
-                    }
+        //            if (Screen.AllScreens.Length > 1)
+        //            {
+        //                _frmCamera.Controls.Add(mediaPlayerControl);
+        //            }
+        //            else
+        //            {
+        //                _frmMain.panelCamera.Controls.Add(mediaPlayerControl);
+        //            }
 
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            };
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show(ex.Message);
+        //        }
+        //    };
 
-            if (Screen.AllScreens.Length > 1)
-            {
-                _frmCamera.Controls.Add(cameraControl);
-                _frmCamera.Name = "FormCamera";
-                _frmCamera.StartPosition = FormStartPosition.Manual;
-                _frmCamera.WindowState = FormWindowState.Maximized;
-                _frmCamera.FormBorderStyle = FormBorderStyle.None;
-                _frmCamera.Location = Screen.AllScreens[1].WorkingArea.Location;
-                _frmCamera.TopMost = true;
-                _frmCamera.FormClosed += (s, e) =>
-                {
-                    cameraControl.CameraControlRemoved();
-                };
-                _frmCamera.Show(this);
-            }
-            else
-            {
-                frmMain.tableLayoutPanelInfo.Visible = false;
-                frmMain.panelInfo.Controls.Add(cameraControl);
-            }
+        //    //if (Screen.AllScreens.Length > 1)
+        //    //{
+        //    //    _frmCamera.Controls.Add(cameraControl);
+        //    //    _frmCamera.Name = "FormCamera";
+        //    //    _frmCamera.StartPosition = FormStartPosition.Manual;
+        //    //    _frmCamera.WindowState = FormWindowState.Maximized;
+        //    //    _frmCamera.FormBorderStyle = FormBorderStyle.None;
+        //    //    _frmCamera.Location = Screen.AllScreens[1].WorkingArea.Location;
+        //    //    _frmCamera.TopMost = true;
+        //    //    _frmCamera.FormClosed += (s, e) =>
+        //    //    {
+        //    //        cameraControl.CameraControlRemoved();
+        //    //    };
+        //    //    _frmCamera.Show(this);
+        //    //}
+        //    //else
+        //    //{
+        //        //frmMain.tableLayoutPanelInfo.Visible = false;
+        //        cameraControl.Dock = DockStyle.Fill;
+        //        frmMain.panelCamera.Controls.Add(cameraControl);
+        //    //}
 
-            frmMain._CameraControl = cameraControl;
-        }
+        //    frmMain._CameraControl = cameraControl;
+        //}
 
-        private void FormMain_Closed(object sender, FormClosedEventArgs e)
-        {
-            if (_frmCamera.Name == "FormCamera")
-            {
-                _frmCamera.Close();
-            }
-            else
-            {
-                _frmMain.CloseFrmMain();
-            }
-        }
+        //private void FormMain_Closed(object sender, FormClosedEventArgs e)
+        //{
+        //    if (_frmCamera.Name == "FormCamera")
+        //    {
+        //        _frmCamera.Close();
+        //    }
+        //    else
+        //    {
+        //        _frmMain.CloseFrmMain();
+        //    }
+        //}
 
         //
         //Xóa item trong listview khi trạng thái MPPS là thành công
@@ -705,7 +707,7 @@ namespace PrintToPACSDemo.UI
             try
             {
 
-                if (string.IsNullOrEmpty(gridView.GetRowCellValue(selectedRowHandle, gridView.Columns[13]).ToString()))
+                if (string.IsNullOrEmpty(gridView.GetRowCellValue(selectedRowHandle, gridView.Columns[12]).ToString()))
                 {     
                     foreach (ProcedureStep ps in listProcedureStep)
                     {
@@ -743,7 +745,7 @@ namespace PrintToPACSDemo.UI
                 _frmCamera.Owner = this;
                 _frmMain.Show();
 
-                LoadCapture(_frmMain);
+                //LoadCapture(_frmMain);
             }
             catch (Exception ex)
             {
@@ -1093,6 +1095,4 @@ namespace PrintToPACSDemo.UI
         public string RequestedProcedureID { get; set; }
         public string MPPS { get; set; }
     }
-
-
 }

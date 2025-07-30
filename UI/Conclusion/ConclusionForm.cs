@@ -1,8 +1,5 @@
 ﻿using Leadtools.Demos;
 using Newtonsoft.Json.Linq;
-using QRCoder;
-using SignLib;
-using SignLib.Pdf;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,8 +14,6 @@ using static PrintToPACSDemo.FrmMain;
 using DateTime = System.DateTime;
 using System.Xml.Serialization;
 using PrintToPACSDemo.UI.Login;
-using PrintToPACSDemo.AnPhat.Data;
-using PrintToPACSDemo.AnPhatData;
 using System.Dynamic;
 
 namespace PrintToPACSDemo.UI.Conclusion
@@ -29,15 +24,12 @@ namespace PrintToPACSDemo.UI.Conclusion
         private string templateDocxPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Phiếu trả kết luận.docx");
         private string saveStorePath;
         private List<Image> images = new List<Image>();
-        private PrintToPACSDemo.AnPhatData.Conclusion conclusion;
-        private ImageServiceLocal imageService;
         private List<string> conclusionImages = new List<string>();
 
-        public ConclusionForm(PrintToPACSDemo.AnPhatData.Conclusion conclusion, List<string> conclusionImages)
+        public ConclusionForm(List<string> conclusionImages)
         {
             InitializeComponent();
 
-            this.conclusion = conclusion;
             this.conclusionImages = conclusionImages;
         }
 
@@ -56,20 +48,20 @@ namespace PrintToPACSDemo.UI.Conclusion
 
         private void LoadInfoOrder()
         {
-            labelPatientName.Text = string.IsNullOrEmpty(conclusion.PatientName) ? "" : conclusion.PatientName;
-            labelImagingService.Text = string.IsNullOrEmpty(imageService.HospitalServiceName) ? "" : imageService.HospitalServiceName;
-            textBoxPatientGender.Text = string.IsNullOrEmpty(conclusion.PatientGender) ? "" : conclusion.PatientGender;
-            textBoxPatientDoB.Text = (conclusion.PatientDoB == null) ? "" : CaculatorDate(conclusion.PatientDoB).ToString();
-            textBoxPatientID.Text = string.IsNullOrEmpty(conclusion.PatientID) ? "" : conclusion.PatientID;
-            textBoxStudyInstanceUID.Text = string.IsNullOrEmpty(conclusion.StudyInstanceUID) ? "" : conclusion.StudyInstanceUID;
-            textBoxHealthIdentificationCode.Text = string.IsNullOrEmpty(conclusion.HealthIdentificationCode) ? "" : conclusion.HealthIdentificationCode;
-            textBoxMedicalCreateAt.Text = (conclusion.MedicalImagingCreateAt == null) ? "" : conclusion.MedicalImagingCreateAt.ToString();
-            textBoxMedicalReportedAt.Text = (conclusion.MedicalImagingReportedAt == null) ? "" : conclusion.MedicalImagingReportedAt.ToString();
-            textBoxMedicalCode.Text = string.IsNullOrEmpty(conclusion.MedicalImagingCode) ? "" : conclusion.MedicalImagingCode;
-            textBoxOrderingPhysician.Text = string.IsNullOrEmpty(conclusion.OrderingPhysician) ? "" : conclusion.OrderingPhysician;
-            textBoxRadiologist.Text = string.IsNullOrEmpty(conclusion.Radiologist) ? "" : conclusion.Radiologist;
-            textBoxTechnicians.Text = string.IsNullOrEmpty(conclusion.Technicians) ? "" : conclusion.Technicians;
-            textBoxDeviceName.Text = string.IsNullOrEmpty(conclusion.DeviveName) ? "" : conclusion.DeviveName;
+            //labelPatientName.Text = string.IsNullOrEmpty(conclusion.PatientName) ? "" : conclusion.PatientName;
+            //labelImagingService.Text = string.IsNullOrEmpty(imageService.HospitalServiceName) ? "" : imageService.HospitalServiceName;
+            //textBoxPatientGender.Text = string.IsNullOrEmpty(conclusion.PatientGender) ? "" : conclusion.PatientGender;
+            //textBoxPatientDoB.Text = (conclusion.PatientDoB == null) ? "" : CaculatorDate(conclusion.PatientDoB).ToString();
+            //textBoxPatientID.Text = string.IsNullOrEmpty(conclusion.PatientID) ? "" : conclusion.PatientID;
+            //textBoxStudyInstanceUID.Text = string.IsNullOrEmpty(conclusion.StudyInstanceUID) ? "" : conclusion.StudyInstanceUID;
+            //textBoxHealthIdentificationCode.Text = string.IsNullOrEmpty(conclusion.HealthIdentificationCode) ? "" : conclusion.HealthIdentificationCode;
+            //textBoxMedicalCreateAt.Text = (conclusion.MedicalImagingCreateAt == null) ? "" : conclusion.MedicalImagingCreateAt.ToString();
+            //textBoxMedicalReportedAt.Text = (conclusion.MedicalImagingReportedAt == null) ? "" : conclusion.MedicalImagingReportedAt.ToString();
+            //textBoxMedicalCode.Text = string.IsNullOrEmpty(conclusion.MedicalImagingCode) ? "" : conclusion.MedicalImagingCode;
+            //textBoxOrderingPhysician.Text = string.IsNullOrEmpty(conclusion.OrderingPhysician) ? "" : conclusion.OrderingPhysician;
+            //textBoxRadiologist.Text = string.IsNullOrEmpty(conclusion.Radiologist) ? "" : conclusion.Radiologist;
+            //textBoxTechnicians.Text = string.IsNullOrEmpty(conclusion.Technicians) ? "" : conclusion.Technicians;
+            //textBoxDeviceName.Text = string.IsNullOrEmpty(conclusion.DeviveName) ? "" : conclusion.DeviveName;
         }
 
         private void UpdateControl()
@@ -118,25 +110,25 @@ namespace PrintToPACSDemo.UI.Conclusion
                     AddImageToConclusionLocal(image, imageControl);
                 }
             }
-            richTextBoxDiagnoseInfo.Text = string.IsNullOrEmpty(imageService.ServiceSampleDescription) ? "" : imageService.ServiceSampleDescription;
-            richTextBoxDiagnoseResult.Text = string.IsNullOrEmpty(imageService.ServiceSampleConclusion) ? "" : imageService.ServiceSampleConclusion;
-            richTextBoxDiagnoseNote.Text = string.IsNullOrEmpty(imageService.SampleInstructions) ? "" : imageService.SampleInstructions;
+            //richTextBoxDiagnoseInfo.Text = string.IsNullOrEmpty(imageService.ServiceSampleDescription) ? "" : imageService.ServiceSampleDescription;
+            //richTextBoxDiagnoseResult.Text = string.IsNullOrEmpty(imageService.ServiceSampleConclusion) ? "" : imageService.ServiceSampleConclusion;
+            //richTextBoxDiagnoseNote.Text = string.IsNullOrEmpty(imageService.SampleInstructions) ? "" : imageService.SampleInstructions;
         }
 
         private void LoadConclusionLocal()
         {
             //imageService = BaseEntity.getByField<ImageServiceLocal>("HospitalServiceCode", conclusion.ImagingServiceCode);
-            imageService = new ImageServiceLocal()
-            {
-                Id = 01,
-                HospitalServiceCode = "0001",
-                HospitalServiceName = "Chụp cộng hưởng từ tầng bụng có tiêm chất tương phản (gồm: chụp cộng hưởng từ gan-mật, tụy, lách, thận, dạ dày-tá tràng...) (0.2-1.5T)",
-                MoHServiceCode = "",
-                MoHServiceName = "",
-                SampleInstructions = "",
-                ServiceSampleDescription = "Kỹ Thuật: Chụp MRI gan mật với các chuỗi xung Inphase, Oppose-phase, T1W, T2W, DWI axial, HASTE coronal và chuỗi xung đường mật MRCP. Trước và sau tiêm thuốc đối quang từ\\r\\n·    Gan kích thước bình thường, bờ đều. Nhu mô gan hạ phân thùy VII-VIII gan phải sát bao gan có khối bờ không đều, ranh giới rõ, kích thước 30x50mm: giảm tín hiệu trên xung T1W, tăng tín hiệu trên xung T2W , hạn chế khuếch tán trên xung DWI, sau tiêm ngấm thuốc dạng chấm nốt từ trung tâm vào ngoại vi, đầy thuốc ở thì muộn. Ngoài ra hạ phân thùy VIII có thêm 02 nốt đường kính 3-4mm và kích thước 16x17mm có tín hiệu và tính chất ngấm thuốc tương tự khối trên. Nhu mô gan còn lại không thấy bất thường.\\r\\n·    Tĩnh mạch cửa: không giãn, không có huyết khối.\\r\\n·    Đường mật trong và ngoài gan: không giãn, không thấy dày thành, không thấy sỏi hay cấu trúc choán chỗ.\\r\\n·    Túi mật: hình dạng và cấu trúc bình thườn, thành đều. Dịch mật trong và đồng nhất, không thấy sỏi.\\r\\n·    Tụy: hình dạng và cấu trúc bình thường, nhu mô đồng nhất, không có khối khu trú. Ống tụy không giãn, không có sỏi. Bờ tụy đều, xung quanh không có dịch.\\r\\n·    Lách: hình dạng và cấu trúc bình thường.\\r\\n·    Không có dịch tự do ổ bụng.\\r\\n·    Hai thận có hình thái, kích thước bình thường, nhu mô thận phải có nang 5mm, đài bể thận hai bên không giãn, không thấy cấu trúc choán chỗ.\\r\\n·    Niệu quản hai bên không giãn.\r\n",
-                ServiceSampleConclusion = "-Hình ảnh vài U máu (Hemagioma) gan phải. -Nang nhỏ thận phải."
-            };
+            //imageService = new ImageServiceLocal()
+            //{
+            //    Id = 01,
+            //    HospitalServiceCode = "0001",
+            //    HospitalServiceName = "Chụp cộng hưởng từ tầng bụng có tiêm chất tương phản (gồm: chụp cộng hưởng từ gan-mật, tụy, lách, thận, dạ dày-tá tràng...) (0.2-1.5T)",
+            //    MoHServiceCode = "",
+            //    MoHServiceName = "",
+            //    SampleInstructions = "",
+            //    ServiceSampleDescription = "Kỹ Thuật: Chụp MRI gan mật với các chuỗi xung Inphase, Oppose-phase, T1W, T2W, DWI axial, HASTE coronal và chuỗi xung đường mật MRCP. Trước và sau tiêm thuốc đối quang từ\\r\\n·    Gan kích thước bình thường, bờ đều. Nhu mô gan hạ phân thùy VII-VIII gan phải sát bao gan có khối bờ không đều, ranh giới rõ, kích thước 30x50mm: giảm tín hiệu trên xung T1W, tăng tín hiệu trên xung T2W , hạn chế khuếch tán trên xung DWI, sau tiêm ngấm thuốc dạng chấm nốt từ trung tâm vào ngoại vi, đầy thuốc ở thì muộn. Ngoài ra hạ phân thùy VIII có thêm 02 nốt đường kính 3-4mm và kích thước 16x17mm có tín hiệu và tính chất ngấm thuốc tương tự khối trên. Nhu mô gan còn lại không thấy bất thường.\\r\\n·    Tĩnh mạch cửa: không giãn, không có huyết khối.\\r\\n·    Đường mật trong và ngoài gan: không giãn, không thấy dày thành, không thấy sỏi hay cấu trúc choán chỗ.\\r\\n·    Túi mật: hình dạng và cấu trúc bình thườn, thành đều. Dịch mật trong và đồng nhất, không thấy sỏi.\\r\\n·    Tụy: hình dạng và cấu trúc bình thường, nhu mô đồng nhất, không có khối khu trú. Ống tụy không giãn, không có sỏi. Bờ tụy đều, xung quanh không có dịch.\\r\\n·    Lách: hình dạng và cấu trúc bình thường.\\r\\n·    Không có dịch tự do ổ bụng.\\r\\n·    Hai thận có hình thái, kích thước bình thường, nhu mô thận phải có nang 5mm, đài bể thận hai bên không giãn, không thấy cấu trúc choán chỗ.\\r\\n·    Niệu quản hai bên không giãn.\r\n",
+            //    ServiceSampleConclusion = "-Hình ảnh vài U máu (Hemagioma) gan phải. -Nang nhỏ thận phải."
+            //};
             LoadInfoOrder();
             LoadInfoConclusion();
         }
@@ -199,147 +191,134 @@ namespace PrintToPACSDemo.UI.Conclusion
             }
         }
 
-        private string InitQRCode()
-        {
-            string totpUrl = $"https://ris.anphat.ai.vn/shootingInformation/{ShareLinksID}";
-
-            QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(totpUrl, QRCodeGenerator.ECCLevel.Q);
-            QRCode qrCode = new QRCode(qrCodeData);
-            var qrCodeAsBitmap = qrCode.GetGraphic(2);
-            Image image = qrCodeAsBitmap;
-            image.Save(Path.Combine(saveStorePath, "QRCode.jpg"), System.Drawing.Imaging.ImageFormat.Jpeg);
-            return Path.Combine(saveStorePath, "QRCode.jpg");
-        }
-
         private int pageNumber;
         private void CreateWordDocument(string templatePath, string savePath, bool checkFileDoc)
         {
-            string savePathDoc = Path.Combine(saveStorePath, $"{conclusion.StudyInstanceUID.Trim()}NewDoc.docx"); ;
-            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
-            Microsoft.Office.Interop.Word.Document doc = null;
-            try
-            {
+            //string savePathDoc = Path.Combine(saveStorePath, $"{conclusion.StudyInstanceUID.Trim()}NewDoc.docx"); ;
+            //Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
+            //Microsoft.Office.Interop.Word.Document doc = null;
+            //try
+            //{
 
-                conclusion.DiagnoseInfo = richTextBoxDiagnoseInfo.Text;
-                conclusion.DiagnoseResult = richTextBoxDiagnoseResult.Text;
-                conclusion.DiagnoseNote = richTextBoxDiagnoseNote.Text;
+            //    conclusion.DiagnoseInfo = richTextBoxDiagnoseInfo.Text;
+            //    conclusion.DiagnoseResult = richTextBoxDiagnoseResult.Text;
+            //    conclusion.DiagnoseNote = richTextBoxDiagnoseNote.Text;
 
-                if (!File.Exists(templatePath))
-                {
-                    MessageBox.Show("Template file not found.");
-                    return;
-                }
+            //    if (!File.Exists(templatePath))
+            //    {
+            //        MessageBox.Show("Template file not found.");
+            //        return;
+            //    }
 
-                doc = wordApp.Documents.Open(templatePath);
+            //    doc = wordApp.Documents.Open(templatePath);
 
-                // Lưu tài liệu mẫu thành bản sao để thực hiện thay đổi
-                doc.SaveAs2(savePathDoc);
-                doc.Close(false);
+            //    // Lưu tài liệu mẫu thành bản sao để thực hiện thay đổi
+            //    doc.SaveAs2(savePathDoc);
+            //    doc.Close(false);
 
-                // Mở bản sao để thực hiện thay đổi
-                doc = wordApp.Documents.Open(savePathDoc);
+            //    // Mở bản sao để thực hiện thay đổi
+            //    doc = wordApp.Documents.Open(savePathDoc);
 
-                Microsoft.Office.Interop.Word.Range range = doc.Content;
-                ReplaceTextInRange(range, "{PatientName}", String.IsNullOrEmpty(conclusion.PatientName) ? "" : conclusion.PatientName);
-                ReplaceTextInRange(range, "{PatientUID}", String.IsNullOrEmpty(conclusion.PatientID) ? "" : conclusion.PatientID);
-                ReplaceTextInRange(range, "{PatientGender}", String.IsNullOrEmpty(conclusion.PatientGender) ? "" : conclusion.PatientGender);
-                ReplaceTextInRange(range, "{PatientDate}", CaculatorDate(conclusion.PatientDoB).ToString());
-                ReplaceTextInRange(range, "{StudyInstanceUID}", String.IsNullOrEmpty(conclusion.StudyInstanceUID) ? "" : conclusion.StudyInstanceUID);
-                ReplaceTextInRange(range, "{HealthIdentificationCode}", String.IsNullOrEmpty(conclusion.HealthIdentificationCode) ? "" : conclusion.HealthIdentificationCode);
-                ReplaceTextInRange(range, "{MedicalImagingCreateAt}", String.IsNullOrEmpty(conclusion.MedicalImagingCreateAt.ToString()) ? "" : conclusion.MedicalImagingCreateAt.ToString());
-                ReplaceTextInRange(range, "{MedicalImagingReportedAt}", String.IsNullOrEmpty(conclusion.MedicalImagingReportedAt.ToString()) ? "" : conclusion.MedicalImagingReportedAt.ToString());
-                ReplaceTextInRange(range, "{MedicalImagingCode}", String.IsNullOrEmpty(conclusion.MedicalImagingCode) ? "" : conclusion.MedicalImagingCode);
-                ReplaceTextInRange(range, "{OrderingPhysician}", String.IsNullOrEmpty(conclusion.OrderingPhysician) ? "" : conclusion.OrderingPhysician);
-                ReplaceTextInRange(range, "{Radiologist}", String.IsNullOrEmpty(conclusion.Radiologist) ? "" : conclusion.Radiologist);
-                ReplaceTextInRange(range, "{Technicians}", String.IsNullOrEmpty(conclusion.Technicians) ? "" : conclusion.Technicians);
-                ReplaceTextInRange(range, "{DeviveName}", String.IsNullOrEmpty(conclusion.DeviveName) ? "" : conclusion.DeviveName);
-                ReplaceTextInRange(range, "{ImagingServiceCode}", String.IsNullOrEmpty(imageService.HospitalServiceName) ? "" : imageService.HospitalServiceName);
-                ReplaceTextInRange(range, "{DiagnoseInfo}", String.IsNullOrEmpty(conclusion.DiagnoseInfo) ? "" : conclusion.DiagnoseInfo);
-                ReplaceTextInRange(range, "{DiagnoseResult}", String.IsNullOrEmpty(conclusion.DiagnoseResult) ? "" : conclusion.DiagnoseResult);
-                ReplaceTextInRange(range, "{DiagnoseNote}", String.IsNullOrEmpty(conclusion.DiagnoseNote) ? "" : conclusion.DiagnoseNote);
+            //    Microsoft.Office.Interop.Word.Range range = doc.Content;
+            //    ReplaceTextInRange(range, "{PatientName}", String.IsNullOrEmpty(conclusion.PatientName) ? "" : conclusion.PatientName);
+            //    ReplaceTextInRange(range, "{PatientUID}", String.IsNullOrEmpty(conclusion.PatientID) ? "" : conclusion.PatientID);
+            //    ReplaceTextInRange(range, "{PatientGender}", String.IsNullOrEmpty(conclusion.PatientGender) ? "" : conclusion.PatientGender);
+            //    ReplaceTextInRange(range, "{PatientDate}", CaculatorDate(conclusion.PatientDoB).ToString());
+            //    ReplaceTextInRange(range, "{StudyInstanceUID}", String.IsNullOrEmpty(conclusion.StudyInstanceUID) ? "" : conclusion.StudyInstanceUID);
+            //    ReplaceTextInRange(range, "{HealthIdentificationCode}", String.IsNullOrEmpty(conclusion.HealthIdentificationCode) ? "" : conclusion.HealthIdentificationCode);
+            //    ReplaceTextInRange(range, "{MedicalImagingCreateAt}", String.IsNullOrEmpty(conclusion.MedicalImagingCreateAt.ToString()) ? "" : conclusion.MedicalImagingCreateAt.ToString());
+            //    ReplaceTextInRange(range, "{MedicalImagingReportedAt}", String.IsNullOrEmpty(conclusion.MedicalImagingReportedAt.ToString()) ? "" : conclusion.MedicalImagingReportedAt.ToString());
+            //    ReplaceTextInRange(range, "{MedicalImagingCode}", String.IsNullOrEmpty(conclusion.MedicalImagingCode) ? "" : conclusion.MedicalImagingCode);
+            //    ReplaceTextInRange(range, "{OrderingPhysician}", String.IsNullOrEmpty(conclusion.OrderingPhysician) ? "" : conclusion.OrderingPhysician);
+            //    ReplaceTextInRange(range, "{Radiologist}", String.IsNullOrEmpty(conclusion.Radiologist) ? "" : conclusion.Radiologist);
+            //    ReplaceTextInRange(range, "{Technicians}", String.IsNullOrEmpty(conclusion.Technicians) ? "" : conclusion.Technicians);
+            //    ReplaceTextInRange(range, "{DeviveName}", String.IsNullOrEmpty(conclusion.DeviveName) ? "" : conclusion.DeviveName);
+            //    ReplaceTextInRange(range, "{ImagingServiceCode}", String.IsNullOrEmpty(imageService.HospitalServiceName) ? "" : imageService.HospitalServiceName);
+            //    ReplaceTextInRange(range, "{DiagnoseInfo}", String.IsNullOrEmpty(conclusion.DiagnoseInfo) ? "" : conclusion.DiagnoseInfo);
+            //    ReplaceTextInRange(range, "{DiagnoseResult}", String.IsNullOrEmpty(conclusion.DiagnoseResult) ? "" : conclusion.DiagnoseResult);
+            //    ReplaceTextInRange(range, "{DiagnoseNote}", String.IsNullOrEmpty(conclusion.DiagnoseNote) ? "" : conclusion.DiagnoseNote);
 
-                range.Collapse(Microsoft.Office.Interop.Word.WdCollapseDirection.wdCollapseEnd);
-
-
-                int totalPageCount = doc.ComputeStatistics(Microsoft.Office.Interop.Word.WdStatistic.wdStatisticPages);
-                pageNumber = totalPageCount - 1;
-                Microsoft.Office.Interop.Word.Range pageRange = doc.GoTo(
-                    What: Microsoft.Office.Interop.Word.WdGoToItem.wdGoToPage,
-                    Which: Microsoft.Office.Interop.Word.WdGoToDirection.wdGoToAbsolute,
-                    Count: pageNumber
-                );
-                pageRange.Collapse(Microsoft.Office.Interop.Word.WdCollapseDirection.wdCollapseStart);
-
-                // Chèn hình ảnh vào trang trước trang cuối
-                string imagePath = InitQRCode();
-                Microsoft.Office.Interop.Word.Shape picture = doc.Shapes.AddPicture(imagePath, LinkToFile: false, SaveWithDocument: true, Anchor: pageRange);
-                picture.Width = 45;
-                picture.Height = 45;
-                picture.Left = 5;
-                if (pageNumber == 1)
-                {
-                    picture.Top = 665;
-                }
-                else
-                {
-                    picture.Top = 750;
-                }
+            //    range.Collapse(Microsoft.Office.Interop.Word.WdCollapseDirection.wdCollapseEnd);
 
 
+            //    int totalPageCount = doc.ComputeStatistics(Microsoft.Office.Interop.Word.WdStatistic.wdStatisticPages);
+            //    pageNumber = totalPageCount - 1;
+            //    Microsoft.Office.Interop.Word.Range pageRange = doc.GoTo(
+            //        What: Microsoft.Office.Interop.Word.WdGoToItem.wdGoToPage,
+            //        Which: Microsoft.Office.Interop.Word.WdGoToDirection.wdGoToAbsolute,
+            //        Count: pageNumber
+            //    );
+            //    pageRange.Collapse(Microsoft.Office.Interop.Word.WdCollapseDirection.wdCollapseStart);
 
-                // Thêm hình ảnh vào trang cuối
-                Microsoft.Office.Interop.Word.PageSetup pageSetup = doc.PageSetup;
-                Microsoft.Office.Interop.Word.Range lastPageRange = range.GoTo(
-                    What: Microsoft.Office.Interop.Word.WdGoToItem.wdGoToPage,
-                    Which: Microsoft.Office.Interop.Word.WdGoToDirection.wdGoToLast
-                );
+            //    // Chèn hình ảnh vào trang trước trang cuối
+            //    string imagePath = InitQRCode();
+            //    Microsoft.Office.Interop.Word.Shape picture = doc.Shapes.AddPicture(imagePath, LinkToFile: false, SaveWithDocument: true, Anchor: pageRange);
+            //    picture.Width = 45;
+            //    picture.Height = 45;
+            //    picture.Left = 5;
+            //    if (pageNumber == 1)
+            //    {
+            //        picture.Top = 665;
+            //    }
+            //    else
+            //    {
+            //        picture.Top = 750;
+            //    }
 
-                float width;
-                if (conclusionImages.Count < 3)
-                {
-                    width = pageSetup.PageHeight / 2 - 50;
-                }
-                else
-                {
-                    width = pageSetup.PageWidth / 2 - 30;
-                }
 
-                if (conclusionImages != null && conclusionImages.Count > 0)
-                {
-                    foreach (string conclusionImage in conclusionImages)
-                    {
-                        Microsoft.Office.Interop.Word.InlineShape inlineShape = lastPageRange.InlineShapes.AddPicture(conclusionImage, LinkToFile: false, SaveWithDocument: true);
-                        inlineShape.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
-                        inlineShape.Width = width;
-                    }
-                }
 
-                // Lưu tài liệu mới
-                if (checkFileDoc)
-                {
-                    doc.SaveAs2(savePath);
-                }
-                else
-                {
-                    doc.SaveAs2(savePath, Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatPDF);
-                }
+            //    // Thêm hình ảnh vào trang cuối
+            //    Microsoft.Office.Interop.Word.PageSetup pageSetup = doc.PageSetup;
+            //    Microsoft.Office.Interop.Word.Range lastPageRange = range.GoTo(
+            //        What: Microsoft.Office.Interop.Word.WdGoToItem.wdGoToPage,
+            //        Which: Microsoft.Office.Interop.Word.WdGoToDirection.wdGoToLast
+            //    );
 
-            }
-            catch (Exception ex)
-            {
-                Messager.ShowError((IWin32Window)this, ex);
-            }
-            finally
-            {
-                // Đóng tài liệu và ứng dụng
-                doc?.Close(false);
-                wordApp.Quit();
-                if (File.Exists(savePathDoc))
-                {
-                    File.Delete(savePathDoc);
-                }
-            }
+            //    float width;
+            //    if (conclusionImages.Count < 3)
+            //    {
+            //        width = pageSetup.PageHeight / 2 - 50;
+            //    }
+            //    else
+            //    {
+            //        width = pageSetup.PageWidth / 2 - 30;
+            //    }
+
+            //    if (conclusionImages != null && conclusionImages.Count > 0)
+            //    {
+            //        foreach (string conclusionImage in conclusionImages)
+            //        {
+            //            Microsoft.Office.Interop.Word.InlineShape inlineShape = lastPageRange.InlineShapes.AddPicture(conclusionImage, LinkToFile: false, SaveWithDocument: true);
+            //            inlineShape.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
+            //            inlineShape.Width = width;
+            //        }
+            //    }
+
+            //    // Lưu tài liệu mới
+            //    if (checkFileDoc)
+            //    {
+            //        doc.SaveAs2(savePath);
+            //    }
+            //    else
+            //    {
+            //        doc.SaveAs2(savePath, Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatPDF);
+            //    }
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    Messager.ShowError((IWin32Window)this, ex);
+            //}
+            //finally
+            //{
+            //    // Đóng tài liệu và ứng dụng
+            //    doc?.Close(false);
+            //    wordApp.Quit();
+            //    if (File.Exists(savePathDoc))
+            //    {
+            //        File.Delete(savePathDoc);
+            //    }
+            //}
         }
 
 
@@ -357,12 +336,12 @@ namespace PrintToPACSDemo.UI.Conclusion
                 writer.WriteStartDocument();
                 writer.WriteStartElement("Conclusion");
 
-                var properties = conclusion.GetType().GetProperties();
-                foreach (PropertyInfo propertyInfo in properties)
-                {
-                    object value = propertyInfo.GetValue(conclusion);
-                    writer.WriteElementString(propertyInfo.Name, value?.ToString() ?? string.Empty);
-                }
+                //var properties = conclusion.GetType().GetProperties();
+                //foreach (PropertyInfo propertyInfo in properties)
+                //{
+                //    object value = propertyInfo.GetValue(conclusion);
+                //    writer.WriteElementString(propertyInfo.Name, value?.ToString() ?? string.Empty);
+                //}
 
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
@@ -374,7 +353,7 @@ namespace PrintToPACSDemo.UI.Conclusion
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Word Documents|*.docx|XML Files|*.xml|PDF Files|*.pdf";
             saveFileDialog.Title = "Save as Word Document or XML File";
-            saveFileDialog.FileName = $"Phiếu kết luận bệnh nhân {conclusion.PatientName}";
+            //saveFileDialog.FileName = $"Phiếu kết luận bệnh nhân {conclusion.PatientName}";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -423,44 +402,44 @@ namespace PrintToPACSDemo.UI.Conclusion
         {
             try
             {
-                ShareLinks shareLinks = new ShareLinks
-                {
-                    StudyUid = conclusion.StudyInstanceUID.Trim(),
-                    Role = "patient",
-                    Expiration = DateTime.Now,
-                    PatientID = conclusion.PatientID.Trim(),
-                    PatientName = conclusion.PatientName.Trim(),
-                    PatientGender = conclusion.PatientGender.Trim(),
-                    PatientDoB = conclusion.PatientDoB,
-                    HealthIdentificationCode = conclusion.HealthIdentificationCode.Trim(),
-                    MedicalImagingCreateAt = conclusion.MedicalImagingCreateAt,
-                    MedicalImagingReportedAt = conclusion.MedicalImagingReportedAt,
-                    MedicalImagingCode = conclusion.MedicalImagingCode.Trim(),
-                    OrderingPhysician = conclusion.OrderingPhysician.Trim(),
-                    Radiologist = conclusion.Radiologist.Trim(),
-                    Technicians = conclusion.Technicians.Trim(),
-                    DeviveName = conclusion.DeviveName.Trim(),
-                    DiagnoseInfo = conclusion.DiagnoseInfo.Trim(),
-                    DiagnoseResult = conclusion.DiagnoseResult.Trim(),
-                    DiagnoseNote = conclusion.DiagnoseNote.Trim(),
-                    ImagingServiceName = labelImagingService.Text.ToString().Trim(),
-                    CreateAt = (DateTime)conclusion.CreateAt,
-                    Images = new List<string> { labelImagingService.Text.ToString() }
-                };
+                //ShareLinks shareLinks = new ShareLinks
+                //{
+                //    StudyUid = conclusion.StudyInstanceUID.Trim(),
+                //    Role = "patient",
+                //    Expiration = DateTime.Now,
+                //    PatientID = conclusion.PatientID.Trim(),
+                //    PatientName = conclusion.PatientName.Trim(),
+                //    PatientGender = conclusion.PatientGender.Trim(),
+                //    PatientDoB = conclusion.PatientDoB,
+                //    HealthIdentificationCode = conclusion.HealthIdentificationCode.Trim(),
+                //    MedicalImagingCreateAt = conclusion.MedicalImagingCreateAt,
+                //    MedicalImagingReportedAt = conclusion.MedicalImagingReportedAt,
+                //    MedicalImagingCode = conclusion.MedicalImagingCode.Trim(),
+                //    OrderingPhysician = conclusion.OrderingPhysician.Trim(),
+                //    Radiologist = conclusion.Radiologist.Trim(),
+                //    Technicians = conclusion.Technicians.Trim(),
+                //    DeviveName = conclusion.DeviveName.Trim(),
+                //    DiagnoseInfo = conclusion.DiagnoseInfo.Trim(),
+                //    DiagnoseResult = conclusion.DiagnoseResult.Trim(),
+                //    DiagnoseNote = conclusion.DiagnoseNote.Trim(),
+                //    ImagingServiceName = labelImagingService.Text.ToString().Trim(),
+                //    CreateAt = (DateTime)conclusion.CreateAt,
+                //    Images = new List<string> { labelImagingService.Text.ToString() }
+                //};
 
-                var x = await SupabaseConnection.Client.From<ShareLinks>().Insert(shareLinks);
+                //var x = await SupabaseConnection.Client.From<ShareLinks>().Insert(shareLinks);
 
-                JArray jsonArray = JArray.Parse(x.Content);
-                JObject jsonObject = (JObject)jsonArray[0];
-                ShareLinksID = jsonObject["id"].ToString();
+                //JArray jsonArray = JArray.Parse(x.Content);
+                //JObject jsonObject = (JObject)jsonArray[0];
+                //ShareLinksID = jsonObject["id"].ToString();
 
-                foreach (string item in conclusionImages)
-                {
-                    string path = $"{conclusion.StudyInstanceUID.Trim()}/{Guid.NewGuid().ToString()}.jpg";
-                    await SupabaseConnection.Client.Storage
-                        .From("conclusion")
-                        .Upload(item, path);
-                }
+                //foreach (string item in conclusionImages)
+                //{
+                //    string path = $"{conclusion.StudyInstanceUID.Trim()}/{Guid.NewGuid().ToString()}.jpg";
+                //    await SupabaseConnection.Client.Storage
+                //        .From("conclusion")
+                //        .Upload(item, path);
+                //}
                 return true;
             }
             catch (Exception ex)
@@ -618,88 +597,88 @@ namespace PrintToPACSDemo.UI.Conclusion
         {
             foreach(string image in conclusionImages)
             {
-                try
-                {
-                    byte[] bytes = File.ReadAllBytes(image);
-                    string file = Convert.ToBase64String(bytes);
-                    conclusion.Images.Add(file);
-                }catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                //try
+                //{
+                //    byte[] bytes = File.ReadAllBytes(image);
+                //    string file = Convert.ToBase64String(bytes);
+                //    conclusion.Images.Add(file);
+                //}catch (Exception ex)
+                //{
+                //    MessageBox.Show(ex.Message);
+                //}
 
             }
-            XmlSerializer serializer = new XmlSerializer(typeof(PrintToPACSDemo.AnPhatData.Conclusion));
+            //XmlSerializer serializer = new XmlSerializer(typeof(PrintToPACSDemo.AnPhatData.Conclusion));
 
-            using (FileStream fs = new FileStream(pathCreateFileXML, FileMode.Create))
-            {
-                serializer.Serialize(fs, conclusion);
-            }
+            //using (FileStream fs = new FileStream(pathCreateFileXML, FileMode.Create))
+            //{
+            //    serializer.Serialize(fs, conclusion);
+            //}
         }
 
         private async void SaveConclusionAsync()
         {
             try
             {
-                if (Program.IsAuthencation)
-                {
-                    EnableItems(false, "Đang tạo kết luận \nVui lòng đợi...", "Cancel");
-                    //Gán giá trị vào conclusion
-                    string pathCreateFilePdf = Path.Combine(saveStorePath, $"{conclusion.StudyInstanceUID.Trim()}.pdf");
-                    string pathCreateFileXML = Path.Combine(saveStorePath, $"{conclusion.StudyInstanceUID.Trim()}.xml");
-                    conclusion.DiagnoseInfo = richTextBoxDiagnoseInfo.Text;
-                    conclusion.DiagnoseResult = richTextBoxDiagnoseResult.Text;
-                    conclusion.DiagnoseNote = richTextBoxDiagnoseNote.Text;
-                    conclusion.CreateAt = DateTime.Now;
+                //if (Program.IsAuthencation)
+                //{
+                //    EnableItems(false, "Đang tạo kết luận \nVui lòng đợi...", "Cancel");
+                //    //Gán giá trị vào conclusion
+                //    string pathCreateFilePdf = Path.Combine(saveStorePath, $"{conclusion.StudyInstanceUID.Trim()}.pdf");
+                //    string pathCreateFileXML = Path.Combine(saveStorePath, $"{conclusion.StudyInstanceUID.Trim()}.xml");
+                //    conclusion.DiagnoseInfo = richTextBoxDiagnoseInfo.Text;
+                //    conclusion.DiagnoseResult = richTextBoxDiagnoseResult.Text;
+                //    conclusion.DiagnoseNote = richTextBoxDiagnoseNote.Text;
+                //    conclusion.CreateAt = DateTime.Now;
 
-                    if (!await UpdateShareLinkSupabaseAsync())
-                    {
-                        return;
-                    }
-                    conclusion.Id = ShareLinksID;
+                //    if (!await UpdateShareLinkSupabaseAsync())
+                //    {
+                //        return;
+                //    }
+                //    conclusion.Id = ShareLinksID;
 
-                    CreateWordDocument(templateDocxPath, pathCreateFilePdf, false);
-                    CreateXMLDocument(pathCreateFileXML);
+                //    CreateWordDocument(templateDocxPath, pathCreateFilePdf, false);
+                //    CreateXMLDocument(pathCreateFileXML);
 
-                    try
-                    {
-                        dynamic data = new ExpandoObject();
-                        data.MIMEType = "application/pdf";
-                        data.Username = PacsSettings.Staff.Username.Trim();
-                        data.IsCheckSetting = false;
-                        data.DepartmentCode = PacsSettings.Staff.StaffDepartment.Trim();
-                        await ClientAPI.DigitalSigninFile(pathCreateFilePdf, data, saveStorePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        Messager.ShowError((IWin32Window)this, ex);
-                    }
+                //    try
+                //    {
+                //        dynamic data = new ExpandoObject();
+                //        data.MIMEType = "application/pdf";
+                //        data.Username = PacsSettings.Staff.Username.Trim();
+                //        data.IsCheckSetting = false;
+                //        data.DepartmentCode = PacsSettings.Staff.StaffDepartment.Trim();
+                //        await ClientAPI.DigitalSigninFile(pathCreateFilePdf, data, saveStorePath);
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        Messager.ShowError((IWin32Window)this, ex);
+                //    }
 
-                    try
-                    {
-                        dynamic data = new ExpandoObject();
-                        data.MIMEType = "application/xml";
-                        data.Username = PacsSettings.Staff.Username;
-                        ClientAPI.DigitalSigninFile(pathCreateFileXML, data, saveStorePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        Messager.ShowError((IWin32Window)this, ex);
-                    }
+                //    try
+                //    {
+                //        dynamic data = new ExpandoObject();
+                //        data.MIMEType = "application/xml";
+                //        data.Username = PacsSettings.Staff.Username;
+                //        ClientAPI.DigitalSigninFile(pathCreateFileXML, data, saveStorePath);
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        Messager.ShowError((IWin32Window)this, ex);
+                //    }
 
-                    //DialogResult result = MessageBox.Show("Tạo kết luận thành công !", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //    //DialogResult result = MessageBox.Show("Tạo kết luận thành công !", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    //if (result == DialogResult.OK)
-                    //{
-                    //    this.Close();
-                    //}
-                }
-                else
-                {
-                    EnableItems(true, "", "");
-                    QRCodeAuthentication qRCodeAuthentication = new QRCodeAuthentication(PacsSettings.Staff);
-                    qRCodeAuthentication.Show(this);
-                }
+                //    //if (result == DialogResult.OK)
+                //    //{
+                //    //    this.Close();
+                //    //}
+                //}
+                //else
+                //{
+                //    EnableItems(true, "", "");
+                //    QRCodeAuthentication qRCodeAuthentication = new QRCodeAuthentication(PacsSettings.Staff);
+                //    qRCodeAuthentication.Show(this);
+                //}
             }
             finally
             {
@@ -731,7 +710,7 @@ namespace PrintToPACSDemo.UI.Conclusion
 
         private void ConclusionForm_Load(object sender, EventArgs e)
         {
-            saveStorePath = $"D:\\DICOM Store\\L23_WS_SERVER64\\Images\\{conclusion.PatientID.Trim()}\\Image Conclusion";
+            //saveStorePath = $"D:\\DICOM Store\\L23_WS_SERVER64\\Images\\{conclusion.PatientID.Trim()}\\Image Conclusion";
             LoadConclusionLocal();
         } 
     }

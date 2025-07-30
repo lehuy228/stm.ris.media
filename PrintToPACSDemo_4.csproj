@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PrintToPACSDemo</RootNamespace>
     <AssemblyName>CSPrintToPACSDemo</AssemblyName>
-    <ApplicationIcon>..\..\..\Resources\Med.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Med.ico</ApplicationIcon>
     <Win32Resource>
     </Win32Resource>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -18,13 +18,27 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <LeadConfigPath>..\..\..\..\Bin\DotNet4\Win32\</LeadConfigPath>
-    <OutputPath>$(LeadConfigPath)</OutputPath>
+    <OutputPath>bin/x86/Debug</OutputPath>
     <DefineConstants>TRACE;DEBUG;LTV19_CONFIG;FOR_DOTNET4;LEADTOOLS_V175_OR_LATER;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,8 +48,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <LeadConfigPath>..\..\..\..\Bin\DotNet4\Win32\</LeadConfigPath>
-    <OutputPath>$(LeadConfigPath)</OutputPath>
+    <OutputPath>bin/x86/Release</OutputPath>
     <DefineConstants>TRACE;LTV19_CONFIG;FOR_DOTNET4;LEADTOOLS_V175_OR_LATER;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -46,8 +59,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <LeadConfigPath>..\..\..\..\Bin\DotNet4\x64\</LeadConfigPath>
-    <OutputPath>$(LeadConfigPath)</OutputPath>
+    <OutputPath>bin/x64/Debug</OutputPath>
     <DefineConstants>TRACE;DEBUG;LTV19_CONFIG;FOR_DOTNET4;LEADTOOLS_V175_OR_LATER;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER;FOR_WIN64</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -57,14 +69,16 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <LeadConfigPath>..\..\..\..\Bin\DotNet4\x64\</LeadConfigPath>
-    <OutputPath>$(LeadConfigPath)</OutputPath>
+    <OutputPath>bin/x64/Release</OutputPath>
     <DefineConstants>TRACE;LTV19_CONFIG;FOR_DOTNET4;LEADTOOLS_V175_OR_LATER;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER;FOR_WIN64</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="DevExpress.BonusSkins.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -82,101 +96,105 @@
     <Reference Include="DevExpress.XtraLayout.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraPrinting.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraRichEdit.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraVerticalGrid.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="Leadtools">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.dll</HintPath>
+      <HintPath>Libraries\Leadtools.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.Controls.WinForms, Version=19.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>obj\x64\Debug\Leadtools.Controls.WinForms.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Controls.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Drawing">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.Drawing.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Drawing.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.Codecs">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.Codecs.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Codecs.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.Dicom">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.Dicom.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Dicom.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.Dicom.Common">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.Dicom.Common.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Dicom.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.Dicom.Scu">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.Dicom.Scu.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Dicom.Scu.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.Drawing">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.Drawing.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Drawing.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.Forms.DocumentWriters">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.Forms.DocumentWriters.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Forms.DocumentWriters.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.Forms.Processing">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.Forms.Processing.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Forms.Processing.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.ImageProcessing.Effects">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.ImageProcessing.Effects.dll</HintPath>
+      <HintPath>Libraries\Leadtools.ImageProcessing.Effects.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.Medical.DataAccessLayer, Version=19.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>obj\x64\Debug\Leadtools.Medical.DataAccessLayer.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Medical.DataAccessLayer.dll</HintPath>
     </Reference>
-    <Reference Include="Leadtools.Medical.UserManagementDataAccessLayer, Version=19.0.4.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Leadtools.Medical.UserManagementDataAccessLayer, Version=19.0.4.0, Culture=neutral, PublicKeyToken=null">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\Leadtools.Medical.UserManagementDataAccessLayer.dll</HintPath>
+    </Reference>
     <Reference Include="Leadtools.Medical.Winforms, Version=19.0.4.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>obj\x64\Debug\Leadtools.Medical.Winforms.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Medical.Winforms.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Medical.Worklist.DataAccessLayer, Version=19.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>obj\x64\Debug\Leadtools.Medical.Worklist.DataAccessLayer.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Medical.Worklist.DataAccessLayer.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Printer">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.Printer.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Printer.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.ScreenCapture">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.ScreenCapture.dll</HintPath>
+      <HintPath>Libraries\Leadtools.ScreenCapture.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.Twain">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.Twain.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Twain.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.Wia">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.Wia.dll</HintPath>
+      <HintPath>Libraries\Leadtools.Wia.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.WinForms">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.WinForms.dll</HintPath>
+      <HintPath>Libraries\Leadtools.WinForms.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Leadtools.WinForms.CommonDialogs.File">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LeadConfigPath)Leadtools.WinForms.CommonDialogs.File.dll</HintPath>
+      <HintPath>Libraries\Leadtools.WinForms.CommonDialogs.File.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -215,14 +233,8 @@
       <HintPath>packages\MicrosoftOfficeCore.15.0.0\lib\net35\Office.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Otp.NET, Version=1.4.0.0, Culture=neutral, PublicKeyToken=38a48df817e173a6, processorArchitecture=MSIL">
-      <HintPath>packages\Otp.NET.1.4.0\lib\net461\Otp.NET.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="QRCoder, Version=1.6.0.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
-      <HintPath>packages\QRCoder.1.6.0\lib\net40\QRCoder.dll</HintPath>
-    </Reference>
     <Reference Include="Sentry, Version=4.12.1.0, Culture=neutral, PublicKeyToken=fba2ec45388e2af0, processorArchitecture=MSIL">
       <HintPath>packages\Sentry.4.12.1\lib\net462\Sentry.dll</HintPath>
     </Reference>
@@ -235,41 +247,11 @@
     <Reference Include="Serilog.Sinks.File, Version=6.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>packages\Serilog.Sinks.File.6.0.0\lib\net471\Serilog.Sinks.File.dll</HintPath>
     </Reference>
-    <Reference Include="SignLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=ffdaa12fb4cf4a55, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>obj\x64\Debug\SignLib.dll</HintPath>
-    </Reference>
-    <Reference Include="SkiaSharp, Version=2.88.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>packages\SkiaSharp.2.88.8\lib\net462\SkiaSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="SkiaSharp.Views.Desktop.Common, Version=2.88.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>packages\SkiaSharp.Views.Desktop.Common.2.88.8\lib\net462\SkiaSharp.Views.Desktop.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Supabase, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Supabase.1.0.5\lib\netstandard2.0\Supabase.dll</HintPath>
-    </Reference>
-    <Reference Include="Supabase.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Supabase.Core.1.0.0\lib\netstandard2.0\Supabase.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Supabase.Functions, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Supabase.Functions.2.0.0\lib\netstandard2.0\Supabase.Functions.dll</HintPath>
-    </Reference>
-    <Reference Include="Supabase.Gotrue, Version=5.0.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Supabase.Gotrue.5.0.6\lib\netstandard2.0\Supabase.Gotrue.dll</HintPath>
-    </Reference>
-    <Reference Include="Supabase.Postgrest, Version=4.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Supabase.Postgrest.4.0.3\lib\netstandard2.0\Supabase.Postgrest.dll</HintPath>
-    </Reference>
-    <Reference Include="Supabase.Realtime, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Supabase.Realtime.7.0.1\lib\netstandard2.0\Supabase.Realtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Supabase.Storage, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Supabase.Storage.2.0.2\lib\netstandard2.0\Supabase.Storage.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Collections.Immutable.5.0.0\lib\net461\System.Collections.Immutable.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -370,8 +352,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnPhatData\ClientAPI.cs" />
-    <Compile Include="AnPhatData\Staff.cs" />
     <Compile Include="Common\Demos.cs" />
     <Compile Include="Common\DialogUtilities.cs" />
     <Compile Include="Common\Globalization.cs" />
@@ -409,6 +389,12 @@
     <Compile Include="Scanning\Twain\Template.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SplashAuthForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SplashAuthForm.Designer.cs">
+      <DependentUpon>SplashAuthForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\CameraUI\CameraControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -427,8 +413,6 @@
     <Compile Include="UI\CameraUI\SettingsCamera.Designer.cs">
       <DependentUpon>SettingsCamera.cs</DependentUpon>
     </Compile>
-    <Compile Include="AnPhatData\Certificate.cs" />
-    <Compile Include="AnPhatData\Conclusion.cs" />
     <Compile Include="UI\Conclusion\ConclusionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -441,9 +425,6 @@
     <Compile Include="UI\Conclusion\ImageControl.Designer.cs">
       <DependentUpon>ImageControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="AnPhatData\ImageServiceLocal.cs" />
-    <Compile Include="AnPhatData\ShareLinks.cs" />
-    <Compile Include="UI\Conclusion\Supabase\SupabaseConnection.cs" />
     <Compile Include="UI\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -534,6 +515,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="SplashAuthForm.resx">
+      <DependentUpon>SplashAuthForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\CameraUI\CameraControl.resx">
       <DependentUpon>CameraControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -574,7 +558,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Arial.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -704,6 +687,28 @@
   <ItemGroup>
     <None Include="Resources\information.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Anphat\Tài liệu ứng dụng test\MediaToPacs.Entitys\MediaToPacs.Entitys.csproj">
+      <Project>{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}</Project>
+      <Name>MediaToPacs.Entitys</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Anphat\Tài liệu ứng dụng test\STMMedicalConnection.AuthSDK\STMMedicalConnection.AuthSDK.csproj">
+      <Project>{a4bddd93-257a-4a0a-832e-223f30b0b9d3}</Project>
+      <Name>STMMedicalConnection.AuthSDK</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -724,7 +729,13 @@
     <Error Condition="!Exists('packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets'))" />
     <Error Condition="!Exists('packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets'))" />
     <Error Condition="!Exists('packages\Sentry.4.12.1\build\Sentry.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Sentry.4.12.1\build\Sentry.targets'))" />
+    <Error Condition="!Exists('packages\VisioForge.DotNet.Core.Redist.Shared.x64.2025.7.1\build\VisioForge.DotNet.Core.Redist.Shared.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\VisioForge.DotNet.Core.Redist.Shared.x64.2025.7.1\build\VisioForge.DotNet.Core.Redist.Shared.x64.targets'))" />
+    <Error Condition="!Exists('packages\VisioForge.DotNet.Core.Redist.Base.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.Base.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\VisioForge.DotNet.Core.Redist.Base.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.Base.x64.targets'))" />
+    <Error Condition="!Exists('packages\VisioForge.DotNet.Core.Redist.VideoCapture.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.VideoCapture.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\VisioForge.DotNet.Core.Redist.VideoCapture.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.VideoCapture.x64.targets'))" />
   </Target>
   <Import Project="packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets" Condition="Exists('packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets')" />
   <Import Project="packages\Sentry.4.12.1\build\Sentry.targets" Condition="Exists('packages\Sentry.4.12.1\build\Sentry.targets')" />
+  <Import Project="packages\VisioForge.DotNet.Core.Redist.Shared.x64.2025.7.1\build\VisioForge.DotNet.Core.Redist.Shared.x64.targets" Condition="Exists('packages\VisioForge.DotNet.Core.Redist.Shared.x64.2025.7.1\build\VisioForge.DotNet.Core.Redist.Shared.x64.targets')" />
+  <Import Project="packages\VisioForge.DotNet.Core.Redist.Base.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.Base.x64.targets" Condition="Exists('packages\VisioForge.DotNet.Core.Redist.Base.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.Base.x64.targets')" />
+  <Import Project="packages\VisioForge.DotNet.Core.Redist.VideoCapture.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.VideoCapture.x64.targets" Condition="Exists('packages\VisioForge.DotNet.Core.Redist.VideoCapture.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.VideoCapture.x64.targets')" />
 </Project>

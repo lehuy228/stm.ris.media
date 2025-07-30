@@ -1,6 +1,4 @@
 ﻿using Leadtools.Dicom.Common.DataTypes;
-using PrintToPACSDemo.AnPhat.Data;
-using PrintToPACSDemo.AnPhatData;
 using PrintToPACSDemo.UI.Conclusion;
 using System;
 using System.Security.Principal;
@@ -13,7 +11,6 @@ namespace PrintToPACSDemo.UI.Login
     {
         private ErrorProvider errorProvider = new ErrorProvider();
         public event EventHandler ChangePasswordClick_Action;
-        private Staff _staff;
 
         public LoginControl()
         {
@@ -53,32 +50,6 @@ namespace PrintToPACSDemo.UI.Login
 
         private async Task LoginAsync()
         {
-            if (!CheckUserAndPassword())
-            {
-                return;
-            }
-
-            var loginData = new
-            {
-                username = _txtUsername.Text.Trim(),
-                password = _txtPassword.Text.Trim()
-            };
-
-            _staff = await ClientAPI.Authencator<Staff>(loginData);
-
-            if (_staff == null || string.IsNullOrEmpty(_staff.Username))
-            {
-                MessageBox.Show("Đăng nhập không thành công!");
-            }
-            else
-            {
-                if (!_staff.IsAdmin)
-                {
-                    QRCodeAuthentication qRCodeAuthentication = new QRCodeAuthentication(_staff);
-                    qRCodeAuthentication.FormClosed += QRCodeAuthentication_FormClosed;
-                    qRCodeAuthentication.Show(this);
-                }
-            }
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)

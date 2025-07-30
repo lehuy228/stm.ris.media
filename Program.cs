@@ -4,8 +4,9 @@ using PrintToPACS.Utilities;
 using PrintToPACSDemo.UI;
 using PrintToPACSDemo.UI.Login;
 using System;
+using System.Threading.Tasks;
 using System.Web.UI.WebControls;
-
+using System.Windows;
 
 namespace PrintToPACSDemo
 {
@@ -19,7 +20,7 @@ namespace PrintToPACSDemo
         /// アプリケーションのメイン エントリ ポイントです。
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             try
             {
@@ -35,8 +36,8 @@ namespace PrintToPACSDemo
          Support.Unlock(false);
 #endif
 
-            if (Support.KernelExpired)
-                return;
+            //if (Support.KernelExpired)
+            //    return;
 
             if (args.Length > 0)
             {
@@ -51,7 +52,7 @@ namespace PrintToPACSDemo
             Utils.DicomNetStartup();
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-            System.Windows.Forms.Application.Run(new WorkListTable());
+            System.Windows.Forms.Application.Run(new SplashAuthForm());
         }
         static bool ReadCommandLine(string[] args)
         {

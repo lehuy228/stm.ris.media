@@ -1,19 +1,14 @@
 ﻿using Leadtools.DicomDemos;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VisioForge.Core.Helpers;
 using VisioForge.Core.Types;
-using VisioForge.Core.Types.Output;
 using VisioForge.Core.Types.VideoCapture;
-using VisioForge.Core.Types.VideoEffects;
-using VisioForge.Core.Types.X.Output;
 using VisioForge.Core.UI.WinForms.Dialogs.OutputFormats;
 using VisioForge.Core.VideoCapture;
 using MP4Output = VisioForge.Core.Types.Output.MP4Output;
@@ -59,7 +54,7 @@ namespace PrintToPACSDemo.UI.CameraUI
             InitializeComponent();
             VideoCapture1 = new VideoCaptureCore(videoView1);
 
-            //VideoCapture1.SetLicenseKey("1E06-0EBA-44A5-7BFC-C5E1-0F56", "DownloadDevTools.com", "support@downloaddevtools.com");
+            VideoCapture1.SetLicenseKey("1E17-F8AA-BB54-D7A1-BD5F-446D", "STM TECHNOLOGY AND COMMERCIAL JOINT STOCK COMPANY", "linh@anphats.com");
             LinkVideos = new List<string>();
             this.VideoInputDevice = VideoInputDevice;
 
@@ -105,7 +100,8 @@ namespace PrintToPACSDemo.UI.CameraUI
 
         private string CreateFilePath(bool IsCheckCapture)
         {
-            string commonFolder = DicomDemoSettingsManager.GetFolderPath();
+            //string commonFolder = DicomDemoSettingsManager.GetFolderPath();
+            string commonFolder = AppDomain.CurrentDomain.BaseDirectory;
             string folderPath = Path.Combine(commonFolder, "BenhNhan");
             string filepath = Path.Combine(folderPath, $"{Guid.NewGuid()}.");
             if (IsCheckCapture)

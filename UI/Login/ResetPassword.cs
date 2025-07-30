@@ -1,6 +1,4 @@
 ﻿
-using PrintToPACSDemo.AnPhat.Data;
-using PrintToPACSDemo.AnPhatData;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -10,7 +8,6 @@ namespace PrintToPACSDemo.UI.Login
     public partial class ResetPassword : DevExpress.XtraEditors.XtraUserControl
     {
         private ErrorProvider errorProvider = new ErrorProvider();
-        private Staff _staff;
         public EventHandler LoginClick_Action;
         public ResetPassword()
         {
@@ -41,14 +38,6 @@ namespace PrintToPACSDemo.UI.Login
                 username = _txtUsername.Text.Trim(),
                 password = _txtPasswordCurrent.Text.Trim()
             };
-
-            _staff = await ClientAPI.Authencator<Staff>(loginData);
-            if (_staff == null || _staff.Username == null)
-            {
-                errorProvider.SetError(_txtPasswordCurrent, "Sai mật khẩu!");
-                _txtPasswordCurrent.Focus();
-                return false;
-            }
             return true;
         }
 
@@ -118,10 +107,6 @@ namespace PrintToPACSDemo.UI.Login
 
         private void SetChangePassword()
         {
-            _staff.Password = _txtNewPassword.Text.Trim();
-            _staff.CreateUser(_staff);
-            ClientAPI.Update<Staff>(_staff.ID, _staff);
-
             MessageBox.Show("Cập nhật mật khẩu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 

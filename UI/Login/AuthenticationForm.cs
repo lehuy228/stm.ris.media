@@ -1,6 +1,4 @@
-﻿using PrintToPACSDemo.AnPhat.Data;
-using PrintToPACSDemo.AnPhatData;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 

@@ -1,4 +1,6 @@
-﻿namespace PrintToPACSDemo.UI.CameraUI
+﻿using VisioForge.Core.VideoCapture;
+
+namespace PrintToPACSDemo.UI.CameraUI
 {
     partial class CameraControl
     {
