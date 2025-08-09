@@ -30,33 +30,25 @@ namespace PrintToPACSDemo.UI.CameraUI
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel3 = new System.Windows.Forms.Panel();
             this.labelTime = new System.Windows.Forms.Label();
-            this.videoView1 = new VisioForge.Core.UI.WinForms.VideoView();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.videoView1 = new VisioForge.Core.UI.WinForms.VideoView();
+            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.Black;
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(912, 40);
-            this.panel3.TabIndex = 2;
             // 
             // labelTime
             // 
             this.labelTime.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.labelTime.AutoSize = true;
             this.labelTime.BackColor = System.Drawing.Color.Transparent;
-            this.labelTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTime.ForeColor = System.Drawing.Color.White;
-            this.labelTime.Location = new System.Drawing.Point(367, 14);
+            this.labelTime.Location = new System.Drawing.Point(216, 9);
             this.labelTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTime.Name = "labelTime";
-            this.labelTime.Size = new System.Drawing.Size(120, 31);
+            this.labelTime.Size = new System.Drawing.Size(71, 20);
             this.labelTime.TabIndex = 4;
             this.labelTime.Text = "00:00:00";
             // 
@@ -76,33 +68,45 @@ namespace PrintToPACSDemo.UI.CameraUI
             this.panel4.BackColor = System.Drawing.Color.Black;
             this.panel4.Controls.Add(this.labelTime);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel4.Location = new System.Drawing.Point(0, 837);
+            this.panel4.Location = new System.Drawing.Point(0, 462);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(912, 66);
+            this.panel4.Size = new System.Drawing.Size(500, 38);
             this.panel4.TabIndex = 8;
+            // 
+            // panelControl1
+            // 
+            this.panelControl1.Appearance.BackColor = System.Drawing.Color.Black;
+            this.panelControl1.Appearance.Options.UseBackColor = true;
+            this.panelControl1.Controls.Add(videoView1);
+            this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelControl1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.panelControl1.Location = new System.Drawing.Point(0, 0);
+            this.panelControl1.Name = "panelControl1";
+            this.panelControl1.Size = new System.Drawing.Size(500, 462);
+            this.panelControl1.TabIndex = 9;
             // 
             // CameraControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Gray;
-            this.Controls.Add(this.videoView1);
+            this.BackColor = System.Drawing.Color.Black;
+            this.Controls.Add(this.panelControl1);
             this.Controls.Add(this.panel4);
-            this.Controls.Add(this.panel3);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "CameraControl";
-            this.Size = new System.Drawing.Size(912, 903);
+            this.Size = new System.Drawing.Size(500, 500);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label labelTime;
         private VisioForge.Core.UI.WinForms.VideoView videoView1;
         private System.Windows.Forms.Panel panel4;
+        private DevExpress.XtraEditors.PanelControl panelControl1;
     }
 }

@@ -45,7 +45,6 @@
             this.toolStripButtonSnapshot = new System.Windows.Forms.ToolStripButton();
             this.videoView1 = new VisioForge.Core.UI.WinForms.VideoView();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.buttonBackCamera = new DevExpress.XtraEditors.SimpleButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbTimeline)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbSpeed)).BeginInit();
@@ -271,21 +270,11 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Black;
-            this.panel2.Controls.Add(this.buttonBackCamera);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(700, 38);
             this.panel2.TabIndex = 4;
-            // 
-            // buttonBackCamera
-            // 
-            this.buttonBackCamera.Location = new System.Drawing.Point(3, 3);
-            this.buttonBackCamera.Name = "buttonBackCamera";
-            this.buttonBackCamera.Size = new System.Drawing.Size(112, 25);
-            this.buttonBackCamera.TabIndex = 0;
-            this.buttonBackCamera.Text = "Back Camera";
-            this.buttonBackCamera.Click += new System.EventHandler(this.buttonBackCamera_Click);
             // 
             // MediaPlayerControl
             // 
@@ -330,6 +319,5 @@
         private DevExpress.XtraEditors.LabelControl lbSpeed;
         private System.Windows.Forms.TrackBar tbTimeline;
         private System.Windows.Forms.Panel panel2;
-        private DevExpress.XtraEditors.SimpleButton buttonBackCamera;
     }
 }

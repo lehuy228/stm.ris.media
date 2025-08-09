@@ -25,16 +25,19 @@ using Font = System.Drawing.Font;
 using VisioForge.Core.VideoCapture;
 using DevExpress.XtraGrid.Views.Grid;
 using System.Threading.Tasks;
+using PrintToPACSDemo.Utilities;
+using MediaToPacs.Core.Models;
+using System.Linq;
+using STMMedicalConnection.AuthSDK;
 
 namespace PrintToPACSDemo.UI
 {
     public partial class WorkListTable : DevExpress.XtraEditors.XtraForm
+    //public partial class WorkListTable : FormBase
     {
         public MySettings _mySettings = PacsSettings.Instance;
         private MyQueryRetrieveScu _find;
         private FrmOperation _frmOperation;
-        private FrmMain _frmMain;
-        private Form _frmCamera = new Form(); 
 
         private DicomFindQuery _findQuery = new DicomFindQuery();
         private PatientBasedQuery _pbQuery = new PatientBasedQuery();
@@ -45,16 +48,16 @@ namespace PrintToPACSDemo.UI
         private const string _sNewline = "\r\n";
         private const string _sNewlineTab = "\r\n\t";
         private const string _sNewlineTabTab = "\r\n\t\t";
-
         private bool bCancelOperation = false;
+
         private List<ProcedureStep> listProcedureStep = new List<ProcedureStep>();
 
         public WorkListTable()
         {
-
             try
             {
                 InitializeComponent();
+                InitPermissionControl();
                 PacsSettings.LogWindow = new LogWindow();
                 PacsSettings.LogWindow.Visible = false;
                 LoadSettings();
@@ -71,15 +74,23 @@ namespace PrintToPACSDemo.UI
             }
         }
 
+        private void InitPermissionControl()
+        {
+            var userInfo = ServiceLocator.SessionService.GetCurrentUser();
+            string fullName = string.Join(" ", new[] { userInfo.FirstName, userInfo.LastName }
+                .Where(s => !string.IsNullOrWhiteSpace(s)));
+
+            _tSSLUserName.Text = $"{userInfo.Username} - {fullName}".TrimEnd(' ', '-');
+            //SetControlPermission(_btnSettings, AppPermissions.Admin);
+            //SetControlPermission(_btnMWLQuery, AppPermissions.RisWorklistList);
+        }
+
         private async void WorkListTable_Load(object sender, EventArgs e)
         {
-                    InitializeForm();
-                    SetServersComboBox(true);
-                    _cbCapture.SelectedIndex = 0;
-                    _cbStartEnd.Checked = false;
-             
-            
-
+            InitializeForm();
+            SetServersComboBox(true);
+            _cbCapture.SelectedIndex = 0;
+            _cbStartEnd.Checked = false;
         }
 
         private void WorkListTable_FormClosing(object sender, FormClosingEventArgs e)
@@ -738,14 +749,8 @@ namespace PrintToPACSDemo.UI
                     SaveProcedureStep(ProcedureStepDelete);
                 }
 
-                _frmMain = new FrmMain(this, result, mppsCreate);
-                //_frmMain.FormClosed += FormMain_Closed;
-                _frmMain.BringToFront();
-                _frmMain.Owner = this;
-                _frmCamera.Owner = this;
-                _frmMain.Show();
-
-                //LoadCapture(_frmMain);
+                FrmMain frmMain = new FrmMain(result, mppsCreate, _cbCapture.Text);
+                frmMain.ShowDialog();
             }
             catch (Exception ex)
             {
@@ -898,26 +903,6 @@ namespace PrintToPACSDemo.UI
             {
                 if (e.Info.Patient == null)
                     return;
-
-                // Check if the Patient already exist in _lstSCPPatient
-                //foreach (ListViewItem lvi in _lstSCPPatient.Items)
-                //{
-                //    if (lvi.SubItems[0].Text == e.Info.Patient.Name.FullDicomEncoded || lvi.SubItems[1].Text == e.Info.Patient.Id)
-                //    {
-                //        item = lvi;
-                //        break;
-                //    }
-                //}
-
-                //if (item == null)
-                //{
-                //    item = _lstSCPPatient.Items.Add(e.Info.Patient.Name.FullDicomEncoded);
-                //    item.SubItems.Add(e.Info.Patient.Id);
-                //    item.SubItems.Add(e.Info.Patient.Sex);
-                //    item.SubItems.Add(e.Info.Patient.BirthDate.HasValue ? e.Info.Patient.BirthDate.ToString() : string.Empty);
-                //    item.Tag = new List<Study>();
-                //}
-
                 (item.Tag as List<Study>).Add(e.Info);
             }
         }
@@ -1074,6 +1059,12 @@ namespace PrintToPACSDemo.UI
         {
             FrmUsage frmUsage = new FrmUsage();
             frmUsage.ShowDialog();
+        }
+
+        private void _btnLogout_Click(object sender, EventArgs e)
+        {
+            Token.Cancel();
+            this.Close();
         }
     }
 

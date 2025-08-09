@@ -600,7 +600,6 @@ namespace PrintToPACSDemo
             this.Controls.Add(this._gbTransferMode);
             this.Controls.Add(this._gbImageFrame);
             this.IconOptions.Icon = ((System.Drawing.Icon)(resources.GetObject("Template.IconOptions.Icon")));
-            this.IconOptions.Image = global::PrintToPACSDemo.Properties.Resources.logo;
             this.Name = "Template";
             this.Text = "Bản mẫu";
             this.Load += new System.EventHandler(this.Template_Load);

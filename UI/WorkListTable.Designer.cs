@@ -32,6 +32,13 @@ namespace PrintToPACSDemo.UI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkListTable));
             this.panel1 = new DevExpress.XtraEditors.PanelControl();
+            this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
+            this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
+            this.gridControl1 = new DevExpress.XtraGrid.GridControl();
+            this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             this._dGVMWLItems = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.AccessionNumber = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -48,7 +55,6 @@ namespace PrintToPACSDemo.UI
             this.ScheduleProcedureStep = new DevExpress.XtraGrid.Columns.GridColumn();
             this.RequestedProcedureID = new DevExpress.XtraGrid.Columns.GridColumn();
             this.MPPS = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.panel4 = new DevExpress.XtraEditors.PanelControl();
             this.panel6 = new DevExpress.XtraEditors.PanelControl();
             this._btnMWLQuery = new DevExpress.XtraEditors.SimpleButton();
             this._tLPQuery = new System.Windows.Forms.TableLayoutPanel();
@@ -77,6 +83,7 @@ namespace PrintToPACSDemo.UI
             this.label15 = new DevExpress.XtraEditors.LabelControl();
             this.label16 = new DevExpress.XtraEditors.LabelControl();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this._btnLogout = new DevExpress.XtraEditors.SimpleButton();
             this._btnSettings = new DevExpress.XtraEditors.SimpleButton();
             this._cbMWLServers = new DevExpress.XtraEditors.ComboBoxEdit();
             this._btnLogs = new DevExpress.XtraEditors.SimpleButton();
@@ -84,12 +91,19 @@ namespace PrintToPACSDemo.UI
             this.label1 = new DevExpress.XtraEditors.LabelControl();
             this._btnUse = new DevExpress.XtraEditors.SimpleButton();
             this.label2 = new DevExpress.XtraEditors.LabelControl();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this._tSSLUserName = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.panel1)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
+            this.xtraTabControl1.SuspendLayout();
+            this.xtraTabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
+            this.xtraTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._dGVMWLItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panel4)).BeginInit();
-            this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panel6)).BeginInit();
             this.panel6.SuspendLayout();
             this._tLPQuery.SuspendLayout();
@@ -112,28 +126,101 @@ namespace PrintToPACSDemo.UI
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._cbMWLServers.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._cbCapture.Properties)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this._dGVMWLItems);
-            this.panel1.Controls.Add(this.panel4);
+            this.panel1.Controls.Add(this.xtraTabControl1);
+            this.panel1.Controls.Add(this.panelControl1);
+            this.panel1.Controls.Add(this.statusStrip1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1275, 594);
+            this.panel1.Size = new System.Drawing.Size(1209, 594);
             this.panel1.TabIndex = 0;
+            // 
+            // xtraTabControl1
+            // 
+            this.xtraTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.xtraTabControl1.Location = new System.Drawing.Point(2, 51);
+            this.xtraTabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.xtraTabControl1.Name = "xtraTabControl1";
+            this.xtraTabControl1.SelectedTabPage = this.xtraTabPage1;
+            this.xtraTabControl1.Size = new System.Drawing.Size(1205, 517);
+            this.xtraTabControl1.TabIndex = 27;
+            this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
+            this.xtraTabPage1,
+            this.xtraTabPage2});
+            // 
+            // xtraTabPage1
+            // 
+            this.xtraTabPage1.Controls.Add(this.gridControl1);
+            this.xtraTabPage1.Controls.Add(this.panelControl2);
+            this.xtraTabPage1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.xtraTabPage1.Name = "xtraTabPage1";
+            this.xtraTabPage1.Size = new System.Drawing.Size(1197, 485);
+            this.xtraTabPage1.Text = "Hệ thống RIS";
+            // 
+            // gridControl1
+            // 
+            this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gridControl1.Location = new System.Drawing.Point(0, 107);
+            this.gridControl1.MainView = this.gridView2;
+            this.gridControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gridControl1.Name = "gridControl1";
+            this.gridControl1.Size = new System.Drawing.Size(1197, 378);
+            this.gridControl1.TabIndex = 1;
+            this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridView2});
+            // 
+            // gridView2
+            // 
+            this.gridView2.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn1});
+            this.gridView2.DetailHeight = 292;
+            this.gridView2.GridControl = this.gridControl1;
+            this.gridView2.GroupPanelText = "Danh sách chỉ định";
+            this.gridView2.Name = "gridView2";
+            // 
+            // gridColumn1
+            // 
+            this.gridColumn1.Caption = "gridColumn1";
+            this.gridColumn1.MinWidth = 19;
+            this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.Visible = true;
+            this.gridColumn1.VisibleIndex = 0;
+            this.gridColumn1.Width = 73;
+            // 
+            // panelControl2
+            // 
+            this.panelControl2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelControl2.Location = new System.Drawing.Point(0, 0);
+            this.panelControl2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelControl2.Name = "panelControl2";
+            this.panelControl2.Size = new System.Drawing.Size(1197, 107);
+            this.panelControl2.TabIndex = 0;
+            // 
+            // xtraTabPage2
+            // 
+            this.xtraTabPage2.Controls.Add(this._dGVMWLItems);
+            this.xtraTabPage2.Controls.Add(this.panel6);
+            this.xtraTabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.xtraTabPage2.Name = "xtraTabPage2";
+            this.xtraTabPage2.Size = new System.Drawing.Size(1197, 485);
+            this.xtraTabPage2.Text = "Worklist";
             // 
             // _dGVMWLItems
             // 
             this._dGVMWLItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this._dGVMWLItems.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this._dGVMWLItems.Location = new System.Drawing.Point(2, 206);
+            this._dGVMWLItems.Location = new System.Drawing.Point(0, 147);
             this._dGVMWLItems.MainView = this.gridView1;
             this._dGVMWLItems.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._dGVMWLItems.Name = "_dGVMWLItems";
-            this._dGVMWLItems.Size = new System.Drawing.Size(1271, 386);
+            this._dGVMWLItems.Size = new System.Drawing.Size(1197, 338);
             this._dGVMWLItems.TabIndex = 26;
             this._dGVMWLItems.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -274,40 +361,28 @@ namespace PrintToPACSDemo.UI
             this.MPPS.Visible = true;
             this.MPPS.VisibleIndex = 13;
             // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.panel6);
-            this.panel4.Controls.Add(this.panelControl1);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel4.Location = new System.Drawing.Point(2, 2);
-            this.panel4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1271, 204);
-            this.panel4.TabIndex = 21;
-            // 
             // panel6
             // 
             this.panel6.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Flat;
             this.panel6.Controls.Add(this._btnMWLQuery);
             this.panel6.Controls.Add(this._tLPQuery);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel6.Location = new System.Drawing.Point(2, 51);
+            this.panel6.Location = new System.Drawing.Point(0, 0);
             this.panel6.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(1267, 150);
+            this.panel6.Size = new System.Drawing.Size(1197, 147);
             this.panel6.TabIndex = 19;
             // 
             // _btnMWLQuery
             // 
             this._btnMWLQuery.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnMWLQuery.ImageOptions.Image = global::PrintToPACSDemo.Properties.Resources.loupe;
-            this._btnMWLQuery.Location = new System.Drawing.Point(1087, 2);
+            this._btnMWLQuery.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("_btnMWLQuery.ImageOptions.Image")));
+            this._btnMWLQuery.Location = new System.Drawing.Point(1015, 5);
             this._btnMWLQuery.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._btnMWLQuery.Name = "_btnMWLQuery";
             this._btnMWLQuery.Padding = new System.Windows.Forms.Padding(30, 32, 30, 32);
-            this._btnMWLQuery.Size = new System.Drawing.Size(177, 134);
+            this._btnMWLQuery.Size = new System.Drawing.Size(178, 131);
             this._btnMWLQuery.TabIndex = 11;
-            this._btnMWLQuery.Text = "Tìm kiếm";
             this._btnMWLQuery.Click += new System.EventHandler(this._btnMWLQuery_Click);
             // 
             // _tLPQuery
@@ -315,17 +390,16 @@ namespace PrintToPACSDemo.UI
             this._tLPQuery.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._tLPQuery.ColumnCount = 2;
-            this._tLPQuery.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.60748F));
-            this._tLPQuery.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.39252F));
+            this._tLPQuery.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this._tLPQuery.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this._tLPQuery.Controls.Add(this.groupBox1, 0, 0);
             this._tLPQuery.Controls.Add(this.groupBox2, 1, 0);
             this._tLPQuery.Location = new System.Drawing.Point(2, 2);
             this._tLPQuery.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._tLPQuery.Name = "_tLPQuery";
             this._tLPQuery.RowCount = 1;
-            this._tLPQuery.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this._tLPQuery.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this._tLPQuery.Size = new System.Drawing.Size(1078, 134);
+            this._tLPQuery.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._tLPQuery.Size = new System.Drawing.Size(1008, 134);
             this._tLPQuery.TabIndex = 1;
             // 
             // groupBox1
@@ -346,7 +420,7 @@ namespace PrintToPACSDemo.UI
             this.groupBox1.Location = new System.Drawing.Point(2, 3);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(595, 128);
+            this.groupBox1.Size = new System.Drawing.Size(716, 128);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.Text = "Bệnh nhân";
             // 
@@ -365,38 +439,38 @@ namespace PrintToPACSDemo.UI
             // 
             // _txtAccessionNumber
             // 
-            this._txtAccessionNumber.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this._txtAccessionNumber.Location = new System.Drawing.Point(421, 28);
+            this._txtAccessionNumber.Location = new System.Drawing.Point(101, 58);
             this._txtAccessionNumber.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._txtAccessionNumber.Name = "_txtAccessionNumber";
-            this._txtAccessionNumber.Size = new System.Drawing.Size(170, 22);
+            this._txtAccessionNumber.Size = new System.Drawing.Size(318, 22);
             this._txtAccessionNumber.TabIndex = 25;
             // 
             // _txtPatientFirst
             // 
             this._txtPatientFirst.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._txtPatientFirst.Location = new System.Drawing.Point(445, 59);
+            this._txtPatientFirst.Location = new System.Drawing.Point(463, 28);
             this._txtPatientFirst.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._txtPatientFirst.Name = "_txtPatientFirst";
-            this._txtPatientFirst.Size = new System.Drawing.Size(146, 22);
+            this._txtPatientFirst.Size = new System.Drawing.Size(249, 22);
             this._txtPatientFirst.TabIndex = 24;
             // 
             // _txtPatientMiddle
             // 
-            this._txtPatientMiddle.Location = new System.Drawing.Point(252, 59);
+            this._txtPatientMiddle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._txtPatientMiddle.Location = new System.Drawing.Point(659, 59);
             this._txtPatientMiddle.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._txtPatientMiddle.Name = "_txtPatientMiddle";
-            this._txtPatientMiddle.Size = new System.Drawing.Size(141, 22);
+            this._txtPatientMiddle.Size = new System.Drawing.Size(53, 22);
             this._txtPatientMiddle.TabIndex = 23;
             // 
             // _txtPatientLast
             // 
-            this._txtPatientLast.Location = new System.Drawing.Point(42, 59);
+            this._txtPatientLast.Location = new System.Drawing.Point(463, 60);
             this._txtPatientLast.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._txtPatientLast.Name = "_txtPatientLast";
-            this._txtPatientLast.Size = new System.Drawing.Size(140, 22);
+            this._txtPatientLast.Size = new System.Drawing.Size(125, 22);
             this._txtPatientLast.TabIndex = 22;
             // 
             // _txtPatientID
@@ -404,7 +478,7 @@ namespace PrintToPACSDemo.UI
             this._txtPatientID.Location = new System.Drawing.Point(101, 28);
             this._txtPatientID.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._txtPatientID.Name = "_txtPatientID";
-            this._txtPatientID.Size = new System.Drawing.Size(199, 22);
+            this._txtPatientID.Size = new System.Drawing.Size(318, 22);
             this._txtPatientID.TabIndex = 21;
             // 
             // label6
@@ -422,7 +496,7 @@ namespace PrintToPACSDemo.UI
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.Location = new System.Drawing.Point(320, 30);
+            this.label5.Location = new System.Drawing.Point(9, 61);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(85, 15);
@@ -433,7 +507,7 @@ namespace PrintToPACSDemo.UI
             // 
             this._lbPatientFirst.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._lbPatientFirst.Location = new System.Drawing.Point(410, 62);
+            this._lbPatientFirst.Location = new System.Drawing.Point(435, 30);
             this._lbPatientFirst.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._lbPatientFirst.Name = "_lbPatientFirst";
             this._lbPatientFirst.Size = new System.Drawing.Size(24, 15);
@@ -442,7 +516,7 @@ namespace PrintToPACSDemo.UI
             // 
             // _lbPatientMiddle
             // 
-            this._lbPatientMiddle.Location = new System.Drawing.Point(196, 62);
+            this._lbPatientMiddle.Location = new System.Drawing.Point(603, 63);
             this._lbPatientMiddle.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._lbPatientMiddle.Name = "_lbPatientMiddle";
             this._lbPatientMiddle.Size = new System.Drawing.Size(52, 15);
@@ -451,7 +525,7 @@ namespace PrintToPACSDemo.UI
             // 
             // _lbPatientLast
             // 
-            this._lbPatientLast.Location = new System.Drawing.Point(9, 62);
+            this._lbPatientLast.Location = new System.Drawing.Point(437, 62);
             this._lbPatientLast.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._lbPatientLast.Name = "_lbPatientLast";
             this._lbPatientLast.Size = new System.Drawing.Size(22, 15);
@@ -469,6 +543,8 @@ namespace PrintToPACSDemo.UI
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this._cbStartEnd);
             this.groupBox2.Controls.Add(this._cbbModality);
             this.groupBox2.Controls.Add(this._dTPEnd);
@@ -479,11 +555,10 @@ namespace PrintToPACSDemo.UI
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label15);
             this.groupBox2.Controls.Add(this.label16);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(601, 3);
+            this.groupBox2.Location = new System.Drawing.Point(722, 3);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(475, 128);
+            this.groupBox2.Size = new System.Drawing.Size(284, 127);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.Text = "Scheduled Procedure Step";
             // 
@@ -589,6 +664,7 @@ namespace PrintToPACSDemo.UI
             // 
             // panelControl1
             // 
+            this.panelControl1.Controls.Add(this._btnLogout);
             this.panelControl1.Controls.Add(this._btnSettings);
             this.panelControl1.Controls.Add(this._cbMWLServers);
             this.panelControl1.Controls.Add(this._btnLogs);
@@ -599,12 +675,23 @@ namespace PrintToPACSDemo.UI
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelControl1.Location = new System.Drawing.Point(2, 2);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(1267, 49);
+            this.panelControl1.Size = new System.Drawing.Size(1205, 49);
             this.panelControl1.TabIndex = 33;
+            // 
+            // _btnLogout
+            // 
+            this._btnLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnLogout.Location = new System.Drawing.Point(1105, 11);
+            this._btnLogout.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._btnLogout.Name = "_btnLogout";
+            this._btnLogout.Size = new System.Drawing.Size(92, 24);
+            this._btnLogout.TabIndex = 33;
+            this._btnLogout.Text = "Đăng xuất";
+            this._btnLogout.Click += new System.EventHandler(this._btnLogout_Click);
             // 
             // _btnSettings
             // 
-            this._btnSettings.ImageOptions.Image = global::PrintToPACSDemo.Properties.Resources.cogwheel;
+            this._btnSettings.ImageOptions.Image = global::PrintToPACSDemo.Properties.Resources.setting;
             this._btnSettings.Location = new System.Drawing.Point(7, 8);
             this._btnSettings.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._btnSettings.Name = "_btnSettings";
@@ -657,7 +744,7 @@ namespace PrintToPACSDemo.UI
             // 
             // _btnUse
             // 
-            this._btnUse.ImageOptions.Image = global::PrintToPACSDemo.Properties.Resources.cogwheel;
+            this._btnUse.ImageOptions.Image = global::PrintToPACSDemo.Properties.Resources.information;
             this._btnUse.Location = new System.Drawing.Point(202, 8);
             this._btnUse.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this._btnUse.Name = "_btnUse";
@@ -676,27 +763,53 @@ namespace PrintToPACSDemo.UI
             this.label2.TabIndex = 17;
             this.label2.Text = "Danh sách thiết bị";
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._tSSLUserName});
+            this.statusStrip1.Location = new System.Drawing.Point(2, 568);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 11, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(1205, 24);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // _tSSLUserName
+            // 
+            this._tSSLUserName.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._tSSLUserName.ForeColor = System.Drawing.Color.Red;
+            this._tSSLUserName.Name = "_tSSLUserName";
+            this._tSSLUserName.Size = new System.Drawing.Size(152, 19);
+            this._tSSLUserName.Text = "toolStripStatusLabel1";
+            // 
             // WorkListTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1275, 594);
+            this.ClientSize = new System.Drawing.Size(1209, 594);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.IconOptions.Icon = ((System.Drawing.Icon)(resources.GetObject("WorkListTable.IconOptions.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.IconOptions.Image = global::PrintToPACSDemo.Properties.Resources.stm;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "WorkListTable";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Chương trình chuyển đổi video DICOM ";
+            this.Text = "Danh sách ca chụp";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WorkListTable_FormClosing);
             this.Load += new System.EventHandler(this.WorkListTable_Load);
             ((System.ComponentModel.ISupportInitialize)(this.panel1)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
+            this.xtraTabControl1.ResumeLayout(false);
+            this.xtraTabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
+            this.xtraTabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._dGVMWLItems)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panel4)).EndInit();
-            this.panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panel6)).EndInit();
             this.panel6.ResumeLayout(false);
             this._tLPQuery.ResumeLayout(false);
@@ -722,6 +835,8 @@ namespace PrintToPACSDemo.UI
             this.panelControl1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._cbMWLServers.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._cbCapture.Properties)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -729,7 +844,6 @@ namespace PrintToPACSDemo.UI
         #endregion
 
         private DevExpress.XtraEditors.PanelControl panel1;
-        private DevExpress.XtraEditors.PanelControl panel4;
         private DevExpress.XtraEditors.LabelControl label1;
         private DevExpress.XtraEditors.LabelControl label2;
         private DevExpress.XtraEditors.PanelControl panel6;
@@ -781,5 +895,15 @@ namespace PrintToPACSDemo.UI
         private DevExpress.XtraGrid.Columns.GridColumn RequestedProcedureID;
         private DevExpress.XtraGrid.Columns.GridColumn MPPS;
         private DevExpress.XtraEditors.PanelControl panelControl1;
+        private DevExpress.XtraTab.XtraTabControl xtraTabControl1;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
+        private DevExpress.XtraGrid.GridControl gridControl1;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
+        private DevExpress.XtraEditors.PanelControl panelControl2;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel _tSSLUserName;
+        private DevExpress.XtraEditors.SimpleButton _btnLogout;
     }
 }

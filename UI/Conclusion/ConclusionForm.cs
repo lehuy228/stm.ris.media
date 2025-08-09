@@ -1,20 +1,14 @@
 ﻿using Leadtools.Demos;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using static PrintToPACSDemo.FrmMain;
 using DateTime = System.DateTime;
-using System.Xml.Serialization;
-using PrintToPACSDemo.UI.Login;
-using System.Dynamic;
 
 namespace PrintToPACSDemo.UI.Conclusion
 {

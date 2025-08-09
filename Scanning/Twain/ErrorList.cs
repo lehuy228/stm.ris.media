@@ -108,7 +108,6 @@ namespace PrintToPACSDemo
             this.Controls.Add(this._gbErrorList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.IconOptions.Icon = ((System.Drawing.Icon)(resources.GetObject("ErrorList.IconOptions.Icon")));
-            this.IconOptions.Image = global::PrintToPACSDemo.Properties.Resources.logo;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ErrorList";

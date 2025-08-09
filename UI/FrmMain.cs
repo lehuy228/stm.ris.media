@@ -41,7 +41,9 @@ using System.Linq;
 using PrintToPACSDemo.UI.Conclusion;
 using VisioForge.Core.Helpers;
 using DevExpress.XtraEditors;
-using MediaToPacs.Entitys.Domain;
+using System.Threading.Tasks;
+using VisioForge.Core.VideoEdit;
+using MediaToPacs.Core.Models;
 
 namespace PrintToPACSDemo
 {
@@ -121,69 +123,59 @@ namespace PrintToPACSDemo
             }
             return string.Empty;
         }
-
-        static bool ReadCommandLine(string[] args)
-        {
-            return false;
-        }
-        //        [STAThread]
-        //        static void Main(string[] args)
-        //        {
-        //            try
-        //            {
-        //                bool bConfigure = ReadCommandLine(args);
-        //                if (bConfigure)
-        //                    return;
-        //            }
-        //            catch { }
-
-        //#if LEADTOOLS_V175_OR_LATER
-        //            Support.SetLicense();
-        //#else
-        //         Support.Unlock(false);
-        //#endif
-
-        //            if (Support.KernelExpired)
-        //                return;
-
-        //            if (args.Length > 0)
-        //            {
-        //                FrmMain.StartedPrinter = args[0];
-        //                MySettings mySettings = new MySettings();
-        //                mySettings.Load();
-        //                if (FrmMain.StartedPrinter != mySettings._settings.printerName)
-        //                    return;
-        //            }
-
-        //            Utils.EngineStartup();
-        //            Utils.DicomNetStartup();
-        //            Application.EnableVisualStyles();
-        //            Application.SetCompatibleTextRenderingDefault(false);
-        //            Application.Run(new FrmMain());
-        //        }
         #endregion
 
         #region Constructor...
         private ModalityWorklistResult result;
         private MPPSNCreate mppsCreate;
-        private WorkListTable _workListTable;
+        private string _folderPath;
+        private List<string> _listPathVideoRecords = new List<string>();
 
 
-        public FrmMain(WorkListTable workListTable, ModalityWorklistResult result, MPPSNCreate mppsCreate)
+        public FrmMain(ModalityWorklistResult result, MPPSNCreate mppsCreate, string VideoInputDevice)
         {
             try
             {
                 InitClass();
+                InitListBoxImage();
+
                 InitializeComponent();
+
+
                 this.result = result;
                 this.mppsCreate = mppsCreate;
-                this._workListTable = workListTable;
+                this._videoInputDevice = VideoInputDevice;
             }
             catch (Exception Ex)
             {
                 MessageBox.Show(Ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();
             }
+        }
+
+        private void InitListBoxImage()
+        {
+            this._lstBoxPages = new PrintToPACSDemo.UI.ListImageBox();
+            // 
+            // _lstBoxPages
+            // 
+            this._lstBoxPages.AutoScroll = true;
+            this._lstBoxPages.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this._lstBoxPages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._lstBoxPages.ExpansionButtonLocation = System.Windows.Forms.AnchorStyles.Left;
+            this._lstBoxPages.ItemHeight = 120;
+            this._lstBoxPages.Location = new System.Drawing.Point(0, 0);
+            this._lstBoxPages.Name = "_lstBoxPages";
+            this._lstBoxPages.SelectedGroupIndex = -1;
+            this._lstBoxPages.SelectedIndex = -1;
+            this._lstBoxPages.SelectedItem = null;
+            this._lstBoxPages.SelectedItemGroupIndex = -1;
+            this._lstBoxPages.Size = new System.Drawing.Size(150, 678);
+            this._lstBoxPages.TabIndex = 0;
+            this._lstBoxPages.ViewMode = PrintToPACSDemo.UI.ThumbMode.Condensed;
+            this._lstBoxPages.ItemAdded += new System.EventHandler(this._lstBoxPages_ItemAdded);
+            this._lstBoxPages.SelectedIndexChanged += new System.EventHandler(this._lstBoxPages_SelectedIndexChanged);
+            this._lstBoxPages.KeyDown += new System.Windows.Forms.KeyEventHandler(this._lstBoxPages_KeyDown);
         }
         #endregion
 
@@ -198,6 +190,9 @@ namespace PrintToPACSDemo
         private const string _sNewlineTabTab = "\r\n\t\t";
         private FrmProgress _frmProgress;
         private FrmOperation _frmOperation;
+        private CameraControl _cameraControl;
+        private MediaPlayerControl _mediaPlayerControl;
+        private string _videoInputDevice;
         private ListImageBox.ImageCollection imgCollection = null;
         private int _pageNo = 0;
         private int _jobId = 0;
@@ -266,6 +261,7 @@ namespace PrintToPACSDemo
             propertyGridControl1.OptionsBehavior.PropertySort = DevExpress.XtraVerticalGrid.PropertySort.Alphabetical;
             propertyGridControl1.SelectedObject = new MedicalReport();
             //
+            //
             // Add Excluded Tags
             //
             _ExcludedTags.Add(DicomTag.SOPClassUID);
@@ -289,7 +285,7 @@ namespace PrintToPACSDemo
                 //while (!bFinishedPrinting && (DateTime.Now - tmStart).TotalSeconds < 20)
                 //    Application.DoEvents();
 
-                Deserialize(_mySettings._settings.DataPath);
+                //Deserialize(_mySettings._settings.DataPath);
 
                 //Initialize Store and Query Options
                 CreateCStoreObject(new MyServer());
@@ -382,7 +378,7 @@ namespace PrintToPACSDemo
                     dElement = ds.InsertElement(null, false, DicomTag.StudyInstanceUID, DicomVRType.UN, false, 0);
                 ds.SetValue(dElement, result.StudyInstanceUid);
             }
-
+            _folderPath = $"{result.PatientId}\\{result.ScheduledProcedureStepSequence.FirstOrDefault().ScheduledProcedureStepId}";
             _pgDicomInfo.DataSet = ds;
         }
 
@@ -801,7 +797,7 @@ namespace PrintToPACSDemo
         {
             try
             {
-                await _CameraControl.VideoCapture1.StopAsync();
+                await _cameraControl.VideoCapture1.StopAsync();
             }
             catch (Exception)
             {
@@ -1458,10 +1454,26 @@ namespace PrintToPACSDemo
         private void InitializeForm()
         {
             _frmProgress = new FrmProgress();
+            _cameraControl = new CameraControl(_videoInputDevice);
+            _mediaPlayerControl = new MediaPlayerControl();
 
             _pgDicomInfo = new Leadtools.Dicom.Common.Editing.Controls.DicomPropertyGrid();
             DicomEditableObject = new Leadtools.Dicom.Common.Editing.DicomEditableObject();
             _pictureBox = new Leadtools.WinForms.RasterImageViewer();
+
+
+            //
+            //_cameraControl
+            //
+            panelCamera.Controls.Add(_cameraControl);
+            _cameraControl.Location = new Point(0, 0);
+            _cameraControl.Dock = DockStyle.Fill;
+            //
+            //_mediaPlayerControl
+            //
+            _panelControlMedia.Controls.Add(_mediaPlayerControl);
+            _mediaPlayerControl.Location = new Point(0, 0);
+            _mediaPlayerControl.Dock = DockStyle.Fill;
             /*TEMP*/
             //this._tbTableLayout.Controls.Add(this._pictureBox, 0, 3);
             // 
@@ -1496,6 +1508,7 @@ namespace PrintToPACSDemo
             _lstBoxPages.ViewMode = ThumbMode.Condensed;
             _lstBoxPages.ContextMenuStrip = _cmListBox;
             _lstBoxPages.ListStateChanged += new EventHandler(_lstBoxPages_ListStateChanged);
+            _panelPictureReview.Controls.Add(_pictureBox);
             _pictureBox.MouseWheel += new MouseEventHandler(_pictureBox_MouseWheel);
             _pictureBox.BorderPadding.Bottom = 10;
             _pictureBox.BorderPadding.Top = 10;
@@ -1633,7 +1646,7 @@ namespace PrintToPACSDemo
 
         public void CloseFrmMain()
         {
-            _CameraControl.VideoCapture1.StopAsync();
+            _cameraControl.VideoCapture1.StopAsync();
         }
 
         private void InitializeDataSet(DicomClassType dClass)
@@ -2121,9 +2134,12 @@ namespace PrintToPACSDemo
             RasterImage rImg = null;
             try
             {
-                EnableItems(false, "Opening Image Files Please Wait...", "Cancel");
+                //EnableItems(false, "Opening Image Files Please Wait...", "Cancel");
                 string strFile = strFileName;
                 strLastLocation = strFile;
+
+                _codec.Options.Load.AllPages = true;
+
                 rImg = _codec.Load(strFile);
 
                 GrayscaleCommand command = new GrayscaleCommand(8);
@@ -2963,8 +2979,8 @@ namespace PrintToPACSDemo
             LogText("After CStore", message);
         }
 
-        private CameraControl cameraControl;
-        private MediaPlayerControl mediaPlayerControl;
+        //private CameraControl cameraControl;
+        //private MediaPlayerControl mediaPlayerControl;
         private Form form;
         private void cardCameraToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -3143,7 +3159,7 @@ namespace PrintToPACSDemo
                 //    Radiologist = !result.ReferringPysician.Full.IsNullOrEmpty() ? result.ReferringPysician.Full : string.Empty,
                 //    Technicians = !result.ScheduledProcedureStepSequence[0].ScheduledPerformingPhysician.Full.IsNullOrEmpty() ? result.ScheduledProcedureStepSequence[0].ScheduledPerformingPhysician.Full : string.Empty,
                 //};
-                ConclusionForm createConclusion = new ConclusionForm( conclusionImages);
+                ConclusionForm createConclusion = new ConclusionForm(conclusionImages);
                 createConclusion.FormClosed += CreateConclusion_FormClosed;
                 createConclusion.Name = "Conclusion";
                 createConclusion.Show(this);
@@ -3156,27 +3172,84 @@ namespace PrintToPACSDemo
         private void CreateConclusion_FormClosed(object sender, FormClosedEventArgs e)
         {
             isCreateConclusion = false;
-            _workListTable.DeleteItemSelectedListview();
+            //_workListTable.DeleteItemSelectedListview();
         }
 
-        public event EventHandler VideoRoll_Click;
-        private void PictureBoxRoll_Click(object sender, EventArgs e)
-        {
-            PictureBox pictureBox = sender as PictureBox;
-            if (VideoRoll_Click != null)
-            {
-                VideoRoll_Click(sender, EventArgs.Empty);
-            }
-        }
+        //public event EventHandler VideoRoll_Click;
+        //private void PictureBoxRoll_Click(object sender, EventArgs e)
+        //{
+        //    PictureBox pictureBox = sender as PictureBox;
+        //    if (VideoRoll_Click != null)
+        //    {
+        //        VideoRoll_Click(sender, EventArgs.Empty);
+        //    }
+        //}
 
         //
         // Xử lý sự kiện điều khiển của camera
         //
-        public CameraControl _CameraControl;
         public bool IsCheckRecord = false;
         public bool IsCheckPause = false;
+        private Panel _selectedPanel;
+        private void PictureBoxRoll_Click(object sender, EventArgs e)
+        {
+            Panel parentPanel = null;
+            string videoPath = "";
 
-        private void _btnRecord_Click(object sender, EventArgs e)
+            if (sender is PictureBox pb)
+            {
+                parentPanel = pb.Parent as Panel;
+                videoPath = pb.Tag as string;
+            }
+            else if (sender is Panel pnl)
+            {
+                parentPanel = pnl;
+                if (pnl.Controls.Count > 0 && pnl.Controls[0] is PictureBox picture)
+                    videoPath = picture.Tag as string;
+            }
+
+            if (_selectedPanel != null)
+                _selectedPanel.BackColor = Color.Transparent;
+
+            _selectedPanel = parentPanel;
+            _selectedPanel.BackColor = Color.Red; // màu viền
+
+            if (!string.IsNullOrEmpty(videoPath) && File.Exists(videoPath))
+            {
+                _mediaPlayerControl.SetFilePathMedia(videoPath);
+            }
+        }
+
+
+        public async Task<Image> GetVideoThumbnailAsync(string videoPath)
+        {
+            if (!File.Exists(videoPath)) return null;
+
+            using (var videoEdit = new VideoEditCore())
+            {
+                try
+                {
+                    await Task.Delay(300);
+
+                    var bitmap = videoEdit.Helpful_GetFrameFromFile(
+                        videoPath,
+                        TimeSpan.FromSeconds(1), 
+                        false,
+                        VisioForge.Core.Types.MediaPlayer.MediaPlayerSourceMode.FFMPEG
+                    );
+
+                    return bitmap;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Lỗi khi lấy thumbnail: " + ex.Message);
+                    return null;
+                }
+            }
+        }
+
+
+        private async void _btnRecord_Click(object sender, EventArgs e)
         {
             if (IsCheckRecord)
             {
@@ -3187,15 +3260,64 @@ namespace PrintToPACSDemo
                 _btnPause.Enabled = false;
                 IsCheckRecord = false;
                 IsCheckPause = false;
-                _CameraControl.StopCaptureAsync();
 
-                PictureBox pictureBox = new PictureBox();
-                pictureBox.Image = global::PrintToPACSDemo.Properties.Resources.videoEx;
-                pictureBox.Tag = _CameraControl.LinkVideos[_CameraControl.LinkVideos.Count - 1];
-                pictureBox.Size = new System.Drawing.Size(60, 60);
-                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBox.Click += PictureBoxRoll_Click;
-                _fPLRoll.Controls.Add(pictureBox);
+                await _cameraControl.StopCaptureAsync();
+                await Task.Delay(1000);
+                string lastVideoPath = _listPathVideoRecords.LastOrDefault();
+                if (string.IsNullOrEmpty(lastVideoPath)) return;
+
+                for (int i = 0; i < 20; i++) 
+                {
+                    try
+                    {
+                        using (FileStream fs = new FileStream(lastVideoPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        {
+                            if (fs.Length > 1024) break;
+                        }
+                    }
+                    catch
+                    {
+                        await Task.Delay(100);
+                    }
+                }
+
+                var thumbnail = await GetVideoThumbnailAsync(lastVideoPath);
+
+                if (thumbnail != null)
+                {
+                    Console.WriteLine(lastVideoPath);
+                    _listPathVideoRecords.Remove(lastVideoPath);
+
+                    int borderThickness = 2; // Độ dày viền
+                    int imageSize = 110;     // Kích thước ảnh thực
+
+                    // Panel bao ngoài PictureBox
+                    Panel containerPanel = new Panel
+                    {
+                        Size = new Size(imageSize + borderThickness * 2, imageSize + borderThickness * 2),
+                        BackColor = Color.Transparent,
+                        Margin = new Padding(5),
+                        Padding = new Padding(borderThickness), // viền mỏng
+                        Tag = lastVideoPath
+                    };
+
+                    PictureBox pictureBox = new PictureBox
+                    {
+                        Image = thumbnail,
+                        SizeMode = PictureBoxSizeMode.Zoom,
+                        BackColor = Color.Black,
+                        Cursor = Cursors.Hand,
+                        BorderStyle = BorderStyle.None,
+                        Tag = lastVideoPath,
+                        Size = new Size(imageSize, imageSize)
+                    };
+
+                    pictureBox.Click += PictureBoxRoll_Click;
+                    containerPanel.Click += PictureBoxRoll_Click;
+
+                    containerPanel.Controls.Add(pictureBox);
+                    _fPLRoll.Controls.Add(containerPanel);
+                }
             }
             else
             {
@@ -3203,14 +3325,19 @@ namespace PrintToPACSDemo
                 _btnRecord.Image = global::PrintToPACSDemo.Properties.Resources.StopCamera;
                 _btnPause.Enabled = true;
                 IsCheckRecord = true;
-                _CameraControl.StartRecordAsync();
+                _listPathVideoRecords.Add(await _cameraControl.StartRecordAsync(_folderPath));
             }
         }
 
-        private void _btnSnapshot_Click(object sender, EventArgs e)
+        private async void TakeSnapshot()
         {
-            _CameraControl.Snapshot();
-            LoadRasterImage(_CameraControl.LinkImageSnapshot);
+            var imagePath = await _cameraControl.SnapshotAsync(_folderPath);
+            LoadRasterImage(imagePath);
+        }
+
+        private async void _btnSnapshot_Click(object sender, EventArgs e)
+        {
+            TakeSnapshot();
         }
 
         private void _btnSettings_Click(object sender, EventArgs e)
@@ -3219,7 +3346,7 @@ namespace PrintToPACSDemo
 
         private void _btnPause_Click(object sender, EventArgs e)
         {
-            _CameraControl.SetPauseResumeCaptureAsync(IsCheckPause);
+            _cameraControl.SetPauseResumeCaptureAsync(IsCheckPause);
             if (IsCheckPause)
             {
                 _btnPause.Text = "Tạm dừng";
@@ -3234,50 +3361,42 @@ namespace PrintToPACSDemo
             }
         }
 
-        SettingsCamera settingsCamera;
-        private void _toolBtnSettingsCamera_Click(object sender, EventArgs e)
+        private void FrmMain_KeyDown(object sender, KeyEventArgs e)
         {
-            try
+            var shortcuts = AppSettingsLoader.GetShortcutSettings();
+
+            if (e.KeyCode == shortcuts.StartRecordingKey)
             {
-                if (settingsCamera == null || settingsCamera.IsDisposed)
-                {
-                    settingsCamera = new SettingsCamera(_CameraControl);
-                    settingsCamera.Show();
-                }
-                else
-                {
-                    settingsCamera.BringToFront();
-                }
+                //StartRecording(); // Gọi hàm của bạn
             }
-            catch (Exception ex)
+            else if (e.KeyCode == shortcuts.PauseRecordingKey)
             {
-                MessageBox.Show(ex.Message);
+                //PauseRecording();
             }
-        }
-
-        private void xtraTabPage1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void labelControl5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelControl11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textEdit9_EditValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textEdit7_EditValueChanged(object sender, EventArgs e)
-        {
-
+            else if (e.KeyCode == shortcuts.SnapshotKey)
+            {
+                TakeSnapshot();
+            }
+            else if (e.KeyCode == shortcuts.SaveDicomKey)
+            {
+                //SaveDicom();
+            }
+            else if (e.KeyCode == shortcuts.ReloadKey)
+            {
+                //ReloadUI();
+            }
+            else if (e.KeyCode == shortcuts.PrintKey)
+            {
+                //PrintCurrent();
+            }
+            else if (e.KeyCode == shortcuts.ExitKey)
+            {
+                this.Close();
+            }
+            else if (e.KeyCode == shortcuts.StoreKey)
+            {
+                //StoreToPACS();
+            }
         }
 
         void CreateCStoreObject(MyServer server)

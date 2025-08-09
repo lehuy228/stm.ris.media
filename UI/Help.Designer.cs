@@ -1,4 +1,4 @@
-namespace PrintToPACSDemo
+﻿namespace PrintToPACSDemo
 {
    partial class HelpDialog
    {
@@ -95,7 +95,7 @@ namespace PrintToPACSDemo
             this._checkBoxNoShowAgain.AutoSize = true;
             this._checkBoxNoShowAgain.Location = new System.Drawing.Point(59, 9);
             this._checkBoxNoShowAgain.Name = "_checkBoxNoShowAgain";
-            this._checkBoxNoShowAgain.Size = new System.Drawing.Size(168, 17);
+            this._checkBoxNoShowAgain.Size = new System.Drawing.Size(190, 19);
             this._checkBoxNoShowAgain.TabIndex = 0;
             this._checkBoxNoShowAgain.Text = "Do not show this dialog again.";
             this._checkBoxNoShowAgain.UseVisualStyleBackColor = true;
@@ -107,13 +107,14 @@ namespace PrintToPACSDemo
             this.ClientSize = new System.Drawing.Size(522, 622);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.IconOptions.Icon = ((System.Drawing.Icon)(resources.GetObject("HelpDialog.IconOptions.Icon")));
+            this.IconOptions.Image = global::PrintToPACSDemo.Properties.Resources.stm;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "HelpDialog";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Help";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Trợ giúp";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.HelpDialog_FormClosed);
             this.Load += new System.EventHandler(this._HelpDialog_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);

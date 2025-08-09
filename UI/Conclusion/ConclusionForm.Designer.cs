@@ -623,7 +623,6 @@
             this.ClientSize = new System.Drawing.Size(964, 714);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.IconOptions.Image = global::PrintToPACSDemo.Properties.Resources.logo;
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;

@@ -33,6 +33,12 @@ namespace PrintToPACSDemo.UI.CameraUI
             //this.FilePathVideo = "D:\\y2meta.com-[MV HD 1080p] Người Tôi Yêu - Chi Dân.mp4";
         }
 
+        public MediaPlayerControl()
+        {
+            InitializeComponent();
+            UpdateToolbarButtons(i);
+        }
+
         private void VideoEditor_Load(object sender, EventArgs e)
         {
             MediaPlayer1 = new MediaPlayerCore(videoView1 as IVideoView);
@@ -79,8 +85,25 @@ namespace PrintToPACSDemo.UI.CameraUI
 
         private void toolStripButtonPlay_Click(object sender, EventArgs e)
         {
-            SetupPlayVideoAsync();
+            if (string.IsNullOrWhiteSpace(FilePathVideo) || !File.Exists(FilePathVideo))
+            {
+                MessageBox.Show("Vui lòng chọn video trước khi phát.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            SetupPlayVideoAsync();
+        }
+
+        private void UpdateToolbarButtons(int i)
+        {
+            bool enabled = i != 1;
+            toolStripButtonPreviousFrame.Enabled = enabled;
+            toolStripButtonNextFrame.Enabled = enabled;
+            toolStripButtonPreviousKeyFrame.Enabled = enabled;
+            toolStripButtonNextKeyFrame.Enabled = enabled;
+            toolStripButtonFirstFrame.Enabled = enabled;
+            toolStripButtonLastFrame.Enabled = enabled;
+            toolStripButtonSnapshot.Enabled = enabled;
         }
 
         private async Task SetupPlayVideoAsync()
@@ -125,6 +148,7 @@ namespace PrintToPACSDemo.UI.CameraUI
                 timer1.Start();
                 i = 2;
                 toolStripButtonPlay.BackgroundImage = global::PrintToPACSDemo.Properties.Resources.stop;
+                
             }
             else if (i == 2)
             {
@@ -138,6 +162,7 @@ namespace PrintToPACSDemo.UI.CameraUI
                 await MediaPlayer1.ResumeAsync();
                 toolStripButtonPlay.BackgroundImage = global::PrintToPACSDemo.Properties.Resources.stop;
             }
+            UpdateToolbarButtons(i);
         }
 
         private async void tbTimeline_Scroll(object sender, EventArgs e)
@@ -153,6 +178,7 @@ namespace PrintToPACSDemo.UI.CameraUI
             MediaPlayer1.NextFrame();
             i = 3;
             toolStripButtonPlay.BackgroundImage = global::PrintToPACSDemo.Properties.Resources.play;
+            UpdateToolbarButtons(i);
         }
 
         private void toolStripButtonPreviousFrame_Click(object sender, EventArgs e)
@@ -160,6 +186,7 @@ namespace PrintToPACSDemo.UI.CameraUI
             MediaPlayer1.PreviousFrame();
             i = 3;
             toolStripButtonPlay.BackgroundImage = global::PrintToPACSDemo.Properties.Resources.play;
+            UpdateToolbarButtons(i);
         }
 
         private async void toolStripButtonSnapshot_Click(object sender, EventArgs e)
@@ -254,15 +281,10 @@ namespace PrintToPACSDemo.UI.CameraUI
             DestroyEngine();
         }
 
-        private async void buttonBackCamera_Click(object sender, EventArgs e)
+        public void SetFilePathMedia(string filePath)
         {
-            await MediaPlayer1.StopAsync();
-            if (BackCamera_Click != null)
-            {
-                BackCamera_Click(this, EventArgs.Empty);
-            }
+            FilePathVideo = filePath;
         }
-
         private void MediaPlayerControl_ControlRemoved(object sender, ControlEventArgs e)
         {
             //MediaPlayer1.DisposeAsync();

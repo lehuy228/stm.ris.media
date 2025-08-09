@@ -1,18 +1,36 @@
-﻿using Leadtools.Demos;
+﻿using DevExpress.LookAndFeel;
+using DevExpress.Skins;
+using DevExpress.UserSkins;
+using Leadtools.Demos;
 using Leadtools.DicomDemos;
+using MediaToPacs.Core.Models;
 using PrintToPACS.Utilities;
-using PrintToPACSDemo.UI;
-using PrintToPACSDemo.UI.Login;
+using PrintToPACSDemo.Utilities;
 using System;
-using System.Threading.Tasks;
-using System.Web.UI.WebControls;
-using System.Windows;
 
 namespace PrintToPACSDemo
 {
     public class Program
     {
-        public FrmMain _FrmMain;
+        private static void EnsureDefaults(AppSettings settings)
+        {
+            bool changed = false;
+
+            if (settings.CameraSettings == null)
+            {
+                settings.CameraSettings = new CameraSettings();
+                changed = true;
+            }
+
+            if (settings.ShortcutSettings == null)
+            {
+                settings.ShortcutSettings = new ShortcutSettings();
+                changed = true;
+            }
+
+            if (changed)
+                AppSettingsLoader.Save(settings);
+        }
 
         public static bool IsAuthencation = false;
 
@@ -20,7 +38,7 @@ namespace PrintToPACSDemo
         /// アプリケーションのメイン エントリ ポイントです。
         /// </summary>
         [STAThread]
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             try
             {
@@ -30,11 +48,11 @@ namespace PrintToPACSDemo
             }
             catch { }
 
-#if LEADTOOLS_V175_OR_LATER
-            Support.SetLicense();
-#else
-         Support.Unlock(false);
-#endif
+            #if LEADTOOLS_V175_OR_LATER
+                        Support.SetLicense();
+            #else
+                     Support.Unlock(false);
+            #endif
 
             //if (Support.KernelExpired)
             //    return;
@@ -48,11 +66,19 @@ namespace PrintToPACSDemo
                     return;
             }
 
+            var appSettings = AppSettingsLoader.Load();
+            EnsureDefaults(appSettings);
+
             Utils.EngineStartup();
             Utils.DicomNetStartup();
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-            System.Windows.Forms.Application.Run(new SplashAuthForm());
+
+            BonusSkins.Register();
+            SkinManager.EnableFormSkins(); 
+            UserLookAndFeel.Default.SetSkinStyle("McSkin"); 
+
+            System.Windows.Forms.Application.Run(new AppContextWithAuth());
         }
         static bool ReadCommandLine(string[] args)
         {
@@ -61,3 +87,4 @@ namespace PrintToPACSDemo
     }
 
 }
+

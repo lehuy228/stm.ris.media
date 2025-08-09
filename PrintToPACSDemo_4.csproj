@@ -10,7 +10,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PrintToPACSDemo</RootNamespace>
     <AssemblyName>CSPrintToPACSDemo</AssemblyName>
-    <ApplicationIcon>Resources\Med.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <Win32Resource>
     </Win32Resource>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -82,20 +83,36 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="DevExpress.BonusSkins.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Charts.v20.1.Core, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.CodeParser.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Data.Desktop.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Data.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.DataAccess.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.DataAccess.v20.1.UI, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Images.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Office.v20.1.Core, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Pdf.v20.1.Core, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.PivotGrid.v20.1.Core, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v20.1.Core, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.RichEdit.v20.1.Core, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v20.1.Core, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Utils.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v20.1.UI, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraBars.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraCharts.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraCharts.v20.1.Extensions, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraCharts.v20.1.Wizard, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraEditors.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGauges.v20.1.Core, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraGrid.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraNavBar.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraPivotGrid.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraPrinting.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraReports.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraReports.v20.1.Extensions, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraRichEdit.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraVerticalGrid.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="Leadtools">
       <SpecificVersion>False</SpecificVersion>
@@ -254,7 +271,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Device" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
@@ -263,6 +282,7 @@
     <Reference Include="System.Drawing.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Drawing.Common.6.0.0\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
@@ -361,6 +381,11 @@
     <Compile Include="Common\Utils.cs" />
     <Compile Include="Common\WaitCursor.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Scanning\Twain\ErrorList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -368,11 +393,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -389,12 +409,6 @@
     <Compile Include="Scanning\Twain\Template.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SplashAuthForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SplashAuthForm.Designer.cs">
-      <DependentUpon>SplashAuthForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\CameraUI\CameraControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -407,12 +421,6 @@
     <Compile Include="UI\CameraUI\MediaPlayerControl.Designer.cs">
       <DependentUpon>MediaPlayerControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CameraUI\SettingsCamera.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\CameraUI\SettingsCamera.Designer.cs">
-      <DependentUpon>SettingsCamera.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Conclusion\ConclusionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -424,6 +432,18 @@
     </Compile>
     <Compile Include="UI\Conclusion\ImageControl.Designer.cs">
       <DependentUpon>ImageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FormBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FormBase.Designer.cs">
+      <DependentUpon>FormBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FormRecognizing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FormRecognizing.Designer.cs">
+      <DependentUpon>FormRecognizing.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\FrmMain.cs">
       <SubType>Form</SubType>
@@ -455,36 +475,18 @@
     <Compile Include="UI\ListImageBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\Login\AuthenticationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Login\AuthenticationForm.Designer.cs">
-      <DependentUpon>AuthenticationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Login\LoginControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Login\LoginControl.Designer.cs">
-      <DependentUpon>LoginControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Login\QRCodeAuthentication.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Login\QRCodeAuthentication.Designer.cs">
-      <DependentUpon>QRCodeAuthentication.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Login\ResetPassword.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Login\ResetPassword.Designer.cs">
-      <DependentUpon>ResetPassword.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\LogWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\LogWindow.Designer.cs">
       <DependentUpon>LogWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\OptionsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\AppContextWithAuth.cs" />
+    <Compile Include="Utilities\AppSettingsLoader.cs" />
+    <Compile Include="Utilities\MyQueryRetrieveScu.cs" />
     <Compile Include="Utilities\PacsSettings.cs" />
     <Compile Include="UI\WorkListTable.cs">
       <SubType>Form</SubType>
@@ -493,9 +495,6 @@
       <DependentUpon>WorkListTable.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MyQueryRetrieveScu.cs" />
-    <Compile Include="UI\OptionsDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UI\FrmUsage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -506,6 +505,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Utilities\PrintingUtilities.cs" />
+    <Compile Include="Utilities\ServiceLocator.cs" />
     <Compile Include="Utilities\UtilClass.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -515,20 +515,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SplashAuthForm.resx">
-      <DependentUpon>SplashAuthForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\CameraUI\CameraControl.resx">
       <DependentUpon>CameraControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CameraUI\MediaPlayerControl.resx">
       <DependentUpon>MediaPlayerControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CameraUI\SettingsCamera.resx">
-      <DependentUpon>SettingsCamera.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Conclusion\ConclusionForm.resx">
       <DependentUpon>ConclusionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FormRecognizing.resx">
+      <DependentUpon>FormRecognizing.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
@@ -540,24 +537,19 @@
     <EmbeddedResource Include="UI\Help.resx">
       <DependentUpon>Help.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Login\AuthenticationForm.resx">
-      <DependentUpon>AuthenticationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Login\LoginControl.resx">
-      <DependentUpon>LoginControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Login\QRCodeAuthentication.resx">
-      <DependentUpon>QRCodeAuthentication.cs</DependentUpon>
-    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OptionsDialog.resx" />
     <EmbeddedResource Include="UI\WorkListTable.resx">
       <DependentUpon>WorkListTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\OptionsDialog.resx">
-      <DependentUpon>OptionsDialog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Libraries\Arial.ttf" />
+    <None Include="Libraries\full_license.key" />
+    <None Include="Libraries\full_license.lic" />
+    <None Include="Libraries\TemplateResult.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -589,7 +581,6 @@
     <EmbeddedResource Include="Resources\StudyRootIheCFind.dcm" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Med.ico" />
     <EmbeddedResource Include="UI\FrmOperation.resx">
       <DependentUpon>FrmOperation.cs</DependentUpon>
     </EmbeddedResource>
@@ -601,22 +592,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\videoEx.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\youtube.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\back.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\back-arrow.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\back-button.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\camera.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\fast-forward-button.png" />
@@ -631,16 +610,10 @@
     <None Include="Resources\play.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\resume.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\rewind.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\right-arrow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\setting.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\snapshot.png" />
@@ -652,28 +625,10 @@
     <None Include="Resources\stop-button.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\video-camera.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\logo.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\transparency.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\search.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cogwheel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\loupe.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\circle.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pause1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shutter.png" />
@@ -688,13 +643,17 @@
     <None Include="Resources\information.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Anphat\Tài liệu ứng dụng test\MediaToPacs.Entitys\MediaToPacs.Entitys.csproj">
-      <Project>{6CAE7B3E-7EC1-4803-85F7-54D5F438A43F}</Project>
-      <Name>MediaToPacs.Entitys</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Anphat\Tài liệu ứng dụng test\STMMedicalConnection.AuthSDK\STMMedicalConnection.AuthSDK.csproj">
       <Project>{a4bddd93-257a-4a0a-832e-223f30b0b9d3}</Project>
       <Name>STMMedicalConnection.AuthSDK</Name>
+    </ProjectReference>
+    <ProjectReference Include="MediaToPacs.Core\MediaToPacs.Core.csproj">
+      <Project>{2A73C8D7-D1DE-47F7-9371-9DA718514F35}</Project>
+      <Name>MediaToPacs.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="MediaToPacs.Infrastructure\MediaToPacs.Infrastructure.csproj">
+      <Project>{60895A3D-2A6B-43EF-876C-15E73E7A7813}</Project>
+      <Name>MediaToPacs.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -708,6 +667,70 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Libraries\app_settings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Codecs.Bmp.dll" />
+    <Content Include="Libraries\Leadtools.Codecs.Cmp.dll" />
+    <Content Include="Libraries\Leadtools.Codecs.Cmw.dll" />
+    <Content Include="Libraries\Leadtools.Codecs.dll" />
+    <Content Include="Libraries\Leadtools.Codecs.Fax.dll" />
+    <Content Include="Libraries\Leadtools.Codecs.Gif.dll" />
+    <Content Include="Libraries\Leadtools.Codecs.J2k.dll" />
+    <Content Include="Libraries\Leadtools.Codecs.Jb2.dll" />
+    <Content Include="Libraries\Leadtools.Codecs.Jbg.dll" />
+    <Content Include="Libraries\Leadtools.Codecs.Png.dll" />
+    <Content Include="Libraries\Leadtools.Codecs.Raw.dll" />
+    <Content Include="Libraries\Leadtools.Codecs.Tif.dll" />
+    <Content Include="Libraries\Leadtools.ColorConversion.dll" />
+    <Content Include="Libraries\Leadtools.Controls.WinForms.dll" />
+    <Content Include="Libraries\Leadtools.Dicom.Common.dll" />
+    <Content Include="Libraries\Leadtools.Dicom.dll" />
+    <Content Include="Libraries\Leadtools.Dicom.Scu.dll" />
+    <Content Include="Libraries\Leadtools.dll" />
+    <Content Include="Libraries\Leadtools.Drawing.dll" />
+    <Content Include="Libraries\Leadtools.Forms.DocumentWriters.dll" />
+    <Content Include="Libraries\Leadtools.Forms.Processing.dll" />
+    <Content Include="Libraries\Leadtools.ImageProcessing.Effects.dll" />
+    <Content Include="Libraries\Leadtools.ImageProcessing.Utilities.dll" />
+    <Content Include="Libraries\Leadtools.Medical.DataAccessLayer.dll" />
+    <Content Include="Libraries\Leadtools.Medical.UserManagementDataAccessLayer.dll" />
+    <Content Include="Libraries\Leadtools.Medical.Winforms.dll" />
+    <Content Include="Libraries\Leadtools.Medical.Worklist.DataAccessLayer.dll" />
+    <Content Include="Libraries\Leadtools.Printer.dll" />
+    <Content Include="Libraries\Leadtools.ScreenCapture.dll" />
+    <Content Include="Libraries\Leadtools.Twain.dll" />
+    <Content Include="Libraries\Leadtools.Vector.dll" />
+    <Content Include="Libraries\Leadtools.Wia.dll" />
+    <Content Include="Libraries\Leadtools.Windows.Media.TransitionBase.dll" />
+    <Content Include="Libraries\Leadtools.WinForms.CommonDialogs.File.dll" />
+    <Content Include="Libraries\Leadtools.WinForms.dll" />
+    <Content Include="Libraries\SkiaSharp.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\ClearDICOM.ico" />
+    <None Include="Resources\client_add_32.ico" />
+    <None Include="Resources\client_remove_32.ico" />
+    <Content Include="Resources\DeleteImage.ico" />
+    <Content Include="Resources\DeleteSelectImage.ico" />
+    <Content Include="Resources\Help.ico" />
+    <Content Include="Resources\LoadRaster.ico" />
+    <Content Include="Resources\log.png" />
+    <Content Include="Resources\Rotate.ico" />
+    <Content Include="Resources\SaveDICOM.ico" />
+    <Content Include="Resources\ScreenCapture.ico" />
+    <Content Include="Resources\setting.png" />
+    <Content Include="Resources\StorePACS_32.ico" />
+    <Content Include="Resources\StorePACS_48.ico" />
+    <Content Include="Resources\TransferPatientInfo.ico" />
+    <Content Include="Resources\TransferStudy.ico" />
+    <Content Include="Resources\TransferWorkItem.ico" />
+    <Content Include="Resources\TWAINAquire.ico" />
+    <Content Include="Resources\ViewLog.ico" />
+    <Content Include="Resources\WIAAcquire.ico" />
+    <None Include="Resources\stm.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

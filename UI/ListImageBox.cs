@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using Leadtools.WinForms;
 using Leadtools;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters;
+using System.Runtime.Serialization;
 
 namespace PrintToPACSDemo.UI
 {
@@ -739,7 +743,7 @@ namespace PrintToPACSDemo.UI
             GroupBoxImageCollection.GotFocus += new EventHandler(ItemGotFocus);
 
             GroupBoxImageCollection.Tag = false;
-            GroupBoxImageCollection.Text = imagecollection.Name;
+            //GroupBoxImageCollection.Text = imagecollection.Name;
             ButtonExpansion.Click += new EventHandler(ButtonExpansion_Click);
 
             //Add All Items
@@ -791,24 +795,24 @@ namespace PrintToPACSDemo.UI
             // 
             CheckBoxItem.AutoSize = true;
             CheckBoxItem.Location = new Point(4, 5);
+            CheckBoxItem.BackColor = Color.Black;
             CheckBoxItem.Size = new Size(12, 11);
             CheckBoxItem.FlatStyle = FlatStyle.Standard;
             CheckBoxItem.UseVisualStyleBackColor = true;
-            CheckBoxItem.Visible = false;
             // 
             // PanelBackGround
             // 
             PanelBackGround.BackColor = this.BackColor;
             PanelBackGround.Controls.Add(CheckBoxItem);
-            PanelBackGround.Controls.Add(PanelTextBackColor);
+            //PanelBackGround.Controls.Add(PanelTextBackColor);
             PanelBackGround.Controls.Add(Picturebox);
             PanelBackGround.Location = new Point(6, 7);
-            PanelBackGround.Size = new Size(PanelItem.Width - 12, PanelItem.Height - 15); // 120
+            PanelBackGround.Size = new Size(PanelItem.Width, PanelItem.Height - 15); // 120
                                                                                           // 
                                                                                           // PanelTextBackColor
                                                                                           // 
             PanelTextBackColor.BackColor = Color.LightCoral;
-            PanelTextBackColor.Controls.Add(LabelText);
+            //PanelTextBackColor.Controls.Add(LabelText);
             PanelTextBackColor.Location = new Point(3, PanelBackGround.Height - 25);
             PanelTextBackColor.Size = new Size(PanelBackGround.Width - 7, 21);
             // 
@@ -817,21 +821,17 @@ namespace PrintToPACSDemo.UI
             LabelText.AutoSize = true;
             LabelText.Location = new Point(3, 3);
             LabelText.Size = new Size(97, 13);
-            LabelText.AutoSize = false;
-            LabelText.AutoEllipsis = true;
-            LabelText.Width = 97;
-            LabelText.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // Picturebox
             // 
             Picturebox.BorderStyle = BorderStyle.None;
             Picturebox.Location = new Point(3, 4);
-            Picturebox.Size = new Size(PanelBackGround.Width - 7, PanelBackGround.Height - 30);
+            Picturebox.Size = new Size(PanelBackGround.Width, PanelBackGround.Height);
             Picturebox.SizeMode = RasterPaintSizeMode.FitAlways;
             Picturebox.HorizontalAlignMode = RasterPaintAlignMode.Center;
             Picturebox.VerticalAlignMode = RasterPaintAlignMode.Center;
             Picturebox.TabStop = false;
-            Picturebox.BackColor = this.BackColor;
+            Picturebox.BackColor = Color.Black;
             Picturebox.Click += new EventHandler(ItemClick);
             LabelText.Click += new EventHandler(ItemClick);
             PanelItem.Click += new EventHandler(ItemClick);
@@ -1080,8 +1080,7 @@ namespace PrintToPACSDemo.UI
                 set { _rasterImage = value; }
             }
 
-            //Anphat
-            bool _checked = true;
+            bool _checked = false;
             public bool Checked
             {
                 get { return _checked; }
@@ -1147,7 +1146,7 @@ namespace PrintToPACSDemo.UI
 
                     Control control = _Controls;
                     control = control.Controls[0];
-                    return (control.BackColor == Color.Blue);
+                    return (control.BackColor == Color.Red);
                 }
                 set
                 {
@@ -1155,7 +1154,7 @@ namespace PrintToPACSDemo.UI
                     control = control.Controls[0];
                     if (value == true)
                     {
-                        control.BackColor = Color.Blue;
+                        control.BackColor = Color.Red;
                     }
                     else
                     {
