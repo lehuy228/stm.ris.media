@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 using PrintToPACSDemo.Utilities;
 using MediaToPacs.Core.Models;
 using System.Linq;
-using STMMedicalConnection.AuthSDK;
+using STM.MediaToPacs.Connection.AuthSDK;
 
 namespace PrintToPACSDemo.UI
 {

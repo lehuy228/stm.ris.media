@@ -643,10 +643,6 @@
     <None Include="Resources\information.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Anphat\Tài liệu ứng dụng test\STMMedicalConnection.AuthSDK\STMMedicalConnection.AuthSDK.csproj">
-      <Project>{a4bddd93-257a-4a0a-832e-223f30b0b9d3}</Project>
-      <Name>STMMedicalConnection.AuthSDK</Name>
-    </ProjectReference>
     <ProjectReference Include="MediaToPacs.Core\MediaToPacs.Core.csproj">
       <Project>{2A73C8D7-D1DE-47F7-9371-9DA718514F35}</Project>
       <Name>MediaToPacs.Core</Name>
@@ -654,6 +650,10 @@
     <ProjectReference Include="MediaToPacs.Infrastructure\MediaToPacs.Infrastructure.csproj">
       <Project>{60895A3D-2A6B-43EF-876C-15E73E7A7813}</Project>
       <Name>MediaToPacs.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="STM.MediaToPacs.Connection.AuthSDK\STM.MediaToPacs.Connection.AuthSDK.csproj">
+      <Project>{A45792ED-D9FC-4948-BB9F-78E8BE0212D0}</Project>
+      <Name>STM.MediaToPacs.Connection.AuthSDK</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

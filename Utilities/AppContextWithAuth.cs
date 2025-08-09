@@ -1,6 +1,6 @@
 ﻿using MediaToPacs.Infrastructure.Auths;
 using PrintToPACSDemo.UI;
-using STMMedicalConnection.AuthSDK;
+using STM.MediaToPacs.Connection.AuthSDK;
 using System;
 using System.Collections.Generic;
 using System.Linq;
