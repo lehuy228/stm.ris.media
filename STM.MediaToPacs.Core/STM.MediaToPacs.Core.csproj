@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2A73C8D7-D1DE-47F7-9371-9DA718514F35}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MediaToPacs.Core</RootNamespace>
+    <AssemblyName>MediaToPacs.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Auths\ISessionService.cs" />
+    <Compile Include="Auths\IPermissionService.cs" />
+    <Compile Include="Enums\Genders.cs" />
+    <Compile Include="Enums\TrangThaiKetLuan.cs" />
+    <Compile Include="Interfaces\IHisService.cs" />
+    <Compile Include="Interfaces\IKeycloakService.cs" />
+    <Compile Include="Interfaces\IMinIOService.cs" />
+    <Compile Include="Interfaces\IRisService.cs" />
+    <Compile Include="Interfaces\ISignatureService.cs" />
+    <Compile Include="Interfaces\IStudyService.cs" />
+    <Compile Include="Models\AppPermissions.cs" />
+    <Compile Include="Models\His\KiemTraTienRequest.cs" />
+    <Compile Include="Models\His\KiemTraTienResponse.cs" />
+    <Compile Include="Models\Ketluan\ApiResponse.cs" />
+    <Compile Include="Models\Ketluan\BenhNhan.cs" />
+    <Compile Include="Models\CameraSettings.cs" />
+    <Compile Include="Models\BO\CertBO.cs" />
+    <Compile Include="Models\CreateUserRequest.cs" />
+    <Compile Include="Models\Ketluan\ChiDinhDichVuResponse.cs" />
+    <Compile Include="Models\Ketluan\ChiDinhGridView.cs" />
+    <Compile Include="Models\Ketluan\DanhMucDichVuGridView.cs" />
+    <Compile Include="Models\Ketluan\DanhMucDichVuResponse.cs" />
+    <Compile Include="Models\Ketluan\GoiYKetLuanDataGridView.cs" />
+    <Compile Include="Models\Ketluan\GoiYKetLuanRequest.cs" />
+    <Compile Include="Models\Ketluan\GoiYKetLuanResponse.cs" />
+    <Compile Include="Models\Ketluan\HisUserKySoRequest.cs" />
+    <Compile Include="Models\Ketluan\HisUserKySoResponse.cs" />
+    <Compile Include="Models\Ketluan\HisUserResponse.cs" />
+    <Compile Include="Models\Ketluan\KetQuaChanDoanRequest.cs" />
+    <Compile Include="Models\Ketluan\KetQuaChanDoanResponse.cs" />
+    <Compile Include="Models\Ketluan\ReportTemplateGridViewModel.cs" />
+    <Compile Include="Models\Ketluan\ReportTemplateRequest.cs" />
+    <Compile Include="Models\Ketluan\ReportTemplateResponse.cs" />
+    <Compile Include="Models\Ketluan\ThietBiResponse.cs" />
+    <Compile Include="Models\Ketluan\ThongTinKetLuanBaoCaoThuong.cs" />
+    <Compile Include="Models\KeycloakUserInfo.cs" />
+    <Compile Include="Models\BO\LoginResponseBO.cs" />
+    <Compile Include="Models\Ketluan\MedicalReport.cs" />
+    <Compile Include="Models\BO\PdfResponse.cs" />
+    <Compile Include="Models\Ketluan\ReportTemplate.cs" />
+    <Compile Include="Models\Ketluan\ResultPage.cs" />
+    <Compile Include="Models\Ketluan\ScheduleStepRIS.cs" />
+    <Compile Include="Models\BO\SignhashRequest.cs" />
+    <Compile Include="Models\Modalities.cs" />
+    <Compile Include="Models\ResponseResult.cs" />
+    <Compile Include="Models\ShortcutAndFontSettings.cs" />
+    <Compile Include="Models\StudyOr.cs" />
+    <Compile Include="Models\SystemConfig.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\BO\UserDto.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
