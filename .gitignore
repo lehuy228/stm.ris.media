@@ -361,3 +361,20 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Project-specific ignores
+# License files (may contain sensitive information)
+*.key
+*.lic
+*.licx
+
+# Setup and release files
+Setup.exe
+Setup.msi
+RELEASES
+
+# App settings (may contain sensitive configuration)
+app_settings.xml
+
+# Squirrel releases
+Releases/
