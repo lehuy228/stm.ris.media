@@ -53,6 +53,9 @@ namespace MediaToPacs.Core.Models
 
         [XmlElement("SystemUpdatePassword")]
         public string SystemUpdatePassword { get; set; }
+
+        [XmlElement("SystemUpdateToken")]
+        public string SystemUpdateToken { get; set; }
         #endregion
 
         #region Other Settings

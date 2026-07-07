@@ -8,12 +8,12 @@ using Serilog;
 using System;
 using System.Configuration;
 using System.IO;
+using Velopack;
 
 namespace STM.MediaToPACS.Main
 {
     public class Program
     {
-
         public static bool IsAuthencation = false;
 
         /// <summary>
@@ -22,7 +22,9 @@ namespace STM.MediaToPACS.Main
         [STAThread]
         static void Main(string[] args)
         {
-            string logFolder = Path.Combine(ServiceLocator.GetAppDataBasePath(), "Logs");
+            VelopackApp.Build().Run();
+
+            string logFolder = Path.Combine(ConfigurationManager.AppSettings["File:BasePath"], "Logs");
             Directory.CreateDirectory(logFolder);
 
             Log.Logger = new LoggerConfiguration()

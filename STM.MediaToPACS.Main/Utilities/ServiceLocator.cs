@@ -130,6 +130,8 @@ namespace STM.MediaToPACS.Main.Utilities
                     UrlPacsPublic = "http://10.12.8.16:6038/MedicalViewer",
                     UrlSystemUpdate = null,
                     SystemUpdateUser = null,
+                    SystemUpdateToken = null,
+                    UrlTokenPacs = "",
                     SystemUpdatePassword = null,
                     CheckThanhToan = "http://117.5.149.75:25117/api/KiemTraTien",
                     UrlSignatureMysign = "http://10.12.8.16:10005"
