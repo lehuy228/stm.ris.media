@@ -148,7 +148,7 @@ namespace STM.MediaToPACS.Main
                 InitClass();
                 InitListBoxImage();
                 InitializeComponent();
-                _baseFolder = ConfigurationManager.AppSettings["File:BasePath"];
+                _baseFolder = ServiceLocator.GetAppDataBasePath();
                 if (!Directory.Exists(_baseFolder))
                 {
                     Directory.CreateDirectory(_baseFolder);
@@ -172,7 +172,7 @@ namespace STM.MediaToPACS.Main
                 InitClass();
                 InitListBoxImage();
                 InitializeComponent();
-                _baseFolder = ConfigurationManager.AppSettings["File:BasePath"];
+                _baseFolder = ServiceLocator.GetAppDataBasePath();
                 if (!Directory.Exists(_baseFolder))
                 {
                     Directory.CreateDirectory(_baseFolder);
@@ -292,9 +292,9 @@ namespace STM.MediaToPACS.Main
         private Leadtools.Dicom.Common.Editing.DicomEditableObject DicomEditableObject;
         private Leadtools.WinForms.RasterImageViewer _pictureBox = new Leadtools.WinForms.RasterImageViewer();
         private List<GoiYKetLuanResponse> _listGoiYKetLuan { get; set; }
-        private List<ThietBiResponse> _listThietBi { get; set; }
+        private List<DeviceDto> _listThietBi { get; set; }
         private List<ReportTemplateGridViewModel> _listMauBaoCao { get; set; }
-        private List<HisUserResponse> _listHisUser { get; set; }
+        private List<PractitionerListDto> _listHisUser { get; set; }
         private ChiDinhDichVuResponse _chiDinhDichVuResponse { get; set; }
         private List<string> listImageKeyLocal { get; set; } = new List<string>();
         private const string FileNameXMLImage = "ImageSelected.xml";
@@ -733,19 +733,23 @@ namespace STM.MediaToPACS.Main
         {
             try
             {
-                // Chạy song song các thao tác độc lập
-                // Chạy song song các thao tác async độc lập
-                var loadKTVTask = InitDanhSachKTVAsync();
-                var loadKetQuaTask = InitCheckKetQuaChanDoanAsync();
-                var loadImageTask = Task.Run(() => LoadImageData());
+                // Phải lấy kết quả chẩn đoán trước: nếu đã kết luận thành công thì staffCode
+                // để tra KTV/y tá cùng khoa sẽ lấy theo bác sĩ đã kết luận (MaBacSiKetLuan)
+                // trong kết quả, không phải bác sĩ đang đăng nhập.
+                await InitCheckKetQuaChanDoanAsync();
 
-                // Chờ tất cả hoàn thành
-                await Task.WhenAll(loadKTVTask, loadKetQuaTask, loadImageTask);
+                var loadImageTask = Task.Run(() => LoadImageData());
+                var loadKTVTask = InitDanhSachKTVAsync();
+
+                // Chờ tất cả hoàn thành trước khi đụng vào UI
+                await Task.WhenAll(loadKTVTask, loadImageTask);
 
                 // Các thao tác cần UI thread
                 this.Invoke((MethodInvoker)delegate
                 {
-                    ;
+                    // _listHisUser (loadKTVTask) và _kqChanDoanResponse (đã await trước đó) đã sẵn sàng ở đây;
+                    // _listThietBi đã có từ NHÓM 2 (chạy trước NHÓM 3)
+                    ApplyThietBiVaKTVSelectionFromResult();
 
                     if (result != null)
                     {
@@ -1014,7 +1018,7 @@ namespace STM.MediaToPACS.Main
             _cbbMauGoiY.Properties.Items.Clear();
             foreach (var item in _listGoiYKetLuan)
             {
-                var tb = _listThietBi.FirstOrDefault(x => x.maThietBi == item.mathietbi);
+                var tb = _listThietBi.FirstOrDefault(x => x.code == item.mathietbi);
                 if (tb != null)
                 {
                     _cbbDSThietBi.EditValue = tb.id;
@@ -1189,8 +1193,12 @@ namespace STM.MediaToPACS.Main
         {
             try
             {
-                var response = await ServiceLocator.RisService.GetDSThietBiAsync(loaiThietBi: "Máy chụp");
-                _listThietBi = response?.data;
+                // API RIS v1 (cũ) - giữ lại để tham khảo/rollback nếu cần
+                //var response = await ServiceLocator.RisService.GetDSThietBiAsync(loaiThietBi: "Máy chụp");
+                //_listThietBi = response?.data;
+
+                // API RIS v2 (mới)
+                _listThietBi = await ServiceLocator.RisService2.GetDevicesAsync(modality: _chiDinhDichVuResponse?.Modality);
 
                 if (_listThietBi == null || _listThietBi.Count == 0)
                 {
@@ -1215,7 +1223,7 @@ namespace STM.MediaToPACS.Main
         private void ConfigureThietBiLookup()
         {
             _cbbDSThietBi.Properties.DataSource = _listThietBi;
-            _cbbDSThietBi.Properties.DisplayMember = "tenThietBi";
+            _cbbDSThietBi.Properties.DisplayMember = "name";
             _cbbDSThietBi.Properties.ValueMember = "id";
             _cbbDSThietBi.Properties.NullText = "Chọn thiết bị...";
 
@@ -1224,15 +1232,14 @@ namespace STM.MediaToPACS.Main
             _cbbDSThietBi.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             _cbbDSThietBi.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
 
-            // Cấu hình cột
+            // Cấu hình cột: chỉ hiển thị mã và tên thiết bị, ẩn các cột còn lại của DeviceDto
             _cbbDSThietBi.Properties.PopulateColumns();
-            var columns = _cbbDSThietBi.Properties.Columns;
-            columns["id"].Visible = false;
-            columns["loaiThietBi"].Visible = false;
-            columns["trangThaiThietBi"].Visible = false;
-            columns["maThietBi"].Visible = true;
-            columns["maThietBi"].Caption = "Mã thiết bị";
-            columns["tenThietBi"].Caption = "Tên thiết bị";
+            foreach (DevExpress.XtraEditors.Controls.LookUpColumnInfo col in _cbbDSThietBi.Properties.Columns)
+            {
+                col.Visible = col.FieldName == "code" || col.FieldName == "name";
+            }
+            _cbbDSThietBi.Properties.Columns["code"].Caption = "Mã thiết bị";
+            _cbbDSThietBi.Properties.Columns["name"].Caption = "Tên thiết bị";
         }
 
 
@@ -1247,8 +1254,28 @@ namespace STM.MediaToPACS.Main
         {
             try
             {
-                // Lấy danh sách KTV từ RIS service
-                _listHisUser = (await ServiceLocator.RisService.GetDSNguoidungAsync()).data;
+                // Nếu đã kết luận thành công thì tra theo bác sĩ đã kết luận (MaBacSiKetLuan) trong
+                // kết quả, không phải bác sĩ đang đăng nhập (có thể là người khác đang xem/sửa lại).
+                bool daHoanThanh = _kqChanDoanResponse != null &&
+                    TrangThaiKetLuan.HOAN_THANH.Equals(_kqChanDoanResponse.TrangThai);
+
+                var staffCode = daHoanThanh
+                    ? _kqChanDoanResponse.MaBacSiKetLuan
+                    : ServiceLocator.KeycloakUserInfo?.HISCode;
+
+                if (string.IsNullOrWhiteSpace(staffCode))
+                {
+                    Log.Warning("Không có mã bác sĩ để tra danh sách KTV/Y tá cùng khoa");
+                    return;
+                }
+
+                // API RIS v1 (cũ) - giữ lại để tham khảo/rollback nếu cần
+                //_listHisUser = (await ServiceLocator.RisService.GetDSNguoidungAsync()).data;
+
+                // API RIS v2 (mới) - lấy danh sách KTV (TECHNICIAN), y tá (NURSE) cùng khoa với bác sĩ (staffCode = HISCode)
+                _listHisUser = await ServiceLocator.RisService2.GetColleaguesAsync(
+                    staffCode,
+                    titleCodes: new List<string> { "NURSE", "TECHNICIAN" });
 
                 // Cập nhật UI trên UI thread
                 if (this.InvokeRequired)
@@ -1277,7 +1304,7 @@ namespace STM.MediaToPACS.Main
         {
             // Gán dữ liệu vào LookUpEdit
             _cbbHisUser.Properties.DataSource = _listHisUser;
-            _cbbHisUser.Properties.DisplayMember = "full_name";
+            _cbbHisUser.Properties.DisplayMember = "fullName";
             _cbbHisUser.Properties.ValueMember = "id";
             _cbbHisUser.Properties.NullText = "Chọn KTV...";
 
@@ -1286,25 +1313,42 @@ namespace STM.MediaToPACS.Main
             _cbbHisUser.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             _cbbHisUser.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
 
-            // Hiển thị cột
+            // Hiển thị cột: chỉ hiển thị mã và tên, ẩn các cột còn lại của PractitionerListDto
             _cbbHisUser.Properties.PopulateColumns();
-            _cbbHisUser.Properties.Columns["id"].Visible = false;
-            _cbbHisUser.Properties.Columns["user_name"].Visible = false;
-            _cbbHisUser.Properties.Columns["is_synced"].Visible = false;
-
-            _cbbHisUser.Properties.Columns["full_name"].Caption = "Tên KTV";
-            _cbbHisUser.Properties.Columns["his_id"].Caption = "Mã KTV";
-
-            // Nếu có dữ liệu
-            if (_listHisUser?.Count > 0)
+            foreach (DevExpress.XtraEditors.Controls.LookUpColumnInfo col in _cbbHisUser.Properties.Columns)
             {
-                // Tìm user có his_id = "4"
-                var selectedUser = _listHisUser.FirstOrDefault(u => u.his_id == "4");
+                col.Visible = col.FieldName == "staffCode" || col.FieldName == "fullName";
+            }
 
-                if (selectedUser != null)
-                    _cbbHisUser.EditValue = selectedUser.id;
-                else
-                    _cbbHisUser.EditValue = _listHisUser.First().id;
+            _cbbHisUser.Properties.Columns["fullName"].Caption = "Tên KTV";
+            _cbbHisUser.Properties.Columns["staffCode"].Caption = "Mã KTV";
+        }
+
+        /// <summary>
+        /// Chọn KTV/y tá và thiết bị trên combobox theo kết quả đã lưu (kể cả bản Nháp,
+        /// vì lúc lưu nháp đã có sẵn thông tin thiết bị/KTV rồi). Chưa có kết quả nào thì để trống.
+        /// Phải gọi sau khi cả _listHisUser, _listThietBi và _kqChanDoanResponse đã load xong.
+        /// </summary>
+        private void ApplyThietBiVaKTVSelectionFromResult()
+        {
+            // KTV / Y tá
+            if (_listHisUser != null && _listHisUser.Count > 0)
+            {
+                var selectedUser = _kqChanDoanResponse != null
+                    ? _listHisUser.FirstOrDefault(u => u.staffCode == _kqChanDoanResponse.MaKyThuatVien)
+                    : null;
+
+                _cbbHisUser.EditValue = selectedUser?.id;
+            }
+
+            // Thiết bị
+            if (_listThietBi != null && _listThietBi.Count > 0)
+            {
+                var selectedThietBi = _kqChanDoanResponse != null
+                    ? _listThietBi.FirstOrDefault(x => x.code == _kqChanDoanResponse.MaThietBi)
+                    : null;
+
+                _cbbDSThietBi.EditValue = selectedThietBi?.id ?? 0;
             }
         }
 
@@ -1348,8 +1392,8 @@ namespace STM.MediaToPACS.Main
         {
             if (_kqChanDoanResponse != null)
             {
-                _dateTGThucHien.DateTime = _kqChanDoanResponse.NgayKetQua.AddHours(7);
-                _dateTGKetThuc.DateTime = _kqChanDoanResponse.CreatedAt.AddHours(7);
+                _dateTGThucHien.DateTime = _kqChanDoanResponse.NgayKetQua.AddHours(7).AddMinutes(-2);
+                _dateTGKetThuc.DateTime = _kqChanDoanResponse.NgayKetQua.AddHours(7);
                 _txBSDoc.Text = _kqChanDoanResponse.BacSiKetLuan ?? "";
 
                 _rtMoTa.Text = _kqChanDoanResponse.Kqcls_MoTa ?? "";
@@ -1412,7 +1456,7 @@ namespace STM.MediaToPACS.Main
                 _rtKhuyenNghi.Text = selected.kqcls_denghi;
                 _rtKetLuan.Text = selected.kqcls_ketluan;
 
-                var tb = _listThietBi.FirstOrDefault(x => x.maThietBi == selected.mathietbi);
+                var tb = _listThietBi.FirstOrDefault(x => x.code == selected.mathietbi);
                 if (tb != null)
                 {
                     _cbbDSThietBi.EditValue = tb.id;
@@ -1531,7 +1575,10 @@ namespace STM.MediaToPACS.Main
 
                 ShowSuccessMessage("Đã gửi kết quả chẩn đoán sang HIS thành công.");
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Lỗi khi gửi kết quả chẩn đoán sang HIS cho MaChiDinh: {_machidinh}");
+            }
         }
 
         #endregion
@@ -2090,7 +2137,7 @@ namespace STM.MediaToPACS.Main
             }
             catch (Exception ex)
             {
-
+                Log.Error(ex, "Lỗi khi thực hiện Store to PACS");
             }
         }
 
@@ -2186,7 +2233,7 @@ namespace STM.MediaToPACS.Main
 
             DicomElement dElement = ds.FindFirstElement(null, DicomTag.Modality, true);
             if (dElement == null)
-                ds.InsertElement(null, false, dElement.Tag, dElement.VR, false, 0);
+                dElement = ds.InsertElement(null, false, DicomTag.Modality, DicomVRType.UN, false, 0);
             ds.SetValue(dElement, _chiDinhDichVuResponse?.Modality ?? "OT");
 
             _pgDicomInfo.DataSet = ds;
@@ -2260,9 +2307,6 @@ namespace STM.MediaToPACS.Main
             }
             catch (System.Exception ex)
             {
-                if (rImg != null)
-                    rImg.Dispose();
-
                 ShowErrorMessage(ex);
             }
             finally
@@ -2314,7 +2358,7 @@ namespace STM.MediaToPACS.Main
             DicomDataSet ds = _pgDicomInfo.DataSet;
             DicomElement dElement = ds.FindFirstElement(null, DicomTag.Modality, true);
             if (dElement == null)
-                ds.InsertElement(null, false, dElement.Tag, dElement.VR, false, 0);
+                dElement = ds.InsertElement(null, false, DicomTag.Modality, DicomVRType.UN, false, 0);
             if (ds.InformationClass == DicomClassType.EncapsulatedPdfStorage)
                 ds.SetValue(dElement, "DOC");
             else
@@ -2465,7 +2509,7 @@ namespace STM.MediaToPACS.Main
             }
             catch (Exception ex)
             {
-
+                Log.Error(ex, "Lỗi khi bấm nút Push to PACS");
             }
         }
         #endregion
@@ -2533,11 +2577,12 @@ namespace STM.MediaToPACS.Main
                 var selectedValue = _cbbDSThietBi.EditValue;
                 if (selectedValue != null)
                 {
-                    var thietBiSelect = _listThietBi.FirstOrDefault(x => x.id == selectedValue);
+                    int selectedThietBiId = Convert.ToInt32(selectedValue);
+                    var thietBiSelect = _listThietBi.FirstOrDefault(x => x.id == selectedThietBiId);
                     if (thietBiSelect != null)
                     {
-                        tenThietBi = thietBiSelect.tenThietBi;
-                        maThietBi = thietBiSelect.maThietBi;
+                        tenThietBi = thietBiSelect.name;
+                        maThietBi = thietBiSelect.code;
                     }
                     else
                     {
@@ -2555,11 +2600,11 @@ namespace STM.MediaToPACS.Main
                 var selectedValueHisUser = _cbbHisUser.EditValue;
                 if (selectedValueHisUser != null)
                 {
-                    var ktvSelect = _cbbHisUser.Properties.GetDataSourceRowByKeyValue(selectedValueHisUser) as HisUserResponse;
+                    var ktvSelect = _cbbHisUser.Properties.GetDataSourceRowByKeyValue(selectedValueHisUser) as PractitionerListDto;
                     if (ktvSelect != null)
                     {
-                        maKTV = ktvSelect.his_id;
-                        tenKTV = ktvSelect.full_name;
+                        maKTV = ktvSelect.staffCode;
+                        tenKTV = ktvSelect.fullName;
                     }
                 }
 
@@ -2577,8 +2622,8 @@ namespace STM.MediaToPACS.Main
                     makythuatvien = maKTV,
                     mathietbi = maThietBi,
                     tenthietbi = tenThietBi,
-                    thoigianketthuc = _dateTGThucHien.DateTime,
-                    thoigianthuchien = _dateTGKetThuc.DateTime,
+                    thoigianketthuc = _dateTGKetThuc.DateTime,
+                    thoigianthuchien = _dateTGThucHien.DateTime,
                     imageFileKeys = imageSelectedList,
                 };
 
@@ -3851,7 +3896,7 @@ namespace STM.MediaToPACS.Main
         private string FormatDateTime(DateTime dateTime)
         {
             return $"{dateTime.Hour} giờ {dateTime.Minute} phút, " +
-                   $"Ngày {dateTime.Day} Tháng {dateTime.Month} Năm {dateTime.Year}";
+                   $"ngày {dateTime.Day} tháng {dateTime.Month} năm {dateTime.Year}";
         }
         #endregion
 
@@ -4958,6 +5003,18 @@ namespace STM.MediaToPACS.Main
             catch (Exception)
             {
                 //MessageBox.Show("Closing Form " + Ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            try
+            {
+                _codec?.Dispose();
+                _cstore?.Dispose();
+                _pgDicomInfo?.Dispose();
+                _pictureBox?.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Lỗi khi giải phóng tài nguyên khi đóng form");
             }
         }
 

@@ -17,8 +17,16 @@ namespace STM.MediaToPACS.Main.Utilities
         {
             try
             {
-                string updatePath = ServiceLocator.SystemConfig?.UrlSystemUpdate;
-                var psi = new ProcessStartInfo("net", $@"use {updatePath} /user:{ServiceLocator.SystemConfig.SystemUpdateUser} {ServiceLocator.SystemConfig.SystemUpdatePassword}")
+                var systemConfig = ServiceLocator.SystemConfig;
+                string updatePath = systemConfig?.UrlSystemUpdate;
+
+                if (systemConfig == null || string.IsNullOrWhiteSpace(updatePath))
+                {
+                    Log.Warning("Chưa cấu hình UrlSystemUpdate - bỏ qua kiểm tra cập nhật.");
+                    return false;
+                }
+
+                var psi = new ProcessStartInfo("net", $@"use {updatePath} /user:{systemConfig.SystemUpdateUser} {systemConfig.SystemUpdatePassword}")
                 {
                     CreateNoWindow = true,
                     UseShellExecute = false,

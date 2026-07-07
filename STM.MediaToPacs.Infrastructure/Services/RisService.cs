@@ -1,5 +1,4 @@
-﻿using DevExpress.XtraEditors;
-using MediaToPacs.Core.Interfaces;
+﻿using MediaToPacs.Core.Interfaces;
 using MediaToPacs.Core.Models;
 using MediaToPacs.Core.Models.Ketluan;
 using Newtonsoft.Json;
@@ -242,11 +241,8 @@ namespace MediaToPacs.Infrastructure.Services
             if (string.IsNullOrWhiteSpace(json))
                 return null;
 
-            var apiResponse = System.Text.Json.JsonSerializer.Deserialize<ApiResponse<KetQuaChanDoanResponse>>(json,
-             new JsonSerializerOptions
-             {
-                 PropertyNameCaseInsensitive = true
-             });
+            // Endpoint trả về { data: {...} } - 1 object, không phải mảng
+            var apiResponse = JsonConvert.DeserializeObject<ApiResponse<KetQuaChanDoanResponse>>(json);
 
             return apiResponse?.Data;
         }

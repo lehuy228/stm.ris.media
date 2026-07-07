@@ -680,7 +680,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             };
             ServiceLocator.CameraSettingConfig = cameraSettings;
             XmlSettingsHelper.Save<CameraSettings>(Path.Combine(
-                ConfigurationManager.AppSettings["File:BasePath"],
+                ServiceLocator.GetAppDataBasePath(),
                 ConfigurationManager.AppSettings["File:CameraConfig"]), cameraSettings);
         }
 

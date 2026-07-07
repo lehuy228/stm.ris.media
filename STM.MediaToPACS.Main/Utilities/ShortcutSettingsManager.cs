@@ -14,7 +14,7 @@ namespace STM.MediaToPACS.Main.Utilities
     {
         public static string SettingsPath =>
             Path.Combine(
-                ConfigurationManager.AppSettings["File:BasePath"],
+                ServiceLocator.GetAppDataBasePath(),
                 ConfigurationManager.AppSettings["File:ShortcutSettingsFile"]
             );
 

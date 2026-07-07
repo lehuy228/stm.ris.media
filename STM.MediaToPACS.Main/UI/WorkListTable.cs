@@ -135,7 +135,7 @@ namespace STM.MediaToPACS.Main.UI
 
             var defaultModalities = XmlSettingsHelper.Load<Modalities>(
                 Path.Combine(
-                    ConfigurationManager.AppSettings["File:BasePath"],
+                    ServiceLocator.GetAppDataBasePath(),
                     ConfigurationManager.AppSettings["Modality"] ?? "Modalities.xml"
                 )
             );

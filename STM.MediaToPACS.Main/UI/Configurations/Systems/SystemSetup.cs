@@ -27,13 +27,49 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
         public SystemSetup()
         {
             InitializeComponent();
+            SetupUrlHints();
 
-            // Xác định đường dẫn file config
-            string basePath = ConfigurationManager.AppSettings["File:BasePath"];
+            // Lưu cấu hình ở tầng application (ProgramData) thay vì ổ D - cùng vị trí và cùng
+            // logic migrate với ServiceLocator.Initialize() (chạy lúc khởi động app) để tránh lệch nhau.
+            string basePath = ServiceLocator.GetAppDataBasePath();
             string configFileName = ConfigurationManager.AppSettings["SystemConfigFile"] ?? "SystemConfig.xml";
-            _modalityFilePath = Path.Combine(basePath, ConfigurationManager.AppSettings["Modality"] ?? "Modalities.xml");
+            string modalityFileName = ConfigurationManager.AppSettings["Modality"] ?? "Modalities.xml";
+
             _configFilePath = Path.Combine(basePath, configFileName);
+            _modalityFilePath = Path.Combine(basePath, modalityFileName);
+
             LoadConfig();
+        }
+
+        /// <summary>
+        /// Chỉ hiển thị chữ mẫu (gợi ý định dạng) khi ô trống - không gán giá trị thật vào
+        /// SystemConfig, tránh app tưởng đã cấu hình rồi đi gọi API vào URL giả.
+        /// </summary>
+        private void SetupUrlHints()
+        {
+            void Hint(TextEdit edit, string sample)
+            {
+                edit.Properties.NullValuePrompt = sample;
+                edit.Properties.NullValuePromptShowForEmptyValue = true;
+            }
+
+            Hint(_txUrlApiRis, "http://<ip-ris-server>:<port>/api/v1");
+            Hint(_txUrlApiRisAuthen, "http://<ip-ris-server>:<port>/api/v1/auth");
+            Hint(_txUrlKySoMySign, "http://<ip-mysign-server>:<port>");
+            Hint(_txUrlApiRisV2, "http://<ip-ris-server>:<port>/api/risv1");
+
+            Hint(_txUrlViewerPACS, "http://<ip-pacs-server>:<port>/viewer");
+            Hint(_txUrlTokenPACS, "http://<ip-pacs-server>:<port>/token");
+            Hint(_txUrlPACSServer, "http://<ip-pacs-server>:<port>");
+            Hint(_txUrlPACSUser, "admin");
+            Hint(_txUrlPACSPassword, "********");
+            Hint(_txUrlPACSPublic, "http://<ip-pacs-public>:<port>/viewer");
+
+            Hint(_txUrlSystemUpdate, @"\\<server>\NhatMinhMedia");
+            Hint(_txSystemUpdateUser, "username");
+            Hint(_txSystemUpdatePassword, "********");
+
+            Hint(_txCheckThanhToan, "http://<ip-his-server>:<port>/api/check-thanh-toan");
         }
 
         /// <summary>
@@ -75,6 +111,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
                 _txUrlApiRis.Text = _systemConfig.UrlApiRis ?? "";
                 _txUrlApiRisAuthen.Text = _systemConfig.UrlRisAuthen ?? "";
                 _txUrlKySoMySign.Text = _systemConfig.UrlSignatureMysign ?? "";
+                _txUrlApiRisV2.Text = _systemConfig.UrlApiRisV2 ?? "";
                 // Load PACS config
                 _txUrlViewerPACS.Text = _systemConfig.UrlViewerPacs ?? "";
                 _txUrlTokenPACS.Text = _systemConfig.UrlTokenPacs ?? "";
@@ -139,6 +176,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
                 _systemConfig.UrlApiRis = _txUrlApiRis.Text?.Trim();
                 _systemConfig.UrlRisAuthen = _txUrlApiRisAuthen.Text?.Trim();
                 _systemConfig.UrlSignatureMysign = _txUrlKySoMySign.Text?.Trim();
+                _systemConfig.UrlApiRisV2 = _txUrlApiRisV2.Text?.Trim();
 
                 // Lưu PACS config
                 _systemConfig.UrlViewerPacs = _txUrlViewerPACS.Text?.Trim();

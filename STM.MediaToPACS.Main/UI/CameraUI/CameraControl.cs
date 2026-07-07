@@ -64,7 +64,7 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
 
         private string CreateFilePath(bool isCheckCapture, string relativePath)
         {
-            string baseFolder = ConfigurationManager.AppSettings["File:BasePath"];
+            string baseFolder = ServiceLocator.GetAppDataBasePath();
             string appName = Application.ProductName;
             string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string folderPath = Path.Combine(baseFolder, "BenhNhan", relativePath);
@@ -125,7 +125,7 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             VideoCapture1.Video_Renderer.StretchMode = VideoRendererStretchMode.Stretch;
             VideoCapture1.Video_Renderer.Flip_Horizontal = false;
             VideoCapture1.Video_Renderer.Flip_Vertical = false;
-            VideoCapture1.Debug_Dir = Path.Combine(ConfigurationManager.AppSettings["File:BasePath"], "Logs");
+            VideoCapture1.Debug_Dir = Path.Combine(ServiceLocator.GetAppDataBasePath(), "Logs");
 
             VideoCapture1.Audio_OutputDevice = "Default DirectSound Device";
 

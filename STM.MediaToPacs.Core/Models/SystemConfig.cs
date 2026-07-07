@@ -19,6 +19,9 @@ namespace MediaToPacs.Core.Models
 
         [XmlElement("UrlSignatureMysign")]
         public string UrlSignatureMysign { get; set; }
+
+        [XmlElement("UrlApiRisV2")]
+        public string UrlApiRisV2 { get; set; }
         #endregion
 
         #region PACS Configuration

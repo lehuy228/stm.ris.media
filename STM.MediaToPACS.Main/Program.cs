@@ -22,7 +22,7 @@ namespace STM.MediaToPACS.Main
         [STAThread]
         static void Main(string[] args)
         {
-            string logFolder = Path.Combine(ConfigurationManager.AppSettings["File:BasePath"], "Logs");
+            string logFolder = Path.Combine(ServiceLocator.GetAppDataBasePath(), "Logs");
             Directory.CreateDirectory(logFolder);
 
             Log.Logger = new LoggerConfiguration()

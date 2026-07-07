@@ -70,6 +70,7 @@
     <Compile Include="Interfaces\IKeycloakService.cs" />
     <Compile Include="Interfaces\IMinIOService.cs" />
     <Compile Include="Interfaces\IRisService.cs" />
+    <Compile Include="Interfaces\IRisService2.cs" />
     <Compile Include="Interfaces\ISignatureService.cs" />
     <Compile Include="Interfaces\IStudyService.cs" />
     <Compile Include="Models\AppPermissions.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Models\BO\SignhashRequest.cs" />
     <Compile Include="Models\Modalities.cs" />
     <Compile Include="Models\ResponseResult.cs" />
+    <Compile Include="Models\RisV2Models.cs" />
     <Compile Include="Models\ShortcutAndFontSettings.cs" />
     <Compile Include="Models\StudyOr.cs" />
     <Compile Include="Models\SystemConfig.cs" />

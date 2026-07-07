@@ -3,6 +3,7 @@ using MediaToPacs.Core.Interfaces;
 using MediaToPacs.Core.Models;
 using MediaToPacs.Infrastructure.Auths;
 using MediaToPacs.Infrastructure.Services;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -26,6 +27,7 @@ namespace STM.MediaToPACS.Main.Utilities
         public static ISessionService SessionService { get; set; }
         public static IStudyService StudyService { get; private set; }
         public static IRisService RisService { get; private set; }
+        public static IRisService2 RisService2 { get; private set; }
         public static ISignatureService SignatureService { get; private set; }
         public static IHisService HisService { get; private set; }
 
@@ -43,17 +45,108 @@ namespace STM.MediaToPACS.Main.Utilities
         private static HttpClient _signatureClient;
 
         public static CameraSettings CameraSettingConfig { get; set; }
+
+        // ===================== APP DATA PATH =====================
+        private const string AppFolderName = "STM.MediaToPACS";
+
+        /// <summary>
+        /// Thư mục lưu cấu hình ứng dụng ở tầng ProgramData - ổn định qua các lần
+        /// cập nhật/cài lại ứng dụng, không phụ thuộc ổ D (File:BasePath).
+        /// </summary>
+        public static string GetAppDataBasePath()
+        {
+            string basePath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                AppFolderName);
+
+            if (!Directory.Exists(basePath))
+                Directory.CreateDirectory(basePath);
+
+            return basePath;
+        }
+
+        /// <summary>
+        /// Di chuyển các file cấu hình cũ (lưu ở File:BasePath, thường là ổ D) sang thư mục
+        /// ProgramData mới nếu có, để không mất cấu hình đã lưu trước đó.
+        /// </summary>
+        private static void MigrateLegacyConfigIfNeeded(string basePath, params string[] fileNames)
+        {
+            try
+            {
+                string legacyBasePath = ConfigurationManager.AppSettings["File:BasePath"];
+                if (string.IsNullOrWhiteSpace(legacyBasePath))
+                    return;
+
+                foreach (var fileName in fileNames)
+                {
+                    if (string.IsNullOrWhiteSpace(fileName))
+                        continue;
+
+                    string newPath = Path.Combine(basePath, fileName);
+                    string legacyPath = Path.Combine(legacyBasePath, fileName);
+                    if (!File.Exists(newPath) && File.Exists(legacyPath))
+                    {
+                        File.Copy(legacyPath, newPath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Không thể di chuyển cấu hình cũ từ File:BasePath");
+            }
+        }
+
         // ===================== INIT =====================
         public static void Initialize()
         {
             if (IsInitialized)
                 return;
 
-            string basePath = ConfigurationManager.AppSettings["File:BasePath"];
+            string basePath = GetAppDataBasePath();
             string configFile = ConfigurationManager.AppSettings["SystemConfigFile"] ?? "SystemConfig.xml";
+            string modalityFile = ConfigurationManager.AppSettings["Modality"] ?? "Modalities.xml";
+            string cameraConfigFile = ConfigurationManager.AppSettings["File:CameraConfig"] ?? "CameraSettingConfig.xml";
+            string shortcutFile = ConfigurationManager.AppSettings["File:ShortcutSettingsFile"] ?? "ShortcutSettingsFile.xml";
+
+            MigrateLegacyConfigIfNeeded(basePath, configFile, modalityFile, cameraConfigFile, shortcutFile);
+
             string fullPath = Path.Combine(basePath, configFile);
+
+            // Luôn đảm bảo SystemConfig khác null (chưa cấu hình thì để rỗng, không phải null)
+            // để tránh NullReferenceException ở những nơi gọi ServiceLocator.SystemConfig.Xyz
+            // trước khi admin mở Settings và lưu lần đầu.
             SystemConfig = XmlSettingsHelper.LoadEncrypted<SystemConfig>(fullPath);
-           
+            if (SystemConfig == null)
+            {
+                SystemConfig = new SystemConfig
+                {
+                    UrlApiRis = "http://10.12.8.16:5006",          // URL API RIS
+                    UrlRisAuthen = null,                            // URL RIS Authen
+                    UrlApiRisV2 = "http://10.12.8.16:7002",        // URL API RIS V2
+                    UrlPacsServer = "http://10.12.8.16:8042",      // Máy chủ PACS
+                    PacsUser = "stmadmin",
+                    PacsPassword = "Anphat123!",
+                    UrlViewerPacs = null,
+                    UrlPacsPublic = "http://10.12.8.16:6038/MedicalViewer",
+                    UrlSystemUpdate = null,
+                    SystemUpdateUser = null,
+                    SystemUpdatePassword = null,
+                    CheckThanhToan = "http://117.5.149.75:25117/api/KiemTraTien",
+                    UrlSignatureMysign = "http://10.12.8.16:10005"
+                };
+
+                // Khởi tạo luôn file mặc định trên đĩa (không chỉ trong bộ nhớ),
+                // để lần chạy sau/máy khác đọc thấy file đã tồn tại thay vì thiếu file.
+                try
+                {
+                    XmlSettingsHelper.SaveEncrypted(fullPath, SystemConfig);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Không thể khởi tạo file SystemConfig mặc định");
+                }
+            }
+
             InitializeServices();
             InitializeCaches();
 
@@ -68,11 +161,12 @@ namespace STM.MediaToPACS.Main.Utilities
             //SessionService = new SessionService();
             StudyService = new StudyService();
             RisService = new RisService();
+            RisService2 = new RisService2();
             SignatureService = new SignatureService();
             HisService = new HisService();
             ShortcutAndFontSetting = ShortcutSettingsManager.LoadOrCreateSettings();
             CameraSettingConfig = XmlSettingsHelper.Load<CameraSettings>(Path.Combine(
-                ConfigurationManager.AppSettings["File:BasePath"],
+                GetAppDataBasePath(),
                 ConfigurationManager.AppSettings["File:CameraConfig"]));
         }
 
@@ -227,6 +321,36 @@ namespace STM.MediaToPACS.Main.Utilities
             }
         }
 
+        private static bool TryInitializeRisService2(out string errorMessage)
+        {
+            errorMessage = null;
+
+            try
+            {
+                if (RisService2 == null)
+                    return false;
+
+                if (string.IsNullOrWhiteSpace(SystemConfig?.UrlApiRisV2))
+                {
+                    errorMessage = "Chưa cấu hình API RIS V2.";
+                    return false;
+                }
+
+                if (RisService2 is RisService2 ris2)
+                {
+                    ris2.Configure(SystemConfig.UrlApiRisV2);
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "Không khởi tạo được RIS V2: " + ex.Message;
+                return false;
+            }
+        }
+
         public static List<string> InitializeOptionalServices()
         {
             var warnings = new List<string>();
@@ -243,6 +367,13 @@ namespace STM.MediaToPACS.Main.Utilities
             {
                 if (!string.IsNullOrWhiteSpace(risError))
                     warnings.Add(risError);
+            }
+
+            // ===== RIS V2 =====
+            if (!TryInitializeRisService2(out var risV2Error))
+            {
+                if (!string.IsNullOrWhiteSpace(risV2Error))
+                    warnings.Add(risV2Error);
             }
 
             // ===== RIS =====
