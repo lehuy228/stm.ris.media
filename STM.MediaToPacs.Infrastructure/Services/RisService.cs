@@ -1,4 +1,5 @@
-﻿using MediaToPacs.Core.Interfaces;
+﻿using DevExpress.XtraEditors;
+using MediaToPacs.Core.Interfaces;
 using MediaToPacs.Core.Models;
 using MediaToPacs.Core.Models.Ketluan;
 using Newtonsoft.Json;
@@ -511,13 +512,13 @@ namespace MediaToPacs.Infrastructure.Services
 
             var content = await response.Content.ReadAsStringAsync();
 
+          
             var result = System.Text.Json.JsonSerializer.Deserialize<ChiDinhDichVuResponse>(
                 content,
                 new System.Text.Json.JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });
-
             return result;
         }
         #endregion
@@ -531,17 +532,17 @@ namespace MediaToPacs.Infrastructure.Services
                 filters.Add(new FilterItem { Field = "madichvu", Operator = "contains", Value = madichvu });
 
             string filtersJson = JsonConvert.SerializeObject(filters);
-            string encodedFilters = HttpUtility.UrlEncode(filtersJson);
+            //string encodedFilters = HttpUtility.UrlEncode(filtersJson);
 
             // Build URL
             var builder = new UriBuilder($"{_risUrl}/goi-y-ketluan");
-            builder.Port = -1;
+            //builder.Port = -1;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["page"] = page.ToString();
             query["pageSize"] = pageSize.ToString();
 
             if (filters.Count > 0)
-                query["filters"] = encodedFilters;
+                query["filters"] = filtersJson;
 
             builder.Query = query.ToString();
             string url = builder.ToString();
@@ -593,20 +594,20 @@ namespace MediaToPacs.Infrastructure.Services
                 filters.Add(new FilterItem { Field = "madichvu", Operator = "contains", Value = madichvu });
 
             string filtersJson = JsonConvert.SerializeObject(filters);
-            string encodedFilters = HttpUtility.UrlEncode(filtersJson);
-
+            //string encodedFilters = HttpUtility.UrlEncode(filtersJson);
             // Build URL
             var builder = new UriBuilder($"{_risUrl}/goi-y-ketluan");
-            builder.Port = -1;
+            //builder.Port = -1;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["page"] = page.ToString();
             query["pageSize"] = pageSize.ToString();
 
             if (filters.Count > 0)
-                query["filters"] = encodedFilters;
+                query["filters"] = filtersJson;
 
             builder.Query = query.ToString();
             string url = builder.ToString();
+
 
             // Gửi request
             var response = await _httpClient.GetAsync(url);
@@ -620,7 +621,7 @@ namespace MediaToPacs.Infrastructure.Services
             string content = await response.Content.ReadAsStringAsync();
             var responseObj = JsonConvert.DeserializeObject<ResultPage<GoiYKetLuanResponse>>(content, settings);
 
-            return responseObj;
+            return responseObj ?? new ResultPage<GoiYKetLuanResponse>();
         }
 
 
@@ -717,7 +718,7 @@ namespace MediaToPacs.Infrastructure.Services
 
             // Build URL
             var builder = new UriBuilder($"{_risUrl}/danhmucdichvu");
-            builder.Port = -1;
+            //builder.Port = -1;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["page"] = page.ToString();
             query["pageSize"] = pageSize.ToString();
@@ -760,7 +761,7 @@ namespace MediaToPacs.Infrastructure.Services
 
             // Build URL
             var builder = new UriBuilder($"{_risUrl}/danhmucdichvu");
-            builder.Port = -1;
+            //builder.Port = -1;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["page"] = page.ToString();
             query["pageSize"] = pageSize.ToString();
@@ -888,7 +889,6 @@ namespace MediaToPacs.Infrastructure.Services
 
             string queryString = string.Join("&", queryParams);
             string url = $"{_risUrl}/thiet-bi?{queryString}";
-
             // Gửi request
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
@@ -912,10 +912,9 @@ namespace MediaToPacs.Infrastructure.Services
 
             // Serialize JSON filter
             string filtersJson = JsonConvert.SerializeObject(filters);
-
             // Build URL
             var builder = new UriBuilder($"{_risUrl}/his-user-mapper");
-            builder.Port = -1;
+            //builder.Port = -1;
 
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["page"] = page.ToString();

@@ -339,8 +339,6 @@ namespace STM.MediaToPACS.Main
         // ============================================
         private void SetupUIComponents()
         {
-            UpdateCameraSize();
-
             // Setup context menu
             SetupContextMenu();
 
@@ -352,21 +350,6 @@ namespace STM.MediaToPACS.Main
 
             // Setup excluded tags (static data, không cần async)
             SetupExcludedTags();
-        }
-
-        private void UpdateCameraSize()
-        {
-            int panelW = _panelCamera.Width;
-            int panelH = _panelCamera.Height;
-
-            if (panelH < panelW)
-            {
-                _xtraCamera.Height = panelH;
-            }
-            else
-            {
-                _xtraCamera.Height = panelW;
-            }
         }
 
         private void SetupContextMenu()
@@ -554,7 +537,10 @@ namespace STM.MediaToPACS.Main
             //
             panelCamera.Controls.Add(_cameraControl);
             _cameraControl.Location = new Point(0, 0);
-            _cameraControl.Dock = DockStyle.Fill;
+            _cameraControl.Dock = DockStyle.None; // để tự resize theo tỉ lệ vuông
+            _cameraControl.Anchor = AnchorStyles.None;
+            panelCamera.Resize += PanelCamera_Resize;
+            ResizeCameraViewport();
             //
             //_mediaPlayerControl
             //
@@ -632,7 +618,82 @@ namespace STM.MediaToPACS.Main
 
             //_pageMWLQuery.Controls.Add(_tbQueryMWList);
             //_pgSearchMWL.SelectedObject = _bbQuery;
-            panelCamera.MaximumSize = new Size(_xtraCamera.Width, _xtraCamera.Width);
+        }
+
+        private void PanelCamera_Resize(object sender, EventArgs e)
+        {
+            ResizeCameraViewport();
+        }
+
+        /// <summary>
+        /// Fit khung camera theo đúng tỷ lệ nguồn (mặc định 640x480 = 4:3),
+        /// ưu tiên "tối đa chiều cao" trong panel; nếu vượt chiều rộng thì fallback theo chiều rộng.
+        /// Tránh kéo giãn hình khi màn hình gần vuông / thay đổi kích thước.
+        /// </summary>
+        private void ResizeCameraViewport()
+        {
+            try
+            {
+                if (_cameraControl == null || panelCamera == null || panelCamera.IsDisposed)
+                    return;
+
+                // _xtraCamera: luôn fill _panelCamera, nhưng không vượt quá chiều cao _panelCamera
+                if (_panelCamera != null && !_panelCamera.IsDisposed && _xtraCamera != null && !_xtraCamera.IsDisposed)
+                {
+                    _xtraCamera.Dock = DockStyle.Fill;
+                    var host = _panelCamera.ClientSize;
+                    if (host.Width > 0 && host.Height > 0)
+                    {
+                        _xtraCamera.MaximumSize = new Size(int.MaxValue, host.Height);
+                        if (_xtraCamera.Height > host.Height)
+                            _xtraCamera.Height = host.Height;
+                    }
+                    else
+                    {
+                        _xtraCamera.MaximumSize = Size.Empty;
+                    }
+                }
+
+                var client = panelCamera.ClientSize;
+                if (client.Width <= 0 || client.Height <= 0)
+                    return;
+
+                _cameraControl.SuspendLayout();
+
+                // Lấy tỷ lệ từ cấu hình camera: PanSourceWidth / PanSourceHeight
+                int srcW = ServiceLocator.CameraSettingConfig?.PanSourceWidth > 0
+                    ? ServiceLocator.CameraSettingConfig.PanSourceWidth
+                    : 640;
+                int srcH = ServiceLocator.CameraSettingConfig?.PanSourceHeight > 0
+                    ? ServiceLocator.CameraSettingConfig.PanSourceHeight
+                    : 480;
+
+                double aspect = (double)srcW / srcH; // width / height
+
+                // Ưu tiên tối đa chiều cao
+                int targetH = client.Height;
+                int targetW = (int)Math.Round(targetH * aspect);
+
+                // Nếu vượt quá chiều rộng panel -> fit theo chiều rộng
+                if (targetW > client.Width)
+                {
+                    targetW = client.Width;
+                    targetH = (int)Math.Round(targetW / aspect);
+                }
+
+                if (targetW <= 0 || targetH <= 0)
+                    return;
+
+                _cameraControl.Size = new Size(targetW, targetH);
+                _cameraControl.Location = new Point(
+                    (client.Width - targetW) / 2,
+                    (client.Height - targetH) / 2
+                );
+            }
+            finally
+            {
+                _cameraControl?.ResumeLayout();
+            }
         }
 
 
@@ -886,7 +947,7 @@ namespace STM.MediaToPACS.Main
                 dElement = ds.FindFirstElement(null, DicomTag.Modality, true);
                 if (dElement == null)
                     dElement = ds.InsertElement(null, false, DicomTag.Modality, DicomVRType.UN, false, 0);
-                ds.SetValue(dElement, _chiDinhDichVuResponse.Modality);
+                ds.SetValue(dElement, _chiDinhDichVuResponse.Modality == "ECG" ? "OT" : _chiDinhDichVuResponse.Modality);
             }
 
             _pgDicomInfo.DataSet = ds;
@@ -899,21 +960,21 @@ namespace STM.MediaToPACS.Main
         {
             string[] VietnameseSigns = new string[]
             {
-        "aAeEoOuUiIdDyY",
-        "áàạảãâấầậẩẫăắằặẳẵ",
-        "ÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴ",
-        "éèẹẻẽêếềệểễ",
-        "ÉÈẸẺẼÊẾỀỆỂỄ",
-        "óòọỏõôốồộổỗơớờợởỡ",
-        "ÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠ",
-        "úùụủũưứừựửữ",
-        "ÚÙỤỦŨƯỨỪỰỬỮ",
-        "íìịỉĩ",
-        "ÍÌỊỈĨ",
-        "đ",
-        "Đ",
-        "ýỳỵỷỹ",
-        "ÝỲỴỶỸ"
+                "aAeEoOuUiIdDyY",
+                "áàạảãâấầậẩẫăắằặẳẵ",
+                "ÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴ",
+                "éèẹẻẽêếềệểễ",
+                "ÉÈẸẺẼÊẾỀỆỂỄ",
+                "óòọỏõôốồộổỗơớờợởỡ",
+                "ÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠ",
+                "úùụủũưứừựửữ",
+                "ÚÙỤỦŨƯỨỪỰỬỮ",
+                "íìịỉĩ",
+                "ÍÌỊỈĨ",
+                "đ",
+                "Đ",
+                "ýỳỵỷỹ",
+                "ÝỲỴỶỸ"
             };
 
             for (int i = 1; i < VietnameseSigns.Length; i++)
@@ -2739,7 +2800,6 @@ namespace STM.MediaToPACS.Main
 
                 // Cập nhật UI
                 _btnRecord.Text = "Dừng";
-                _btnRecord.Image = global::STM.MediaToPACS.Main.Properties.Resources.StopCamera;
 
                 Log.Information($"Đã bắt đầu ghi video: {videoPath}");
             }
@@ -2938,12 +2998,10 @@ namespace STM.MediaToPACS.Main
             if (isRecording)
             {
                 _btnRecord.Text = "Dừng";
-                _btnRecord.Image = global::STM.MediaToPACS.Main.Properties.Resources.StopCamera;
             }
             else
             {
                 _btnRecord.Text = "Ghi lại";
-                _btnRecord.Image = global::STM.MediaToPACS.Main.Properties.Resources.circle;
             }
         }
 

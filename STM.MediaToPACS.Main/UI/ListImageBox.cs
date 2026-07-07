@@ -63,7 +63,7 @@ namespace STM.MediaToPACS.Main.UI
             _selectedIndex = -1;
             this.Click += new EventHandler(ListImageBox_Click);
             this.KeyDown += new KeyEventHandler(ListImageBox_KeyDown);
-            _ItemHeight = 120;
+            _ItemHeight = 95;
             _ExpansionButtonLocation = AnchorStyles.Left;
             this.Resize += new EventHandler(ListImageBox_Resize);
         }

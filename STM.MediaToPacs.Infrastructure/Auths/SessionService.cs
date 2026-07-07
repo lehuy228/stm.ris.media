@@ -2,11 +2,11 @@
 using MediaToPacs.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace MediaToPacs.Infrastructure.Auths
 {
@@ -36,6 +36,20 @@ namespace MediaToPacs.Infrastructure.Auths
                 Username = username,
                 Roles = roles
             };
+        }
+
+        public void OpenChangePasswordPage()
+        {
+            var baseUrl = ConfigurationManager.AppSettings["Auth:URL"];
+            var realm = ConfigurationManager.AppSettings["Auth:REALM"];
+
+            if (string.IsNullOrWhiteSpace(baseUrl) || string.IsNullOrWhiteSpace(realm))
+            {
+                throw new InvalidOperationException("Auth:URL hoặc Auth:REALM chưa được cấu hình");
+            }
+
+            var changePasswordUrl = $"{baseUrl.TrimEnd('/')}/realms/{realm}/account/#/password";
+            Process.Start(new ProcessStartInfo(changePasswordUrl) { UseShellExecute = true });
         }
 
         public UserInfo GetCurrentUser() => _currentUser;

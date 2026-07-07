@@ -32,6 +32,7 @@ namespace STM.MediaToPACS.Main.UI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkListTable));
             this.panel1 = new DevExpress.XtraEditors.PanelControl();
+            this._btnLogout = new DevExpress.XtraEditors.SimpleButton();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
@@ -136,14 +137,14 @@ namespace STM.MediaToPACS.Main.UI
             this.label12 = new DevExpress.XtraEditors.LabelControl();
             this.label15 = new DevExpress.XtraEditors.LabelControl();
             this.label16 = new DevExpress.XtraEditors.LabelControl();
-            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this._btnLogout = new DevExpress.XtraEditors.SimpleButton();
-            this._btnSettings = new DevExpress.XtraEditors.SimpleButton();
-            this._cbMWLServers = new DevExpress.XtraEditors.ComboBoxEdit();
-            this._btnLogs = new DevExpress.XtraEditors.SimpleButton();
-            this._cbCapture = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.label1 = new DevExpress.XtraEditors.LabelControl();
-            this.label2 = new DevExpress.XtraEditors.LabelControl();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.ngườiDùngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._tsmChangePassword = new System.Windows.Forms.ToolStripMenuItem();
+            this._tsmSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this._tsmLog = new System.Windows.Forms.ToolStripMenuItem();
+            this._tsmToUse = new System.Windows.Forms.ToolStripMenuItem();
+            this._tsmCbbVideoCapture = new System.Windows.Forms.ToolStripComboBox();
+            this._tsmCbbWorklist = new System.Windows.Forms.ToolStripComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.panel1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
@@ -216,16 +217,14 @@ namespace STM.MediaToPACS.Main.UI
             ((System.ComponentModel.ISupportInitialize)(this._dTPStart.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._dTPStart.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._txtAETitle.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
-            this.panelControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._cbMWLServers.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._cbCapture.Properties)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this._btnLogout);
             this.panel1.Controls.Add(this.xtraTabControl1);
-            this.panel1.Controls.Add(this.panelControl1);
+            this.panel1.Controls.Add(this.menuStrip1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -233,14 +232,25 @@ namespace STM.MediaToPACS.Main.UI
             this.panel1.Size = new System.Drawing.Size(1795, 796);
             this.panel1.TabIndex = 0;
             // 
+            // _btnLogout
+            // 
+            this._btnLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnLogout.Location = new System.Drawing.Point(1672, 4);
+            this._btnLogout.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._btnLogout.Name = "_btnLogout";
+            this._btnLogout.Size = new System.Drawing.Size(118, 29);
+            this._btnLogout.TabIndex = 33;
+            this._btnLogout.Text = "Đăng xuất";
+            this._btnLogout.Click += new System.EventHandler(this._btnLogout_Click);
+            // 
             // xtraTabControl1
             // 
             this.xtraTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.xtraTabControl1.Location = new System.Drawing.Point(2, 61);
+            this.xtraTabControl1.Location = new System.Drawing.Point(2, 37);
             this.xtraTabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.xtraTabControl1.Name = "xtraTabControl1";
             this.xtraTabControl1.SelectedTabPage = this.xtraTabPage1;
-            this.xtraTabControl1.Size = new System.Drawing.Size(1791, 733);
+            this.xtraTabControl1.Size = new System.Drawing.Size(1791, 757);
             this.xtraTabControl1.TabIndex = 27;
             this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage1,
@@ -253,7 +263,7 @@ namespace STM.MediaToPACS.Main.UI
             this.xtraTabPage1.Controls.Add(this.panelControl14);
             this.xtraTabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.xtraTabPage1.Name = "xtraTabPage1";
-            this.xtraTabPage1.Size = new System.Drawing.Size(1781, 695);
+            this.xtraTabPage1.Size = new System.Drawing.Size(1781, 719);
             this.xtraTabPage1.Text = "Hệ thống RIS";
             // 
             // groupControl2
@@ -267,7 +277,7 @@ namespace STM.MediaToPACS.Main.UI
             this.groupControl2.Location = new System.Drawing.Point(0, 106);
             this.groupControl2.Name = "groupControl2";
             this.groupControl2.Padding = new System.Windows.Forms.Padding(5);
-            this.groupControl2.Size = new System.Drawing.Size(1781, 545);
+            this.groupControl2.Size = new System.Drawing.Size(1781, 569);
             this.groupControl2.TabIndex = 5;
             this.groupControl2.Text = "Danh sách chỉ định";
             // 
@@ -279,7 +289,7 @@ namespace STM.MediaToPACS.Main.UI
             this._gridControlChiDinh.MainView = this._gridViewChiDinh;
             this._gridControlChiDinh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this._gridControlChiDinh.Name = "_gridControlChiDinh";
-            this._gridControlChiDinh.Size = new System.Drawing.Size(1767, 502);
+            this._gridControlChiDinh.Size = new System.Drawing.Size(1767, 526);
             this._gridControlChiDinh.TabIndex = 1;
             this._gridControlChiDinh.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this._gridViewChiDinh});
@@ -932,7 +942,7 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl14.Controls.Add(this.panelControl21);
             this.panelControl14.Controls.Add(this.statusStrip1);
             this.panelControl14.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelControl14.Location = new System.Drawing.Point(0, 651);
+            this.panelControl14.Location = new System.Drawing.Point(0, 675);
             this.panelControl14.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.panelControl14.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl14.Name = "panelControl14";
@@ -1005,7 +1015,7 @@ namespace STM.MediaToPACS.Main.UI
             this._tSSLUserName.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._tSSLUserName.ForeColor = System.Drawing.Color.Red;
             this._tSSLUserName.Name = "_tSSLUserName";
-            this._tSSLUserName.Size = new System.Drawing.Size(35, 33);
+            this._tSSLUserName.Size = new System.Drawing.Size(35, 32);
             this._tSSLUserName.Text = "NA";
             // 
             // toolStripStatusLabel2
@@ -1014,7 +1024,7 @@ namespace STM.MediaToPACS.Main.UI
             this.toolStripStatusLabel2.ForeColor = System.Drawing.Color.SaddleBrown;
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
             this.toolStripStatusLabel2.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(133, 33);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(133, 32);
             this.toolStripStatusLabel2.Text = "Người dùng:";
             this.toolStripStatusLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -1023,7 +1033,7 @@ namespace STM.MediaToPACS.Main.UI
             this._tssNguoiDung.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._tssNguoiDung.ForeColor = System.Drawing.Color.Red;
             this._tssNguoiDung.Name = "_tssNguoiDung";
-            this._tssNguoiDung.Size = new System.Drawing.Size(35, 33);
+            this._tssNguoiDung.Size = new System.Drawing.Size(35, 32);
             this._tssNguoiDung.Text = "NA";
             // 
             // xtraTabPage2
@@ -1032,7 +1042,8 @@ namespace STM.MediaToPACS.Main.UI
             this.xtraTabPage2.Controls.Add(this.panel6);
             this.xtraTabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(1781, 695);
+            this.xtraTabPage2.PageVisible = false;
+            this.xtraTabPage2.Size = new System.Drawing.Size(1781, 719);
             this.xtraTabPage2.Text = "Worklist";
             // 
             // _dGVMWLItems
@@ -1043,7 +1054,7 @@ namespace STM.MediaToPACS.Main.UI
             this._dGVMWLItems.MainView = this.gridView1;
             this._dGVMWLItems.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this._dGVMWLItems.Name = "_dGVMWLItems";
-            this._dGVMWLItems.Size = new System.Drawing.Size(1781, 519);
+            this._dGVMWLItems.Size = new System.Drawing.Size(1781, 543);
             this._dGVMWLItems.TabIndex = 26;
             this._dGVMWLItems.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -1507,99 +1518,83 @@ namespace STM.MediaToPACS.Main.UI
             this.label16.TabIndex = 17;
             this.label16.Text = "&Thời gian bắt đầu:";
             // 
-            // panelControl1
+            // menuStrip1
             // 
-            this.panelControl1.Controls.Add(this._btnLogout);
-            this.panelControl1.Controls.Add(this._btnSettings);
-            this.panelControl1.Controls.Add(this._cbMWLServers);
-            this.panelControl1.Controls.Add(this._btnLogs);
-            this.panelControl1.Controls.Add(this._cbCapture);
-            this.panelControl1.Controls.Add(this.label1);
-            this.panelControl1.Controls.Add(this.label2);
-            this.panelControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelControl1.Location = new System.Drawing.Point(2, 2);
-            this.panelControl1.Margin = new System.Windows.Forms.Padding(4);
-            this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(1791, 59);
-            this.panelControl1.TabIndex = 33;
+            this.menuStrip1.BackColor = System.Drawing.Color.Transparent;
+            this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ngườiDùngToolStripMenuItem,
+            this._tsmSetting,
+            this._tsmLog,
+            this._tsmToUse,
+            this._tsmCbbVideoCapture,
+            this._tsmCbbWorklist});
+            this.menuStrip1.Location = new System.Drawing.Point(2, 2);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1791, 35);
+            this.menuStrip1.TabIndex = 34;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // _btnLogout
+            // ngườiDùngToolStripMenuItem
             // 
-            this._btnLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnLogout.Location = new System.Drawing.Point(1664, 13);
-            this._btnLogout.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this._btnLogout.Name = "_btnLogout";
-            this._btnLogout.Size = new System.Drawing.Size(118, 29);
-            this._btnLogout.TabIndex = 33;
-            this._btnLogout.Text = "Đăng xuất";
-            this._btnLogout.Click += new System.EventHandler(this._btnLogout_Click);
+            this.ngườiDùngToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._tsmChangePassword});
+            this.ngườiDùngToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ngườiDùngToolStripMenuItem.Image = global::STM.MediaToPACS.Main.Properties.Resources.customer_16x16;
+            this.ngườiDùngToolStripMenuItem.Name = "ngườiDùngToolStripMenuItem";
+            this.ngườiDùngToolStripMenuItem.Size = new System.Drawing.Size(136, 31);
+            this.ngườiDùngToolStripMenuItem.Text = "Người dùng";
             // 
-            // _btnSettings
+            // _tsmChangePassword
             // 
-            this._btnSettings.ImageOptions.Image = global::STM.MediaToPACS.Main.Properties.Resources.setting;
-            this._btnSettings.Location = new System.Drawing.Point(9, 10);
-            this._btnSettings.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this._btnSettings.Name = "_btnSettings";
-            this._btnSettings.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
-            this._btnSettings.Size = new System.Drawing.Size(120, 35);
-            this._btnSettings.TabIndex = 21;
-            this._btnSettings.Text = "Cài đặt";
-            this._btnSettings.Click += new System.EventHandler(this._btnSettings_Click);
+            this._tsmChangePassword.Name = "_tsmChangePassword";
+            this._tsmChangePassword.Size = new System.Drawing.Size(224, 28);
+            this._tsmChangePassword.Text = "Đổi mật khẩu";
+            this._tsmChangePassword.Click += new System.EventHandler(this._tsmChangePassword_Click);
             // 
-            // _cbMWLServers
+            // _tsmSetting
             // 
-            this._cbMWLServers.Location = new System.Drawing.Point(858, 14);
-            this._cbMWLServers.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this._cbMWLServers.Name = "_cbMWLServers";
-            this._cbMWLServers.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._cbMWLServers.Properties.Appearance.Options.UseFont = true;
-            this._cbMWLServers.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this._cbMWLServers.Size = new System.Drawing.Size(334, 26);
-            this._cbMWLServers.TabIndex = 32;
+            this._tsmSetting.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._tsmSetting.Image = global::STM.MediaToPACS.Main.Properties.Resources.properties_32x32;
+            this._tsmSetting.Name = "_tsmSetting";
+            this._tsmSetting.Size = new System.Drawing.Size(98, 31);
+            this._tsmSetting.Text = "Cài đặt";
+            this._tsmSetting.Click += new System.EventHandler(this._tsmSetting_Click);
             // 
-            // _btnLogs
+            // _tsmLog
             // 
-            this._btnLogs.ImageOptions.Image = global::STM.MediaToPACS.Main.Properties.Resources.log;
-            this._btnLogs.Location = new System.Drawing.Point(135, 10);
-            this._btnLogs.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this._btnLogs.Name = "_btnLogs";
-            this._btnLogs.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
-            this._btnLogs.Size = new System.Drawing.Size(120, 35);
-            this._btnLogs.TabIndex = 22;
-            this._btnLogs.Text = "Logs";
-            this._btnLogs.Click += new System.EventHandler(this._btnLogs_Click);
+            this._tsmLog.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._tsmLog.Image = global::STM.MediaToPACS.Main.Properties.Resources.notes_16x16;
+            this._tsmLog.Name = "_tsmLog";
+            this._tsmLog.Size = new System.Drawing.Size(103, 31);
+            this._tsmLog.Text = "Ghi chú";
+            this._tsmLog.Click += new System.EventHandler(this._tsmLog_Click);
             // 
-            // _cbCapture
+            // _tsmToUse
             // 
-            this._cbCapture.Location = new System.Drawing.Point(348, 14);
-            this._cbCapture.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this._cbCapture.Name = "_cbCapture";
-            this._cbCapture.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._cbCapture.Properties.Appearance.Options.UseFont = true;
-            this._cbCapture.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this._cbCapture.Size = new System.Drawing.Size(383, 26);
-            this._cbCapture.TabIndex = 32;
+            this._tsmToUse.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._tsmToUse.Image = global::STM.MediaToPACS.Main.Properties.Resources.about_16x16;
+            this._tsmToUse.Name = "_tsmToUse";
+            this._tsmToUse.Size = new System.Drawing.Size(197, 31);
+            this._tsmToUse.Text = "Hướng dẫn sử dụng";
+            this._tsmToUse.Click += new System.EventHandler(this._tsmToUse_Click);
             // 
-            // label1
+            // _tsmCbbVideoCapture
             // 
-            this.label1.Location = new System.Drawing.Point(737, 19);
-            this.label1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(115, 18);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Máy chủ Worklist";
+            this._tsmCbbVideoCapture.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._tsmCbbVideoCapture.Margin = new System.Windows.Forms.Padding(10, 0, 1, 0);
+            this._tsmCbbVideoCapture.Name = "_tsmCbbVideoCapture";
+            this._tsmCbbVideoCapture.Size = new System.Drawing.Size(250, 31);
+            this._tsmCbbVideoCapture.ToolTipText = "Chọn nguồn camera đầu vào";
             // 
-            // label2
+            // _tsmCbbWorklist
             // 
-            this.label2.Appearance.Options.UseFont = true;
-            this.label2.Location = new System.Drawing.Point(261, 18);
-            this.label2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(76, 18);
-            this.label2.TabIndex = 17;
-            this.label2.Text = "Nguồn ảnh:";
+            this._tsmCbbWorklist.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._tsmCbbWorklist.Margin = new System.Windows.Forms.Padding(15, 0, 1, 0);
+            this._tsmCbbWorklist.Name = "_tsmCbbWorklist";
+            this._tsmCbbWorklist.Size = new System.Drawing.Size(121, 31);
+            this._tsmCbbWorklist.ToolTipText = "Worklist";
             // 
             // WorkListTable
             // 
@@ -1609,16 +1604,18 @@ namespace STM.MediaToPACS.Main.UI
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.IconOptions.Image = global::STM.MediaToPACS.Main.Properties.Resources.stm;
+            this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "WorkListTable";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Danh sách ca chụp";
+            this.Text = "STM-Media To PACS";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WorkListTable_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.WorkListTable_FormClosed);
             this.Load += new System.EventHandler(this.WorkListTable_Load);
             ((System.ComponentModel.ISupportInitialize)(this.panel1)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
             this.xtraTabControl1.ResumeLayout(false);
             this.xtraTabPage1.ResumeLayout(false);
@@ -1704,11 +1701,8 @@ namespace STM.MediaToPACS.Main.UI
             ((System.ComponentModel.ISupportInitialize)(this._dTPStart.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._dTPStart.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._txtAETitle.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
-            this.panelControl1.ResumeLayout(false);
-            this.panelControl1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._cbMWLServers.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._cbCapture.Properties)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1716,8 +1710,6 @@ namespace STM.MediaToPACS.Main.UI
         #endregion
 
         private DevExpress.XtraEditors.PanelControl panel1;
-        private DevExpress.XtraEditors.LabelControl label1;
-        private DevExpress.XtraEditors.LabelControl label2;
         private DevExpress.XtraEditors.PanelControl panel6;
         private System.Windows.Forms.TableLayoutPanel _tLPQuery;
         private DevExpress.XtraEditors.GroupControl groupBox1;
@@ -1733,14 +1725,10 @@ namespace STM.MediaToPACS.Main.UI
         private DevExpress.XtraEditors.LabelControl label16;
         private DevExpress.XtraEditors.LabelControl label5;
         private DevExpress.XtraEditors.LabelControl label6;
-        private DevExpress.XtraEditors.SimpleButton _btnLogs;
-        private DevExpress.XtraEditors.SimpleButton _btnSettings;
         private DevExpress.XtraEditors.TextEdit _txtPatientFirst;
         private DevExpress.XtraEditors.TextEdit _txtPatientMiddle;
         private DevExpress.XtraEditors.TextEdit _txtPatientLast;
         private DevExpress.XtraEditors.TextEdit _txtPatientID;
-        private DevExpress.XtraEditors.ComboBoxEdit _cbMWLServers;
-        private DevExpress.XtraEditors.ComboBoxEdit _cbCapture;
         private CheckBox _cbMPPSINPROGRESS;
         private DevExpress.XtraEditors.TextEdit _txtAccessionNumber;
         private CheckBox _cbStartEnd;
@@ -1765,7 +1753,6 @@ namespace STM.MediaToPACS.Main.UI
         private DevExpress.XtraGrid.Columns.GridColumn ScheduleProcedureStep;
         private DevExpress.XtraGrid.Columns.GridColumn RequestedProcedureID;
         private DevExpress.XtraGrid.Columns.GridColumn MPPS;
-        private DevExpress.XtraEditors.PanelControl panelControl1;
         private DevExpress.XtraTab.XtraTabControl xtraTabControl1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
@@ -1828,5 +1815,13 @@ namespace STM.MediaToPACS.Main.UI
         private DevExpress.XtraEditors.PanelControl panelControl3;
         private ComboBox _cbbTrangThai;
         private DevExpress.XtraEditors.LabelControl labelControl5;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem ngườiDùngToolStripMenuItem;
+        private ToolStripMenuItem _tsmSetting;
+        private ToolStripMenuItem _tsmLog;
+        private ToolStripMenuItem _tsmToUse;
+        private ToolStripComboBox _tsmCbbVideoCapture;
+        private ToolStripComboBox _tsmCbbWorklist;
+        private ToolStripMenuItem _tsmChangePassword;
     }
 }

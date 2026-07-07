@@ -148,20 +148,20 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
 
                 timer1.Start();
                 i = 2;
-                toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.stop;
+                //toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.stop;
                 
             }
             else if (i == 2)
             {
                 i = 3;
                 await MediaPlayer1.PauseAsync();
-                toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.play;
+                //toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.play;
             }
             else if (i == 3)
             {
                 i = 2;
                 await MediaPlayer1.ResumeAsync();
-                toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.stop;
+                //toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.stop;
             }
             UpdateToolbarButtons(i);
         }
@@ -178,7 +178,7 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
         {
             MediaPlayer1.NextFrame();
             i = 3;
-            toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.play;
+            //toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.play;
             UpdateToolbarButtons(i);
         }
 
@@ -186,7 +186,7 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
         {
             MediaPlayer1.PreviousFrame();
             i = 3;
-            toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.play;
+            //toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.play;
             UpdateToolbarButtons(i);
         }
 

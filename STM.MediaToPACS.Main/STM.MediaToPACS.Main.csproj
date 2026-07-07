@@ -724,8 +724,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Libraries\Arial.ttf" />
-    <None Include="Libraries\full_license.key" />
-    <None Include="Libraries\full_license.lic" />
     <None Include="Libraries\TemplateResult.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -845,44 +843,111 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Libraries\app_settings.xml">
+    <Content Include="Libraries\Leadtools.Codecs.Bmp.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Libraries\Leadtools.Codecs.Bmp.dll" />
-    <Content Include="Libraries\Leadtools.Codecs.Cmp.dll" />
-    <Content Include="Libraries\Leadtools.Codecs.Cmw.dll" />
-    <Content Include="Libraries\Leadtools.Codecs.dll" />
-    <Content Include="Libraries\Leadtools.Codecs.Fax.dll" />
-    <Content Include="Libraries\Leadtools.Codecs.Gif.dll" />
-    <Content Include="Libraries\Leadtools.Codecs.J2k.dll" />
-    <Content Include="Libraries\Leadtools.Codecs.Jb2.dll" />
-    <Content Include="Libraries\Leadtools.Codecs.Jbg.dll" />
-    <Content Include="Libraries\Leadtools.Codecs.Png.dll" />
-    <Content Include="Libraries\Leadtools.Codecs.Raw.dll" />
-    <Content Include="Libraries\Leadtools.Codecs.Tif.dll" />
-    <Content Include="Libraries\Leadtools.ColorConversion.dll" />
-    <Content Include="Libraries\Leadtools.Controls.WinForms.dll" />
-    <Content Include="Libraries\Leadtools.Dicom.Common.dll" />
-    <Content Include="Libraries\Leadtools.Dicom.dll" />
-    <Content Include="Libraries\Leadtools.Dicom.Scu.dll" />
-    <Content Include="Libraries\Leadtools.dll" />
-    <Content Include="Libraries\Leadtools.Drawing.dll" />
-    <Content Include="Libraries\Leadtools.Forms.DocumentWriters.dll" />
-    <Content Include="Libraries\Leadtools.Forms.Processing.dll" />
-    <Content Include="Libraries\Leadtools.ImageProcessing.Effects.dll" />
-    <Content Include="Libraries\Leadtools.ImageProcessing.Utilities.dll" />
-    <Content Include="Libraries\Leadtools.Medical.DataAccessLayer.dll" />
-    <Content Include="Libraries\Leadtools.Medical.UserManagementDataAccessLayer.dll" />
-    <Content Include="Libraries\Leadtools.Medical.Winforms.dll" />
-    <Content Include="Libraries\Leadtools.Medical.Worklist.DataAccessLayer.dll" />
-    <Content Include="Libraries\Leadtools.Printer.dll" />
-    <Content Include="Libraries\Leadtools.ScreenCapture.dll" />
-    <Content Include="Libraries\Leadtools.Twain.dll" />
-    <Content Include="Libraries\Leadtools.Vector.dll" />
-    <Content Include="Libraries\Leadtools.Wia.dll" />
-    <Content Include="Libraries\Leadtools.Windows.Media.TransitionBase.dll" />
-    <Content Include="Libraries\Leadtools.WinForms.CommonDialogs.File.dll" />
-    <Content Include="Libraries\Leadtools.WinForms.dll" />
+    <Content Include="Libraries\Leadtools.Codecs.Cmp.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Codecs.Cmw.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Codecs.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Codecs.Fax.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Codecs.Gif.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Codecs.J2k.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Codecs.Jb2.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Codecs.Jbg.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Codecs.Png.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Codecs.Raw.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Codecs.Tif.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.ColorConversion.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Controls.WinForms.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Dicom.Common.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Dicom.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Dicom.Scu.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Drawing.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Forms.DocumentWriters.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Forms.Processing.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.ImageProcessing.Effects.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.ImageProcessing.Utilities.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Medical.DataAccessLayer.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Medical.UserManagementDataAccessLayer.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Medical.Winforms.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Medical.Worklist.DataAccessLayer.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Printer.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.ScreenCapture.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Twain.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Vector.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Wia.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.Windows.Media.TransitionBase.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.WinForms.CommonDialogs.File.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.WinForms.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Libraries\SkiaSharp.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -936,7 +1001,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets'))" />
+    <Error Condition=" '$(OS)' != 'Windows_NT' and !Exists('..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets') " Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets'))" />
     <Error Condition="!Exists('..\packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets'))" />
     <Error Condition="!Exists('..\packages\Sentry.4.12.1\build\Sentry.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Sentry.4.12.1\build\Sentry.targets'))" />
     <Error Condition="!Exists('..\packages\VisioForge.DotNet.Core.Redist.Shared.x64.2025.7.1\build\VisioForge.DotNet.Core.Redist.Shared.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VisioForge.DotNet.Core.Redist.Shared.x64.2025.7.1\build\VisioForge.DotNet.Core.Redist.Shared.x64.targets'))" />

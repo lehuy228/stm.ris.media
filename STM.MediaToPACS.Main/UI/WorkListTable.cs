@@ -67,7 +67,7 @@ namespace STM.MediaToPACS.Main.UI
                 _mySettings.CopyGlobalSettings();
                 foreach (var device in new VideoCaptureCore().Video_CaptureDevices())
                 {
-                    _cbCapture.Properties.Items.Add(device.Name);
+                    _tsmCbbVideoCapture.Items.Add(device.Name);
                 }
             }
             catch (Exception Ex)
@@ -105,7 +105,11 @@ namespace STM.MediaToPACS.Main.UI
             SetServersComboBox(true);
             InitializeModalityComboBox();
             //xtraTabPage2.PageEnabled = false;
-            _cbCapture.SelectedIndex = 0;
+            if (new VideoCaptureCore().Video_CaptureDevices().Count>0)
+            {
+
+                _tsmCbbVideoCapture.SelectedIndex = 0;
+            }
             _cbStartEnd.Checked = false;
             _dtDateFromRis.DateTime = DateTime.Today;
             _dtDateToRis.DateTime = DateTime.Today;
@@ -195,31 +199,24 @@ namespace STM.MediaToPACS.Main.UI
         }
         #endregion
 
-        private void _btnSettings_Click(object sender, EventArgs e)
-        {
-            if (PacsSettings.DoOptions(0) != DialogResult.Cancel)
-                SetServersComboBox(false);
-            UpdateComboBoxes();
-        }
-
         private void UpdateComboBoxes()
         {
-            int iMWLIndex = _cbMWLServers.SelectedIndex;
+            int iMWLIndex = _tsmCbbWorklist.SelectedIndex;
 
-            if (_cbMWLServers.Properties.Items.Count != 0)
-                if (_cbMWLServers.Properties.Items.Count > iMWLIndex && iMWLIndex >= 0)
-                    _cbMWLServers.SelectedIndex = iMWLIndex;
+            if (_tsmCbbWorklist.Items.Count != 0)
+                if (_tsmCbbWorklist.Items.Count > iMWLIndex && iMWLIndex >= 0)
+                    _tsmCbbWorklist.SelectedIndex = iMWLIndex;
                 else
-                   if (_cbMWLServers.Properties.Items.Count > _mySettings._settings.DefaultMWLServer)
-                    _cbMWLServers.SelectedIndex = _mySettings._settings.DefaultMWLServer;
+                   if (_tsmCbbWorklist.Items.Count > _mySettings._settings.DefaultMWLServer)
+                    _tsmCbbWorklist.SelectedIndex = _mySettings._settings.DefaultMWLServer;
                 else
-                    _cbMWLServers.SelectedIndex = 0;
+                    _tsmCbbWorklist.SelectedIndex = 0;
         }
 
         private void SetServersComboBox(bool bSelectDefault)
         {
             //_cbSCPServers.Items.Clear();
-            _cbMWLServers.Properties.Items.Clear();
+            _tsmCbbWorklist.Items.Clear();
 
             MyServer[] list;
             int defaultserver = 0;
@@ -236,13 +233,13 @@ namespace STM.MediaToPACS.Main.UI
                 //_tbQueryMWList.Enabled = true;
                 foreach (MyServer server in list)
                 {
-                    _cbMWLServers.Properties.Items.Add(server);
+                    _tsmCbbWorklist.Items.Add(server);
                 }
                 if (bSelectDefault)
                     if (defaultserver < list.Length)
-                        _cbMWLServers.SelectedIndex = defaultserver;
+                        _tsmCbbWorklist.SelectedIndex = defaultserver;
                     else
-                        _cbMWLServers.SelectedIndex = 0;
+                        _tsmCbbWorklist.SelectedIndex = 0;
             }
         }
 
@@ -318,7 +315,7 @@ namespace STM.MediaToPACS.Main.UI
             //if (_tbDicomInfo.SelectedTab == _pageSCPQuery)
             //    s = (MyServer)(_cbSCPServers.SelectedItem);
             //else
-            s = (MyServer)(_cbMWLServers.SelectedItem);
+            s = (MyServer)(_tsmCbbWorklist.SelectedItem);
 
             server.AETitle = s._sAE;
             server.PeerAddress = IPAddress.Parse(s._sIP);
@@ -396,11 +393,9 @@ namespace STM.MediaToPACS.Main.UI
                 else
                     Cursor.Current = Cursors.WaitCursor;
 
-                _btnSettings.Enabled = enable;
-                _btnLogs.Enabled = enable;
                 _btnMWLQuery.Enabled = enable;
-                _cbCapture.Enabled = enable;
-                _cbMWLServers.Enabled = enable;
+                _tsmCbbVideoCapture.Enabled = enable;
+                _tsmCbbWorklist.Enabled = enable;
                 _tLPQuery.Enabled = enable;
 
                 if (enable)
@@ -542,7 +537,7 @@ namespace STM.MediaToPACS.Main.UI
             PacsSettings.SCP = GetQueryServer();
 
             MyServer s = null;
-            s = (MyServer)(_cbMWLServers.SelectedItem);
+            s = (MyServer)(_tsmCbbWorklist.SelectedItem);
 
             bool bSCPQueryEmpty;
             bool bSWLQueryEmpty;
@@ -651,97 +646,7 @@ namespace STM.MediaToPACS.Main.UI
         }
 
         private ProcedureStep ProcedureStepDelete;
-        //private void LoadCapture(FrmMain frmMain)
-        //{
-        //    CameraControl cameraControl = new CameraControl(_cbCapture.Text);
-        //    MediaPlayerControl mediaPlayerControl;
-        //    cameraControl.Dock = DockStyle.Fill;
-
-        //    //
-        //    //Sự kiện quay click vào video thu được sau khi capture
-        //    //
-        //    frmMain.VideoRoll_Click += (o, i) =>
-        //    {
-        //        try
-        //        {
-        //            PictureBox pictureBox = o as PictureBox;
-        //            cameraControl.Visible = false;
-        //            cameraControl.VideoCapture1.StopAsync();
-
-        //            mediaPlayerControl = new MediaPlayerControl(pictureBox.Tag.ToString());
-        //            mediaPlayerControl.Dock = DockStyle.Fill;
-
-        //            mediaPlayerControl.SnapshotMedia_Click += (s, e) =>
-        //            {
-        //                _frmMain.LoadRasterImage(mediaPlayerControl.SnapshotMedia);
-        //            };
-        //            mediaPlayerControl.BackCamera_Click += (s, e) =>
-        //            {
-        //                cameraControl.VideoCapture1.StartAsync();
-        //                cameraControl.Visible = true;
-        //                if (Screen.AllScreens.Length > 1)
-        //                {
-        //                    _frmCamera.Controls.Remove(mediaPlayerControl);
-        //                }
-        //                else
-        //                {
-        //                    _frmMain.panelCamera.Controls.Remove(mediaPlayerControl);
-        //                }
-        //            };
-
-        //            if (Screen.AllScreens.Length > 1)
-        //            {
-        //                _frmCamera.Controls.Add(mediaPlayerControl);
-        //            }
-        //            else
-        //            {
-        //                _frmMain.panelCamera.Controls.Add(mediaPlayerControl);
-        //            }
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show(ex.Message);
-        //        }
-        //    };
-
-        //    //if (Screen.AllScreens.Length > 1)
-        //    //{
-        //    //    _frmCamera.Controls.Add(cameraControl);
-        //    //    _frmCamera.Name = "FormCamera";
-        //    //    _frmCamera.StartPosition = FormStartPosition.Manual;
-        //    //    _frmCamera.WindowState = FormWindowState.Maximized;
-        //    //    _frmCamera.FormBorderStyle = FormBorderStyle.None;
-        //    //    _frmCamera.Location = Screen.AllScreens[1].WorkingArea.Location;
-        //    //    _frmCamera.TopMost = true;
-        //    //    _frmCamera.FormClosed += (s, e) =>
-        //    //    {
-        //    //        cameraControl.CameraControlRemoved();
-        //    //    };
-        //    //    _frmCamera.Show(this);
-        //    //}
-        //    //else
-        //    //{
-        //        //frmMain.tableLayoutPanelInfo.Visible = false;
-        //        cameraControl.Dock = DockStyle.Fill;
-        //        frmMain.panelCamera.Controls.Add(cameraControl);
-        //    //}
-
-        //    frmMain._CameraControl = cameraControl;
-        //}
-
-        //private void FormMain_Closed(object sender, FormClosedEventArgs e)
-        //{
-        //    if (_frmCamera.Name == "FormCamera")
-        //    {
-        //        _frmCamera.Close();
-        //    }
-        //    else
-        //    {
-        //        _frmMain.CloseFrmMain();
-        //    }
-        //}
-
+        
         //
         //Xóa item trong listview khi trạng thái MPPS là thành công
         //
@@ -808,7 +713,7 @@ namespace STM.MediaToPACS.Main.UI
                     SaveProcedureStep(ProcedureStepDelete);
                 }
 
-                FrmMain frmMain = new FrmMain(result, _cbCapture.Text);
+                FrmMain frmMain = new FrmMain(result, _tsmCbbVideoCapture.Text);
                 frmMain.ShowDialog();
             }
             catch (Exception ex)
@@ -1260,14 +1165,21 @@ namespace STM.MediaToPACS.Main.UI
                         var parent = _gridViewChiDinh.GetFocusedRow() as ChiDinhGridView;
                         if (parent != null)
                         {
+                            SplashScreenManager.ShowForm(this, typeof(WaitFormLoading), true, true, false);
+                            SplashScreenManager.Default.SetWaitFormCaption("Đang tải dữ liệu...");
+                            SplashScreenManager.Default.SetWaitFormDescription("Vui lòng chờ trong giây lát...");
                             string soPhieu = parent.SoPhieuChiDinh;
                             bool allowOpen = await CheckThanhToanHoiTiepAsync(maChiDinh);
                             if (!allowOpen)
+                            {
+                                SplashScreenManager.CloseForm(false);
                                 return;
-
+                            }
                             // Mở form xử lý
-                            FrmMain frmMain = new FrmMain(_cbCapture.Text, soPhieu, maChiDinh);
+                            FrmMain frmMain = new FrmMain(_tsmCbbVideoCapture.Text, soPhieu, maChiDinh);
                             frmMain.Text = $"{parent.HoTen}-{(parent.GioiTinh == 1 ? "Nam" : "Nữ")}-{parent.NgaySinh.ToString("dd/MM/yyyy")}";
+
+                            SplashScreenManager.CloseForm(false);
                             frmMain.ShowDialog();
                         }
                     }
@@ -1275,6 +1187,7 @@ namespace STM.MediaToPACS.Main.UI
             }
             catch (Exception ex)
             {
+                SplashScreenManager.CloseForm(false);
                 Console.WriteLine(ex.Message);
             }
         }
@@ -1355,7 +1268,7 @@ namespace STM.MediaToPACS.Main.UI
                             return;
 
                         // Mở form xử lý
-                        FrmMain frmMain = new FrmMain(_cbCapture.Text, obj.SoPhieuChiDinh, obj.MaChiDinh);
+                        FrmMain frmMain = new FrmMain(_tsmCbbVideoCapture.Text, obj.SoPhieuChiDinh, obj.MaChiDinh);
                             frmMain.Text = $"{obj.HoTen}-{(obj.GioiTinh == 0 ? "Nam" : "Nữ")}-{obj.NgaySinh.ToString("dd/MM/yyyy")}";
                             frmMain.ShowDialog();
                         
@@ -1365,6 +1278,45 @@ namespace STM.MediaToPACS.Main.UI
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void _tsmCbbVideoCapture_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void _tsmSetting_Click(object sender, EventArgs e)
+        {
+            if (PacsSettings.DoOptions(0) != DialogResult.Cancel)
+                SetServersComboBox(false);
+            UpdateComboBoxes();
+        }
+
+        private void _tsmLog_Click(object sender, EventArgs e)
+        {
+            PacsSettings.LogWindow.Visible = !PacsSettings.LogWindow.Visible;
+        }
+
+        private void _tsmToUse_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void _tsmChangePassword_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ServiceLocator.SessionService?.OpenChangePasswordPage();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Không thể mở trang đổi mật khẩu.\n{ex.Message}",
+                    "Đổi mật khẩu",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
             }
         }
     }

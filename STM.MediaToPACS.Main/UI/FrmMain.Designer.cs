@@ -715,7 +715,7 @@ namespace STM.MediaToPACS.Main
             this._panelPictureBox.Location = new System.Drawing.Point(0, 78);
             this._panelPictureBox.Margin = new System.Windows.Forms.Padding(1, 4, 1, 4);
             this._panelPictureBox.Name = "_panelPictureBox";
-            this._panelPictureBox.Size = new System.Drawing.Size(1768, 814);
+            this._panelPictureBox.Size = new System.Drawing.Size(1768, 920);
             this._panelPictureBox.TabIndex = 5;
             // 
             // _tbTableLayout
@@ -724,7 +724,7 @@ namespace STM.MediaToPACS.Main
             this._tbTableLayout.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.InsetDouble;
             this._tbTableLayout.ColumnCount = 2;
             this._tbTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._tbTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 721F));
+            this._tbTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 769F));
             this._tbTableLayout.Controls.Add(this.panelControl1, 1, 3);
             this._tbTableLayout.Controls.Add(this._panelImageList, 1, 4);
             this._tbTableLayout.Controls.Add(this.xtraTabControlReport, 0, 1);
@@ -738,11 +738,11 @@ namespace STM.MediaToPACS.Main
             this._tbTableLayout.RowCount = 6;
             this._tbTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 155F));
             this._tbTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._tbTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 698F));
-            this._tbTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
-            this._tbTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 172F));
+            this._tbTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 708F));
             this._tbTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
-            this._tbTableLayout.Size = new System.Drawing.Size(1768, 814);
+            this._tbTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 164F));
+            this._tbTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
+            this._tbTableLayout.Size = new System.Drawing.Size(1768, 920);
             this._tbTableLayout.TabIndex = 0;
             // 
             // panelControl1
@@ -752,10 +752,10 @@ namespace STM.MediaToPACS.Main
             this.panelControl1.Controls.Add(this._btnSnapshot);
             this.panelControl1.Controls.Add(this._btnRecord);
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl1.Location = new System.Drawing.Point(1045, 531);
+            this.panelControl1.Location = new System.Drawing.Point(997, 647);
             this.panelControl1.Margin = new System.Windows.Forms.Padding(1, 4, 1, 4);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(719, 46);
+            this.panelControl1.Size = new System.Drawing.Size(767, 44);
             this.panelControl1.TabIndex = 6;
             // 
             // _btnLinkCamera
@@ -809,6 +809,7 @@ namespace STM.MediaToPACS.Main
             this._btnRecord.Appearance.Options.UseFont = true;
             this._btnRecord.Enabled = false;
             this._btnRecord.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("_btnRecord.ImageOptions.Image")));
+            this._btnRecord.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this._btnRecord.Location = new System.Drawing.Point(5, 6);
             this._btnRecord.Margin = new System.Windows.Forms.Padding(1, 4, 1, 4);
             this._btnRecord.Name = "_btnRecord";
@@ -823,10 +824,10 @@ namespace STM.MediaToPACS.Main
             this._panelImageList.Controls.Add(this._panelImage);
             this._panelImageList.Controls.Add(this.panel1);
             this._panelImageList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._panelImageList.Location = new System.Drawing.Point(1045, 588);
+            this._panelImageList.Location = new System.Drawing.Point(997, 702);
             this._panelImageList.Margin = new System.Windows.Forms.Padding(1, 4, 1, 4);
             this._panelImageList.Name = "_panelImageList";
-            this._panelImageList.Size = new System.Drawing.Size(719, 164);
+            this._panelImageList.Size = new System.Drawing.Size(767, 156);
             this._panelImageList.TabIndex = 200;
             this._panelImageList.TabStop = true;
             // 
@@ -836,17 +837,17 @@ namespace STM.MediaToPACS.Main
             this._panelImage.Location = new System.Drawing.Point(0, 0);
             this._panelImage.Margin = new System.Windows.Forms.Padding(2);
             this._panelImage.Name = "_panelImage";
-            this._panelImage.Size = new System.Drawing.Size(647, 164);
+            this._panelImage.Size = new System.Drawing.Size(695, 156);
             this._panelImage.TabIndex = 1;
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this._lbImageSelect);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(647, 0);
+            this.panel1.Location = new System.Drawing.Point(695, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(72, 164);
+            this.panel1.Size = new System.Drawing.Size(72, 156);
             this.panel1.TabIndex = 0;
             // 
             // _lbImageSelect
@@ -874,7 +875,7 @@ namespace STM.MediaToPACS.Main
             this.xtraTabControlReport.Name = "xtraTabControlReport";
             this._tbTableLayout.SetRowSpan(this.xtraTabControlReport, 4);
             this.xtraTabControlReport.SelectedTabPage = this.xtraTabPage1;
-            this.xtraTabControlReport.Size = new System.Drawing.Size(1036, 587);
+            this.xtraTabControlReport.Size = new System.Drawing.Size(988, 693);
             this.xtraTabControlReport.TabIndex = 201;
             this.xtraTabControlReport.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage1,
@@ -889,7 +890,7 @@ namespace STM.MediaToPACS.Main
             this.xtraTabPage1.Controls.Add(this.panel5);
             this.xtraTabPage1.Margin = new System.Windows.Forms.Padding(1, 4, 1, 4);
             this.xtraTabPage1.Name = "xtraTabPage1";
-            this.xtraTabPage1.Size = new System.Drawing.Size(1026, 549);
+            this.xtraTabPage1.Size = new System.Drawing.Size(978, 655);
             this.xtraTabPage1.Text = "Kết luận";
             // 
             // _rtMoTa
@@ -900,7 +901,7 @@ namespace STM.MediaToPACS.Main
             this._rtMoTa.Location = new System.Drawing.Point(0, 49);
             this._rtMoTa.Margin = new System.Windows.Forms.Padding(1, 4, 1, 4);
             this._rtMoTa.Name = "_rtMoTa";
-            this._rtMoTa.Size = new System.Drawing.Size(1026, 219);
+            this._rtMoTa.Size = new System.Drawing.Size(978, 325);
             this._rtMoTa.TabIndex = 1;
             this._rtMoTa.Text = "";
             // 
@@ -910,10 +911,10 @@ namespace STM.MediaToPACS.Main
             this.groupControl1.Appearance.Options.UseBackColor = true;
             this.groupControl1.Controls.Add(this._rtKetLuan);
             this.groupControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupControl1.Location = new System.Drawing.Point(0, 268);
+            this.groupControl1.Location = new System.Drawing.Point(0, 374);
             this.groupControl1.Margin = new System.Windows.Forms.Padding(1, 4, 1, 4);
             this.groupControl1.Name = "groupControl1";
-            this.groupControl1.Size = new System.Drawing.Size(1026, 166);
+            this.groupControl1.Size = new System.Drawing.Size(978, 166);
             this.groupControl1.TabIndex = 1;
             this.groupControl1.Text = "Kết luận";
             // 
@@ -924,7 +925,7 @@ namespace STM.MediaToPACS.Main
             this._rtKetLuan.Location = new System.Drawing.Point(2, 27);
             this._rtKetLuan.Margin = new System.Windows.Forms.Padding(1, 4, 1, 4);
             this._rtKetLuan.Name = "_rtKetLuan";
-            this._rtKetLuan.Size = new System.Drawing.Size(1022, 137);
+            this._rtKetLuan.Size = new System.Drawing.Size(974, 137);
             this._rtKetLuan.TabIndex = 2;
             this._rtKetLuan.Text = "";
             // 
@@ -932,10 +933,10 @@ namespace STM.MediaToPACS.Main
             // 
             this.groupControl2.Controls.Add(this._rtKhuyenNghi);
             this.groupControl2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupControl2.Location = new System.Drawing.Point(0, 434);
+            this.groupControl2.Location = new System.Drawing.Point(0, 540);
             this.groupControl2.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.groupControl2.Name = "groupControl2";
-            this.groupControl2.Size = new System.Drawing.Size(1026, 115);
+            this.groupControl2.Size = new System.Drawing.Size(978, 115);
             this.groupControl2.TabIndex = 3;
             this.groupControl2.Text = "Khuyến nghị";
             // 
@@ -946,7 +947,7 @@ namespace STM.MediaToPACS.Main
             this._rtKhuyenNghi.Location = new System.Drawing.Point(2, 27);
             this._rtKhuyenNghi.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this._rtKhuyenNghi.Name = "_rtKhuyenNghi";
-            this._rtKhuyenNghi.Size = new System.Drawing.Size(1022, 86);
+            this._rtKhuyenNghi.Size = new System.Drawing.Size(974, 86);
             this._rtKhuyenNghi.TabIndex = 3;
             this._rtKhuyenNghi.Text = "";
             // 
@@ -959,7 +960,7 @@ namespace STM.MediaToPACS.Main
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Margin = new System.Windows.Forms.Padding(1, 4, 1, 4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(1026, 49);
+            this.panel5.Size = new System.Drawing.Size(978, 49);
             this.panel5.TabIndex = 0;
             // 
             // _cbbMauGoiY
@@ -973,7 +974,7 @@ namespace STM.MediaToPACS.Main
             this._cbbMauGoiY.Properties.Appearance.Options.UseFont = true;
             this._cbbMauGoiY.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this._cbbMauGoiY.Size = new System.Drawing.Size(914, 28);
+            this._cbbMauGoiY.Size = new System.Drawing.Size(866, 28);
             this._cbbMauGoiY.TabIndex = 0;
             this._cbbMauGoiY.SelectedIndexChanged += new System.EventHandler(this._cbbReportTemplate_SelectedIndexChanged);
             // 
@@ -993,7 +994,7 @@ namespace STM.MediaToPACS.Main
             this.xtraTabPageDataset.Controls.Add(this._gbDicomInfo);
             this.xtraTabPageDataset.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.xtraTabPageDataset.Name = "xtraTabPageDataset";
-            this.xtraTabPageDataset.Size = new System.Drawing.Size(1029, 549);
+            this.xtraTabPageDataset.Size = new System.Drawing.Size(981, 655);
             this.xtraTabPageDataset.Text = "Tập dữ liệu DICOM";
             // 
             // _gbDicomInfo
@@ -1006,7 +1007,7 @@ namespace STM.MediaToPACS.Main
             this._gbDicomInfo.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this._gbDicomInfo.Name = "_gbDicomInfo";
             this._gbDicomInfo.Padding = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this._gbDicomInfo.Size = new System.Drawing.Size(1029, 549);
+            this._gbDicomInfo.Size = new System.Drawing.Size(981, 655);
             this._gbDicomInfo.TabIndex = 10;
             this._gbDicomInfo.Text = "Thông tin DICOM được sử dụng với hình ảnh";
             // 
@@ -1021,7 +1022,7 @@ namespace STM.MediaToPACS.Main
             this._tbPropertyGrid.RowCount = 2;
             this._tbPropertyGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 59F));
             this._tbPropertyGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._tbPropertyGrid.Size = new System.Drawing.Size(1023, 516);
+            this._tbPropertyGrid.Size = new System.Drawing.Size(975, 622);
             this._tbPropertyGrid.TabIndex = 3;
             // 
             // panel6
@@ -1033,7 +1034,7 @@ namespace STM.MediaToPACS.Main
             this.panel6.Location = new System.Drawing.Point(1, 2);
             this.panel6.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(1021, 55);
+            this.panel6.Size = new System.Drawing.Size(973, 55);
             this.panel6.TabIndex = 3;
             // 
             // _cmbSopClasses
@@ -1076,7 +1077,7 @@ namespace STM.MediaToPACS.Main
             this.panelControl2.Controls.Add(this._btnSave);
             this.panelControl2.Controls.Add(this._btnPushToPACS);
             this.panelControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl2.Location = new System.Drawing.Point(4, 763);
+            this.panelControl2.Location = new System.Drawing.Point(4, 869);
             this.panelControl2.Margin = new System.Windows.Forms.Padding(1, 4, 1, 4);
             this.panelControl2.Name = "panelControl2";
             this.panelControl2.Size = new System.Drawing.Size(1760, 44);
@@ -1088,7 +1089,6 @@ namespace STM.MediaToPACS.Main
             this._btnPreviewMain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this._btnPreviewMain.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._btnPreviewMain.Appearance.Options.UseFont = true;
-            this._btnPreviewMain.ImageOptions.Image = global::STM.MediaToPACS.Main.Properties.Resources.show_16x16;
             this._btnPreviewMain.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
             this._btnPreviewMain.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
             this._btnPreviewMain.Location = new System.Drawing.Point(496, 5);
@@ -1269,23 +1269,27 @@ namespace STM.MediaToPACS.Main
             // 
             // _panelCamera
             // 
+            this._panelCamera.Appearance.BackColor = System.Drawing.Color.Transparent;
+            this._panelCamera.Appearance.Options.UseBackColor = true;
             this._panelCamera.Controls.Add(this._xtraCamera);
             this._panelCamera.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._panelCamera.Location = new System.Drawing.Point(1046, 163);
+            this._panelCamera.Location = new System.Drawing.Point(998, 163);
+            this._panelCamera.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
+            this._panelCamera.LookAndFeel.UseDefaultLookAndFeel = false;
             this._panelCamera.Margin = new System.Windows.Forms.Padding(2);
             this._panelCamera.Name = "_panelCamera";
             this._tbTableLayout.SetRowSpan(this._panelCamera, 2);
-            this._panelCamera.Size = new System.Drawing.Size(717, 359);
+            this._panelCamera.Size = new System.Drawing.Size(765, 475);
             this._panelCamera.TabIndex = 204;
             // 
             // _xtraCamera
             // 
             this._xtraCamera.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._xtraCamera.Location = new System.Drawing.Point(2, -45);
+            this._xtraCamera.Location = new System.Drawing.Point(3, 70);
             this._xtraCamera.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this._xtraCamera.Name = "_xtraCamera";
             this._xtraCamera.SelectedTabPage = this.xtraTabPage3;
-            this._xtraCamera.Size = new System.Drawing.Size(713, 402);
+            this._xtraCamera.Size = new System.Drawing.Size(759, 402);
             this._xtraCamera.TabIndex = 203;
             this._xtraCamera.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage3,
@@ -1297,18 +1301,21 @@ namespace STM.MediaToPACS.Main
             this.xtraTabPage3.Controls.Add(this.panelCamera);
             this.xtraTabPage3.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.xtraTabPage3.Name = "xtraTabPage3";
-            this.xtraTabPage3.Size = new System.Drawing.Size(703, 364);
+            this.xtraTabPage3.Size = new System.Drawing.Size(749, 364);
             this.xtraTabPage3.Text = "Camera";
             // 
             // panelCamera
             // 
             this.panelCamera.Appearance.BackColor = System.Drawing.Color.Black;
             this.panelCamera.Appearance.Options.UseBackColor = true;
+            this.panelCamera.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.panelCamera.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelCamera.Location = new System.Drawing.Point(0, 0);
+            this.panelCamera.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
+            this.panelCamera.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelCamera.Margin = new System.Windows.Forms.Padding(1, 4, 1, 4);
             this.panelCamera.Name = "panelCamera";
-            this.panelCamera.Size = new System.Drawing.Size(703, 364);
+            this.panelCamera.Size = new System.Drawing.Size(749, 364);
             this.panelCamera.TabIndex = 0;
             // 
             // xtraTabPage4
@@ -1316,7 +1323,7 @@ namespace STM.MediaToPACS.Main
             this.xtraTabPage4.Controls.Add(this._panelControlMedia);
             this.xtraTabPage4.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.xtraTabPage4.Name = "xtraTabPage4";
-            this.xtraTabPage4.Size = new System.Drawing.Size(700, 364);
+            this.xtraTabPage4.Size = new System.Drawing.Size(746, 364);
             this.xtraTabPage4.Text = "Video Media";
             // 
             // _panelControlMedia
@@ -1326,7 +1333,7 @@ namespace STM.MediaToPACS.Main
             this._panelControlMedia.Location = new System.Drawing.Point(0, 0);
             this._panelControlMedia.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this._panelControlMedia.Name = "_panelControlMedia";
-            this._panelControlMedia.Size = new System.Drawing.Size(700, 364);
+            this._panelControlMedia.Size = new System.Drawing.Size(746, 364);
             this._panelControlMedia.TabIndex = 0;
             // 
             // _tabShowImage
@@ -1334,7 +1341,7 @@ namespace STM.MediaToPACS.Main
             this._tabShowImage.Controls.Add(this._panelPictureReview);
             this._tabShowImage.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this._tabShowImage.Name = "_tabShowImage";
-            this._tabShowImage.Size = new System.Drawing.Size(700, 364);
+            this._tabShowImage.Size = new System.Drawing.Size(746, 364);
             this._tabShowImage.Text = "Ảnh đã chụp";
             // 
             // _panelPictureReview
@@ -1351,7 +1358,7 @@ namespace STM.MediaToPACS.Main
             this._panelPictureReview.Location = new System.Drawing.Point(0, 0);
             this._panelPictureReview.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this._panelPictureReview.Name = "_panelPictureReview";
-            this._panelPictureReview.Size = new System.Drawing.Size(700, 364);
+            this._panelPictureReview.Size = new System.Drawing.Size(746, 364);
             this._panelPictureReview.TabIndex = 0;
             // 
             // panelControl4
@@ -1943,7 +1950,7 @@ namespace STM.MediaToPACS.Main
             this._toolBtnOpenRaster.Image = ((System.Drawing.Image)(resources.GetObject("_toolBtnOpenRaster.Image")));
             this._toolBtnOpenRaster.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolBtnOpenRaster.Name = "_toolBtnOpenRaster";
-            this._toolBtnOpenRaster.Size = new System.Drawing.Size(28, 49);
+            this._toolBtnOpenRaster.Size = new System.Drawing.Size(29, 49);
             this._toolBtnOpenRaster.Text = "Mở ảnh";
             this._toolBtnOpenRaster.Click += new System.EventHandler(this._toolBtnOpenRaster_Click);
             // 
@@ -1958,7 +1965,7 @@ namespace STM.MediaToPACS.Main
             this._toolBtnStoreToPacs.Image = ((System.Drawing.Image)(resources.GetObject("_toolBtnStoreToPacs.Image")));
             this._toolBtnStoreToPacs.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolBtnStoreToPacs.Name = "_toolBtnStoreToPacs";
-            this._toolBtnStoreToPacs.Size = new System.Drawing.Size(28, 49);
+            this._toolBtnStoreToPacs.Size = new System.Drawing.Size(29, 49);
             this._toolBtnStoreToPacs.Text = "Tải lên PACS";
             this._toolBtnStoreToPacs.Click += new System.EventHandler(this._toolBtnStoreToPacs_Click);
             // 
@@ -1968,7 +1975,7 @@ namespace STM.MediaToPACS.Main
             this._toolBtnSaveDicom.Image = ((System.Drawing.Image)(resources.GetObject("_toolBtnSaveDicom.Image")));
             this._toolBtnSaveDicom.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolBtnSaveDicom.Name = "_toolBtnSaveDicom";
-            this._toolBtnSaveDicom.Size = new System.Drawing.Size(28, 49);
+            this._toolBtnSaveDicom.Size = new System.Drawing.Size(29, 49);
             this._toolBtnSaveDicom.Text = "Lưu DICOM";
             this._toolBtnSaveDicom.Click += new System.EventHandler(this._toolBtnSaveDicom_Click);
             // 
@@ -1983,7 +1990,7 @@ namespace STM.MediaToPACS.Main
             this._toolBtnCLearInfo.Image = ((System.Drawing.Image)(resources.GetObject("_toolBtnCLearInfo.Image")));
             this._toolBtnCLearInfo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolBtnCLearInfo.Name = "_toolBtnCLearInfo";
-            this._toolBtnCLearInfo.Size = new System.Drawing.Size(28, 49);
+            this._toolBtnCLearInfo.Size = new System.Drawing.Size(29, 49);
             this._toolBtnCLearInfo.Text = "Xóa thông tin DICOM";
             this._toolBtnCLearInfo.Click += new System.EventHandler(this._toolBtnCLearInfo_Click);
             // 
@@ -1998,7 +2005,7 @@ namespace STM.MediaToPACS.Main
             this._toolBtnDeleteAll.Image = ((System.Drawing.Image)(resources.GetObject("_toolBtnDeleteAll.Image")));
             this._toolBtnDeleteAll.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolBtnDeleteAll.Name = "_toolBtnDeleteAll";
-            this._toolBtnDeleteAll.Size = new System.Drawing.Size(28, 49);
+            this._toolBtnDeleteAll.Size = new System.Drawing.Size(29, 49);
             this._toolBtnDeleteAll.Text = "Xóa tất cả ảnh";
             this._toolBtnDeleteAll.Click += new System.EventHandler(this._toolBtnDeleteAll_Click);
             // 
@@ -2008,7 +2015,7 @@ namespace STM.MediaToPACS.Main
             this._toolBtnDeleteSelected.Image = ((System.Drawing.Image)(resources.GetObject("_toolBtnDeleteSelected.Image")));
             this._toolBtnDeleteSelected.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolBtnDeleteSelected.Name = "_toolBtnDeleteSelected";
-            this._toolBtnDeleteSelected.Size = new System.Drawing.Size(28, 49);
+            this._toolBtnDeleteSelected.Size = new System.Drawing.Size(29, 49);
             this._toolBtnDeleteSelected.Text = "Xóa ảnh chọn";
             this._toolBtnDeleteSelected.Click += new System.EventHandler(this._toolBtnDeleteSelected_Click);
             // 
@@ -2023,7 +2030,7 @@ namespace STM.MediaToPACS.Main
             this._toolBtnRotate.Image = ((System.Drawing.Image)(resources.GetObject("_toolBtnRotate.Image")));
             this._toolBtnRotate.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolBtnRotate.Name = "_toolBtnRotate";
-            this._toolBtnRotate.Size = new System.Drawing.Size(28, 49);
+            this._toolBtnRotate.Size = new System.Drawing.Size(29, 49);
             this._toolBtnRotate.Text = "Xoay 90";
             this._toolBtnRotate.Click += new System.EventHandler(this._toolBtnRotate_Click);
             // 
@@ -2038,7 +2045,7 @@ namespace STM.MediaToPACS.Main
             this._toolBtnViewLog.Image = ((System.Drawing.Image)(resources.GetObject("_toolBtnViewLog.Image")));
             this._toolBtnViewLog.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolBtnViewLog.Name = "_toolBtnViewLog";
-            this._toolBtnViewLog.Size = new System.Drawing.Size(28, 49);
+            this._toolBtnViewLog.Size = new System.Drawing.Size(29, 49);
             this._toolBtnViewLog.Text = "Show/Hide Log Window";
             this._toolBtnViewLog.Click += new System.EventHandler(this._toolBtnViewLog_Click);
             // 
@@ -2071,7 +2078,7 @@ namespace STM.MediaToPACS.Main
             // _tsmDeletePACS
             // 
             this._tsmDeletePACS.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this._tsmDeletePACS.Image = global::STM.MediaToPACS.Main.Properties.Resources.delete_link;
+            this._tsmDeletePACS.Image = global::STM.MediaToPACS.Main.Properties.Resources.unlink;
             this._tsmDeletePACS.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._tsmDeletePACS.Name = "_tsmDeletePACS";
             this._tsmDeletePACS.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
@@ -2095,7 +2102,7 @@ namespace STM.MediaToPACS.Main
             // _tsmAsyncHis
             // 
             this._tsmAsyncHis.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this._tsmAsyncHis.Image = global::STM.MediaToPACS.Main.Properties.Resources.irregular;
+            this._tsmAsyncHis.Image = global::STM.MediaToPACS.Main.Properties.Resources.paper_plane;
             this._tsmAsyncHis.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._tsmAsyncHis.Name = "_tsmAsyncHis";
             this._tsmAsyncHis.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
@@ -2177,7 +2184,7 @@ namespace STM.MediaToPACS.Main
             this.Appearance.Options.UseBackColor = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1768, 892);
+            this.ClientSize = new System.Drawing.Size(1768, 998);
             this.Controls.Add(this._cbbPrinters);
             this.Controls.Add(this._panelPictureBox);
             this.Controls.Add(this._toolbarMain);

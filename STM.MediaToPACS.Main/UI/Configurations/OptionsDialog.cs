@@ -414,7 +414,6 @@ namespace STM.MediaToPACS.Main
             // 
             // buttonAddServer
             // 
-            this.buttonAddServer.ImageOptions.Image = global::STM.MediaToPACS.Main.Properties.Resources.client_add_32;
             this.buttonAddServer.Location = new System.Drawing.Point(6, 6);
             this.buttonAddServer.Name = "buttonAddServer";
             this.buttonAddServer.Size = new System.Drawing.Size(40, 39);
@@ -424,7 +423,6 @@ namespace STM.MediaToPACS.Main
             // buttonDeleteServer
             // 
             this.buttonDeleteServer.CausesValidation = false;
-            this.buttonDeleteServer.ImageOptions.Image = global::STM.MediaToPACS.Main.Properties.Resources.client_remove_32;
             this.buttonDeleteServer.Location = new System.Drawing.Point(49, 6);
             this.buttonDeleteServer.Name = "buttonDeleteServer";
             this.buttonDeleteServer.Size = new System.Drawing.Size(40, 39);
@@ -990,7 +988,6 @@ namespace STM.MediaToPACS.Main
             this.Controls.Add(this._tbOptions);
             this.Controls.Add(this.panelControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.IconOptions.Image = global::STM.MediaToPACS.Main.Properties.Resources.stm;
             this.Name = "OptionsDialog";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

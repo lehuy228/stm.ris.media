@@ -72,6 +72,7 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(500, 38);
             this.panel4.TabIndex = 8;
+            this.panel4.Visible = false;
             // 
             // panelControl1
             // 

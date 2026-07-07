@@ -141,7 +141,6 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             // toolStripButtonPlay
             // 
             this.toolStripButtonPlay.BackColor = System.Drawing.Color.Transparent;
-            this.toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.play;
             this.toolStripButtonPlay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.toolStripButtonPlay.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -166,7 +165,6 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             // toolStripButtonPreviousFrame
             // 
             this.toolStripButtonPreviousFrame.BackColor = System.Drawing.Color.Transparent;
-            this.toolStripButtonPreviousFrame.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.back_arrow;
             this.toolStripButtonPreviousFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.toolStripButtonPreviousFrame.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonPreviousFrame.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -180,7 +178,6 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             // toolStripButtonNextFrame
             // 
             this.toolStripButtonNextFrame.BackColor = System.Drawing.Color.Transparent;
-            this.toolStripButtonNextFrame.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.right_arrow;
             this.toolStripButtonNextFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.toolStripButtonNextFrame.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonNextFrame.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -194,7 +191,6 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             // toolStripButtonPreviousKeyFrame
             // 
             this.toolStripButtonPreviousKeyFrame.BackColor = System.Drawing.Color.Transparent;
-            this.toolStripButtonPreviousKeyFrame.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.rewind;
             this.toolStripButtonPreviousKeyFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.toolStripButtonPreviousKeyFrame.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonPreviousKeyFrame.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -208,7 +204,6 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             // toolStripButtonNextKeyFrame
             // 
             this.toolStripButtonNextKeyFrame.BackColor = System.Drawing.Color.Transparent;
-            this.toolStripButtonNextKeyFrame.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.fast_forward_button;
             this.toolStripButtonNextKeyFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.toolStripButtonNextKeyFrame.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonNextKeyFrame.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -223,7 +218,6 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             // toolStripButtonFirstFrame
             // 
             this.toolStripButtonFirstFrame.BackColor = System.Drawing.Color.Transparent;
-            this.toolStripButtonFirstFrame.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.back_button;
             this.toolStripButtonFirstFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.toolStripButtonFirstFrame.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonFirstFrame.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -237,7 +231,6 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             // toolStripButtonLastFrame
             // 
             this.toolStripButtonLastFrame.BackColor = System.Drawing.Color.Transparent;
-            this.toolStripButtonLastFrame.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.next_button;
             this.toolStripButtonLastFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.toolStripButtonLastFrame.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonLastFrame.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -256,7 +249,6 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             // toolStripButtonSnapshot
             // 
             this.toolStripButtonSnapshot.BackColor = System.Drawing.Color.Transparent;
-            this.toolStripButtonSnapshot.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.snapshot;
             this.toolStripButtonSnapshot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.toolStripButtonSnapshot.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonSnapshot.ImageTransparentColor = System.Drawing.Color.Magenta;

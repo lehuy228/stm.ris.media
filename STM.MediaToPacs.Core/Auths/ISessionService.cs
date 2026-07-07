@@ -10,6 +10,7 @@ namespace MediaToPacs.Core.Auths
     public interface ISessionService
     {
         void SetToken(string accessToken, string refreshToken, DateTime expiresAt);
+        void OpenChangePasswordPage();
         UserInfo GetCurrentUser();
         bool IsLoggedIn { get; }
     }
