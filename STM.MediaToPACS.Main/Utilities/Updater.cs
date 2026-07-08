@@ -1,4 +1,3 @@
-using DevExpress.XtraSplashScreen;
 using Serilog;
 using System;
 using System.Threading.Tasks;
@@ -9,7 +8,7 @@ namespace STM.MediaToPACS.Main.Utilities
 {
     public static class Updater
     {
-        public static async Task<bool> CheckAndUpdate()
+        public static async Task<bool> CheckAndUpdate(Action<string> onStatus = null, Action<int> onProgress = null)
         {
             try
             {
@@ -33,9 +32,11 @@ namespace STM.MediaToPACS.Main.Utilities
                     return false;
                 }
 
+                onStatus?.Invoke("Đang kiểm tra cập nhật...");
                 var updateInfo = await mgr.CheckForUpdatesAsync();
                 if (updateInfo == null) return false; // đã là bản mới nhất
 
+                onStatus?.Invoke("Đang chờ xác nhận cập nhật...");
                 var result = DevExpress.XtraEditors.XtraMessageBox.Show(
                     $"Có bản cập nhật mới {updateInfo.TargetFullRelease.Version}. Bạn có muốn cập nhật không?",
                     "Cập nhật",
@@ -44,10 +45,14 @@ namespace STM.MediaToPACS.Main.Utilities
 
                 if (result != System.Windows.Forms.DialogResult.Yes) return false;
 
-                SplashScreenManager.ShowDefaultWaitForm("Đang cập nhật...", "Xin chờ trong giây lát");
-                await mgr.DownloadUpdatesAsync(updateInfo);
-                SplashScreenManager.CloseDefaultWaitForm();
+                onStatus?.Invoke("Đang tải bản cập nhật...");
+                await mgr.DownloadUpdatesAsync(updateInfo, progress =>
+                {
+                    onProgress?.Invoke(progress);
+                    onStatus?.Invoke($"Đang tải bản cập nhật... {progress}%");
+                });
 
+                onStatus?.Invoke("Đang cài đặt và khởi động lại...");
                 mgr.ApplyUpdatesAndRestart(updateInfo); // tự tắt app, cài và mở lại
                 return true;
             }

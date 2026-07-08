@@ -11,14 +11,19 @@ namespace MediaToPacs.Core.Interfaces
     public interface IRisService2
     {
         /// <summary>
-        /// Danh sách KTV, y tá cùng khoa với bác sĩ (theo staffCode).
+        /// Danh sách KTV, y tá cùng khoa (theo orgCode).
         /// titleCodes mặc định ["ktv", "y_ta"] nếu không truyền.
         /// </summary>
-        Task<List<PractitionerListDto>> GetColleaguesAsync(string staffCode, List<string> titleCodes = null);
+        Task<List<PractitionerListDto>> GetColleaguesAsync(string orgCode, List<string> titleCodes = null);
 
         /// <summary>
         /// Danh sách device, lọc theo modality nếu có truyền.
         /// </summary>
         Task<List<DeviceDto>> GetDevicesAsync(string modality = null);
+
+        /// <summary>
+        /// Danh sách khoa (Organization.OrgTypeCode = DEPARTMENT).
+        /// </summary>
+        Task<List<OrganizationDto>> GetDepartmentsAsync();
     }
 }

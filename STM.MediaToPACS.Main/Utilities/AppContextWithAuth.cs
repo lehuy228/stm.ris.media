@@ -15,10 +15,15 @@ namespace STM.MediaToPACS.Main.Utilities
         private readonly SynchronizationContext _uiContext;
         private CancellationTokenSource _authCts;
         private bool _isAuthenticationInProgress;
+        private FrmSplash _splash;
 
         public AppContextWithAuth()
         {
             _uiContext = SynchronizationContext.Current ?? new WindowsFormsSynchronizationContext();
+
+            _splash = new FrmSplash();
+            _splash.Show();
+
             InitializeAsync();
         }
 
@@ -47,7 +52,7 @@ namespace STM.MediaToPACS.Main.Utilities
             try
             {
                 Log.Information("Kiểm tra cập nhật ứng dụng...");
-                return await Updater.CheckAndUpdate();
+                return await Updater.CheckAndUpdate(_splash.SetStatus, _splash.SetProgress);
             }
             catch (Exception ex)
             {
@@ -71,6 +76,7 @@ namespace STM.MediaToPACS.Main.Utilities
             try
             {
                 Log.Information("Bắt đầu quá trình xác thực...");
+                _splash.SetStatus("Đang xác thực người dùng...");
 
                 var tokenData = await GetTokenWithRetryAsync(timeoutSeconds: 120, maxRetries: 2);
 
@@ -79,7 +85,21 @@ namespace STM.MediaToPACS.Main.Utilities
                     throw new InvalidOperationException("Không lấy được token hợp lệ");
                 }
 
+                _splash.SetStatus("Đang khởi tạo ứng dụng...");
                 await InitializeUserSessionAsync(tokenData);
+                ServiceLocator.InitializeOptionalServices();
+
+                _splash?.CloseSplash();
+                _splash = null;
+
+                bool confirmed = await ShowDoctorConfirmAsync();
+                if (!confirmed)
+                {
+                    Log.Warning("Người dùng đã hủy tại màn hình xác nhận thông tin bác sĩ");
+                    ShowMessageAndExit("Đã hủy đăng nhập.", "Thông báo");
+                    return;
+                }
+
                 ShowMainForm();
 
                 Log.Information("Đăng nhập thành công");
@@ -175,6 +195,29 @@ namespace STM.MediaToPACS.Main.Utilities
             }
         }
 
+        private Task<bool> ShowDoctorConfirmAsync()
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            _uiContext.Post(_ =>
+            {
+                try
+                {
+                    using (var frm = new FrmDoctorConfirm())
+                    {
+                        var result = frm.ShowDialog();
+                        tcs.SetResult(result == DialogResult.OK);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            }, null);
+
+            return tcs.Task;
+        }
+
         private void ShowMainForm()
         {
             _uiContext.Post(_ =>
@@ -182,6 +225,9 @@ namespace STM.MediaToPACS.Main.Utilities
                 try
                 {
                     Log.Information("Đang mở MainForm...");
+
+                    _splash?.CloseSplash();
+                    _splash = null;
 
                     var mainForm = new WorkListTable();
                     mainForm.FormClosed += OnMainFormClosed;
@@ -246,6 +292,9 @@ namespace STM.MediaToPACS.Main.Utilities
         {
             _uiContext.Post(_ =>
             {
+                _splash?.CloseSplash();
+                _splash = null;
+
                 MessageBox.Show(
                     message,
                     title,
@@ -260,6 +309,9 @@ namespace STM.MediaToPACS.Main.Utilities
         {
             _uiContext.Post(_ =>
             {
+                _splash?.CloseSplash();
+                _splash = null;
+
                 MessageBox.Show(
                     message,
                     title,

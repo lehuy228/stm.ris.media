@@ -1254,27 +1254,21 @@ namespace STM.MediaToPACS.Main
         {
             try
             {
-                // Nếu đã kết luận thành công thì tra theo bác sĩ đã kết luận (MaBacSiKetLuan) trong
-                // kết quả, không phải bác sĩ đang đăng nhập (có thể là người khác đang xem/sửa lại).
-                bool daHoanThanh = _kqChanDoanResponse != null &&
-                    TrangThaiKetLuan.HOAN_THANH.Equals(_kqChanDoanResponse.TrangThai);
+                // Lọc theo khoa đã chọn lúc đăng nhập (không lọc theo bác sĩ/staffCode nữa).
+                var orgCode = ServiceLocator.SelectedOrganizationCode;
 
-                var staffCode = daHoanThanh
-                    ? _kqChanDoanResponse.MaBacSiKetLuan
-                    : ServiceLocator.KeycloakUserInfo?.HISCode;
-
-                if (string.IsNullOrWhiteSpace(staffCode))
+                if (string.IsNullOrWhiteSpace(orgCode))
                 {
-                    Log.Warning("Không có mã bác sĩ để tra danh sách KTV/Y tá cùng khoa");
+                    Log.Warning("Không có mã khoa để tra danh sách KTV/Y tá cùng khoa");
                     return;
                 }
 
                 // API RIS v1 (cũ) - giữ lại để tham khảo/rollback nếu cần
                 //_listHisUser = (await ServiceLocator.RisService.GetDSNguoidungAsync()).data;
 
-                // API RIS v2 (mới) - lấy danh sách KTV (TECHNICIAN), y tá (NURSE) cùng khoa với bác sĩ (staffCode = HISCode)
+                // API RIS v2 (mới) - lấy danh sách KTV (TECHNICIAN), y tá (NURSE) cùng khoa (orgCode)
                 _listHisUser = await ServiceLocator.RisService2.GetColleaguesAsync(
-                    staffCode,
+                    orgCode,
                     titleCodes: new List<string> { "NURSE", "TECHNICIAN" });
 
                 // Cập nhật UI trên UI thread

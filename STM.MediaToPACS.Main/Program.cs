@@ -24,8 +24,24 @@ namespace STM.MediaToPACS.Main
         {
             VelopackApp.Build().Run();
 
-            string logFolder = Path.Combine(ConfigurationManager.AppSettings["File:BasePath"], "Logs");
-            Directory.CreateDirectory(logFolder);
+            string basePath = ConfigurationManager.AppSettings["File:BasePath"];
+            string logFolder;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(basePath))
+                    throw new InvalidOperationException("File:BasePath chưa được cấu hình.");
+
+                logFolder = Path.Combine(basePath, "Logs");
+                Directory.CreateDirectory(logFolder);
+            }
+            catch
+            {
+                // basePath không hợp lệ (vd: ổ đĩa không tồn tại, thiếu quyền) -> dùng thư mục an toàn thay thế
+                logFolder = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                    "NhatMinhMedia", "Logs");
+                Directory.CreateDirectory(logFolder);
+            }
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug() // ghi từ mức Debug trở lên

@@ -29,6 +29,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this._btnSave = new DevExpress.XtraEditors.SimpleButton();
             this._btnCancel = new DevExpress.XtraEditors.SimpleButton();
@@ -75,6 +76,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
             this.labelControl17 = new DevExpress.XtraEditors.LabelControl();
             this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             this._richModality = new System.Windows.Forms.RichTextBox();
+            this.ultraRibbonCustomizationProvider1 = new Infragistics.Win.SupportDialogs.RibbonCustomizationProvider.UltraRibbonCustomizationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             this.panelControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._pageRISConfig)).BeginInit();
@@ -186,7 +188,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 31.6F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33.2F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 34F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33.2F)});
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33.2F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
             this.tablePanel2.Size = new System.Drawing.Size(889, 457);
             this.tablePanel2.TabIndex = 1;
             // 
@@ -260,11 +263,11 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
             // labelControl21
             // 
             this.tablePanel2.SetColumn(this.labelControl21, 0);
-            this.labelControl21.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelControl21.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelControl21.Location = new System.Drawing.Point(3, 102);
             this.labelControl21.Name = "labelControl21";
             this.tablePanel2.SetRow(this.labelControl21, 3);
-            this.labelControl21.Size = new System.Drawing.Size(195, 18);
+            this.labelControl21.Size = new System.Drawing.Size(195, 27);
             this.labelControl21.TabIndex = 14;
             this.labelControl21.Text = "URL API RIS V2:";
             // 
@@ -402,6 +405,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
             this._txUrlSystemUpdate.Name = "_txUrlSystemUpdate";
             this._txUrlSystemUpdate.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._txUrlSystemUpdate.Properties.Appearance.Options.UseFont = true;
+            this._txUrlSystemUpdate.Properties.PasswordChar = '*';
+            this._txUrlSystemUpdate.Properties.UseSystemPasswordChar = true;
             this.tablePanel1.SetRow(this._txUrlSystemUpdate, 9);
             this._txUrlSystemUpdate.Size = new System.Drawing.Size(682, 28);
             this._txUrlSystemUpdate.TabIndex = 17;
@@ -778,5 +783,6 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
         private DevExpress.XtraEditors.SimpleButton _btnTestApiThanhToan;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
         private System.Windows.Forms.RichTextBox _richModality;
+        private Infragistics.Win.SupportDialogs.RibbonCustomizationProvider.UltraRibbonCustomizationProvider ultraRibbonCustomizationProvider1;
     }
 }

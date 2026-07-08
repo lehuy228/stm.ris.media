@@ -131,6 +131,17 @@
     <Reference Include="DevExpress.XtraRichEdit.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraTreeList.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraVerticalGrid.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Infragistics2.Shared.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.Misc.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.SupportDialogs.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="Infragistics2.Win.UltraWinCalcManager.v12.1.FormulaBuilder, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinEditors.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinListView.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinTabControl.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinToolbars.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinTree.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
     <Reference Include="Leadtools">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libraries\Leadtools.dll</HintPath>
@@ -635,6 +646,18 @@
       <DependentUpon>TemplateSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Updater.cs" />
+    <Compile Include="UI\FrmSplash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmSplash.Designer.cs">
+      <DependentUpon>FrmSplash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FrmDoctorConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmDoctorConfirm.Designer.cs">
+      <DependentUpon>FrmDoctorConfirm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\WaitFormLoading.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -710,6 +733,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Configurations\Template\TemplateSetting.resx">
       <DependentUpon>TemplateSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FrmSplash.resx">
+      <DependentUpon>FrmSplash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FrmDoctorConfirm.resx">
+      <DependentUpon>FrmDoctorConfirm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\WaitFormLoading.resx">
       <DependentUpon>WaitFormLoading.cs</DependentUpon>

@@ -4,6 +4,25 @@ using System.Collections.Generic;
 namespace MediaToPacs.Core.Models
 {
     /// <summary>
+    /// GET /risv1/organizations/departments — trả trực tiếp mảng, không bọc ApiResponse
+    /// </summary>
+    public class OrganizationDto
+    {
+        public int id { get; set; }
+        public string code { get; set; }
+        public string name { get; set; }
+        public string nameEn { get; set; }
+        public string aliases { get; set; }
+        public string orgTypeCode { get; set; }
+        public string orgTypeDisplay { get; set; }
+        public int? parentId { get; set; }
+        public string parentName { get; set; }
+        public int? level { get; set; }
+        public string path { get; set; }
+    }
+
+
+    /// <summary>
     /// GET /risv1/staff/colleagues — trả trực tiếp mảng, không bọc ApiResponse
     /// </summary>
     public class PractitionerListDto

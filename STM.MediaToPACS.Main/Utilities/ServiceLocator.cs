@@ -34,6 +34,7 @@ namespace STM.MediaToPACS.Main.Utilities
         // ===================== USER STATE =====================
         public static KeycloakUserInfo KeycloakUserInfo { get; set; }
         public static UserDto UserInfo { get; set; }
+        public static string SelectedOrganizationCode { get; set; }
 
         // ===================== CACHE =====================
         public static ResultPage<ReportTemplate> ReportTemplates { get; set; }
@@ -128,7 +129,7 @@ namespace STM.MediaToPACS.Main.Utilities
                     PacsPassword = "Anphat123!",
                     UrlViewerPacs = null,
                     UrlPacsPublic = "http://10.12.8.16:6038/MedicalViewer",
-                    UrlSystemUpdate = null,
+                    UrlSystemUpdate = "https://github.com/lehuy228/stm.ris.media",
                     SystemUpdateUser = null,
                     SystemUpdateToken = null,
                     UrlTokenPacs = "",

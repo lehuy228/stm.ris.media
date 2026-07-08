@@ -32,16 +32,30 @@ namespace MediaToPacs.Infrastructure.Services
 
         public void Configure(string risV2Url)
         {
-            _risV2Url = risV2Url;
+            _risV2Url = NormalizeRisV2BaseUrl(risV2Url);
         }
 
-        public async Task<List<PractitionerListDto>> GetColleaguesAsync(string staffCode, List<string> titleCodes = null)
+        private static string NormalizeRisV2BaseUrl(string risV2Url)
         {
-            if (string.IsNullOrWhiteSpace(staffCode))
-                throw new ArgumentException("staffCode không được để trống", nameof(staffCode));
+            if (string.IsNullOrWhiteSpace(risV2Url))
+                return risV2Url;
+
+            var normalized = risV2Url.Trim().TrimEnd('/');
+            const string risV1Path = "/api/risv1";
+
+            if (normalized.EndsWith(risV1Path, StringComparison.OrdinalIgnoreCase))
+                normalized = normalized.Substring(0, normalized.Length - risV1Path.Length);
+
+            return normalized.TrimEnd('/');
+        }
+
+        public async Task<List<PractitionerListDto>> GetColleaguesAsync(string orgCode, List<string> titleCodes = null)
+        {
+            if (string.IsNullOrWhiteSpace(orgCode))
+                throw new ArgumentException("orgCode không được để trống", nameof(orgCode));
 
             var query = HttpUtility.ParseQueryString(string.Empty);
-            query["staffCode"] = staffCode;
+            query["orgCode"] = orgCode;
 
             if (titleCodes != null)
             {
@@ -85,6 +99,21 @@ namespace MediaToPacs.Infrastructure.Services
 
             return JsonSerializer.Deserialize<List<DeviceDto>>(json, _jsonOptions)
                 ?? new List<DeviceDto>();
+        }
+
+        public async Task<List<OrganizationDto>> GetDepartmentsAsync()
+        {
+            var url = $"{_risV2Url}/api/risv1/organizations/departments";
+
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(json))
+                return new List<OrganizationDto>();
+
+            return JsonSerializer.Deserialize<List<OrganizationDto>>(json, _jsonOptions)
+                ?? new List<OrganizationDto>();
         }
     }
 }

@@ -189,7 +189,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
                 // Lưu System Update config
                 _systemConfig.UrlSystemUpdate = _txUrlSystemUpdate.Text?.Trim();
                 _systemConfig.SystemUpdateUser = _txSystemUpdateUser.Text?.Trim();
-                _systemConfig.SystemUpdatePassword = _txSystemUpdatePassword.Text?.Trim();
+                _systemConfig.SystemUpdatePassword = NormalizeGithubToken(_txSystemUpdatePassword.Text);
 
                 // Lưu other settings (nếu có)
                 _systemConfig.CheckThanhToan = _txCheckThanhToan.Text?.Trim();
@@ -229,6 +229,23 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
         {
             _modalities.ModalitiesList = _richModality.Text.ToUpper();
             XmlSettingsHelper.Save<Modalities>(_modalityFilePath, _modalities);
+        }
+
+        /// <summary>
+        /// Cho phép người vận hành chỉ dán phần token GitHub PAT (không kèm tiền tố
+        /// "github_pat_") để tránh phải đưa nguyên token đầy đủ. Tự thêm tiền tố nếu thiếu.
+        /// </summary>
+        private static string NormalizeGithubToken(string rawToken)
+        {
+            const string prefix = "github_pat_";
+
+            string token = rawToken?.Trim();
+            if (string.IsNullOrEmpty(token))
+                return token;
+
+            return token.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
+                ? token
+                : prefix + token;
         }
 
         /// <summary>
