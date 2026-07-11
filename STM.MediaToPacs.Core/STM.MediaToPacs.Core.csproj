@@ -109,6 +109,8 @@
     <Compile Include="Models\Modalities.cs" />
     <Compile Include="Models\ResponseResult.cs" />
     <Compile Include="Models\RisV2Models.cs" />
+    <Compile Include="Models\RisV2QuickSuggestionModels.cs" />
+    <Compile Include="Models\Ketluan\ChiSoBaoCao.cs" />
     <Compile Include="Models\ShortcutAndFontSettings.cs" />
     <Compile Include="Models\StudyOr.cs" />
     <Compile Include="Models\SystemConfig.cs" />

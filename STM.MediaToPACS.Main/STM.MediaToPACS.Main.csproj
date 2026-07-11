@@ -576,6 +576,67 @@
     <Compile Include="UI\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\FrmMain.Loading.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmMain.Suggestion.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmMain.MenuEvents.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmMain.ListBoxEvents.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmMain.Viewer.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmMain.SaveLoad.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmMain.Camera.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmMain.Print.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmMain.Signature.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmMain.ImageOps.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmMain.Dicom.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmMain.StoreScu.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmMain.Helpers.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Classes\PrintPage.cs" />
+    <Compile Include="Classes\Page.cs" />
+    <Compile Include="Classes\IPrintToPACSFile.cs" />
+    <Compile Include="Classes\ProcedureStep.cs" />
+    <Compile Include="Classes\ObjectCopyExtensions.cs" />
+    <Compile Include="UI\Suggestion\SuggestionPresenter.cs" />
+    <Compile Include="UI\Suggestion\ParamFormControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>

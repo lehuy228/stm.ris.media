@@ -21,6 +21,7 @@ namespace STM.MediaToPACS.Main.Utilities
         public static bool IsInitialized { get; private set; }
 
         // ===================== CONFIG =====================
+        public const string DefaultUrlSystemUpdate = "https://github.com/lehuy228/stm.ris.media";
         public static SystemConfig SystemConfig { get; set; }
 
         // ===================== SERVICES =====================
@@ -129,7 +130,7 @@ namespace STM.MediaToPACS.Main.Utilities
                     PacsPassword = "Anphat123!",
                     UrlViewerPacs = null,
                     UrlPacsPublic = "http://10.12.8.16:6038/MedicalViewer",
-                    UrlSystemUpdate = "https://github.com/lehuy228/stm.ris.media",
+                    UrlSystemUpdate = DefaultUrlSystemUpdate,
                     SystemUpdateUser = null,
                     SystemUpdateToken = null,
                     UrlTokenPacs = "",
@@ -138,16 +139,11 @@ namespace STM.MediaToPACS.Main.Utilities
                     UrlSignatureMysign = "http://10.12.8.16:10005"
                 };
 
-                // Khởi tạo luôn file mặc định trên đĩa (không chỉ trong bộ nhớ),
-                // để lần chạy sau/máy khác đọc thấy file đã tồn tại thay vì thiếu file.
-                try
-                {
-                    XmlSettingsHelper.SaveEncrypted(fullPath, SystemConfig);
-                }
-                catch (Exception ex)
-                {
-                    Log.Warning(ex, "Không thể khởi tạo file SystemConfig mặc định");
-                }
+                SaveDefaultSystemConfig(fullPath, "Không thể khởi tạo file SystemConfig mặc định");
+            }
+            else if (ApplySystemConfigDefaults(SystemConfig))
+            {
+                SaveDefaultSystemConfig(fullPath, "Không thể cập nhật giá trị mặc định cho SystemConfig");
             }
 
             InitializeServices();
@@ -158,6 +154,33 @@ namespace STM.MediaToPACS.Main.Utilities
 
 
 
+
+        public static bool ApplySystemConfigDefaults(SystemConfig config)
+        {
+            if (config == null)
+                return false;
+
+            var changed = false;
+            if (string.IsNullOrWhiteSpace(config.UrlSystemUpdate))
+            {
+                config.UrlSystemUpdate = DefaultUrlSystemUpdate;
+                changed = true;
+            }
+
+            return changed;
+        }
+
+        private static void SaveDefaultSystemConfig(string fullPath, string warningMessage)
+        {
+            try
+            {
+                XmlSettingsHelper.SaveEncrypted(fullPath, SystemConfig);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, warningMessage);
+            }
+        }
 
         private static void InitializeServices()
         {

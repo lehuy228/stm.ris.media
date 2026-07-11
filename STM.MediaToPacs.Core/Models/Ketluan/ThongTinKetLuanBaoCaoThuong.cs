@@ -22,5 +22,11 @@ namespace MediaToPacs.Core.Models.Ketluan
         public string Image2 { get; set; } = null;
         public string Image3 { get; set; } = null;
         public string Image4 { get; set; } = null;
+
+        /// <summary>
+        /// Bảng chỉ số động (suggestion Structured) - template có DetailReportBand
+        /// bind DataMember này sẽ render bảng; template cũ không có band vẫn chạy bình thường.
+        /// </summary>
+        public List<ChiSoBaoCao> DanhSachChiSo { get; set; } = new List<ChiSoBaoCao>();
     }
 }

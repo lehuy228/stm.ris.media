@@ -115,5 +115,62 @@ namespace MediaToPacs.Infrastructure.Services
             return JsonSerializer.Deserialize<List<OrganizationDto>>(json, _jsonOptions)
                 ?? new List<OrganizationDto>();
         }
+
+        public async Task<List<QuickSuggestionListItemDto>> GetQuickSuggestionsAsync(
+            long? serviceId = null,
+            int? gender = null,
+            bool? hasReportParam = null,
+            string modalityCode = null,
+            string search = null,
+            bool? activeOnly = null)
+        {
+            var query = HttpUtility.ParseQueryString(string.Empty);
+
+            if (serviceId.HasValue)
+                query["serviceId"] = serviceId.Value.ToString();
+            if (gender.HasValue)
+                query["gender"] = gender.Value.ToString();
+            if (hasReportParam.HasValue)
+                query["hasReportParam"] = hasReportParam.Value ? "true" : "false";
+            if (!string.IsNullOrWhiteSpace(modalityCode))
+                query["modalityCode"] = modalityCode;
+            if (!string.IsNullOrWhiteSpace(search))
+                query["search"] = search;
+            if (activeOnly.HasValue)
+                query["activeOnly"] = activeOnly.Value ? "true" : "false";
+
+            var url = $"{_risV2Url}/api/risv1/quick-suggestions";
+            if (query.Count > 0)
+                url += $"?{query}";
+
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(json))
+                return new List<QuickSuggestionListItemDto>();
+
+            return JsonSerializer.Deserialize<List<QuickSuggestionListItemDto>>(json, _jsonOptions)
+                ?? new List<QuickSuggestionListItemDto>();
+        }
+
+        public async Task<QuickSuggestionPublicDetailDto> GetQuickSuggestionByIdAsync(long id)
+        {
+            var url = $"{_risV2Url}/api/risv1/quick-suggestions/{id}";
+
+            var response = await _httpClient.GetAsync(url);
+
+            // 404 = suggestion không tồn tại - trả null để caller tự xử lý
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                return null;
+
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(json))
+                return null;
+
+            return JsonSerializer.Deserialize<QuickSuggestionPublicDetailDto>(json, _jsonOptions);
+        }
     }
 }

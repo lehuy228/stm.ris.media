@@ -25,5 +25,24 @@ namespace MediaToPacs.Core.Interfaces
         /// Danh sách khoa (Organization.OrgTypeCode = DEPARTMENT).
         /// </summary>
         Task<List<OrganizationDto>> GetDepartmentsAsync();
+
+        /// <summary>
+        /// Danh sách gợi ý nhanh (không kèm nội dung văn bản).
+        /// gender: 0=Unknown, 1=Male, 2=Female, 3=Other — backend tự gộp suggestion gender=Unknown.
+        /// serviceId hiện chưa dùng được từ client (client chỉ có mã dịch vụ HIS dạng string) — để sẵn cho tương lai.
+        /// </summary>
+        Task<List<QuickSuggestionListItemDto>> GetQuickSuggestionsAsync(
+            long? serviceId = null,
+            int? gender = null,
+            bool? hasReportParam = null,
+            string modalityCode = null,
+            string search = null,
+            bool? activeOnly = null);
+
+        /// <summary>
+        /// Chi tiết đầy đủ 1 gợi ý nhanh (kèm paramGroups nếu là dạng Structured).
+        /// Trả về null nếu không tìm thấy (404).
+        /// </summary>
+        Task<QuickSuggestionPublicDetailDto> GetQuickSuggestionByIdAsync(long id);
     }
 }

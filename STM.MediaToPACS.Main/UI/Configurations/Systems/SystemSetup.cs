@@ -65,7 +65,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
             Hint(_txUrlPACSPassword, "********");
             Hint(_txUrlPACSPublic, "http://<ip-pacs-public>:<port>/viewer");
 
-            Hint(_txUrlSystemUpdate, @"\\<server>\NhatMinhMedia");
+            Hint(_txUrlSystemUpdate, "");
             Hint(_txSystemUpdateUser, "username");
             Hint(_txSystemUpdatePassword, "********");
 
@@ -86,6 +86,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations.Systems
                 {
                     _systemConfig = new SystemConfig();
                 }
+
+                ServiceLocator.ApplySystemConfigDefaults(_systemConfig);
             }
             catch (Exception ex)
             {
