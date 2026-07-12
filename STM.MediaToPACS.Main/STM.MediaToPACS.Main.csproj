@@ -65,6 +65,10 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
+    <!-- ResGen is architecture-neutral. Keep it in the current MSBuild process so
+         VS2019 x86 does not need to launch a CLR4/x64 out-of-proc task host. -->
+    <GenerateResourceMSBuildArchitecture>CurrentArchitecture</GenerateResourceMSBuildArchitecture>
+    <LCMSBuildArchitecture>CurrentArchitecture</LCMSBuildArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <DebugType>pdbonly</DebugType>
@@ -75,6 +79,8 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
+    <GenerateResourceMSBuildArchitecture>CurrentArchitecture</GenerateResourceMSBuildArchitecture>
+    <LCMSBuildArchitecture>CurrentArchitecture</LCMSBuildArchitecture>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
@@ -1000,6 +1006,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Libraries\Leadtools.Forms.Processing.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.ImageProcessing.Color.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libraries\Leadtools.ImageProcessing.Core.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Libraries\Leadtools.ImageProcessing.Effects.dll">

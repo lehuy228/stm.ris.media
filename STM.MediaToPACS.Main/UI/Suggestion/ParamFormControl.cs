@@ -504,6 +504,62 @@ namespace STM.MediaToPACS.Main.UI
         }
 
         /// <summary>
+        /// Xuất toàn bộ giá trị hiện tại của form thành input thô (groupCode/paramCode → value/checked)
+        /// để gửi lên RIS mới — backend tự build Schema B (tính status/màu theo ranges).
+        /// Xuất đủ mọi chỉ số (kể cả rỗng/không tích) để SetParamValues khôi phục đúng trạng thái.
+        /// </summary>
+        public List<RisV1ReportParamInputItem> GetParamValues()
+        {
+            var list = new List<RisV1ReportParamInputItem>();
+            foreach (var entry in _entries)
+            {
+                list.Add(new RisV1ReportParamInputItem
+                {
+                    groupCode = entry.Group.groupCode,
+                    paramCode = entry.Field.paramCode,
+                    value = entry.ValueBox != null ? entry.ValueBox.Text.Trim() : null,
+                    displayLabel = entry.CheckBox != null ? (entry.Field.presetLabel ?? entry.Field.label) : null,
+                    @checked = entry.CheckBox != null ? (bool?)entry.CheckBox.Checked : null
+                });
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Đổ lại giá trị đã lưu vào form theo paramCode (gọi sau SetData cùng reportParam).
+        /// Không raise ParamValuesChanged — caller tự quyết định việc đồng bộ text Mô tả.
+        /// </summary>
+        public void SetParamValues(List<RisV1ReportParamSnapshotItem> values)
+        {
+            if (values == null || values.Count == 0)
+                return;
+
+            _suspendEvents = true;
+            try
+            {
+                foreach (var entry in _entries)
+                {
+                    var saved = values.FirstOrDefault(v => v.paramCode == entry.Field.paramCode);
+                    if (saved == null)
+                        continue;
+
+                    if (entry.CheckBox != null)
+                        entry.CheckBox.Checked = saved.@checked == true;
+
+                    if (entry.ValueBox != null)
+                    {
+                        entry.ValueBox.Text = saved.value ?? "";
+                        ApplyRangeColor(entry);
+                    }
+                }
+            }
+            finally
+            {
+                _suspendEvents = false;
+            }
+        }
+
+        /// <summary>
         /// Xuất các chỉ số có giá trị/được tích thành danh sách dòng cho bảng chỉ số
         /// trong báo cáo PDF (DetailReportBand bind DanhSachChiSo).
         /// Kèm nhãn đánh giá + mã màu theo dải ngưỡng để template tô màu cột giá trị.

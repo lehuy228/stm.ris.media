@@ -220,6 +220,9 @@ namespace STM.MediaToPACS.Main
                         rI.Dispose();
 
                         GenerateUidTag(dicom, DicomTag.SOPInstanceUID);
+                        // Đồng bộ meta header với SOP Instance UID vừa sinh cho từng ảnh,
+                        // nếu không (0002,0003) sẽ giữ giá trị cũ/rỗng lệch với (0008,0018)
+                        dicom.InsertElementAndSetValue(DicomTag.MediaStorageSOPInstanceUID, dicom.GetValue<string>(DicomTag.SOPInstanceUID, string.Empty));
 
                         string strFile = Path.GetDirectoryName(strSaveFile) + "\\" + Path.GetFileNameWithoutExtension(strSaveFile) + "_" + i + Path.GetExtension(strSaveFile);
                         saved.Add(strFile);
@@ -559,10 +562,33 @@ namespace STM.MediaToPACS.Main
         {
             DicomElement element;
             element = dicom.FindFirstElement(null, UidTag, true);
-            if (element != null)
-                dicom.SetValue(element, Utils.GenerateDicomUniqueIdentifier());
+            // Bảng IOD/UID của Leadtools rỗng khi app chạy ngoài bộ demo LEADTOOLS nên
+            // Initialize() không tạo sẵn các element UID — phải tự chèn, nếu không file
+            // DICOM sẽ thiếu UID và store lên PACS báo "Missing SOP Instance UID Value"
+            if (element == null)
+                element = dicom.InsertElement(null, false, UidTag, DicomVRType.UI, false, 0);
+            dicom.SetValue(element, Utils.GenerateDicomUniqueIdentifier());
 
             _pgDicomInfo.DataSet = dicom;
+        }
+
+        /// <summary>
+        /// Lấy SOP Class UID tương ứng với loại SOP class đang chọn.
+        /// Không tra DicomUidTable vì bảng này rỗng khi chạy ngoài bộ demo LEADTOOLS.
+        /// </summary>
+        private static string GetSopClassUid(DicomClassType dClass)
+        {
+            switch (dClass)
+            {
+                case DicomClassType.SCMultiFrameGrayscaleByteImageStorage:
+                    return DicomUidType.SCMultiFrameGrayscaleByteImageStorage;
+                case DicomClassType.SCMultiFrameTrueColorImageStorage:
+                    return DicomUidType.SCMultiFrameTrueColorImageStorage;
+                case DicomClassType.EncapsulatedPdfStorage:
+                    return DicomUidType.EncapsulatedPdfStorage;
+                default:
+                    return DicomUidType.SCImageStorage;
+            }
         }
 
         #endregion

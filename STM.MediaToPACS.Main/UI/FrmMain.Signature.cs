@@ -398,6 +398,13 @@ namespace STM.MediaToPACS.Main
             if (_paramFormControl != null && _paramFormControl.Visible)
             {
                 ketluan.DanhSachChiSo = _paramFormControl.GetReportItems();
+                // Map MÃ param -> giá trị cho script bind trong repx (ô đặt Tag = mã).
+                // Lấy đủ mọi chỉ số kể cả rỗng để ô trống vẫn hiện đúng (không bị giá trị cũ).
+                ketluan.ChiSoTheoMa = _paramFormControl.GetParamValues().ToDictionary(
+                    p => p.paramCode,
+                    p => !string.IsNullOrEmpty(p.value)
+                        ? p.value
+                        : (p.@checked == true ? (p.displayLabel ?? "x") : string.Empty));
             }
 
             // Lấy danh sách ảnh đã được chọn

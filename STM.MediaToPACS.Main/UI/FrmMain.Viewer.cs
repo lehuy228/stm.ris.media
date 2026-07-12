@@ -334,6 +334,13 @@ namespace STM.MediaToPACS.Main
             ClearTag(ds, DicomTag.PixelData);
             ClearTag(ds, DicomTag.EncapsulatedDocument);
 
+            // SOP Class UID phải khớp loại SOP class đang chọn. Initialize() không tạo được
+            // element này khi bảng IOD của Leadtools rỗng nên phải chèn và set trực tiếp
+            DicomElement dSopClass = ds.FindFirstElement(null, DicomTag.SOPClassUID, true);
+            if (dSopClass == null)
+                dSopClass = ds.InsertElement(null, false, DicomTag.SOPClassUID, DicomVRType.UI, false, 0);
+            ds.SetValue(dSopClass, GetSopClassUid(dClass));
+
             DicomElement dElement = ds.FindFirstElement(null, DicomTag.Modality, true);
             if (dElement == null)
                 dElement = ds.InsertElement(null, false, DicomTag.Modality, DicomVRType.UN, false, 0);

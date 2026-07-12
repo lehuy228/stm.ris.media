@@ -675,9 +675,11 @@ namespace STM.MediaToPACS.Main
 
                 var loadImageTask = Task.Run(() => LoadImageData());
                 var loadKTVTask = InitDanhSachKTVAsync();
+                // Tra y lệnh bên RIS mới (best-effort, tự nuốt lỗi) để sync/khôi phục bảng chỉ số
+                var resolveRisV1Task = ResolveRisV1OrderItemAsync();
 
                 // Chờ tất cả hoàn thành trước khi đụng vào UI
-                await Task.WhenAll(loadKTVTask, loadImageTask);
+                await Task.WhenAll(loadKTVTask, loadImageTask, resolveRisV1Task);
 
                 // Các thao tác cần UI thread
                 this.Invoke((MethodInvoker)delegate
@@ -695,6 +697,9 @@ namespace STM.MediaToPACS.Main
                         InitTranferRIS();
                     }
                     LoadImageVideoCaptured();
+                    // Khôi phục form chỉ số từ snapshot đã lưu bên RIS mới (nếu có) -
+                    // fire-and-forget, mọi lỗi được nuốt + log bên trong
+                    _ = RestoreParamFormFromRisV1Async();
                     CreateCStoreObject(new MyServer());
                     _captureType = CaptureType.None;
                     //CheckFirstRun();

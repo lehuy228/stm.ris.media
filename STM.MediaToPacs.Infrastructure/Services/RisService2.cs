@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
@@ -122,12 +123,15 @@ namespace MediaToPacs.Infrastructure.Services
             bool? hasReportParam = null,
             string modalityCode = null,
             string search = null,
-            bool? activeOnly = null)
+            bool? activeOnly = null,
+            string serviceCode = null)
         {
             var query = HttpUtility.ParseQueryString(string.Empty);
 
             if (serviceId.HasValue)
                 query["serviceId"] = serviceId.Value.ToString();
+            if (!string.IsNullOrWhiteSpace(serviceCode))
+                query["serviceCode"] = serviceCode;
             if (gender.HasValue)
                 query["gender"] = gender.Value.ToString();
             if (hasReportParam.HasValue)
@@ -171,6 +175,73 @@ namespace MediaToPacs.Infrastructure.Services
                 return null;
 
             return JsonSerializer.Deserialize<QuickSuggestionPublicDetailDto>(json, _jsonOptions);
+        }
+
+        public async Task<RisV1OrderItemDetailDto> GetOrderItemByIdAsync(Guid id)
+        {
+            if (id == Guid.Empty)
+                throw new ArgumentException("id y lệnh không hợp lệ", nameof(id));
+
+            var url = $"{_risV2Url}/api/risv1/order-items/{id:D}";
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                return null;
+
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(json))
+                return null;
+
+            return JsonSerializer.Deserialize<RisV1OrderItemDetailDto>(json, _jsonOptions);
+        }
+
+        public async Task<RisV1OrderItemDetailDto> GetOrderItemByPlacerCodeAsync(string placerCode)
+        {
+            if (string.IsNullOrWhiteSpace(placerCode))
+                throw new ArgumentException("placerCode không được để trống", nameof(placerCode));
+
+            var url = $"{_risV2Url}/api/risv1/order-items/by-placer-code/{Uri.EscapeDataString(placerCode.Trim())}";
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                return null;
+
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(json))
+                return null;
+
+            return JsonSerializer.Deserialize<RisV1OrderItemDetailDto>(json, _jsonOptions);
+        }
+
+        public async Task<RisV1DiagnosticReportDetailDto> UpsertOrderItemConclusionAsync(
+            Guid id,
+            RisV1UpsertConclusionRequest request)
+        {
+            if (id == Guid.Empty)
+                throw new ArgumentException("id y lệnh không hợp lệ", nameof(id));
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+            if (request.conclusion != null && request.conclusion.Length > 100000)
+                throw new ArgumentException("Kết luận không được vượt quá 100.000 ký tự", nameof(request));
+
+            var url = $"{_risV2Url}/api/risv1/order-items/{id:D}/conclusion";
+            var payload = JsonSerializer.Serialize(request, _jsonOptions);
+
+            using (var content = new StringContent(payload, Encoding.UTF8, "application/json"))
+            {
+                var response = await _httpClient.PostAsync(url, content);
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(json))
+                    return null;
+
+                return JsonSerializer.Deserialize<RisV1DiagnosticReportDetailDto>(json, _jsonOptions);
+            }
         }
     }
 }

@@ -210,6 +210,10 @@ namespace STM.MediaToPACS.Main
 
                 if (_kqChanDoanResponse != null)
                 {
+                    // API cũ đã lưu THÀNH CÔNG -> sync best-effort kết luận + bảng chỉ số sang RIS mới.
+                    // Fire-and-forget có chủ đích: lỗi được nuốt + log bên trong, không ảnh hưởng luồng chính
+                    _ = SyncConclusionToRisV1Async(mota, ketluan, khuyennghi);
+
                     XmlSettingsHelper.Save<List<string>>(Path.Combine($"{_baseFolder}\\BenhNhan\\{_machidinh}", FileNameXMLImage), listImageKeyLocal);
                     _btnSignature.Enabled = true;
                     _btnPreviewMain.Enabled = true;

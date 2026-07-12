@@ -1,0 +1,65 @@
+[
+  {
+    "TGBacSiChiDinh": "08 giờ 15 phút, Ngày 12 Tháng 07 Năm 2026",
+    "TGBacSiKetLuan": "09 giờ 30 phút, Ngày 12 Tháng 07 Năm 2026",
+    "MoTa": "Khảo sát siêu âm tim.",
+    "KetLuan": "Chức năng tâm thu thất trái trong giới hạn bình thường.",
+    "KhuyenNghi": "Theo dõi định kỳ.",
+    "GioiTinhConvert": "Nam",
+    "TenBacSiKetLuan": "Nguyễn Văn A",
+    "AnhChuKy": null,
+    "Image1": null,
+    "Image2": null,
+    "Image3": null,
+    "Image4": null,
+    "ChiDinhDichVu": {
+      "MaChiDinh": "CD202607120001",
+      "SoPhieuChiDinh": "PCD202607120001",
+      "MaDichVu": "SA_TIM",
+      "TenDichVu": "Siêu âm tim",
+      "Modality": "US",
+      "MaBacSiChiDinh": "BS001",
+      "TenBacSiChiDinh": "Trần Văn B",
+      "ChanDoanSoBo": "Theo dõi bệnh lý tim mạch",
+      "KhoaDieuTri": "Khoa Tim mạch",
+      "Phong": "Phòng 01",
+      "TenNoiChiDinh": "Khoa Tim mạch",
+      "BenhNhan": {
+        "MaBenhNhan": "BN20260001",
+        "HoTen": "Lê Văn C",
+        "NgaySinh": "1985-05-20T00:00:00",
+        "GioiTinh": 1,
+        "MaBHYT": "DN4010123456789",
+        "XaPhuong": "Phường Bến Nghé",
+        "TinhThanh": "Thành phố Hồ Chí Minh",
+        "DanToc": "Kinh"
+      }
+    },
+    "DanhSachChiSo": [
+      {
+        "NhomChiSo": "Các thông số đo 2D/TM",
+        "TenChiSo": "EF",
+        "GiaTri": "65",
+        "DonVi": "%",
+        "DanhGia": "Bình thường",
+        "MauSac": "#008000"
+      },
+      {
+        "NhomChiSo": "Các thông số đo 2D/TM",
+        "TenChiSo": "Dd",
+        "GiaTri": "48",
+        "DonVi": "mm",
+        "DanhGia": "Bình thường",
+        "MauSac": "#008000"
+      },
+      {
+        "NhomChiSo": "Van tim",
+        "TenChiSo": "Hở van hai lá nhẹ",
+        "GiaTri": "",
+        "DonVi": "",
+        "DanhGia": "",
+        "MauSac": ""
+      }
+    ]
+  }
+]

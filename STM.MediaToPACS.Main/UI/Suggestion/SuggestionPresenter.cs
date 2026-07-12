@@ -51,14 +51,15 @@ namespace STM.MediaToPACS.Main.UI
         }
 
         /// <summary>
-        /// Load danh sách gợi ý theo modality + giới tính bệnh nhân (lọc server-side).
-        /// Chưa truyền serviceId vì client chỉ có mã dịch vụ HIS dạng string —
-        /// chờ backend bổ sung query param serviceCode.
+        /// Load danh sách gợi ý theo dịch vụ + modality (lọc server-side).
+        /// serviceCode = mã dịch vụ HIS (maDichVu từ chỉ định) — backend map qua ImagingService.Code;
+        /// không truyền (null/rỗng) thì lấy theo modality như trước.
         /// </summary>
-        public Task<List<QuickSuggestionListItemDto>> LoadSuggestionsAsync(string modalityCode, int? hisGioiTinh)
+        public Task<List<QuickSuggestionListItemDto>> LoadSuggestionsAsync(string modalityCode, int? hisGioiTinh, string serviceCode = null)
         {
             return _risService2.GetQuickSuggestionsAsync(
-                modalityCode: modalityCode);
+                modalityCode: modalityCode,
+                serviceCode: serviceCode);
         }
 
         /// <summary>
