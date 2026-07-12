@@ -37,7 +37,7 @@ using Leadtools.Medical.Winforms;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using VisioForge.Core.VideoEdit;
+//using VisioForge.Core.VideoEdit; // VisioForge đã gỡ (thay bằng FlashCap)
 using MediaToPacs.Core.Models;
 using STM.MediaToPACS.Main.Utilities;
 using DevExpress.XtraPdfViewer;
@@ -71,8 +71,16 @@ namespace STM.MediaToPACS.Main
         private const int THUMBNAIL_MARGIN = 5;
 
         /// <summary>
-        /// Xử lý sự kiện Record button - Bắt đầu/Dừng ghi video
+        /// Xử lý sự kiện Record button - Chức năng quay video đã tắt (VisioForge đã thay bằng FlashCap, chỉ dùng preview + snapshot)
         /// </summary>
+        private void _btnRecord_Click(object sender, EventArgs e)
+        {
+            XtraMessageBox.Show(this, "Chức năng quay video đã được tắt.", "Thông báo",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        #region Code quay video cũ (VisioForge - đã tắt, chỉ dùng preview + snapshot)
+        /*
         private async void _btnRecord_Click(object sender, EventArgs e)
         {
             try
@@ -274,6 +282,8 @@ namespace STM.MediaToPACS.Main
                 Log.Error(ex, $"Lỗi khi tạo thumbnail cho video: {videoPath}");
             }
         }
+        */
+        #endregion
 
         /// <summary>
         /// Tạo panel chứa thumbnail

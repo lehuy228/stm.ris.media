@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -133,9 +134,16 @@ namespace STM.MediaToPacs.Connection.AuthSDK
             {
                 throw new TimeoutException("Người dùng không hoàn tất đăng nhập trong thời gian cho phép.");
             }
-            catch (Exception ex)
+            catch (OperationCanceledException)
             {
-                throw new OperationCanceledException($"Đăng nhập bị hủy hoặc lỗi: {ex.Message}", ex);
+                throw;
+            }
+            catch (Exception)
+            {
+                // Giữ nguyên lỗi gốc để tầng trên hiển thị đúng nguyên nhân
+                // (trước đây mọi lỗi đều bị bọc thành OperationCanceledException
+                // khiến người dùng luôn thấy "Đăng nhập đã bị hủy")
+                throw;
             }
             finally
             {
@@ -176,12 +184,115 @@ namespace STM.MediaToPacs.Connection.AuthSDK
                 {
                     _httpListener.Start();
                 }
-                catch (HttpListenerException ex)
+                catch (HttpListenerException)
                 {
-                    throw new InvalidOperationException(
-                        $"Không thể khởi động HTTP Listener. Đảm bảo ứng dụng chạy với quyền Administrator hoặc port đã được đăng ký. Chi tiết: {ex.Message}",
-                        ex);
+                    // Port có thể đang bị giữ bởi tiến trình cũ của chính ứng dụng (crash / chưa thoát hẳn)
+                    // -> tự động dọn rồi thử lại một lần trước khi báo lỗi.
+                    // Lưu ý: .NET tự đóng luôn instance HttpListener khi Start() thất bại,
+                    // nên phải tạo instance mới trước khi thử lại.
+                    Debug.WriteLine("Port callback đang bị giữ, thử dọn tiến trình cũ và khởi động lại listener...");
+                    KillStaleAppInstances();
+                    Thread.Sleep(500);
+
+                    _httpListener = new HttpListener();
+                    _httpListener.Prefixes.Add(redirectUri.TrimEnd('/') + "/");
+
+                    try
+                    {
+                        _httpListener.Start();
+                    }
+                    catch (HttpListenerException ex)
+                    {
+                        var port = new Uri(redirectUri).Port;
+                        string hint = IsPortExcludedByWindows(port)
+                            ? $"Port {port} đang bị Windows đặt trước (excluded port range của Hyper-V/WSL/WinNAT). " +
+                              "Khắc phục: mở Command Prompt với quyền Administrator, chạy \"net stop winnat\" rồi \"net start winnat\", sau đó mở lại ứng dụng. " +
+                              "Nếu vẫn bị, đổi port callback trong cấu hình (Auth:REDIRECTURI)."
+                            : "Đảm bảo ứng dụng chạy với quyền Administrator hoặc port không bị ứng dụng khác chiếm.";
+
+                        throw new InvalidOperationException(
+                            $"Không thể khởi động HTTP Listener trên port {port}. {hint} Chi tiết: {ex.Message}",
+                            ex);
+                    }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra port có nằm trong dải "excluded port range" do Windows (Hyper-V/WSL/WinNAT) đặt trước không.
+        /// Dải này thay đổi sau mỗi lần khởi động máy nên port đang dùng bình thường có thể đột nhiên bị khóa.
+        /// </summary>
+        private static bool IsPortExcludedByWindows(int port)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "netsh",
+                    Arguments = "interface ipv4 show excludedportrange protocol=tcp",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                };
+
+                using (var process = Process.Start(psi))
+                {
+                    string output = process.StandardOutput.ReadToEnd();
+                    process.WaitForExit(5000);
+
+                    foreach (var line in output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        var parts = line.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length >= 2
+                            && int.TryParse(parts[0], out int start)
+                            && int.TryParse(parts[1], out int end)
+                            && port >= start && port <= end)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Không kiểm tra được excluded port range: {ex.Message}");
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Dọn các tiến trình cũ của cùng ứng dụng (nếu có) đang giữ port callback đăng nhập
+        /// </summary>
+        private static void KillStaleAppInstances()
+        {
+            try
+            {
+                var currentProcess = Process.GetCurrentProcess();
+                var staleProcesses = Process.GetProcessesByName(currentProcess.ProcessName)
+                    .Where(p => p.Id != currentProcess.Id);
+
+                foreach (var p in staleProcesses)
+                {
+                    try
+                    {
+                        Debug.WriteLine($"Đang dọn tiến trình cũ PID {p.Id} ({p.ProcessName})...");
+                        p.Kill();
+                        p.WaitForExit(3000);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Không thể dọn tiến trình cũ PID {p.Id}: {ex.Message}");
+                    }
+                    finally
+                    {
+                        p.Dispose();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Lỗi khi dọn các tiến trình cũ: {ex.Message}");
             }
         }
 

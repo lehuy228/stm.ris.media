@@ -37,7 +37,7 @@ using Leadtools.Medical.Winforms;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using VisioForge.Core.VideoEdit;
+//using VisioForge.Core.VideoEdit; // VisioForge đã gỡ (thay bằng FlashCap)
 using MediaToPacs.Core.Models;
 using STM.MediaToPACS.Main.Utilities;
 using DevExpress.XtraPdfViewer;
@@ -290,6 +290,7 @@ namespace STM.MediaToPACS.Main
             _cameraControl.Anchor = AnchorStyles.None;
             panelCamera.Resize += PanelCamera_Resize;
             ResizeCameraViewport();
+            InitCameraColumnResize();
             //
             //_mediaPlayerControl
             //
@@ -444,6 +445,191 @@ namespace STM.MediaToPACS.Main
                 _cameraControl?.ResumeLayout();
             }
         }
+
+        #region Kéo thả bề rộng cột camera + lưu lại cho lần mở sau
+
+        private Panel _cameraColGrip;
+        private bool _cameraColDragging;
+        private int _cameraColDragStartX;
+        private float _cameraColDragStartWidth;
+
+        /// <summary>
+        /// Bề rộng cột camera do người dùng tự kéo chỉnh (px hiển thị thực).
+        /// Khi > 0, cơ chế tự thu/nới cột theo sidebar chỉ số (SetCameraColumnShrink) bị vô hiệu
+        /// để bề rộng lưu/nạp luôn đúng như người dùng đã chọn.
+        /// </summary>
+        private float _userCameraColWidth = -1f;
+
+        /// <summary>Bề rộng tối thiểu cột camera khi kéo (còn đủ chỗ cho hàng nút bên dưới)</summary>
+        private const float CameraColMinWidth = 480f;
+        /// <summary>Vùng tab bên trái (Kết luận/DICOM...) giữ tối thiểu chừng này khi kéo</summary>
+        private const float LeftAreaMinWidth = 520f;
+        /// <summary>Số px cột camera thu bớt khi sidebar chỉ số mở (dùng chung với SetCameraColumnShrink)</summary>
+        internal const float CameraColShrinkPx = 90f;
+        /// <summary>Bề rộng tối thiểu của cột camera ở trạng thái thu bớt</summary>
+        internal const float CameraColShrunkMinWidth = 560f;
+
+        private static string UiLayoutSettingsPath => Path.Combine(
+            ServiceLocator.GetAppDataBasePath(), "UiLayoutSettings.xml");
+
+        /// <summary>Cột camera (cột 1 - Absolute) trong _tbTableLayout, null nếu layout thay đổi</summary>
+        private ColumnStyle CameraColumnStyle
+        {
+            get
+            {
+                if (_tbTableLayout == null || _tbTableLayout.ColumnStyles.Count < 2)
+                    return null;
+                var style = _tbTableLayout.ColumnStyles[1];
+                return style.SizeType == SizeType.Absolute ? style : null;
+            }
+        }
+
+        /// <summary>
+        /// Tạo thanh kéo (grip) ở mép trái panel camera để chỉnh bề rộng cột camera,
+        /// và nạp lại bề rộng đã lưu của máy này khi form hiển thị.
+        /// </summary>
+        private void InitCameraColumnResize()
+        {
+            if (_cameraColGrip != null || _panelCamera == null)
+                return;
+
+            _cameraColGrip = new Panel
+            {
+                Dock = DockStyle.Left,
+                Width = 6,
+                Cursor = Cursors.SizeWE,
+                BackColor = Color.FromArgb(220, 226, 236),
+            };
+            _cameraColGrip.MouseDown += CameraColGrip_MouseDown;
+            _cameraColGrip.MouseMove += CameraColGrip_MouseMove;
+            _cameraColGrip.MouseUp += CameraColGrip_MouseUp;
+
+            _panelCamera.Controls.Add(_cameraColGrip);
+            // Đưa grip về cuối z-order để nó dock trước, chiếm dải mép trái;
+            // _xtraCamera (Dock=Fill) sẽ lấp phần còn lại
+            _cameraColGrip.SendToBack();
+
+            // Áp bề rộng đã lưu sau khi form đã có kích thước thật (tránh clamp sai lúc chưa layout)
+            this.Shown += (s, e) => ApplySavedCameraColumnWidth();
+        }
+
+        /// <summary>Giới hạn bề rộng cột camera trong khoảng hợp lệ theo kích thước hiện tại</summary>
+        private float ClampCameraColumnWidth(float width)
+        {
+            float max = Math.Max(CameraColMinWidth, _tbTableLayout.ClientSize.Width - LeftAreaMinWidth);
+            return Math.Max(CameraColMinWidth, Math.Min(width, max));
+        }
+
+        private void ApplySavedCameraColumnWidth()
+        {
+            try
+            {
+                var style = CameraColumnStyle;
+                if (style == null)
+                    return;
+
+                var saved = XmlSettingsHelper.Load<UiLayoutSettings>(UiLayoutSettingsPath);
+                if (saved == null || saved.CameraColumnWidth <= 0)
+                    return;
+
+                // Nạp đúng bề rộng hiển thị người dùng đã chọn, không cộng/trừ theo sidebar
+                float width = ClampCameraColumnWidth(saved.CameraColumnWidth);
+                _userCameraColWidth = width;
+                _originalCameraColWidth = width;
+                style.Width = width;
+
+                Log.Information("Đã nạp bề rộng cột camera đã lưu: {Width}px", width);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Lỗi khi nạp bề rộng cột camera đã lưu");
+            }
+        }
+
+        private void CameraColGrip_MouseDown(object sender, MouseEventArgs e)
+        {
+            var style = CameraColumnStyle;
+            if (style == null || e.Button != MouseButtons.Left)
+                return;
+
+            _cameraColDragging = true;
+            _cameraColDragStartX = Cursor.Position.X;
+            _cameraColDragStartWidth = style.Width;
+        }
+
+        private void CameraColGrip_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!_cameraColDragging)
+                return;
+            var style = CameraColumnStyle;
+            if (style == null)
+                return;
+
+            // Kéo sang trái -> cột camera rộng ra, sang phải -> hẹp lại
+            float newWidth = ClampCameraColumnWidth(
+                _cameraColDragStartWidth + (_cameraColDragStartX - Cursor.Position.X));
+            if (Math.Abs(newWidth - style.Width) >= 1f)
+            {
+                style.Width = newWidth;
+                // panelCamera.Resize sẽ tự gọi ResizeCameraViewport để giữ đúng tỷ lệ khung hình
+            }
+        }
+
+        private void CameraColGrip_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_cameraColDragging)
+                return;
+            _cameraColDragging = false;
+
+            var style = CameraColumnStyle;
+            if (style == null)
+                return;
+
+            // Lưu đúng bề rộng hiển thị; từ giờ sidebar chỉ số không tự thu/nới cột nữa
+            _userCameraColWidth = style.Width;
+            _originalCameraColWidth = style.Width;
+            SaveCameraColumnWidth(style.Width);
+        }
+
+        private void SaveCameraColumnWidth(float width)
+        {
+            SaveUiLayout(settings => settings.CameraColumnWidth = width);
+            Log.Information("Đã lưu bề rộng cột camera: {Width}px", width);
+        }
+
+        /// <summary>
+        /// Cập nhật một phần UiLayoutSettings theo kiểu load-sửa-lưu
+        /// để các giá trị layout khác trong file không bị ghi đè mất.
+        /// </summary>
+        private static void SaveUiLayout(Action<UiLayoutSettings> update)
+        {
+            try
+            {
+                var settings = XmlSettingsHelper.Load<UiLayoutSettings>(UiLayoutSettingsPath)
+                               ?? new UiLayoutSettings();
+                update(settings);
+                XmlSettingsHelper.Save(UiLayoutSettingsPath, settings);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Lỗi khi lưu UiLayoutSettings");
+            }
+        }
+
+        /// <summary>Bề rộng sidebar chỉ số đã lưu; -1 nếu chưa có</summary>
+        private static int GetSavedParamSidebarWidth()
+        {
+            var saved = XmlSettingsHelper.Load<UiLayoutSettings>(UiLayoutSettingsPath);
+            return saved != null && saved.ParamSidebarWidth > 0 ? saved.ParamSidebarWidth : -1;
+        }
+
+        private static void SaveParamSidebarWidth(int width)
+        {
+            SaveUiLayout(settings => settings.ParamSidebarWidth = width);
+            Log.Information("Đã lưu bề rộng sidebar chỉ số: {Width}px", width);
+        }
+
+        #endregion
 
 
         private void SetServersComboBox(bool bSelectDefault)

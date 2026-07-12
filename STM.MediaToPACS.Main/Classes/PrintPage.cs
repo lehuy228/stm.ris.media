@@ -37,7 +37,7 @@ using Leadtools.Medical.Winforms;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using VisioForge.Core.VideoEdit;
+//using VisioForge.Core.VideoEdit; // VisioForge đã gỡ (thay bằng FlashCap)
 using MediaToPacs.Core.Models;
 using STM.MediaToPACS.Main.Utilities;
 using DevExpress.XtraPdfViewer;

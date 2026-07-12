@@ -24,6 +24,10 @@ namespace STM.MediaToPACS.Main
         {
             VelopackApp.Build().Run();
 
+            // Đảm bảo HTTP Listener của đăng nhập luôn được giải phóng khi tiến trình thoát,
+            // tránh giữ port callback cho lần khởi động sau
+            AppDomain.CurrentDomain.ProcessExit += (s, e) => STM.MediaToPacs.Connection.AuthSDK.Token.Cancel();
+
             string basePath = ConfigurationManager.AppSettings["File:BasePath"];
             string logFolder;
             try

@@ -9,40 +9,116 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using VisioForge.Core.MediaPlayer;
-using VisioForge.Core.Types.Events;
-using VisioForge.Core.Types.MediaPlayer;
-using VisioForge.Core.Types;
+//using VisioForge.Core.MediaPlayer;      // VisioForge đã gỡ - chức năng phát video đã tắt
+//using VisioForge.Core.Types.Events;
+//using VisioForge.Core.Types.MediaPlayer;
+//using VisioForge.Core.Types;
 
 namespace STM.MediaToPACS.Main.UI.CameraUI
 {
+    /// <summary>
+    /// Chức năng phát video đã tắt cùng với chức năng quay video
+    /// (VisioForge đã thay bằng FlashCap - chỉ dùng camera preview + snapshot).
+    /// Control được giữ lại làm vỏ để không phải sửa layout của FrmMain;
+    /// code phát video cũ được comment ở cuối file.
+    /// </summary>
     public partial class MediaPlayerControl : DevExpress.XtraEditors.XtraUserControl
     {
-        private MediaPlayerCore MediaPlayer1;
         private string FilePathVideo;
-        private Timer timer1;
-        private int i = 1;
 
-        public string SnapshotMedia {  get; private set; }
+        public string SnapshotMedia { get; private set; }
         public event EventHandler SnapshotMedia_Click;
         public event EventHandler BackCamera_Click;
+
         public MediaPlayerControl(string FilePathVideo)
         {
             InitializeComponent();
             this.FilePathVideo = FilePathVideo;
-            //this.FilePathVideo = "D:\\y2meta.com-[MV HD 1080p] Người Tôi Yêu - Chi Dân.mp4";
         }
 
         public MediaPlayerControl()
         {
             InitializeComponent();
-            UpdateToolbarButtons(i);
+            UpdateToolbarButtons(1);
         }
 
         private void VideoEditor_Load(object sender, EventArgs e)
         {
+        }
+
+        private void UpdateToolbarButtons(int i)
+        {
+            bool enabled = i != 1;
+            toolStripButtonPreviousFrame.Enabled = enabled;
+            toolStripButtonNextFrame.Enabled = enabled;
+            toolStripButtonPreviousKeyFrame.Enabled = enabled;
+            toolStripButtonNextKeyFrame.Enabled = enabled;
+            toolStripButtonFirstFrame.Enabled = enabled;
+            toolStripButtonLastFrame.Enabled = enabled;
+            toolStripButtonSnapshot.Enabled = enabled;
+        }
+
+        private void toolStripButtonPlay_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Chức năng phát video đã được tắt.", "Thông báo",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void tbTimeline_Scroll(object sender, EventArgs e)
+        {
+        }
+
+        private void toolStripButtonNextFrame_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void toolStripButtonPreviousFrame_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void toolStripButtonSnapshot_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void tbSpeed_Scroll(object sender, EventArgs e)
+        {
+        }
+
+        private void toolStripButtonPreviousKeyFrame_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void toolStripButtonNextKeyFrame_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void toolStripButtonFirstFrame_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void toolStripButtonLastFrame_Click(object sender, EventArgs e)
+        {
+        }
+
+        public void SetFilePathMedia(string filePath)
+        {
+            FilePathVideo = filePath;
+        }
+
+        private void MediaPlayerControl_ControlRemoved(object sender, ControlEventArgs e)
+        {
+        }
+
+        #region Code phát video cũ (VisioForge - đã tắt)
+        /*
+        private MediaPlayerCore MediaPlayer1;
+        private Timer timer1;
+        private int i = 1;
+
+        private void VideoEditor_Load(object sender, EventArgs e)
+        {
             MediaPlayer1 = new MediaPlayerCore(videoView1 as IVideoView);
-            MediaPlayer1.SetLicenseKey("1E17-F8AA-BB54-D7A1-BD5F-446D", "STM TECHNOLOGY AND COMMERCIAL JOINT STOCK COMPANY", "linh@anphats.com");
+            MediaPlayer1.SetLicenseKey("...", "...", "...");
             MediaPlayer1.OnError += MediaPlayer1_OnError;
             MediaPlayer1.OnStop += MediaPlayer1_OnStop;
 
@@ -77,11 +153,6 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
 
         private void MediaPlayer1_OnStop(object sender, StopEventArgs e)
         {
-            //tbTimeline.Value = 0;
-            //Invoke((Action)(() =>
-            //{
-            //    //
-            //}));
         }
 
         private void toolStripButtonPlay_Click(object sender, EventArgs e)
@@ -95,38 +166,11 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             SetupPlayVideoAsync();
         }
 
-        private void UpdateToolbarButtons(int i)
-        {
-            bool enabled = i != 1;
-            toolStripButtonPreviousFrame.Enabled = enabled;
-            toolStripButtonNextFrame.Enabled = enabled;
-            toolStripButtonPreviousKeyFrame.Enabled = enabled;
-            toolStripButtonNextKeyFrame.Enabled = enabled;
-            toolStripButtonFirstFrame.Enabled = enabled;
-            toolStripButtonLastFrame.Enabled = enabled;
-            toolStripButtonSnapshot.Enabled = enabled;
-        }
-
         private async Task SetupPlayVideoAsync()
         {
             if (i == 1)
             {
                 MediaPlayer1.Source_Mode = MediaPlayerSourceMode.LAV;
-                //switch (cbSourceMode.SelectedIndex)
-                //{
-                //    case 0:
-                //        MediaPlayer1.Source_Mode = MediaPlayerSourceMode.LAV;
-                //        break;
-                //    case 1:
-                //        MediaPlayer1.Source_Mode = MediaPlayerSourceMode.File_DS;
-                //        break;
-                //    case 2:
-                //        MediaPlayer1.Source_Mode = MediaPlayerSourceMode.FFMPEG;
-                //        break;
-                //    case 3:
-                //        MediaPlayer1.Source_Mode = MediaPlayerSourceMode.File_VLC;
-                //        break;
-                //}
 
                 MediaPlayer1.Playlist_Clear();
                 MediaPlayer1.Playlist_Add(FilePathVideo);
@@ -142,26 +186,18 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
 
                 await MediaPlayer1.PlayAsync();
 
-                //// set audio volume for each stream
-                //MediaPlayer1.Audio_OutputDevice_Balance_Set(0, tbBalance1.Value);
-                //MediaPlayer1.Audio_OutputDevice_Volume_Set(0, tbVolume1.Value);
-
                 timer1.Start();
                 i = 2;
-                //toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.stop;
-                
             }
             else if (i == 2)
             {
                 i = 3;
                 await MediaPlayer1.PauseAsync();
-                //toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.play;
             }
             else if (i == 3)
             {
                 i = 2;
                 await MediaPlayer1.ResumeAsync();
-                //toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.stop;
             }
             UpdateToolbarButtons(i);
         }
@@ -178,7 +214,6 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
         {
             MediaPlayer1.NextFrame();
             i = 3;
-            //toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.play;
             UpdateToolbarButtons(i);
         }
 
@@ -186,7 +221,6 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
         {
             MediaPlayer1.PreviousFrame();
             i = 3;
-            //toolStripButtonPlay.BackgroundImage = global::STM.MediaToPACS.Main.Properties.Resources.play;
             UpdateToolbarButtons(i);
         }
 
@@ -246,15 +280,6 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             }
         }
 
-        private void toolStripButtonFirstFrame_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolStripButtonLastFrame_Click(object sender, EventArgs e)
-        {
-
-        }
         private void DestroyEngine()
         {
             if (MediaPlayer1 != null)
@@ -281,14 +306,7 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             await StopAsync();
             DestroyEngine();
         }
-
-        public void SetFilePathMedia(string filePath)
-        {
-            FilePathVideo = filePath;
-        }
-        private void MediaPlayerControl_ControlRemoved(object sender, ControlEventArgs e)
-        {
-            //MediaPlayer1.DisposeAsync();
-        }
+        */
+        #endregion
     }
 }

@@ -473,6 +473,13 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FlashCap, Version=1.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FlashCap.1.11.0\lib\net48\FlashCap.dll</HintPath>
+    </Reference>
+    <Reference Include="FlashCap.Core, Version=1.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FlashCap.Core.1.11.0\lib\net48\FlashCap.Core.dll</HintPath>
+    </Reference>
+    <!-- VisioForge đã thay bằng FlashCap (chỉ cần preview + snapshot). Giữ lại dạng comment theo yêu cầu.
     <Reference Include="VisioForge.Core, Version=15.10.39.0, Culture=neutral, PublicKeyToken=5873e863f1bcda5d, processorArchitecture=MSIL">
       <HintPath>..\packages\VisioForge.DotNet.Core.15.10.39\lib\net472\VisioForge.Core.dll</HintPath>
     </Reference>
@@ -491,6 +498,8 @@
     <Reference Include="VisioForge.Libs.External, Version=15.10.0.0, Culture=neutral, PublicKeyToken=5d1ca667841fc6ab, processorArchitecture=MSIL">
       <HintPath>..\packages\VisioForge.Libs.External.15.10.0\lib\net472\VisioForge.Libs.External.dll</HintPath>
     </Reference>
+    -->
+
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -633,6 +642,7 @@
     <Compile Include="Classes\IPrintToPACSFile.cs" />
     <Compile Include="Classes\ProcedureStep.cs" />
     <Compile Include="Classes\ObjectCopyExtensions.cs" />
+    <Compile Include="Classes\UiLayoutSettings.cs" />
     <Compile Include="UI\Suggestion\SuggestionPresenter.cs" />
     <Compile Include="UI\Suggestion\ParamFormControl.cs">
       <SubType>Component</SubType>
@@ -1089,13 +1099,17 @@
     <Error Condition=" '$(OS)' != 'Windows_NT' and !Exists('..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets') " Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets'))" />
     <Error Condition="!Exists('..\packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets'))" />
     <Error Condition="!Exists('..\packages\Sentry.4.12.1\build\Sentry.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Sentry.4.12.1\build\Sentry.targets'))" />
+    <!-- VisioForge đã thay bằng FlashCap. Giữ lại dạng comment theo yêu cầu.
     <Error Condition="!Exists('..\packages\VisioForge.DotNet.Core.Redist.Shared.x64.2025.7.1\build\VisioForge.DotNet.Core.Redist.Shared.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VisioForge.DotNet.Core.Redist.Shared.x64.2025.7.1\build\VisioForge.DotNet.Core.Redist.Shared.x64.targets'))" />
     <Error Condition="!Exists('..\packages\VisioForge.DotNet.Core.Redist.Base.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.Base.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VisioForge.DotNet.Core.Redist.Base.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.Base.x64.targets'))" />
     <Error Condition="!Exists('..\packages\VisioForge.DotNet.Core.Redist.VideoCapture.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.VideoCapture.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VisioForge.DotNet.Core.Redist.VideoCapture.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.VideoCapture.x64.targets'))" />
+    -->
   </Target>
   <Import Project="..\packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets')" />
   <Import Project="..\packages\Sentry.4.12.1\build\Sentry.targets" Condition="Exists('..\packages\Sentry.4.12.1\build\Sentry.targets')" />
+  <!-- VisioForge đã thay bằng FlashCap. Giữ lại dạng comment theo yêu cầu.
   <Import Project="..\packages\VisioForge.DotNet.Core.Redist.Shared.x64.2025.7.1\build\VisioForge.DotNet.Core.Redist.Shared.x64.targets" Condition="Exists('..\packages\VisioForge.DotNet.Core.Redist.Shared.x64.2025.7.1\build\VisioForge.DotNet.Core.Redist.Shared.x64.targets')" />
   <Import Project="..\packages\VisioForge.DotNet.Core.Redist.Base.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.Base.x64.targets" Condition="Exists('..\packages\VisioForge.DotNet.Core.Redist.Base.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.Base.x64.targets')" />
   <Import Project="..\packages\VisioForge.DotNet.Core.Redist.VideoCapture.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.VideoCapture.x64.targets" Condition="Exists('..\packages\VisioForge.DotNet.Core.Redist.VideoCapture.x64.2025.7.6\build\VisioForge.DotNet.Core.Redist.VideoCapture.x64.targets')" />
+  -->
 </Project>

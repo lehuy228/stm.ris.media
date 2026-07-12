@@ -9,12 +9,12 @@ using STM.MediaToPACS.Main.UI;
 using Leadtools.Dicom.Scu.Common;
 using Leadtools.Dicom.Scu;
 using System.Threading.Tasks;
-using VisioForge.Core.VideoCapture;
-using VisioForge.Core.Types;
-using VisioForge.Core.Types.Events;
+//using VisioForge.Core.VideoCapture;      // VisioForge đã thay bằng FlashCap
+//using VisioForge.Core.Types;
+//using VisioForge.Core.Types.Events;
 using System.Linq;
 using System.Globalization;
-using VisioForge.Core.Types.VideoCapture;
+//using VisioForge.Core.Types.VideoCapture; // VisioForge đã thay bằng FlashCap
 using MediaToPacs.Core.Models;
 using STM.MediaToPACS.Main.Utilities;
 using System.Drawing;
@@ -29,7 +29,7 @@ namespace STM.MediaToPACS.Main
     public class OptionsDialog : DevExpress.XtraEditors.XtraForm
     {
         #region Fields
-        private VisioForge.Core.UI.WinForms.VideoView videoView1;
+        //private VisioForge.Core.UI.WinForms.VideoView videoView1; // VisioForge đã thay bằng FlashCap (không còn dùng)
         private DevExpress.XtraEditors.SimpleButton buttonOK;
         private DevExpress.XtraEditors.SimpleButton buttonCancel;
         /// <summary>

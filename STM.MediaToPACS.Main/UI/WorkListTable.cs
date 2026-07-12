@@ -20,7 +20,8 @@ using Leadtools.Dicom.Common.Extensions;
 using System.Drawing;
 using Application = System.Windows.Forms.Application;
 using Font = System.Drawing.Font;
-using VisioForge.Core.VideoCapture;
+//using VisioForge.Core.VideoCapture; // VisioForge đã thay bằng FlashCap
+using STM.MediaToPACS.Main.UI.CameraUI;
 using DevExpress.XtraGrid.Views.Grid;
 using STM.MediaToPACS.Main.Utilities;
 using MediaToPacs.Core.Models;
@@ -65,7 +66,8 @@ namespace STM.MediaToPACS.Main.UI
                 PacsSettings.LogWindow.Visible = false;
                 LoadSettings();
                 _mySettings.CopyGlobalSettings();
-                foreach (var device in new VideoCaptureCore().Video_CaptureDevices())
+                //foreach (var device in new VideoCaptureCore().Video_CaptureDevices()) // VisioForge đã thay bằng FlashCap
+                foreach (var device in CameraControl.GetVideoDevices())
                 {
                     _tsmCbbVideoCapture.Items.Add(device.Name);
                 }
@@ -105,7 +107,8 @@ namespace STM.MediaToPACS.Main.UI
             SetServersComboBox(true);
             InitializeModalityComboBox();
             //xtraTabPage2.PageEnabled = false;
-            if (new VideoCaptureCore().Video_CaptureDevices().Count>0)
+            //if (new VideoCaptureCore().Video_CaptureDevices().Count>0) // VisioForge đã thay bằng FlashCap
+            if (_tsmCbbVideoCapture.Items.Count > 0)
             {
 
                 _tsmCbbVideoCapture.SelectedIndex = 0;

@@ -1,30 +1,32 @@
+using FlashCap;
 using MediaToPacs.Core.Models;
+using STM.MediaToPACS.Main.UI.CameraUI;
 using STM.MediaToPACS.Main.Utilities;
+using Serilog;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
-using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using VisioForge.Core.Types;
-using VisioForge.Core.Types.Events;
-using VisioForge.Core.Types.VideoCapture;
-using VisioForge.Core.Types.VideoEffects;
-using VisioForge.Core.UI.WinForms.Dialogs.OutputFormats;
-using VisioForge.Core.VideoCapture;
+//using VisioForge.Core.Types;                              // VisioForge đã thay bằng FlashCap
+//using VisioForge.Core.Types.Events;
+//using VisioForge.Core.Types.VideoCapture;
+//using VisioForge.Core.Types.VideoEffects;
+//using VisioForge.Core.UI.WinForms.Dialogs.OutputFormats;
+//using VisioForge.Core.VideoCapture;
 
 namespace STM.MediaToPACS.Main.UI.Configurations
 {
     public partial class ConfigCamera : UserControl
     {
-        public VideoCaptureCore VideoCapture1 { get; private set; }
-        private VisioForge.Core.UI.WinForms.VideoView videoView1;
+        //public VideoCaptureCore VideoCapture1 { get; private set; }          // VisioForge đã thay bằng FlashCap
+        //private VisioForge.Core.UI.WinForms.VideoView videoView1;
+        private CaptureDevice _captureDevice;
+        private volatile bool _rendering;
+        private PictureBox videoView1;
 
         //
         public string VideoInputDevice;
@@ -46,9 +48,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations
         public double Zoom = 1.0;
         public int ZoomShiftX;
         public int ZoomShiftY;
-
-        public List<string> LinkVideos { get; private set; }
-        public string LinkImageSnapshot { get; private set; }
+        private int _liveRotationAngle;
 
         public ConfigCamera()
         {
@@ -63,22 +63,24 @@ namespace STM.MediaToPACS.Main.UI.Configurations
 
         private void InitVideoView()
         {
-            this.videoView1 = new VisioForge.Core.UI.WinForms.VideoView();
-            // 
+            //this.videoView1 = new VisioForge.Core.UI.WinForms.VideoView();   // VisioForge đã thay bằng FlashCap
+            this.videoView1 = new PictureBox();
+            //
             // videoView1
-            // 
+            //
             this.videoView1.BackColor = System.Drawing.Color.Black;
             this.videoView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.videoView1.Location = new System.Drawing.Point(0, 40);
             this.videoView1.Margin = new System.Windows.Forms.Padding(4);
             this.videoView1.Name = "videoView1";
             this.videoView1.Size = new System.Drawing.Size(912, 797);
-            this.videoView1.StatusOverlay = null;
+            this.videoView1.SizeMode = PictureBoxSizeMode.StretchImage;
+            //this.videoView1.StatusOverlay = null;                            // thuộc tính của VisioForge VideoView
             this.videoView1.TabIndex = 9;
             _panelCamera.Controls.Add(videoView1);
         }
 
-        private async void InitVideoCamera()
+        private void InitVideoCamera()
         {
             if (ServiceLocator.CameraSettingConfig == null)
             {
@@ -94,113 +96,51 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             ZoomShiftX = ServiceLocator.CameraSettingConfig.ZoomShiftX;
             ZoomShiftY = ServiceLocator.CameraSettingConfig.ZoomShiftY;
 
-            await CreateEngineAsync();
-
             cbOutputFormat.SelectedIndex = 2;
 
-            foreach (var device in VideoCapture1.Video_CaptureDevices())
+            foreach (var device in CameraControl.GetVideoDevices())
             {
                 cbVideoInputDevice.Properties.Items.Add(device.Name);
             }
 
             if (cbVideoInputDevice.Properties.Items.Count > 0)
             {
-                if (cbVideoInputDevice.Properties.Items.Count > 0)
-                {
-                    string selectedDevice = ServiceLocator.CameraSettingConfig.VideoInputDevice?.ToString();
+                string selectedDevice = ServiceLocator.CameraSettingConfig.VideoInputDevice?.ToString();
 
-                    if (!string.IsNullOrEmpty(selectedDevice))
-                    {
-                        int index = -1;
-                        for (int i = 0; i < cbVideoInputDevice.Properties.Items.Count; i++)
-                        {
-                            if (cbVideoInputDevice.Properties.Items[i].ToString() == selectedDevice)
-                            {
-                                index = i;
-                                break;
-                            }
-                        }
-                        cbVideoInputDevice.SelectedIndex = (index >= 0) ? index : 0;
-                    }
-                    else
-                    {
-                        cbVideoInputDevice.SelectedIndex = 0;
-                    }
-                }
-            }
-
-            cbVideoInputDevice_SelectedIndexChanged(null, null);
-
-            foreach (var device in VideoCapture1.Audio_CaptureDevices())
-            {
-                cbAudioInputDevice.Properties.Items.Add(device.Name);
-            }
-
-            if (cbAudioInputDevice.Properties.Items.Count > 0)
-            {
-                string selectedAudioDevice = ServiceLocator.CameraSettingConfig.AudioInputDevice?.ToString();
-
-                if (!string.IsNullOrEmpty(selectedAudioDevice))
+                if (!string.IsNullOrEmpty(selectedDevice))
                 {
                     int index = -1;
-                    for (int i = 0; i < cbAudioInputDevice.Properties.Items.Count; i++)
+                    for (int i = 0; i < cbVideoInputDevice.Properties.Items.Count; i++)
                     {
-                        if (cbAudioInputDevice.Properties.Items[i].ToString() == selectedAudioDevice)
+                        if (cbVideoInputDevice.Properties.Items[i].ToString() == selectedDevice)
                         {
                             index = i;
                             break;
                         }
                     }
-                    cbAudioInputDevice.SelectedIndex = (index >= 0) ? index : 0;
+                    cbVideoInputDevice.SelectedIndex = (index >= 0) ? index : 0;
                 }
                 else
                 {
-                    cbAudioInputDevice.SelectedIndex = 0;
+                    cbVideoInputDevice.SelectedIndex = 0;
                 }
             }
 
-            cbAudioInputLine.Properties.Items.Clear();
+            cbVideoInputDevice_SelectedIndexChanged(null, null);
 
-            if (!string.IsNullOrEmpty(cbAudioInputDevice.Text))
+            // Audio không còn dùng (đã bỏ chức năng quay video) - giữ nguyên giá trị đã lưu nếu có
+            if (!string.IsNullOrEmpty(ServiceLocator.CameraSettingConfig.AudioInputDevice?.ToString()))
             {
-                var deviceItem =
-                    VideoCapture1.Audio_CaptureDevices().FirstOrDefault(device => device.Name == cbAudioInputDevice.Text);
-                if (deviceItem != null)
-                {
-                    foreach (string line in deviceItem.Lines)
-                    {
-                        cbAudioInputLine.Properties.Items.Add(line);
-                    }
-
-                    if (cbAudioInputLine.Properties.Items.Count > 0)
-                    {
-                        cbAudioInputLine.SelectedIndex = 0;
-                    }
-                    if (cbAudioInputLine.Properties.Items.Count > 0)
-                    {
-                        string selectedAudioInputLine = ServiceLocator.CameraSettingConfig.AudioInputLine?.ToString();
-
-                        if (!string.IsNullOrEmpty(selectedAudioInputLine))
-                        {
-                            int index = -1;
-                            for (int i = 0; i < cbAudioInputLine.Properties.Items.Count; i++)
-                            {
-                                if (cbAudioInputLine.Properties.Items[i].ToString() == selectedAudioInputLine)
-                                {
-                                    index = i;
-                                    break;
-                                }
-                            }
-                            cbAudioInputLine.SelectedIndex = (index >= 0) ? index : 0;
-                        }
-                        else
-                        {
-                            cbAudioInputLine.SelectedIndex = 0;
-                        }
-                    }
-                }
+                cbAudioInputDevice.Text = ServiceLocator.CameraSettingConfig.AudioInputDevice?.ToString();
             }
-
+            if (!string.IsNullOrEmpty(ServiceLocator.CameraSettingConfig.AudioInputFormat?.ToString()))
+            {
+                cbAudioInputFormat.Text = ServiceLocator.CameraSettingConfig.AudioInputFormat?.ToString();
+            }
+            if (!string.IsNullOrEmpty(ServiceLocator.CameraSettingConfig.AudioInputLine?.ToString()))
+            {
+                cbAudioInputLine.Text = ServiceLocator.CameraSettingConfig.AudioInputLine?.ToString();
+            }
 
             if (!string.IsNullOrEmpty(ServiceLocator.CameraSettingConfig.InphutFormat?.ToString()))
             {
@@ -236,8 +176,9 @@ namespace STM.MediaToPACS.Main.UI.Configurations
 
             cbLiveRotation.Checked = ServiceLocator.CameraSettingConfig.EnableLiveRotation;
             tbLiveRotationAngle.Value = ServiceLocator.CameraSettingConfig.LiveRotationAngle;
+            _liveRotationAngle = ServiceLocator.CameraSettingConfig.LiveRotationAngle;
+            IsCheckRotation = ServiceLocator.CameraSettingConfig.EnableLiveRotation;
 
-            VideoCapture1.Video_Renderer_SetAuto();
             cbZoom.Checked = IsCheckZoom;
             cbInvert.Checked = IsCheckInvert;
             cbGreyscale.Checked = IsCheckGreyscale;
@@ -245,31 +186,23 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             cbFlipY.Checked = IsCheckFlipY;
         }
 
-        private async Task CreateEngineAsync()
-        {
-            VideoCapture1 = await VideoCaptureCore.CreateAsync(videoView1 as IVideoView);
-            VideoCapture1.SetLicenseKey("1E17-F8AA-BB54-D7A1-BD5F-446D", "STM TECHNOLOGY AND COMMERCIAL JOINT STOCK COMPANY", "linh@anphats.com");
-            VideoCapture1.OnError += VideoCapture1_OnError;
-        }
-
-        private void VideoCapture1_OnError(object sender, ErrorsEventArgs e)
-        {
-        }
-
         private void cbVideoInputDevice_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbVideoInputDevice.SelectedIndex != -1)
             {
                 cbVideoInputFormat.Properties.Items.Clear();
-                var deviceItem = VideoCapture1.Video_CaptureDevices().FirstOrDefault(device => device.Name == cbVideoInputDevice.Text);
+                var deviceItem = CameraControl.FindDescriptor(cbVideoInputDevice.Text);
                 if (deviceItem == null)
                 {
                     return;
                 }
 
-                foreach (var format in deviceItem.VideoFormats)
+                foreach (var formatName in deviceItem.Characteristics
+                    .Where(c => c.PixelFormat != PixelFormats.Unknown)
+                    .Select(CameraControl.GetFormatName)
+                    .Distinct())
                 {
-                    cbVideoInputFormat.Properties.Items.Add(format.Name);
+                    cbVideoInputFormat.Properties.Items.Add(formatName);
                 }
 
                 if (cbVideoInputFormat.Properties.Items.Count > 0)
@@ -289,20 +222,18 @@ namespace STM.MediaToPACS.Main.UI.Configurations
 
             if (cbVideoInputDevice.SelectedIndex != -1)
             {
-                var deviceItem = VideoCapture1.Video_CaptureDevices().FirstOrDefault(device => device.Name == cbVideoInputDevice.Text);
+                var deviceItem = CameraControl.FindDescriptor(cbVideoInputDevice.Text);
                 if (deviceItem == null)
                 {
                     return;
                 }
 
-                var videoFormat = deviceItem.VideoFormats.Find(format => format.Name == cbVideoInputFormat.Text);
-                if (videoFormat == null)
-                {
-                    return;
-                }
-
                 cbVideoInputFrameRate.Properties.Items.Clear();
-                foreach (var frameRate in videoFormat.FrameRates)
+                foreach (var frameRate in deviceItem.Characteristics
+                    .Where(c => CameraControl.GetFormatName(c) == cbVideoInputFormat.Text)
+                    .Select(c => (double)c.FramesPerSecond)
+                    .Distinct()
+                    .OrderByDescending(fps => fps))
                 {
                     cbVideoInputFrameRate.Properties.Items.Add(frameRate.ToString(CultureInfo.CurrentCulture));
                 }
@@ -316,50 +247,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations
 
         private void cbAudioInputDevice_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbAudioInputDevice.SelectedIndex != -1)
-            {
-                cbAudioInputFormat.Properties.Items.Clear();
-
-                var deviceItem = VideoCapture1.Audio_CaptureDevices().FirstOrDefault(device => device.Name == cbAudioInputDevice.Text);
-                if (deviceItem == null)
-                {
-                    return;
-                }
-
-                var defaultValue = "PCM, 44100 Hz, 16 Bits, 2 Channels";
-                var defaultValueExists = false;
-                foreach (string format in deviceItem.Formats)
-                {
-                    cbAudioInputFormat.Properties.Items.Add(format);
-
-                    if (defaultValue == format)
-                    {
-                        defaultValueExists = true;
-                    }
-                }
-
-                if (cbAudioInputFormat.Properties.Items.Count > 0)
-                {
-                    cbAudioInputFormat.SelectedIndex = 0;
-
-                    if (defaultValueExists)
-                    {
-                        cbAudioInputFormat.Text = defaultValue;
-                    }
-                }
-
-                cbAudioInputLine.Properties.Items.Clear();
-
-                foreach (string line in deviceItem.Lines)
-                {
-                    cbAudioInputLine.Properties.Items.Add(line);
-                }
-
-                if (cbAudioInputLine.Properties.Items.Count > 0)
-                {
-                    cbAudioInputLine.SelectedIndex = 0;
-                }
-            }
+            // Audio không còn dùng (đã bỏ chức năng quay video)
         }
 
         private void cbOutputFormat_SelectedIndexChanged(object sender, EventArgs e)
@@ -367,160 +255,149 @@ namespace STM.MediaToPACS.Main.UI.Configurations
 
         }
 
-
-
         private async void _btnPreview_Click(object sender, EventArgs e)
         {
-            VideoCapture1.Video_Filters_Clear();
-            await VideoCapture1.StopAsync();
-            SettingCaptureDevice();
-            VideoCapture1.Mode = VideoCaptureMode.VideoPreview;
-            await VideoCapture1.StartAsync();
+            try
+            {
+                await StopPreviewAsync();
+
+                var descriptor = CameraControl.FindDescriptor(cbVideoInputDevice.Text);
+                if (descriptor == null)
+                {
+                    MessageBox.Show(this, "Không tìm thấy thiết bị camera.");
+                    return;
+                }
+
+                var characteristics = CameraControl.FindCharacteristics(descriptor, cbVideoInputFormat.Text, cbVideoInputFrameRate.Text);
+                if (characteristics == null)
+                {
+                    MessageBox.Show(this, "Thiết bị không có format video hợp lệ.");
+                    return;
+                }
+
+                _captureDevice = await descriptor.OpenAsync(characteristics, TranscodeFormats.Auto, OnFrameArrived);
+                await _captureDevice.StartAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Lỗi khi xem trước camera trong cấu hình");
+                MessageBox.Show(this, $"Lỗi khi xem trước camera: {ex.Message}");
+            }
         }
 
+        /// <summary>
+        /// Cấu hình hiệu ứng tạm theo trạng thái UI hiện tại (chưa lưu).
+        /// </summary>
+        private CameraSettings BuildPreviewSettings()
+        {
+            return new CameraSettings
+            {
+                Greyscale = IsCheckGreyscale,
+                Invert = IsCheckInvert,
+                FlipX = IsCheckFlipX,
+                FlipY = IsCheckFlipY,
+                EnableZoom = IsCheckZoom,
+                Zoom = Zoom,
+                ZoomShiftX = ZoomShiftX,
+                ZoomShiftY = ZoomShiftY,
+                EnableLiveRotation = IsCheckRotation,
+                LiveRotationAngle = _liveRotationAngle,
+            };
+        }
+
+        private void OnFrameArrived(PixelBufferScope bufferScope)
+        {
+            if (_rendering)
+            {
+                return;
+            }
+            _rendering = true;
+
+            try
+            {
+                byte[] imageData = bufferScope.Buffer.CopyImage();
+
+                Bitmap frame;
+                using (var ms = new MemoryStream(imageData))
+                using (var decoded = new Bitmap(ms))
+                {
+                    frame = CameraControl.ApplyEffects(decoded, BuildPreviewSettings());
+                }
+
+                if (IsHandleCreated && !IsDisposed)
+                {
+                    BeginInvoke((Action)(() =>
+                    {
+                        try
+                        {
+                            var old = videoView1.Image;
+                            videoView1.Image = frame;
+                            old?.Dispose();
+                        }
+                        finally
+                        {
+                            _rendering = false;
+                        }
+                    }));
+                }
+                else
+                {
+                    frame.Dispose();
+                    _rendering = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _rendering = false;
+                Log.Warning(ex, "Lỗi xử lý khung hình camera (cấu hình)");
+            }
+        }
+
+        private async Task StopPreviewAsync()
+        {
+            if (_captureDevice != null)
+            {
+                try
+                {
+                    await _captureDevice.StopAsync();
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Lỗi khi dừng camera (cấu hình)");
+                }
+                _captureDevice.Dispose();
+                _captureDevice = null;
+            }
+        }
 
         private void cbPan_CheckedChanged(object sender, EventArgs e)
         {
-            //IVideoEffectPan pan;
-            //var effect = VideoCapture1.Video_Effects_Get("Pan");
-            //if (effect == null)
-            //{
-            //    pan = new VideoEffectPan(true);
-            //    VideoCapture1.Video_Effects_Add(pan);
-            //}
-            //else
-            //{
-            //    pan = effect as IVideoEffectPan;
-            //}
-
-            //if (pan == null)
-            //{
-            //    MessageBox.Show(this, "Unable to configure pan effect.");
-            //    return;
-            //}
-
-            //pan.Enabled = cbPan.Checked;
-            //pan.StartTime = TimeSpan.FromMilliseconds(Convert.ToInt32(edPanStartTime.Text));
-            //pan.StopTime = TimeSpan.FromMilliseconds(Convert.ToInt32(edPanStopTime.Text));
-            //pan.StartX = Convert.ToInt32(edPanSourceLeft.Text);
-            //pan.StartY = Convert.ToInt32(edPanSourceTop.Text);
-            //pan.StartWidth = Convert.ToInt32(edPanSourceWidth.Text);
-            //pan.StartHeight = Convert.ToInt32(edPanSourceHeight.Text);
-            //pan.StopX = Convert.ToInt32(edPanDestLeft.Text);
-            //pan.StopY = Convert.ToInt32(edPanDestTop.Text);
-            //pan.StopWidth = Convert.ToInt32(edPanDestWidth.Text);
-            //pan.StopHeight = Convert.ToInt32(edPanDestHeight.Text);
+            // Pan chưa hỗ trợ (trước đây cũng đang comment ở bản VisioForge)
         }
 
         private void cbGreyscale_CheckedChanged(object sender, EventArgs e)
         {
             IsCheckGreyscale = cbGreyscale.Checked;
-            IVideoEffectGrayscale grayscale;
-            var effect = VideoCapture1.Video_Effects_Get("Grayscale");
-            if (effect == null)
-            {
-                grayscale = new VideoEffectGrayscale(cbGreyscale.Checked);
-                VideoCapture1.Video_Effects_Add(grayscale);
-            }
-            else
-            {
-                grayscale = effect as IVideoEffectGrayscale;
-                if (grayscale != null)
-                {
-                    grayscale.Enabled = cbGreyscale.Checked;
-                }
-            }
         }
 
-        private async void cbInvert_CheckedChanged(object sender, EventArgs e)
+        private void cbInvert_CheckedChanged(object sender, EventArgs e)
         {
             IsCheckInvert = cbInvert.Checked;
-            IVideoEffectInvert invert;
-            var effect = VideoCapture1.Video_Effects_Get("Invert");
-            if (effect == null)
-            {
-                invert = new VideoEffectInvert(cbInvert.Checked);
-                VideoCapture1.Video_Effects_Add(invert);
-            }
-            else
-            {
-                invert = effect as IVideoEffectInvert;
-                if (invert != null)
-                {
-                    invert.Enabled = cbInvert.Checked;
-                }
-            }
-
-
         }
 
         private void cbFlipX_CheckedChanged(object sender, EventArgs e)
         {
             IsCheckFlipX = cbFlipX.Checked;
-            IVideoEffectFlipDown flip;
-            var effect = VideoCapture1.Video_Effects_Get("FlipDown");
-            if (effect == null)
-            {
-                flip = new VideoEffectFlipHorizontal(cbFlipX.Checked);
-                VideoCapture1.Video_Effects_Add(flip);
-            }
-            else
-            {
-                flip = effect as IVideoEffectFlipDown;
-                if (flip != null)
-                {
-                    flip.Enabled = cbFlipX.Checked;
-                }
-            }
         }
 
         private void cbFlipY_CheckedChanged(object sender, EventArgs e)
         {
             IsCheckFlipY = cbFlipY.Checked;
-            IVideoEffectFlipRight flip;
-            var effect = VideoCapture1.Video_Effects_Get("FlipRight");
-            if (effect == null)
-            {
-                flip = new VideoEffectFlipVertical(cbFlipY.Checked);
-                VideoCapture1.Video_Effects_Add(flip);
-            }
-            else
-            {
-                flip = effect as IVideoEffectFlipRight;
-                if (flip != null)
-                {
-                    flip.Enabled = cbFlipY.Checked;
-                }
-            }
         }
-       
 
-        private async void cbZoom_CheckedChanged(object sender, EventArgs e)
+        private void cbZoom_CheckedChanged(object sender, EventArgs e)
         {
             IsCheckZoom = cbZoom.Checked;
-            IVideoEffectZoom zoomEffect;
-            var effect = VideoCapture1.Video_Effects_Get("Zoom");
-            if (effect == null)
-            {
-                zoomEffect = new VideoEffectZoom(Zoom, Zoom, ZoomShiftX, ZoomShiftY, IsCheckZoom);
-                VideoCapture1.Video_Effects_Add(zoomEffect);
-            }
-            else
-            {
-                zoomEffect = effect as IVideoEffectZoom;
-            }
-
-            if (zoomEffect == null)
-            {
-                MessageBox.Show(this, "Unable to configure zoom effect.");
-                return;
-            }
-
-            zoomEffect.ZoomX = Zoom;
-            zoomEffect.ZoomY = Zoom;
-            zoomEffect.ShiftX = ZoomShiftX;
-            zoomEffect.ShiftY = ZoomShiftY;
-            zoomEffect.Enabled = IsCheckZoom;
         }
 
         private void btEffZoomIn_Click(object sender, EventArgs e)
@@ -570,44 +447,23 @@ namespace STM.MediaToPACS.Main.UI.Configurations
         private void cbLiveRotation_CheckedChanged(object sender, EventArgs e)
         {
             IsCheckRotation = cbLiveRotation.Checked;
-            IVideoEffectRotate rotate;
-            var effect = VideoCapture1.Video_Effects_Get("Rotate");
-            if (effect == null)
-            {
-                rotate = new VideoEffectRotate(
-                    IsCheckRotation,
-                    tbLiveRotationAngle.Value, false);
-                VideoCapture1.Video_Effects_Add(rotate);
-            }
-            else
-            {
-                rotate = effect as IVideoEffectRotate;
-            }
-
-            if (rotate == null)
-            {
-                MessageBox.Show(this, "Unable to configure rotate effect.");
-                return;
-            }
-
-            rotate.Enabled = IsCheckRotation;
-            rotate.Angle = tbLiveRotationAngle.Value;
+            _liveRotationAngle = tbLiveRotationAngle.Value;
         }
 
         private void tbLiveRotationAngle_Scroll(object sender, EventArgs e)
         {
-            //cbLiveRotation_CheckedChanged(sender, e);
-            //labelLiveRotationAngle.Text = tbLiveRotationAngle.Value.ToString();
+            _liveRotationAngle = tbLiveRotationAngle.Value;
         }
 
         public async void _btnStopCamera_Click(object sender, EventArgs e)
         {
             try
             {
-                await VideoCapture1.StopAsync();
+                await StopPreviewAsync();
             }
             catch (Exception ex)
             {
+                Log.Warning(ex, "Lỗi khi dừng camera (cấu hình)");
             }
         }
 
@@ -627,21 +483,6 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             var FlipY = cbFlipY.Checked;
 
             var EnableZoom = cbZoom.Checked;
-
-            //var EnablePan = cbPan.Checked;
-            //int PanStartTime = int.Parse(edPanStartTime.Text);
-            //int PanStopTime = int.Parse(edPanStopTime.Text);
-            //int PanSourceLeft = int.Parse(edPanSourceLeft.Text);
-            //int PanSourceWidth = int.Parse(edPanSourceWidth.Text);
-            //int PanSourceHeight = int.Parse(edPanSourceHeight.Text);
-            //int PanSourceTop = int.Parse(edPanSourceTop.Text);
-            //int PanDestLeft = int.Parse(edPanDestLeft.Text);
-            //int PanDestWidth = int.Parse(edPanDestWidth.Text);
-            //int PanDestHeight = int.Parse(edPanDestHeight.Text);
-            //int PanDestTop = int.Parse(edPanDestTop.Text);
-
-            //var EnableLiveRotation = cbLiveRotation.Checked;
-            //int LiveRotationAngle = tbLiveRotationAngle.Value;
 
             CameraSettings cameraSettings = new CameraSettings
             {
@@ -663,26 +504,30 @@ namespace STM.MediaToPACS.Main.UI.Configurations
                 ZoomShiftX = ZoomShiftX,
                 ZoomShiftY = ZoomShiftX,
 
-                //EnablePan = EnablePan,
-                //PanStartTime = PanStartTime,
-                //PanStopTime = PanStopTime,
-                //PanSourceLeft = PanSourceLeft,
-                //PanSourceWidth = PanSourceWidth,
-                //PanSourceHeight = PanSourceHeight,
-                //PanSourceTop = PanSourceTop,
-                //PanDestLeft = PanDestLeft,
-                //PanDestWidth = PanDestWidth,
-                //PanDestHeight = PanDestHeight,
-                //PanDestTop = PanDestTop,
-
-                //EnableLiveRotation = EnableLiveRotation,
-                //LiveRotationAngle = LiveRotationAngle,
+                EnableLiveRotation = cbLiveRotation.Checked,
+                LiveRotationAngle = tbLiveRotationAngle.Value,
             };
             ServiceLocator.CameraSettingConfig = cameraSettings;
             XmlSettingsHelper.Save<CameraSettings>(Path.Combine(
                 ServiceLocator.GetAppDataBasePath(),
                 ConfigurationManager.AppSettings["File:CameraConfig"]), cameraSettings);
         }
+
+        #region Code VisioForge cũ (đã thay bằng FlashCap)
+        /*
+        private async Task CreateEngineAsync()
+        {
+            VideoCapture1 = await VideoCaptureCore.CreateAsync(videoView1 as IVideoView);
+            VideoCapture1.SetLicenseKey("...", "...", "...");
+            VideoCapture1.OnError += VideoCapture1_OnError;
+        }
+
+        private void VideoCapture1_OnError(object sender, ErrorsEventArgs e)
+        {
+        }
+
+        // Liệt kê format/framerate qua VideoCapture1.Video_CaptureDevices(),
+        // audio qua VideoCapture1.Audio_CaptureDevices() - xem lịch sử git để lấy bản đầy đủ.
 
         private void SettingCaptureDevice()
         {
@@ -703,5 +548,10 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             VideoCapture1.Video_Renderer.Zoom_ShiftY = 0;
             VideoCapture1.Video_Renderer.VideoRenderer = VideoRendererMode.Direct2D;
         }
+
+        // Các handler hiệu ứng cũ (VideoEffectGrayscale/Invert/Flip/Zoom/Rotate)
+        // nay chỉ cần cập nhật cờ IsCheck*, hiệu ứng áp trong CameraControl.ApplyEffects().
+        */
+        #endregion
     }
 }

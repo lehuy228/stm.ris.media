@@ -37,7 +37,7 @@ using Leadtools.Medical.Winforms;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using VisioForge.Core.VideoEdit;
+//using VisioForge.Core.VideoEdit; // VisioForge đã gỡ (thay bằng FlashCap)
 using MediaToPacs.Core.Models;
 using STM.MediaToPACS.Main.Utilities;
 using DevExpress.XtraPdfViewer;
@@ -267,6 +267,12 @@ namespace STM.MediaToPACS.Main
                 MinSize = 260,   // sidebar không hẹp hơn 260px khi kéo
                 MinExtra = 320   // vùng Mô tả bên phải giữ tối thiểu 320px
             };
+            // Kéo splitter xong thì lưu bề rộng sidebar, lần mở sau nạp lại
+            _paramSplitter.SplitterMoved += (s, e) =>
+            {
+                if (_paramFormControl != null && _paramFormControl.Visible && !_paramFormControl.Collapsed)
+                    SaveParamSidebarWidth(_paramFormControl.Width);
+            };
 
             _paramFormControl = new ParamFormControl
             {
@@ -282,8 +288,17 @@ namespace STM.MediaToPACS.Main
             xtraTabPage1.Controls.Add(_paramSplitter);
             xtraTabPage1.Controls.Add(_paramFormControl);
 
-            // Bề rộng khởi tạo ~2/5 tab Kết luận, tối đa 500px; sau đó user tự kéo splitter
-            _paramFormControl.SetExpandedWidth(Math.Min(500, xtraTabPage1.ClientSize.Width * 2 / 5));
+            // Bề rộng khởi tạo: ưu tiên giá trị người dùng đã lưu (clamp theo kích thước tab hiện tại),
+            // chưa có thì mặc định ~2/5 tab Kết luận, tối đa 500px; sau đó user tự kéo splitter
+            int sidebarWidth = Math.Min(500, xtraTabPage1.ClientSize.Width * 2 / 5);
+            int savedSidebarWidth = GetSavedParamSidebarWidth();
+            if (savedSidebarWidth > 0)
+            {
+                sidebarWidth = Math.Max(_paramSplitter.MinSize,
+                    Math.Min(savedSidebarWidth, xtraTabPage1.ClientSize.Width - _paramSplitter.MinExtra));
+                Log.Information("Đã nạp bề rộng sidebar chỉ số đã lưu: {Width}px", sidebarWidth);
+            }
+            _paramFormControl.SetExpandedWidth(sidebarWidth);
         }
 
         /// <summary>
@@ -341,11 +356,19 @@ namespace STM.MediaToPACS.Main
             if (style.SizeType != SizeType.Absolute)
                 return;
 
+            // Người dùng đã tự kéo chỉnh bề rộng cột camera -> giữ nguyên lựa chọn đó,
+            // không tự thu/nới theo sidebar chỉ số nữa
+            if (_userCameraColWidth > 0)
+            {
+                style.Width = ClampCameraColumnWidth(_userCameraColWidth);
+                return;
+            }
+
             if (_originalCameraColWidth < 0)
                 _originalCameraColWidth = style.Width;
 
             style.Width = shrink
-                ? Math.Max(560f, _originalCameraColWidth - 90f)
+                ? Math.Max(CameraColShrunkMinWidth, _originalCameraColWidth - CameraColShrinkPx)
                 : _originalCameraColWidth;
         }
 

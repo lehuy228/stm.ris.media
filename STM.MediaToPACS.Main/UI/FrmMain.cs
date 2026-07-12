@@ -37,7 +37,7 @@ using Leadtools.Medical.Winforms;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using VisioForge.Core.VideoEdit;
+//using VisioForge.Core.VideoEdit; // VisioForge đã gỡ (thay bằng FlashCap)
 using MediaToPacs.Core.Models;
 using STM.MediaToPACS.Main.Utilities;
 using DevExpress.XtraPdfViewer;
@@ -340,9 +340,13 @@ namespace STM.MediaToPACS.Main
             {
                 FinilizeScreenCapture();
                 FinilizeTwain();
-                if (_cameraControl != null && _cameraControl.VideoCapture1 != null)
+                //if (_cameraControl != null && _cameraControl.VideoCapture1 != null) // VisioForge đã thay bằng FlashCap
+                //{
+                //    await _cameraControl.VideoCapture1.StopAsync();
+                //}
+                if (_cameraControl != null)
                 {
-                    await _cameraControl.VideoCapture1.StopAsync();
+                    await _cameraControl.StopCaptureAsync();
                 }
             }
             catch (Exception ex)

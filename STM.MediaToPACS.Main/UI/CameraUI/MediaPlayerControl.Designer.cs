@@ -43,7 +43,8 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             this.toolStripButtonLastFrame = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonSnapshot = new System.Windows.Forms.ToolStripButton();
-            this.videoView1 = new VisioForge.Core.UI.WinForms.VideoView();
+            //this.videoView1 = new VisioForge.Core.UI.WinForms.VideoView(); // VisioForge đã gỡ
+            this.videoView1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbTimeline)).BeginInit();
@@ -159,7 +160,7 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             this.videoView1.Margin = new System.Windows.Forms.Padding(2);
             this.videoView1.Name = "videoView1";
             this.videoView1.Size = new System.Drawing.Size(600, 255);
-            this.videoView1.StatusOverlay = null;
+            //this.videoView1.StatusOverlay = null; // thuộc tính của VisioForge VideoView
             this.videoView1.TabIndex = 3;
             // 
             // toolStripButtonPreviousFrame
@@ -303,7 +304,8 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
         private System.Windows.Forms.ToolStripButton toolStripButtonNextKeyFrame;
         private System.Windows.Forms.ToolStripButton toolStripButtonFirstFrame;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private VisioForge.Core.UI.WinForms.VideoView videoView1;
+        //private VisioForge.Core.UI.WinForms.VideoView videoView1; // VisioForge đã gỡ
+        private System.Windows.Forms.PictureBox videoView1;
         private System.Windows.Forms.ToolStripButton toolStripButtonSnapshot;
         private System.Windows.Forms.ToolStripButton toolStripButtonLastFrame;
         private DevExpress.XtraEditors.LabelControl lbTimeline;
