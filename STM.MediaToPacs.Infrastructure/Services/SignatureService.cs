@@ -30,7 +30,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<List<HisUserKySoResponse>> GetAllHisUserKySoAsync()
         {
-            var response = await _httpClient.GetAsync("api/hisuserkyso");
+            var response = await _httpClient.GetAsync(ApiEndpoints.Signature.HisUsers);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
 
@@ -40,7 +40,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<HisUserKySoResponse> GetByIdHisUserKySoAsync(Guid id)
         {
-            var response = await _httpClient.GetAsync($"api/hisuserkyso/{id}");
+            var response = await _httpClient.GetAsync($"{ApiEndpoints.Signature.HisUsers}/{id}");
             if (!response.IsSuccessStatusCode)
                 return null;
 
@@ -51,7 +51,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<HisUserKySoResponse> GetByHisUserKySoIdAsync(string hisUserId)
         {
-            var response = await _httpClient.GetAsync($"api/hisuserkyso/byhisid/{hisUserId}");
+            var response = await _httpClient.GetAsync($"{ApiEndpoints.Signature.HisUsersByHisId}/{hisUserId}");
             if (!response.IsSuccessStatusCode)
                 return null;
 
@@ -68,7 +68,7 @@ namespace MediaToPacs.Infrastructure.Services
             });
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/hisuserkyso", content);
+            var response = await _httpClient.PostAsync(ApiEndpoints.Signature.HisUsers, content);
             response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadAsStringAsync();
@@ -84,7 +84,7 @@ namespace MediaToPacs.Infrastructure.Services
             });
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PutAsync($"api/hisuserkyso/{id}", content);
+            var response = await _httpClient.PutAsync($"{ApiEndpoints.Signature.HisUsers}/{id}", content);
             if (!response.IsSuccessStatusCode)
                 return null;
 
@@ -95,7 +95,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<bool> DeleteHisUserKySoAsync(Guid id)
         {
-            var response = await _httpClient.DeleteAsync($"api/hisuserkyso/{id}");
+            var response = await _httpClient.DeleteAsync($"{ApiEndpoints.Signature.HisUsers}/{id}");
             return response.IsSuccessStatusCode;
         }
 
@@ -106,7 +106,7 @@ namespace MediaToPacs.Infrastructure.Services
             var requestObj = new { UserId = userId };
             var content = new StringContent(JsonSerializer.Serialize(requestObj), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/signatures/certificate-infos", content);
+            var response = await _httpClient.PostAsync(ApiEndpoints.Signature.CertificateInfos, content);
             response.EnsureSuccessStatusCode();
 
             var responseStr = await response.Content.ReadAsStringAsync();
@@ -125,7 +125,7 @@ namespace MediaToPacs.Infrastructure.Services
             var json = JsonSerializer.Serialize(request);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/signatures/login", content);
+            var response = await _httpClient.PostAsync(ApiEndpoints.Signature.Login, content);
             response.EnsureSuccessStatusCode();
 
             var responseStr = await response.Content.ReadAsStringAsync();
@@ -137,7 +137,7 @@ namespace MediaToPacs.Infrastructure.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"api/users/by-userid/{cccd}");
+                var response = await _httpClient.GetAsync($"{ApiEndpoints.Signature.UsersByUserId}/{cccd}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -173,7 +173,7 @@ namespace MediaToPacs.Infrastructure.Services
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/signatures/signHash-pdf", content);
+            var response = await _httpClient.PostAsync(ApiEndpoints.Signature.SignHashPdf, content);
             response.EnsureSuccessStatusCode();
 
             var responseStr = await response.Content.ReadAsStringAsync();
@@ -193,7 +193,7 @@ namespace MediaToPacs.Infrastructure.Services
             });
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync("api/users", content);
+            var response = await _httpClient.PostAsync(ApiEndpoints.Signature.Users, content);
             response.EnsureSuccessStatusCode();
             var responseStr = await response.Content.ReadAsStringAsync();
 

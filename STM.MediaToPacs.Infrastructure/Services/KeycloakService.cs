@@ -25,7 +25,7 @@ namespace MediaToPacs.Infrastructure.Services
             var userID = token.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
             var httpClient = new HttpClient();
-            var tokenRequest = new HttpRequestMessage(HttpMethod.Post, $"{baseurl}/realms/master/protocol/openid-connect/token");
+            var tokenRequest = new HttpRequestMessage(HttpMethod.Post, baseurl + ApiEndpoints.Keycloak.MasterToken);
             tokenRequest.Content = new FormUrlEncodedContent(new[]
             {
             new KeyValuePair<string, string>("username", adminUser),
@@ -41,7 +41,8 @@ namespace MediaToPacs.Infrastructure.Services
             var tokenDoc = JsonDocument.Parse(tokenJson);
             string accessTokenAdmin = tokenDoc.RootElement.GetProperty("access_token").GetString();
 
-            var userRequest = new HttpRequestMessage(HttpMethod.Get, $"{baseurl}/admin/realms/{realm}/users/{userID}");
+            var userRequest = new HttpRequestMessage(HttpMethod.Get,
+                $"{baseurl}{ApiEndpoints.Keycloak.AdminRealms}/{realm}{ApiEndpoints.Keycloak.Users}/{userID}");
             userRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessTokenAdmin);
 
             var userResponse = await httpClient.SendAsync(userRequest);

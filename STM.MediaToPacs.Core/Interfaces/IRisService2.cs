@@ -11,6 +11,8 @@ namespace MediaToPacs.Core.Interfaces
     /// </summary>
     public interface IRisService2
     {
+        Task<SystemUpdateConfig> GetSystemUpdateConfigAsync();
+
         /// <summary>
         /// Danh sách KTV, y tá cùng khoa (theo orgCode).
         /// titleCodes mặc định ["ktv", "y_ta"] nếu không truyền.

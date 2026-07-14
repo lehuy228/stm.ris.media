@@ -9,6 +9,8 @@ namespace STM.MediaToPACS.Main.UI
 {
     public partial class FrmDoctorConfirm : DevExpress.XtraEditors.XtraForm
     {
+        private readonly DoctorConfirmDrawerController _drawerController;
+
         public string SelectedOrganizationCode => cboKhoa.EditValue as string;
 
         private sealed class DepartmentLookupItem
@@ -20,8 +22,10 @@ namespace STM.MediaToPACS.Main.UI
         public FrmDoctorConfirm()
         {
             InitializeComponent();
+            _drawerController = new DoctorConfirmDrawerController(this);
             LoadDoctorInfo();
             Load += FrmDoctorConfirm_Load;
+            FormClosed += (sender, args) => _drawerController.Dispose();
         }
 
         private async void FrmDoctorConfirm_Load(object sender, EventArgs e)
@@ -32,6 +36,11 @@ namespace STM.MediaToPACS.Main.UI
         private async void btnReloadKhoa_Click(object sender, EventArgs e)
         {
             await LoadKhoaListAsync();
+        }
+
+        private void btnSystemSettings_Click(object sender, EventArgs e)
+        {
+            _drawerController.Toggle();
         }
 
         private void LoadDoctorInfo()

@@ -443,9 +443,14 @@ namespace STM.MediaToPACS.Main.UI
             valueBox.ToolTip = null;
         }
 
+        // Dòng kẻ ngăn cách khối chỉ số với phần mô tả bác sĩ gõ tay phía dưới
+        private const string PARAM_TEXT_SEPARATOR = "--------------";
+
         /// <summary>
-        /// Sinh text mô tả từ giá trị đã nhập: mỗi nhóm 1 dòng
-        /// "TênNhóm: chỉ số 1; chỉ số 2." — chỉ lấy chỉ số có giá trị/được tích.
+        /// Sinh text mô tả từ giá trị đã nhập: chỉ số dạng value gộp trên dòng tên nhóm
+        /// "TênNhóm: chỉ số 1; chỉ số 2." (chỉ lấy khi có giá trị),
+        /// checkbox hiện cả 2 trạng thái ☑/☐ và MỖI PARAM 1 DÒNG riêng bên dưới.
+        /// Cuối khối thêm 1 dòng kẻ ngăn cách với phần mô tả gõ tay phía dưới.
         /// Dùng "\n" (không dùng \r\n) vì RichTextBox chuẩn hóa newline về \n,
         /// nếu lệch sẽ hỏng cơ chế thay thế khối text đã sinh.
         /// </summary>
@@ -455,18 +460,33 @@ namespace STM.MediaToPACS.Main.UI
 
             foreach (var groupEntries in _entries.GroupBy(x => x.Group).OrderBy(g => g.Key.sortOrder))
             {
-                var fragments = new List<string>();
+                var valueFragments = new List<string>();
+                var checkboxLines = new List<string>();
                 foreach (var entry in groupEntries)
                 {
                     string fragment = BuildFragment(entry);
-                    if (!string.IsNullOrEmpty(fragment))
-                        fragments.Add(fragment);
+                    if (string.IsNullOrEmpty(fragment))
+                        continue;
+
+                    if (entry.Field.inputMode == "checkbox" || entry.Field.inputMode == "checkbox_value")
+                        checkboxLines.Add(fragment);
+                    else
+                        valueFragments.Add(fragment);
                 }
 
-                if (fragments.Count > 0)
-                    lines.Add(groupEntries.Key.groupName + ": " + string.Join("; ", fragments) + ".");
+                if (valueFragments.Count == 0 && checkboxLines.Count == 0)
+                    continue;
+
+                lines.Add(valueFragments.Count > 0
+                    ? groupEntries.Key.groupName + ": " + string.Join("; ", valueFragments) + "."
+                    : groupEntries.Key.groupName + ":");
+                lines.AddRange(checkboxLines);
             }
 
+            if (lines.Count == 0)
+                return "";
+
+            lines.Add(PARAM_TEXT_SEPARATOR);
             return string.Join("\n", lines);
         }
 
@@ -476,19 +496,19 @@ namespace STM.MediaToPACS.Main.UI
 
             if (field.inputMode == "checkbox")
             {
-                return entry.CheckBox != null && entry.CheckBox.Checked
-                    ? (field.presetLabel ?? field.label)
-                    : null;
+                bool ticked = entry.CheckBox != null && entry.CheckBox.Checked;
+                return (ticked ? "☑ " : "☐ ") + (field.presetLabel ?? field.label);
             }
 
             if (field.inputMode == "checkbox_value")
             {
-                if (entry.CheckBox == null || !entry.CheckBox.Checked)
-                    return null;
+                bool ticked = entry.CheckBox != null && entry.CheckBox.Checked;
+                string prefix = ticked ? "☑ " : "☐ ";
                 string val = entry.ValueBox != null ? entry.ValueBox.Text.Trim() : "";
-                if (string.IsNullOrEmpty(val))
-                    return field.label;
-                return field.label + ": " + val + FormatUnit(field.unit);
+                // Không tích thì chỉ hiện nhãn, không kèm giá trị
+                if (!ticked || string.IsNullOrEmpty(val))
+                    return prefix + field.label;
+                return prefix + field.label + ": " + val + FormatUnit(field.unit);
             }
 
             // inputMode = value

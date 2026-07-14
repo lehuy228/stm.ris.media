@@ -31,12 +31,6 @@ namespace STM.MediaToPACS.Main.Utilities
         {
             try
             {
-                // Kiểm tra và cập nhật ứng dụng trước
-                if (await CheckForUpdatesAsync())
-                {
-                    return; // Ứng dụng đang cập nhật, thoát
-                }
-
                 // Bắt đầu quá trình xác thực
                 await AuthenticateAndStartApplicationAsync();
             }
@@ -88,6 +82,10 @@ namespace STM.MediaToPACS.Main.Utilities
                 _splash.SetStatus("Đang khởi tạo ứng dụng...");
                 await InitializeUserSessionAsync(tokenData);
                 ServiceLocator.InitializeOptionalServices();
+
+                // API cấu hình cập nhật yêu cầu access token.
+                if (await CheckForUpdatesAsync())
+                    return;
 
                 _splash?.CloseSplash();
                 _splash = null;

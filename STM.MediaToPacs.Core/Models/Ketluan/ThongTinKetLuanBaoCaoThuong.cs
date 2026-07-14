@@ -39,10 +39,27 @@ namespace MediaToPacs.Core.Models.Ketluan
         /// <summary>Trả giá trị chỉ số theo mã; rỗng nếu không có. Script trong repx gọi hàm này.</summary>
         public string GetChiSo(string ma)
         {
+
             if (string.IsNullOrEmpty(ma) || ChiSoTheoMa == null)
                 return string.Empty;
             string value;
             return ChiSoTheoMa.TryGetValue(ma, out value) ? (value ?? string.Empty) : string.Empty;
+        }
+
+        /// <summary>
+        /// Trạng thái tích theo MÃ param — dành cho XRCheckBox trong repx:
+        /// XRCheckBox đặt Tag = mã, script gọi GetChiSoCheck(Tag) gán vào Checked.
+        /// Chỉ chứa param dạng checkbox/checkbox_value; param dạng value không có trong dictionary.
+        /// </summary>
+        public Dictionary<string, bool> ChiSoCheckTheoMa { get; set; } = new Dictionary<string, bool>();
+
+        /// <summary>Trả trạng thái tích của checkbox theo mã; false nếu không có/không tích.</summary>
+        public bool GetChiSoCheck(string ma)
+        {
+            if (string.IsNullOrEmpty(ma) || ChiSoCheckTheoMa == null)
+                return false;
+            bool isChecked;
+            return ChiSoCheckTheoMa.TryGetValue(ma, out isChecked) && isChecked;
         }
     }
 }

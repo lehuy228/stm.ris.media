@@ -116,6 +116,7 @@
     <Compile Include="Models\ShortcutAndFontSettings.cs" />
     <Compile Include="Models\StudyOr.cs" />
     <Compile Include="Models\SystemConfig.cs" />
+    <Compile Include="Models\SystemUpdateConfig.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\BO\UserDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -398,13 +398,24 @@ namespace STM.MediaToPACS.Main
             if (_paramFormControl != null && _paramFormControl.Visible)
             {
                 ketluan.DanhSachChiSo = _paramFormControl.GetReportItems();
+
+                var paramValues = _paramFormControl.GetParamValues();
+
                 // Map MÃ param -> giá trị cho script bind trong repx (ô đặt Tag = mã).
                 // Lấy đủ mọi chỉ số kể cả rỗng để ô trống vẫn hiện đúng (không bị giá trị cũ).
-                ketluan.ChiSoTheoMa = _paramFormControl.GetParamValues().ToDictionary(
+                // Checkbox chưa tích trả rỗng kể cả khi ô giá trị còn text (giá trị không có hiệu lực).
+                ketluan.ChiSoTheoMa = paramValues.ToDictionary(
                     p => p.paramCode,
-                    p => !string.IsNullOrEmpty(p.value)
-                        ? p.value
-                        : (p.@checked == true ? (p.displayLabel ?? "x") : string.Empty));
+                    p => p.@checked == false
+                        ? string.Empty
+                        : (!string.IsNullOrEmpty(p.value)
+                            ? p.value
+                            : (p.@checked == true ? (p.displayLabel ?? "x") : string.Empty)));
+
+                // Map MÃ param -> trạng thái tích cho XRCheckBox trong repx (Tag = mã, gọi GetChiSoCheck)
+                ketluan.ChiSoCheckTheoMa = paramValues
+                    .Where(p => p.@checked.HasValue)
+                    .ToDictionary(p => p.paramCode, p => p.@checked.Value);
             }
 
             // Lấy danh sách ảnh đã được chọn

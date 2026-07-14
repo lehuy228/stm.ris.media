@@ -96,7 +96,7 @@ namespace MediaToPacs.Infrastructure.Services
                    Encoding.UTF8,
                    "application/json");
 
-                var response = await _client.PostAsync("/tools/find", content);
+                var response = await _client.PostAsync(ApiEndpoints.Orthanc.Find, content);
                 response.EnsureSuccessStatusCode();
 
 
@@ -227,7 +227,8 @@ namespace MediaToPacs.Infrastructure.Services
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await _client.PostAsync($"/studies/{orthancStudyId}/modify", content);
+                var response = await _client.PostAsync(
+                    $"{ApiEndpoints.Orthanc.Studies}/{orthancStudyId}{ApiEndpoints.Orthanc.Modify}", content);
                 var result = await response.Content.ReadAsStringAsync();
 
 
@@ -291,7 +292,8 @@ namespace MediaToPacs.Infrastructure.Services
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 // Gọi API MODIFY
-                var response = await _client.PostAsync($"/patients/{patientExists.PatientOrthancId}/modify", content);
+                var response = await _client.PostAsync(
+                    $"{ApiEndpoints.Orthanc.Patients}/{patientExists.PatientOrthancId}{ApiEndpoints.Orthanc.Modify}", content);
                 var result = await response.Content.ReadAsStringAsync();
 
 
@@ -315,7 +317,7 @@ namespace MediaToPacs.Infrastructure.Services
             var json = JsonSerializer.Serialize(requestBody);
             var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync("/tools/find", content);
+            var response = await _client.PostAsync(ApiEndpoints.Orthanc.Find, content);
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync();
@@ -347,7 +349,8 @@ namespace MediaToPacs.Infrastructure.Services
         #region Lấy danh sách ảnh đánh giấu
         public async Task GetKeyImageObject(string studyId, string folderPath)
         {
-            var jsonKo = await _client.GetStringAsync($"/studies/{studyId}/series");
+            var jsonKo = await _client.GetStringAsync(
+                $"{ApiEndpoints.Orthanc.Studies}/{studyId}{ApiEndpoints.Orthanc.StudySeries}");
 
             JArray seriesList = JArray.Parse(jsonKo);
 
@@ -389,7 +392,8 @@ namespace MediaToPacs.Infrastructure.Services
                 //"Basic", Convert.ToBase64String(byteArray)
                 // );
 
-                var jsonUID = await _client.GetStringAsync($"/instances/{koInstance}/tags?simplify");
+                var jsonUID = await _client.GetStringAsync(
+                    $"{ApiEndpoints.Orthanc.Instances}/{koInstance}{ApiEndpoints.Orthanc.SimplifiedTags}");
 
                 JObject obj = JObject.Parse(jsonUID);
 
@@ -448,7 +452,8 @@ namespace MediaToPacs.Infrastructure.Services
                 //"Basic", Convert.ToBase64String(byteArray)
                 // );
 
-                var jsonUID = await _client.GetStringAsync($"/instances/{prInstance}/tags?simplify");
+                var jsonUID = await _client.GetStringAsync(
+                    $"{ApiEndpoints.Orthanc.Instances}/{prInstance}{ApiEndpoints.Orthanc.SimplifiedTags}");
 
                 JObject obj = JObject.Parse(jsonUID);
 
@@ -499,7 +504,7 @@ namespace MediaToPacs.Infrastructure.Services
                 //  http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                 //"Basic", Convert.ToBase64String(byteArray)
                 // );
-                var findResp = await _client.PostAsync($"/tools/find", content);
+                var findResp = await _client.PostAsync(ApiEndpoints.Orthanc.Find, content);
                 findResp.EnsureSuccessStatusCode();
 
                 var findResult = JArray.Parse(await findResp.Content.ReadAsStringAsync());
@@ -512,7 +517,8 @@ namespace MediaToPacs.Infrastructure.Services
                 string instanceId = findResult[0].ToString();
 
                 // Tải file DICOM
-                var fileResp = await _client.GetAsync($"/instances/{instanceId}/file");
+                var fileResp = await _client.GetAsync(
+                    $"{ApiEndpoints.Orthanc.Instances}/{instanceId}{ApiEndpoints.Orthanc.InstanceFile}");
                 fileResp.EnsureSuccessStatusCode();
 
                 var bytes = await fileResp.Content.ReadAsByteArrayAsync();
@@ -521,7 +527,8 @@ namespace MediaToPacs.Infrastructure.Services
         }
         public async Task<int> DeleteKOPRSeriesAsync(string studyId)
         {
-            var json = await _client.GetStringAsync($"/studies/{studyId}/series");
+            var json = await _client.GetStringAsync(
+                $"{ApiEndpoints.Orthanc.Studies}/{studyId}{ApiEndpoints.Orthanc.StudySeries}");
             JArray seriesList = JArray.Parse(json);
 
             var seriesToDelete = new List<string>();
@@ -543,7 +550,7 @@ namespace MediaToPacs.Infrastructure.Services
             {
                 try
                 {
-                    var resp = await _client.DeleteAsync($"/series/{seriesId}");
+                    var resp = await _client.DeleteAsync($"{ApiEndpoints.Orthanc.Series}/{seriesId}");
                     if (resp.IsSuccessStatusCode)
                         deletedCount++;
                 }

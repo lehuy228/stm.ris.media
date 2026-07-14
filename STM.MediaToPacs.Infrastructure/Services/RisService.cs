@@ -27,9 +27,12 @@ namespace MediaToPacs.Infrastructure.Services
             _httpClient = new HttpClient();
         }
 
-        public void Configure(string risUrl)
+        public void Configure(string risUrl, string accessToken = null)
         {
             _risUrl = risUrl;
+            _httpClient.DefaultRequestHeaders.Authorization = string.IsNullOrWhiteSpace(accessToken)
+                ? null
+                : new AuthenticationHeaderValue("Bearer", accessToken);
         }
         public async Task<List<ScheduleStepRIS>> GetDanhSachLichChupAsync(
          int page = 1, int pageSize = 10,
@@ -84,7 +87,7 @@ namespace MediaToPacs.Infrastructure.Services
             string encodedFilters = HttpUtility.UrlEncode(filtersJson);
 
             // Build URL
-            var builder = new UriBuilder($"{_risUrl}/lich-chup");
+            var builder = new UriBuilder(_risUrl + ApiEndpoints.Ris.Schedules);
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["page"] = page.ToString();
             query["pageSize"] = pageSize.ToString();
@@ -109,7 +112,7 @@ namespace MediaToPacs.Infrastructure.Services
         public async Task<bool> SendKetQuaChanDoanToHisAsync(string maChiDinh)
         {
             var response = await _httpClient.PostAsync(
-                $"{_risUrl}/ket-qua-chan-doan/{maChiDinh}/send-to-his",
+                $"{_risUrl}{ApiEndpoints.Ris.DiagnosticResults}/{maChiDinh}{ApiEndpoints.Ris.SendResultToHis}",
                 null
             );
 
@@ -121,7 +124,7 @@ namespace MediaToPacs.Infrastructure.Services
             if (string.IsNullOrEmpty(machidinh))
                 throw new ArgumentException("Mã chỉ định không được để trống", nameof(machidinh));
 
-            var url = $"{_risUrl}/lich-chup/{machidinh}";
+            var url = $"{_risUrl}{ApiEndpoints.Ris.Schedules}/{machidinh}";
 
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
@@ -150,7 +153,7 @@ namespace MediaToPacs.Infrastructure.Services
             string encodedFilters = HttpUtility.UrlEncode(filtersJson);
 
             // Build URL
-            var builder = new UriBuilder($"{_risUrl}/report-template");
+            var builder = new UriBuilder(_risUrl + ApiEndpoints.Ris.ReportTemplates);
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["page"] = page.ToString();
             query["pageSize"] = pageSize.ToString();
@@ -176,7 +179,7 @@ namespace MediaToPacs.Infrastructure.Services
             var json = System.Text.Json.JsonSerializer.Serialize(request);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync($"{_risUrl}/ket-qua-chan-doan", content);
+            var response = await _httpClient.PostAsync(_risUrl + ApiEndpoints.Ris.DiagnosticResults, content);
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
@@ -212,7 +215,8 @@ namespace MediaToPacs.Infrastructure.Services
             var json = System.Text.Json.JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync($"{_risUrl}/ket-qua-chan-doan/download-buffer", content);
+            var response = await _httpClient.PostAsync(
+                _risUrl + ApiEndpoints.Ris.DiagnosticResults + ApiEndpoints.Ris.DownloadResultBuffer, content);
             response.EnsureSuccessStatusCode();
 
             var data = await response.Content.ReadAsByteArrayAsync();
@@ -221,7 +225,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<KetQuaChanDoanResponse> GetKetQuaChanDoanAsync(string maChiDinh)
         {
-            var response = await _httpClient.GetAsync($"{_risUrl}/ket-qua-chan-doan/{maChiDinh}");
+            var response = await _httpClient.GetAsync($"{_risUrl}{ApiEndpoints.Ris.DiagnosticResults}/{maChiDinh}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -259,7 +263,8 @@ namespace MediaToPacs.Infrastructure.Services
             fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
             content.Add(fileContent, "file", "signed.pdf");
 
-            var response = await _httpClient.PostAsync($"{_risUrl}/ket-qua-chan-doan/upload-signed-file", content);
+            var response = await _httpClient.PostAsync(
+                _risUrl + ApiEndpoints.Ris.DiagnosticResults + ApiEndpoints.Ris.UploadSignedFile, content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -286,7 +291,7 @@ namespace MediaToPacs.Infrastructure.Services
             formData.Add(new StringContent(request.xmlTemplate ?? string.Empty), "xmlTemplate");
 
 
-            var response = await _httpClient.PostAsync($"{_risUrl}/report-template", formData);
+            var response = await _httpClient.PostAsync(_risUrl + ApiEndpoints.Ris.ReportTemplates, formData);
 
             if (response.IsSuccessStatusCode)
             {
@@ -303,7 +308,7 @@ namespace MediaToPacs.Infrastructure.Services
             var json = JsonConvert.SerializeObject(request);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var requestMessage = new HttpRequestMessage(new HttpMethod("PATCH"), $"{_risUrl}/report-template/{id}")
+            var requestMessage = new HttpRequestMessage(new HttpMethod("PATCH"), $"{_risUrl}{ApiEndpoints.Ris.ReportTemplates}/{id}")
             {
                 Content = content
             };
@@ -332,7 +337,7 @@ namespace MediaToPacs.Infrastructure.Services
             string encodedFilters = HttpUtility.UrlEncode(filtersJson);
 
             // Build URL
-            var builder = new UriBuilder($"{_risUrl}/report-template");
+            var builder = new UriBuilder(_risUrl + ApiEndpoints.Ris.ReportTemplates);
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["page"] = page.ToString();
             query["pageSize"] = pageSize.ToString();
@@ -372,7 +377,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<ReportTemplateResponse> GetReportTemplateByIdAsync(string id)
         {
-            var response = await _httpClient.GetAsync($"{_risUrl}/report-template/{id}");
+            var response = await _httpClient.GetAsync($"{_risUrl}{ApiEndpoints.Ris.ReportTemplates}/{id}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -401,7 +406,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<bool> XoaReportTemplateAsync(string id)
         {
-            var response = await _httpClient.DeleteAsync($"{_risUrl}/report-template/{id}");
+            var response = await _httpClient.DeleteAsync($"{_risUrl}{ApiEndpoints.Ris.ReportTemplates}/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -484,7 +489,7 @@ namespace MediaToPacs.Infrastructure.Services
             }
 
             string queryString = string.Join("&", queryParams);
-            string url = $"{_risUrl}/chi-dinh-dich-vu?{queryString}";
+            string url = $"{_risUrl}{ApiEndpoints.Ris.OrderServices}?{queryString}";
 
             // Gửi request
             var response = await _httpClient.GetAsync(url);
@@ -503,7 +508,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<ChiDinhDichVuResponse> GetChiDinhDichVuAsync(string maChiDinh)
         {
-            var response = await _httpClient.GetAsync($"{_risUrl}/chi-dinh-dich-vu/{maChiDinh}");
+            var response = await _httpClient.GetAsync($"{_risUrl}{ApiEndpoints.Ris.OrderServices}/{maChiDinh}");
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
@@ -531,7 +536,7 @@ namespace MediaToPacs.Infrastructure.Services
             //string encodedFilters = HttpUtility.UrlEncode(filtersJson);
 
             // Build URL
-            var builder = new UriBuilder($"{_risUrl}/goi-y-ketluan");
+            var builder = new UriBuilder(_risUrl + ApiEndpoints.Ris.ConclusionSuggestions);
             //builder.Port = -1;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["page"] = page.ToString();
@@ -592,7 +597,7 @@ namespace MediaToPacs.Infrastructure.Services
             string filtersJson = JsonConvert.SerializeObject(filters);
             //string encodedFilters = HttpUtility.UrlEncode(filtersJson);
             // Build URL
-            var builder = new UriBuilder($"{_risUrl}/goi-y-ketluan");
+            var builder = new UriBuilder(_risUrl + ApiEndpoints.Ris.ConclusionSuggestions);
             //builder.Port = -1;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["page"] = page.ToString();
@@ -625,7 +630,7 @@ namespace MediaToPacs.Infrastructure.Services
         {
             var json = System.Text.Json.JsonSerializer.Serialize(request);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{_risUrl}/goi-y-ketluan", content);
+            var response = await _httpClient.PostAsync(_risUrl + ApiEndpoints.Ris.ConclusionSuggestions, content);
 
             response.EnsureSuccessStatusCode();
 
@@ -647,7 +652,7 @@ namespace MediaToPacs.Infrastructure.Services
             var json = System.Text.Json.JsonSerializer.Serialize(request);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var requestMessage = new HttpRequestMessage(new HttpMethod("PATCH"), $"{_risUrl}/goi-y-ketluan/{id}")
+            var requestMessage = new HttpRequestMessage(new HttpMethod("PATCH"), $"{_risUrl}{ApiEndpoints.Ris.ConclusionSuggestions}/{id}")
             {
                 Content = content
             };
@@ -670,7 +675,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<bool> XoaGoiYKetLuanAsync(string id)
         {
-            var response = await _httpClient.DeleteAsync($"{_risUrl}/goi-y-ketluan/{id}");
+            var response = await _httpClient.DeleteAsync($"{_risUrl}{ApiEndpoints.Ris.ConclusionSuggestions}/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -685,7 +690,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<GoiYKetLuanResponse> GetGoiYKetLuanById(string id)
         {
-            var response = await _httpClient.GetAsync($"{_risUrl}/goi-y-ketluan/{id}");
+            var response = await _httpClient.GetAsync($"{_risUrl}{ApiEndpoints.Ris.ConclusionSuggestions}/{id}");
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
@@ -713,7 +718,7 @@ namespace MediaToPacs.Infrastructure.Services
             string encodedFilters = HttpUtility.UrlEncode(filtersJson);
 
             // Build URL
-            var builder = new UriBuilder($"{_risUrl}/danhmucdichvu");
+            var builder = new UriBuilder(_risUrl + ApiEndpoints.Ris.ServiceCatalog);
             //builder.Port = -1;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["page"] = page.ToString();
@@ -756,7 +761,7 @@ namespace MediaToPacs.Infrastructure.Services
             string encodedFilters = HttpUtility.UrlEncode(filtersJson);
 
             // Build URL
-            var builder = new UriBuilder($"{_risUrl}/danhmucdichvu");
+            var builder = new UriBuilder(_risUrl + ApiEndpoints.Ris.ServiceCatalog);
             //builder.Port = -1;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["page"] = page.ToString();
@@ -804,7 +809,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<DanhMucDichVuResponse> GetDichVuAsync(string maDichVu)
         {
-            var response = await _httpClient.GetAsync($"{_risUrl}/danhmucdichvu/{maDichVu}");
+            var response = await _httpClient.GetAsync($"{_risUrl}{ApiEndpoints.Ris.ServiceCatalog}/{maDichVu}");
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
@@ -884,7 +889,7 @@ namespace MediaToPacs.Infrastructure.Services
             }
 
             string queryString = string.Join("&", queryParams);
-            string url = $"{_risUrl}/thiet-bi?{queryString}";
+            string url = $"{_risUrl}{ApiEndpoints.Ris.Devices}?{queryString}";
             // Gửi request
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
@@ -909,7 +914,7 @@ namespace MediaToPacs.Infrastructure.Services
             // Serialize JSON filter
             string filtersJson = JsonConvert.SerializeObject(filters);
             // Build URL
-            var builder = new UriBuilder($"{_risUrl}/his-user-mapper");
+            var builder = new UriBuilder(_risUrl + ApiEndpoints.Ris.HisUserMapper);
             //builder.Port = -1;
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -944,7 +949,7 @@ namespace MediaToPacs.Infrastructure.Services
 
             var requestMessage = new HttpRequestMessage(
                 new HttpMethod("PATCH"),
-                $"{_risUrl}/ket-qua-chan-doan/{machidinh}/cancel-signed-file")
+                $"{_risUrl}{ApiEndpoints.Ris.DiagnosticResults}/{machidinh}{ApiEndpoints.Ris.CancelSignedFile}")
             {
                 Content = content
             };
@@ -964,7 +969,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<BenhNhan> GetBenhNhanAsync(string mabenhnhan)
         {
-            var response = await _httpClient.GetAsync($"{_risUrl}/benh-nhan/{mabenhnhan}");
+            var response = await _httpClient.GetAsync($"{_risUrl}{ApiEndpoints.Ris.Patients}/{mabenhnhan}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -1019,7 +1024,7 @@ namespace MediaToPacs.Infrastructure.Services
 
             var request = new HttpRequestMessage(
                 new HttpMethod("PATCH"),
-                $"{_risUrl}/chi-dinh-dich-vu/{maChiDinh}"
+                $"{_risUrl}{ApiEndpoints.Ris.OrderServices}/{maChiDinh}"
             )
             {
                 Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")

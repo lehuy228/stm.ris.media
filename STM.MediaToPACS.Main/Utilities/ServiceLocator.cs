@@ -11,6 +11,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace STM.MediaToPACS.Main.Utilities
@@ -23,6 +24,12 @@ namespace STM.MediaToPACS.Main.Utilities
         // ===================== CONFIG =====================
         public const string DefaultUrlSystemUpdate = "https://github.com/lehuy228/stm.ris.media";
         public static SystemConfig SystemConfig { get; set; }
+
+        private static readonly object _configReloadSync = new object();
+        private static FileSystemWatcher _systemConfigWatcher;
+        private static Timer _systemConfigReloadTimer;
+        private static string _systemConfigPath;
+        private static int _isReloadingSystemConfig;
 
         // ===================== SERVICES =====================
         public static ISessionService SessionService { get; set; }
@@ -113,6 +120,7 @@ namespace STM.MediaToPACS.Main.Utilities
             MigrateLegacyConfigIfNeeded(basePath, configFile, modalityFile, cameraConfigFile, shortcutFile);
 
             string fullPath = Path.Combine(basePath, configFile);
+            _systemConfigPath = fullPath;
 
             // Luôn đảm bảo SystemConfig khác null (chưa cấu hình thì để rỗng, không phải null)
             // để tránh NullReferenceException ở những nơi gọi ServiceLocator.SystemConfig.Xyz
@@ -125,6 +133,7 @@ namespace STM.MediaToPACS.Main.Utilities
                     UrlApiRis = "http://10.12.8.16:5006",          // URL API RIS
                     UrlRisAuthen = null,                            // URL RIS Authen
                     UrlApiRisV2 = "http://10.12.8.16:7002",        // URL API RIS V2
+                    UrlGateway = "https://gateway.benhvien.vn",   // Gateway chung
                     UrlPacsServer = "http://10.12.8.16:8042",      // Máy chủ PACS
                     PacsUser = "stmadmin",
                     PacsPassword = "Anphat123!",
@@ -148,8 +157,113 @@ namespace STM.MediaToPACS.Main.Utilities
 
             InitializeServices();
             InitializeCaches();
+            StartSystemConfigWatcher();
 
             IsInitialized = true;
+        }
+
+        private static void StartSystemConfigWatcher()
+        {
+            if (string.IsNullOrWhiteSpace(_systemConfigPath))
+                return;
+
+            string directory = Path.GetDirectoryName(_systemConfigPath);
+            string fileName = Path.GetFileName(_systemConfigPath);
+            if (string.IsNullOrWhiteSpace(directory) || string.IsNullOrWhiteSpace(fileName))
+                return;
+
+            Directory.CreateDirectory(directory);
+
+            _systemConfigWatcher?.Dispose();
+            _systemConfigReloadTimer?.Dispose();
+
+            _systemConfigReloadTimer = new Timer(
+                ReloadSystemConfigFromFile,
+                null,
+                Timeout.Infinite,
+                Timeout.Infinite);
+
+            _systemConfigWatcher = new FileSystemWatcher(directory, fileName)
+            {
+                NotifyFilter = NotifyFilters.LastWrite
+                    | NotifyFilters.Size
+                    | NotifyFilters.FileName
+                    | NotifyFilters.CreationTime,
+                IncludeSubdirectories = false,
+                EnableRaisingEvents = true
+            };
+
+            _systemConfigWatcher.Changed += SystemConfigFileChanged;
+            _systemConfigWatcher.Created += SystemConfigFileChanged;
+            _systemConfigWatcher.Renamed += SystemConfigFileRenamed;
+            _systemConfigWatcher.Error += SystemConfigWatcherError;
+        }
+
+        private static void SystemConfigFileChanged(object sender, FileSystemEventArgs e)
+        {
+            ScheduleSystemConfigReload();
+        }
+
+        private static void SystemConfigFileRenamed(object sender, RenamedEventArgs e)
+        {
+            ScheduleSystemConfigReload();
+        }
+
+        private static void SystemConfigWatcherError(object sender, ErrorEventArgs e)
+        {
+            Log.Warning(e.GetException(), "Lỗi theo dõi file SystemConfig; đang khởi tạo lại watcher");
+            StartSystemConfigWatcher();
+        }
+
+        private static void ScheduleSystemConfigReload()
+        {
+            lock (_configReloadSync)
+            {
+                // Một lần lưu có thể phát sinh nhiều Changed event. Chờ file ghi ổn định rồi mới đọc.
+                _systemConfigReloadTimer?.Change(600, Timeout.Infinite);
+            }
+        }
+
+        private static void ReloadSystemConfigFromFile(object state)
+        {
+            if (Interlocked.Exchange(ref _isReloadingSystemConfig, 1) != 0)
+                return;
+
+            try
+            {
+                SystemConfig reloadedConfig = null;
+
+                // Phần mềm khác có thể đang thay thế/ghi file. Thử lại ngắn trước khi bỏ qua lần reload.
+                for (int attempt = 0; attempt < 3 && reloadedConfig == null; attempt++)
+                {
+                    reloadedConfig = XmlSettingsHelper.LoadEncrypted<SystemConfig>(_systemConfigPath);
+                    if (reloadedConfig == null)
+                        Thread.Sleep(250);
+                }
+
+                if (reloadedConfig == null)
+                {
+                    Log.Warning("Không thể đọc lại SystemConfig sau khi file thay đổi");
+                    return;
+                }
+
+                ApplySystemConfigDefaults(reloadedConfig);
+                SystemConfig = reloadedConfig;
+
+                var warnings = InitializeOptionalServices();
+                if (warnings.Count > 0)
+                    Log.Warning("Đã nạp lại SystemConfig với cảnh báo: {Warnings}", string.Join("; ", warnings));
+                else
+                    Log.Information("Đã tự động nạp lại SystemConfig và cập nhật các service Gateway");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Lỗi khi tự động nạp lại SystemConfig");
+            }
+            finally
+            {
+                Interlocked.Exchange(ref _isReloadingSystemConfig, 0);
+            }
         }
 
 
@@ -164,6 +278,12 @@ namespace STM.MediaToPACS.Main.Utilities
             if (string.IsNullOrWhiteSpace(config.UrlSystemUpdate))
             {
                 config.UrlSystemUpdate = DefaultUrlSystemUpdate;
+                changed = true;
+            }
+
+            if (string.IsNullOrWhiteSpace(config.UrlGateway))
+            {
+                config.UrlGateway = "https://gateway.benhvien.vn";
                 changed = true;
             }
 
@@ -206,16 +326,9 @@ namespace STM.MediaToPACS.Main.Utilities
                 return warnings;
             }
 
-            // ===== PACS =====
-            if (string.IsNullOrWhiteSpace(SystemConfig.UrlPacsServer))
-                warnings.Add("Chưa cấu hình địa chỉ PACS Server.");
-
-            if (string.IsNullOrWhiteSpace(SystemConfig.PacsUser))
-                warnings.Add("Chưa cấu hình tài khoản PACS.");
-
-            // ===== RIS =====
-            if (string.IsNullOrWhiteSpace(SystemConfig.UrlApiRis))
-                warnings.Add("Chưa cấu hình API RIS.");
+            // ===== Gateway =====
+            if (string.IsNullOrWhiteSpace(SystemConfig.UrlGateway))
+                warnings.Add("Chưa cấu hình địa chỉ Gateway.");
 
             // ===== Thanh toán =====
             if (string.IsNullOrWhiteSpace(SystemConfig.CheckThanhToan))
@@ -228,6 +341,32 @@ namespace STM.MediaToPACS.Main.Utilities
             return warnings;
         }
 
+        private static string BuildGatewayUrl(string routePrefix)
+        {
+            if (string.IsNullOrWhiteSpace(SystemConfig?.UrlGateway))
+                throw new InvalidOperationException("Gateway chưa được cấu hình.");
+
+            return SystemConfig.UrlGateway.Trim().TrimEnd('/') + "/" + routePrefix.TrimStart('/');
+        }
+
+        private static Uri BuildGatewayUri(string routePrefix)
+        {
+            return new Uri(BuildGatewayUrl(routePrefix) + "/", UriKind.Absolute);
+        }
+
+        private static string GetGatewayAccessToken()
+        {
+            return SessionService?.GetCurrentUser()?.AccessToken;
+        }
+
+        private static void ApplyGatewayAuthorization(HttpClient client)
+        {
+            string accessToken = GetGatewayAccessToken();
+            client.DefaultRequestHeaders.Authorization = string.IsNullOrWhiteSpace(accessToken)
+                ? null
+                : new AuthenticationHeaderValue("Bearer", accessToken);
+        }
+
         private static bool TryInitializeOrthancClient(out string errorMessage)
         {
             errorMessage = null;
@@ -235,7 +374,7 @@ namespace STM.MediaToPACS.Main.Utilities
             try
             {
                 // Chỉ check cái thực sự bắt buộc cho PACS
-                if (string.IsNullOrWhiteSpace(SystemConfig?.UrlPacsServer))
+                if (string.IsNullOrWhiteSpace(SystemConfig?.UrlGateway))
                 {
                     errorMessage = "PACS Server chưa được cấu hình.";
                     return false;
@@ -245,18 +384,9 @@ namespace STM.MediaToPACS.Main.Utilities
 
                 _orthancClient = new HttpClient
                 {
-                    BaseAddress = new Uri(SystemConfig.UrlPacsServer)
+                    BaseAddress = BuildGatewayUri(ApiEndpoints.Gateway.Pacs)
                 };
-
-                if (!string.IsNullOrWhiteSpace(SystemConfig.PacsUser))
-                {
-                    var auth = Convert.ToBase64String(
-                        Encoding.ASCII.GetBytes($"{SystemConfig.PacsUser}:{SystemConfig.PacsPassword}")
-                    );
-
-                    _orthancClient.DefaultRequestHeaders.Authorization =
-                        new AuthenticationHeaderValue("Basic", auth);
-                }
+                ApplyGatewayAuthorization(_orthancClient);
 
                 StudyService.LoadClient(_orthancClient);
 
@@ -276,7 +406,7 @@ namespace STM.MediaToPACS.Main.Utilities
             try
             {
                 // Chỉ check cái thực sự bắt buộc cho PACS
-                if (string.IsNullOrWhiteSpace(SystemConfig?.UrlPacsServer))
+                if (string.IsNullOrWhiteSpace(SystemConfig?.UrlGateway))
                 {
                     errorMessage = "Server ký số chưa được cấu hình.";
                     return false;
@@ -286,8 +416,9 @@ namespace STM.MediaToPACS.Main.Utilities
 
                 _signatureClient = new HttpClient
                 {
-                    BaseAddress = new Uri(SystemConfig.UrlSignatureMysign)
+                    BaseAddress = BuildGatewayUri(ApiEndpoints.Gateway.Signature)
                 };
+                ApplyGatewayAuthorization(_signatureClient);
 
                 SignatureService.LoadClient(_signatureClient);
                 LoadSignatureUserAsync();
@@ -295,7 +426,7 @@ namespace STM.MediaToPACS.Main.Utilities
             }
             catch (Exception ex)
             {
-                errorMessage = "Không khởi tạo được kết nối PACS: " + ex.Message;
+                errorMessage = "Không khởi tạo được kết nối Signature qua Gateway: " + ex.Message;
                 return false;
             }
         }
@@ -326,7 +457,7 @@ namespace STM.MediaToPACS.Main.Utilities
                 if (RisService == null)
                     return false;
 
-                if (string.IsNullOrWhiteSpace(SystemConfig?.UrlApiRis))
+                if (string.IsNullOrWhiteSpace(SystemConfig?.UrlGateway))
                 {
                     errorMessage = "Chưa cấu hình API RIS.";
                     return false;
@@ -334,7 +465,9 @@ namespace STM.MediaToPACS.Main.Utilities
 
                 if (RisService is RisService ris)
                 {
-                    ris.Configure(SystemConfig.UrlApiRis);
+                    ris.Configure(
+                        BuildGatewayUrl(ApiEndpoints.Gateway.Ris),
+                        GetGatewayAccessToken());
                     return true;
                 }
 
@@ -356,7 +489,7 @@ namespace STM.MediaToPACS.Main.Utilities
                 if (RisService2 == null)
                     return false;
 
-                if (string.IsNullOrWhiteSpace(SystemConfig?.UrlApiRisV2))
+                if (string.IsNullOrWhiteSpace(SystemConfig?.UrlGateway))
                 {
                     errorMessage = "Chưa cấu hình API RIS V2.";
                     return false;
@@ -364,7 +497,9 @@ namespace STM.MediaToPACS.Main.Utilities
 
                 if (RisService2 is RisService2 ris2)
                 {
-                    ris2.Configure(SystemConfig.UrlApiRisV2);
+                    ris2.Configure(
+                        BuildGatewayUrl(ApiEndpoints.Gateway.RisV2),
+                        GetGatewayAccessToken());
                     return true;
                 }
 

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -31,9 +32,23 @@ namespace MediaToPacs.Infrastructure.Services
             _httpClient = new HttpClient();
         }
 
-        public void Configure(string risV2Url)
+        public void Configure(string risV2Url, string accessToken = null)
         {
             _risV2Url = NormalizeRisV2BaseUrl(risV2Url);
+            _httpClient.DefaultRequestHeaders.Authorization = string.IsNullOrWhiteSpace(accessToken)
+                ? null
+                : new AuthenticationHeaderValue("Bearer", accessToken);
+        }
+
+        public async Task<SystemUpdateConfig> GetSystemUpdateConfigAsync()
+        {
+            var url = _risV2Url + ApiEndpoints.RisV2.SystemUpdateConfig;
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<ResponseResult<SystemUpdateConfig>>(json, _jsonOptions);
+            return result != null && result.success ? result.data : null;
         }
 
         private static string NormalizeRisV2BaseUrl(string risV2Url)
@@ -42,7 +57,7 @@ namespace MediaToPacs.Infrastructure.Services
                 return risV2Url;
 
             var normalized = risV2Url.Trim().TrimEnd('/');
-            const string risV1Path = "/api/risv1";
+            const string risV1Path = ApiEndpoints.RisV2.Root;
 
             if (normalized.EndsWith(risV1Path, StringComparison.OrdinalIgnoreCase))
                 normalized = normalized.Substring(0, normalized.Length - risV1Path.Length);
@@ -64,7 +79,7 @@ namespace MediaToPacs.Infrastructure.Services
                     query.Add("titleCodes", titleCode);
             }
 
-            var url = $"{_risV2Url}/api/risv1/staff/colleagues?{query}";
+            var url = $"{_risV2Url}{ApiEndpoints.RisV2.StaffColleagues}?{query}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -87,7 +102,7 @@ namespace MediaToPacs.Infrastructure.Services
             if (!string.IsNullOrWhiteSpace(modality))
                 query["modality"] = modality;
 
-            var url = $"{_risV2Url}/api/risv1/devices";
+            var url = _risV2Url + ApiEndpoints.RisV2.Devices;
             if (query.Count > 0)
                 url += $"?{query}";
 
@@ -104,7 +119,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<List<OrganizationDto>> GetDepartmentsAsync()
         {
-            var url = $"{_risV2Url}/api/risv1/organizations/departments";
+            var url = _risV2Url + ApiEndpoints.RisV2.Departments;
 
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
@@ -143,7 +158,7 @@ namespace MediaToPacs.Infrastructure.Services
             if (activeOnly.HasValue)
                 query["activeOnly"] = activeOnly.Value ? "true" : "false";
 
-            var url = $"{_risV2Url}/api/risv1/quick-suggestions";
+            var url = _risV2Url + ApiEndpoints.RisV2.QuickSuggestions;
             if (query.Count > 0)
                 url += $"?{query}";
 
@@ -160,7 +175,7 @@ namespace MediaToPacs.Infrastructure.Services
 
         public async Task<QuickSuggestionPublicDetailDto> GetQuickSuggestionByIdAsync(long id)
         {
-            var url = $"{_risV2Url}/api/risv1/quick-suggestions/{id}";
+            var url = $"{_risV2Url}{ApiEndpoints.RisV2.QuickSuggestions}/{id}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -182,7 +197,7 @@ namespace MediaToPacs.Infrastructure.Services
             if (id == Guid.Empty)
                 throw new ArgumentException("id y lệnh không hợp lệ", nameof(id));
 
-            var url = $"{_risV2Url}/api/risv1/order-items/{id:D}";
+            var url = $"{_risV2Url}{ApiEndpoints.RisV2.OrderItems}/{id:D}";
             var response = await _httpClient.GetAsync(url);
 
             if (response.StatusCode == HttpStatusCode.NotFound)
@@ -202,7 +217,7 @@ namespace MediaToPacs.Infrastructure.Services
             if (string.IsNullOrWhiteSpace(placerCode))
                 throw new ArgumentException("placerCode không được để trống", nameof(placerCode));
 
-            var url = $"{_risV2Url}/api/risv1/order-items/by-placer-code/{Uri.EscapeDataString(placerCode.Trim())}";
+            var url = $"{_risV2Url}{ApiEndpoints.RisV2.OrderItemsByPlacerCode}/{Uri.EscapeDataString(placerCode.Trim())}";
             var response = await _httpClient.GetAsync(url);
 
             if (response.StatusCode == HttpStatusCode.NotFound)
@@ -228,7 +243,7 @@ namespace MediaToPacs.Infrastructure.Services
             if (request.conclusion != null && request.conclusion.Length > 100000)
                 throw new ArgumentException("Kết luận không được vượt quá 100.000 ký tự", nameof(request));
 
-            var url = $"{_risV2Url}/api/risv1/order-items/{id:D}/conclusion";
+            var url = $"{_risV2Url}{ApiEndpoints.RisV2.OrderItems}/{id:D}{ApiEndpoints.RisV2.Conclusion}";
             var payload = JsonSerializer.Serialize(request, _jsonOptions);
 
             using (var content = new StringContent(payload, Encoding.UTF8, "application/json"))

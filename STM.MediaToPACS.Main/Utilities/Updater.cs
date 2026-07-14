@@ -12,10 +12,24 @@ namespace STM.MediaToPACS.Main.Utilities
         {
             try
             {
-                // URL: link repo GitHub,https://github.com/your-org/your-repo
-                string repoUrl = ServiceLocator.SystemConfig?.UrlSystemUpdate;
-                // Token: PAT fine-grained (read-only)
-                string token = ServiceLocator.SystemConfig?.SystemUpdatePassword;
+                var updateConfig = await ServiceLocator.RisService2.GetSystemUpdateConfigAsync();
+                if (updateConfig == null || !updateConfig.HasUpdateConfiguration)
+                {
+                    Log.Information("API không có cấu hình cập nhật hệ thống, bỏ qua kiểm tra cập nhật.");
+                    return false;
+                }
+
+                string repoUrl = updateConfig.Link.Trim();
+                string token = string.IsNullOrWhiteSpace(updateConfig.Token)
+                    ? null
+                    : updateConfig.Token.Trim();
+
+                // Chỉ giữ tài khoản PACS trong phiên chạy, không ghi xuống SystemConfig.xml.
+                if (ServiceLocator.SystemConfig != null)
+                {
+                    ServiceLocator.SystemConfig.PacsUser = updateConfig.PacsUsername;
+                    ServiceLocator.SystemConfig.PacsPassword = updateConfig.PacsPassword;
+                }
 
                 if (string.IsNullOrWhiteSpace(repoUrl))
                 {
