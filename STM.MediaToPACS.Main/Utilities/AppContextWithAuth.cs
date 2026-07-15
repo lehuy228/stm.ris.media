@@ -31,6 +31,20 @@ namespace STM.MediaToPACS.Main.Utilities
         {
             try
             {
+                // Update chạy fail-open: mọi lỗi cấu hình/mạng/API đều không được chặn đăng nhập.
+                try
+                {
+                    ServiceLocator.InitializeUpdateService();
+                    if (await CheckForUpdatesAsync())
+                        return;
+                }
+                catch (Exception updateException)
+                {
+                    Log.Warning(updateException,
+                        "Không thể khởi tạo kiểm tra cập nhật; tiếp tục vào màn hình đăng nhập");
+                    _splash.SetStatus("Không thể kiểm tra cập nhật, đang chuyển đến đăng nhập...");
+                }
+
                 // Bắt đầu quá trình xác thực
                 await AuthenticateAndStartApplicationAsync();
             }
@@ -81,11 +95,8 @@ namespace STM.MediaToPACS.Main.Utilities
 
                 _splash.SetStatus("Đang khởi tạo ứng dụng...");
                 await InitializeUserSessionAsync(tokenData);
+                // Cấu hình lại các client với Bearer token vừa lấy được (lần trước chưa có token).
                 ServiceLocator.InitializeOptionalServices();
-
-                // API cấu hình cập nhật yêu cầu access token.
-                if (await CheckForUpdatesAsync())
-                    return;
 
                 _splash?.CloseSplash();
                 _splash = null;

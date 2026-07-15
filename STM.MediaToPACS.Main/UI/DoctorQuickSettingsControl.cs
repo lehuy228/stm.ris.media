@@ -70,14 +70,14 @@ namespace STM.MediaToPACS.Main.UI
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 12F));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
 
-            var title = CreateLabel("Cấu hình sử dụng nhanh", 14F, FontStyle.Bold);
+            var title = CreateLabel("Cấu hình hệ thống", 14F, FontStyle.Bold);
             var description = CreateLabel(
                 "Thiết lập các kết nối cần thiết trước khi tiếp tục.", 9.5F, FontStyle.Regular);
             description.ForeColor = Color.FromArgb(91, 100, 110);
 
             layout.Controls.Add(title, 0, 0);
             layout.Controls.Add(description, 0, 1);
-            layout.Controls.Add(CreateLabel("Địa chỉ Gateway", 10F, FontStyle.Bold), 0, 2);
+            layout.Controls.Add(CreateLabel("Địa chỉ server", 10F, FontStyle.Bold), 0, 2);
             layout.Controls.Add(WrapInput(_gatewayTextBox), 0, 3);
             layout.Controls.Add(CreateLabel("Địa chỉ Check thanh toán HIS", 10F, FontStyle.Bold), 0, 4);
             layout.Controls.Add(WrapInput(_hisPaymentTextBox), 0, 5);
@@ -191,6 +191,18 @@ namespace STM.MediaToPACS.Main.UI
                 Text = text,
                 UseVisualStyleBackColor = false
             };
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            //
+            // DoctorQuickSettingsControl
+            //
+            this.Name = "DoctorQuickSettingsControl";
+            this.Size = new System.Drawing.Size(552, 460);
+            this.ResumeLayout(false);
+
         }
     }
 }

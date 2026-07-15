@@ -25,7 +25,6 @@ namespace MediaToPacs.Core.Models
 
         /// <summary>
         /// URL gateway tập trung, ví dụ https://gateway.benhvien.vn.
-        /// Các prefix chuẩn: /ris, /ris-v2, /signature và /pacs.
         /// API HIS (CheckThanhToan) vẫn gọi thẳng.
         /// </summary>
         [XmlElement("UrlGateway")]

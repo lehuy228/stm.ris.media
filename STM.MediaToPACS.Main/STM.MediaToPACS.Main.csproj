@@ -505,7 +505,6 @@
       <HintPath>..\packages\VisioForge.Libs.External.15.10.0\lib\net472\VisioForge.Libs.External.dll</HintPath>
     </Reference>
     -->
-
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -782,6 +781,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Configurations\Systems\SystemSetup.resx">
       <DependentUpon>SystemSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DoctorQuickSettingsControl.resx">
+      <DependentUpon>DoctorQuickSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FormRecognizing.resx">
       <DependentUpon>FormRecognizing.cs</DependentUpon>

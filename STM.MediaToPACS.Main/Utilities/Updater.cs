@@ -12,10 +12,12 @@ namespace STM.MediaToPACS.Main.Utilities
         {
             try
             {
+                onStatus?.Invoke("Đang tải cấu hình cập nhật...");
                 var updateConfig = await ServiceLocator.RisService2.GetSystemUpdateConfigAsync();
                 if (updateConfig == null || !updateConfig.HasUpdateConfiguration)
                 {
                     Log.Information("API không có cấu hình cập nhật hệ thống, bỏ qua kiểm tra cập nhật.");
+                    onStatus?.Invoke("Không có cấu hình cập nhật, tiếp tục đăng nhập...");
                     return false;
                 }
 
@@ -43,12 +45,17 @@ namespace STM.MediaToPACS.Main.Utilities
                 if (!mgr.IsInstalled)
                 {
                     Log.Information("App không chạy từ bản cài đặt Velopack, bỏ qua update.");
+                    onStatus?.Invoke("Bản chạy thử không hỗ trợ tự cập nhật, tiếp tục đăng nhập...");
                     return false;
                 }
 
                 onStatus?.Invoke("Đang kiểm tra cập nhật...");
                 var updateInfo = await mgr.CheckForUpdatesAsync();
-                if (updateInfo == null) return false; // đã là bản mới nhất
+                if (updateInfo == null)
+                {
+                    onStatus?.Invoke("Ứng dụng đang ở phiên bản mới nhất.");
+                    return false;
+                }
 
                 onStatus?.Invoke("Đang chờ xác nhận cập nhật...");
                 var result = DevExpress.XtraEditors.XtraMessageBox.Show(
@@ -72,7 +79,8 @@ namespace STM.MediaToPACS.Main.Utilities
             }
             catch (Exception ex)
             {
-                Log.Error($"Updater error: {ex.Message}");
+                Log.Error(ex, "Không thể kiểm tra cập nhật; ứng dụng sẽ tiếp tục chạy bình thường");
+                onStatus?.Invoke("Không thể kiểm tra cập nhật, tiếp tục khởi động...");
                 return false;
             }
         }

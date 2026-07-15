@@ -359,6 +359,19 @@ namespace STM.MediaToPACS.Main.Utilities
             return SessionService?.GetCurrentUser()?.AccessToken;
         }
 
+        /// <summary>
+        /// Khởi tạo tối thiểu RIS V2 để kiểm tra update trước khi đăng nhập.
+        /// Endpoint update phải cho phép anonymous hoặc app-level authentication.
+        /// </summary>
+        public static void InitializeUpdateService()
+        {
+            if (!(RisService2 is RisService2 ris2))
+                throw new InvalidOperationException("RIS V2 service chưa được khởi tạo.");
+
+            ris2.Configure(BuildGatewayUrl(ApiEndpoints.Gateway.RisV2));
+            ris2.ConfigureDirectFallback(SystemConfig?.UrlApiRisV2);
+        }
+
         private static void ApplyGatewayAuthorization(HttpClient client)
         {
             string accessToken = GetGatewayAccessToken();
@@ -500,6 +513,7 @@ namespace STM.MediaToPACS.Main.Utilities
                     ris2.Configure(
                         BuildGatewayUrl(ApiEndpoints.Gateway.RisV2),
                         GetGatewayAccessToken());
+                    ris2.ConfigureDirectFallback(SystemConfig.UrlApiRisV2);
                     return true;
                 }
 

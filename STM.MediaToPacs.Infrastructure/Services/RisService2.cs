@@ -2,11 +2,13 @@ using MediaToPacs.Core.Interfaces;
 using MediaToPacs.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -20,6 +22,7 @@ namespace MediaToPacs.Infrastructure.Services
     public class RisService2 : IRisService2
     {
         private string _risV2Url;
+        private string _directRisV2Url;
         private readonly HttpClient _httpClient;
 
         private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
@@ -40,15 +43,39 @@ namespace MediaToPacs.Infrastructure.Services
                 : new AuthenticationHeaderValue("Bearer", accessToken);
         }
 
+        public void ConfigureDirectFallback(string directRisV2Url)
+        {
+            _directRisV2Url = NormalizeRisV2BaseUrl(directRisV2Url);
+        }
+
         public async Task<SystemUpdateConfig> GetSystemUpdateConfigAsync()
         {
-            var url = _risV2Url + ApiEndpoints.RisV2.SystemUpdateConfig;
-            var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
+            using (var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
+            {
+                var url = _risV2Url + ApiEndpoints.RisV2.SystemUpdateConfig;
+                Trace.TraceInformation("Kiểm tra cấu hình cập nhật qua Gateway: " + url);
+                var response = await _httpClient.GetAsync(url, timeout.Token);
 
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<ResponseResult<SystemUpdateConfig>>(json, _jsonOptions);
-            return result != null && result.success ? result.data : null;
+                if (response.StatusCode == HttpStatusCode.NotFound
+                    && !string.IsNullOrWhiteSpace(_directRisV2Url))
+                {
+                    Trace.TraceWarning("Gateway trả 404 cho " + url + "; thử RIS V2 trực tiếp");
+                    response.Dispose();
+                    url = _directRisV2Url + ApiEndpoints.RisV2.SystemUpdateConfig;
+                    response = await _httpClient.GetAsync(url, timeout.Token);
+                }
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorBody = await response.Content.ReadAsStringAsync();
+                    Trace.TraceWarning($"API cấu hình update lỗi. URL={url}, Status={(int)response.StatusCode}, Body={errorBody}");
+                    response.EnsureSuccessStatusCode();
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize<ResponseResult<SystemUpdateConfig>>(json, _jsonOptions);
+                return result != null && result.success ? result.data : null;
+            }
         }
 
         private static string NormalizeRisV2BaseUrl(string risV2Url)

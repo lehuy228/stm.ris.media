@@ -41,7 +41,7 @@ namespace MediaToPacs.Infrastructure.Services
             public const string OrderItems = Root + "/order-items";
             public const string OrderItemsByPlacerCode = OrderItems + "/by-placer-code";
             public const string Conclusion = "/conclusion";
-            public const string SystemUpdateConfig = Root + "/system-configs/system-update";
+            public const string SystemUpdateConfig = "/api/v1/system-configs/system-update";
         }
 
         internal static class Signature
