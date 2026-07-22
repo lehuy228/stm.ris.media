@@ -53,6 +53,7 @@ namespace MediaToPacs.Infrastructure.Services
             public const string Users = "api/users";
             public const string UsersByUserId = Users + "/by-userid";
             public const string SignHashPdf = "api/signatures/signHash-pdf";
+            public const string SignHashPdfV2 = "api/signatures/signHash-pdf-v2";
         }
 
         internal static class Orthanc

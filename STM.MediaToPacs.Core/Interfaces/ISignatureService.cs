@@ -15,6 +15,7 @@ namespace MediaToPacs.Core.Interfaces
         Task<LoginResponseBO> GetToken(string userId);
         //Task<(string Bucket, string Key)> SignHashPdf(SignhashRequest request);
         Task<string> SignHashPdf(SignhashRequest request);
+        Task<string> SignHashPdfV2(SignhashRequestV2 request);
 
         Task<UserDto> UploadCertToUser(CreateUserRequest input);
 

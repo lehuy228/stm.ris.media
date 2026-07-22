@@ -1,7 +1,7 @@
 using MediaToPacs.Core.Models;
+using MediaToPacs.Core.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,7 +15,7 @@ namespace STM.MediaToPACS.Main.Utilities
         public static string SettingsPath =>
             Path.Combine(
                 ServiceLocator.GetAppDataBasePath(),
-                ConfigurationManager.AppSettings["File:ShortcutSettingsFile"]
+                FileStorageSettingsProvider.Current.ShortcutSettingsFile
             );
 
         public static ShortcutAndFontSettings LoadOrCreateSettings()

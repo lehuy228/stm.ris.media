@@ -184,7 +184,9 @@ namespace STM.MediaToPACS.Main
 
                 // Tạo request ký số
                 var request = BuildSignRequest(pdfBytes);
-                var signedResult = await ServiceLocator.SignatureService.SignHashPdf(request);
+                // TODO rollback: nếu cần quay lại API cũ, đổi lại thành
+                // ServiceLocator.SignatureService.SignHashPdf(request)
+                var signedResult = await ServiceLocator.SignatureService.SignHashPdfV2(request);
 
                 if (!string.IsNullOrEmpty(signedResult))
                 {
@@ -224,6 +226,22 @@ namespace STM.MediaToPACS.Main
                         MessageBoxIcon.Warning
                     );
                 }
+            }
+            catch (OperationCanceledException ex)
+            {
+                // HttpClient không được truyền CancellationToken khi gọi SignHashPdfV2,
+                // nên OperationCanceledException/TaskCanceledException ở đây chỉ có thể do
+                // HttpClient.Timeout hết hạn (yêu cầu ký đã gửi sang MySign nhưng chưa kịp phản hồi),
+                // không phải do người dùng hủy thao tác.
+                CloseSplashScreenOnce(ref splashShown);
+                Log.Warning(ex, "Timeout khi gọi API ký số");
+                XtraMessageBox.Show(
+                    this,
+                    "Yêu cầu ký số thất bại. Vui lòng vào MySign để xác nhận chữ ký.",
+                    "Ký số đang xử lý",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
             }
             catch (Exception ex)
             {
@@ -275,15 +293,16 @@ namespace STM.MediaToPACS.Main
         }
 
         /// <summary>
-        /// Build SignhashRequest từ pdfBytes
+        /// Build SignhashRequestV2 từ pdfBytes
         /// </summary>
-        private SignhashRequest BuildSignRequest(byte[] pdfBytes)
+        private SignhashRequestV2 BuildSignRequest(byte[] pdfBytes)
         {
-            var request = new SignhashRequest
+            var request = new SignhashRequestV2
             {
-                FileName = "Ketqua.pdf",
+                FileName = BuildSignFileName(),
                 FileBase64 = Convert.ToBase64String(pdfBytes),
-                UserID = ServiceLocator.KeycloakUserInfo.CCCD
+                UserID = ServiceLocator.KeycloakUserInfo.CCCD,
+                OrderItemCode = _machidinh
             };
 
             using (PdfDocumentProcessor processor = new PdfDocumentProcessor())
@@ -307,6 +326,53 @@ namespace STM.MediaToPACS.Main
             }
 
             return request;
+        }
+
+        /// <summary>
+        /// Tạo tên file ký số dạng "{TenBenhNhan}-{MaChiDinh}.pdf" - tên bệnh nhân bỏ dấu, thay khoảng trắng bằng "_"
+        /// </summary>
+        private string BuildSignFileName()
+        {
+            string tenBenhNhan = RemoveDiacriticsForFileName(_chiDinhDichVuResponse?.BenhNhan?.HoTen);
+            string maChiDinh = _machidinh ?? string.Empty;
+
+            return string.IsNullOrEmpty(tenBenhNhan)
+                ? $"{maChiDinh}.pdf"
+                : $"{tenBenhNhan}_{maChiDinh}.pdf";
+        }
+
+        /// <summary>
+        /// Bỏ dấu tiếng Việt, thay khoảng trắng bằng "_" để dùng làm tên file
+        /// </summary>
+        private static string RemoveDiacriticsForFileName(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return string.Empty;
+
+            string normalized = input.Normalize(System.Text.NormalizationForm.FormD);
+            var sb = new StringBuilder();
+            foreach (char c in normalized)
+            {
+                if (c == 'đ')
+                {
+                    sb.Append('d');
+                    continue;
+                }
+                if (c == 'Đ')
+                {
+                    sb.Append('D');
+                    continue;
+                }
+
+                var category = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c);
+                if (category != System.Globalization.UnicodeCategory.NonSpacingMark)
+                    sb.Append(c);
+            }
+
+            string result = sb.ToString().Normalize(System.Text.NormalizationForm.FormC).Trim();
+            result = System.Text.RegularExpressions.Regex.Replace(result, @"\s+", "_");
+
+            return result;
         }
 
         /// <summary>

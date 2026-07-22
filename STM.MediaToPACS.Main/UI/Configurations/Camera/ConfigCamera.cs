@@ -1,10 +1,10 @@
 using FlashCap;
 using MediaToPacs.Core.Models;
+using MediaToPacs.Core.Utilities;
 using STM.MediaToPACS.Main.UI.CameraUI;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 using System;
-using System.Configuration;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -510,7 +510,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             ServiceLocator.CameraSettingConfig = cameraSettings;
             XmlSettingsHelper.Save<CameraSettings>(Path.Combine(
                 ServiceLocator.GetAppDataBasePath(),
-                ConfigurationManager.AppSettings["File:CameraConfig"]), cameraSettings);
+                FileStorageSettingsProvider.Current.CameraConfig), cameraSettings);
         }
 
         #region Code VisioForge cũ (đã thay bằng FlashCap)

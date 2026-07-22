@@ -1,12 +1,12 @@
 using MediaToPacs.Core.Auths;
 using MediaToPacs.Core.Interfaces;
 using MediaToPacs.Core.Models;
+using MediaToPacs.Core.Utilities;
 using MediaToPacs.Infrastructure.Auths;
 using MediaToPacs.Infrastructure.Services;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -56,7 +56,6 @@ namespace STM.MediaToPACS.Main.Utilities
         public static CameraSettings CameraSettingConfig { get; set; }
 
         // ===================== APP DATA PATH =====================
-        private const string AppFolderName = "STM.MediaToPACS";
 
         /// <summary>
         /// Thư mục lưu cấu hình ứng dụng ở tầng ProgramData - ổn định qua các lần
@@ -64,45 +63,33 @@ namespace STM.MediaToPACS.Main.Utilities
         /// </summary>
         public static string GetAppDataBasePath()
         {
-            string basePath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                AppFolderName);
-
-            if (!Directory.Exists(basePath))
-                Directory.CreateDirectory(basePath);
-
-            return basePath;
+            return AppDataPaths.GetAppDataBasePath();
         }
 
         /// <summary>
-        /// Di chuyển các file cấu hình cũ (lưu ở File:BasePath, thường là ổ D) sang thư mục
-        /// ProgramData mới nếu có, để không mất cấu hình đã lưu trước đó.
+        /// Thư mục lưu ảnh/video chụp của bệnh nhân. Ưu tiên đường dẫn admin cấu hình trong
+        /// SystemConfig.FileStoragePath (màn hình Cấu hình hệ thống); nếu chưa cấu hình hoặc
+        /// không truy cập được thì dùng thư mục mặc định trong ProgramData.
         /// </summary>
-        private static void MigrateLegacyConfigIfNeeded(string basePath, params string[] fileNames)
+        public static string GetMediaStorageBasePath()
         {
-            try
+            string configuredPath = SystemConfig?.FileStoragePath;
+            if (!string.IsNullOrWhiteSpace(configuredPath))
             {
-                string legacyBasePath = ConfigurationManager.AppSettings["File:BasePath"];
-                if (string.IsNullOrWhiteSpace(legacyBasePath))
-                    return;
-
-                foreach (var fileName in fileNames)
+                try
                 {
-                    if (string.IsNullOrWhiteSpace(fileName))
-                        continue;
+                    if (!Directory.Exists(configuredPath))
+                        Directory.CreateDirectory(configuredPath);
 
-                    string newPath = Path.Combine(basePath, fileName);
-                    string legacyPath = Path.Combine(legacyBasePath, fileName);
-                    if (!File.Exists(newPath) && File.Exists(legacyPath))
-                    {
-                        File.Copy(legacyPath, newPath);
-                    }
+                    return configuredPath;
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Không thể sử dụng FileStoragePath đã cấu hình: {Path}", configuredPath);
                 }
             }
-            catch (Exception ex)
-            {
-                Log.Warning(ex, "Không thể di chuyển cấu hình cũ từ File:BasePath");
-            }
+
+            return GetAppDataBasePath();
         }
 
         // ===================== INIT =====================
@@ -112,12 +99,7 @@ namespace STM.MediaToPACS.Main.Utilities
                 return;
 
             string basePath = GetAppDataBasePath();
-            string configFile = ConfigurationManager.AppSettings["SystemConfigFile"] ?? "SystemConfig.xml";
-            string modalityFile = ConfigurationManager.AppSettings["Modality"] ?? "Modalities.xml";
-            string cameraConfigFile = ConfigurationManager.AppSettings["File:CameraConfig"] ?? "CameraSettingConfig.xml";
-            string shortcutFile = ConfigurationManager.AppSettings["File:ShortcutSettingsFile"] ?? "ShortcutSettingsFile.xml";
-
-            MigrateLegacyConfigIfNeeded(basePath, configFile, modalityFile, cameraConfigFile, shortcutFile);
+            string configFile = FileStorageSettingsProvider.Current.SystemConfigFile;
 
             string fullPath = Path.Combine(basePath, configFile);
             _systemConfigPath = fullPath;
@@ -313,7 +295,7 @@ namespace STM.MediaToPACS.Main.Utilities
             ShortcutAndFontSetting = ShortcutSettingsManager.LoadOrCreateSettings();
             CameraSettingConfig = XmlSettingsHelper.Load<CameraSettings>(Path.Combine(
                 GetAppDataBasePath(),
-                ConfigurationManager.AppSettings["File:CameraConfig"]));
+                FileStorageSettingsProvider.Current.CameraConfig));
         }
 
         public static List<string> ValidateSystemConfig()

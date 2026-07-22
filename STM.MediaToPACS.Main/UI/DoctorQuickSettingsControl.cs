@@ -1,8 +1,8 @@
 using DevExpress.XtraEditors;
 using MediaToPacs.Core.Models;
+using MediaToPacs.Core.Utilities;
 using STM.MediaToPACS.Main.Utilities;
 using System;
-using System.Configuration;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -13,6 +13,8 @@ namespace STM.MediaToPACS.Main.UI
     {
         private readonly TextBox _gatewayTextBox;
         private readonly TextBox _hisPaymentTextBox;
+        private readonly TextBox _fileStoragePathTextBox;
+        private readonly Button _browseFileStoragePathButton;
         private readonly RichTextBox _modalitiesTextBox;
         private readonly string _systemConfigPath;
         private readonly string _modalitiesPath;
@@ -27,23 +29,33 @@ namespace STM.MediaToPACS.Main.UI
             Padding = new Padding(24, 18, 24, 18);
 
             string basePath = ServiceLocator.GetAppDataBasePath();
-            _systemConfigPath = Path.Combine(basePath,
-                ConfigurationManager.AppSettings["SystemConfigFile"] ?? "SystemConfig.xml");
-            _modalitiesPath = Path.Combine(basePath,
-                ConfigurationManager.AppSettings["Modality"] ?? "Modalities.xml");
+            var fileSettings = FileStorageSettingsProvider.Current;
+            _systemConfigPath = Path.Combine(basePath, fileSettings.SystemConfigFile);
+            _modalitiesPath = Path.Combine(basePath, fileSettings.Modality);
 
             _gatewayTextBox = CreateTextBox();
             _hisPaymentTextBox = CreateTextBox();
+            _fileStoragePathTextBox = CreateTextBox();
+            _browseFileStoragePathButton = CreateButton("...", Color.White, Color.FromArgb(55, 65, 81));
+            _browseFileStoragePathButton.Size = new Size(38, 30);
+            _browseFileStoragePathButton.Click += BrowseFileStoragePathButton_Click;
             _modalitiesTextBox = new RichTextBox
             {
                 BorderStyle = BorderStyle.FixedSingle,
                 Dock = DockStyle.Fill,
                 Font = new Font("Segoe UI", 10F),
-                MinimumSize = new Size(0, 110),
                 TabIndex = 2
             };
 
-            Controls.Add(BuildLayout());
+            var scrollHost = new Panel
+            {
+                AutoScroll = true,
+                BackColor = Color.White,
+                Dock = DockStyle.Fill
+            };
+            scrollHost.Controls.Add(BuildLayout());
+
+            Controls.Add(scrollHost);
             LoadSettings();
         }
 
@@ -51,11 +63,12 @@ namespace STM.MediaToPACS.Main.UI
         {
             var layout = new TableLayoutPanel
             {
-                AutoScroll = true,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 BackColor = Color.White,
                 ColumnCount = 1,
-                Dock = DockStyle.Fill,
-                RowCount = 11
+                Dock = DockStyle.Top,
+                RowCount = 13
             };
             layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
@@ -65,7 +78,9 @@ namespace STM.MediaToPACS.Main.UI
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 46F));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 46F));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 150F));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 12F));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
@@ -81,12 +96,14 @@ namespace STM.MediaToPACS.Main.UI
             layout.Controls.Add(WrapInput(_gatewayTextBox), 0, 3);
             layout.Controls.Add(CreateLabel("Địa chỉ Check thanh toán HIS", 10F, FontStyle.Bold), 0, 4);
             layout.Controls.Add(WrapInput(_hisPaymentTextBox), 0, 5);
-            layout.Controls.Add(CreateLabel("Phương thức chụp", 10F, FontStyle.Bold), 0, 6);
-            layout.Controls.Add(_modalitiesTextBox, 0, 7);
+            layout.Controls.Add(CreateLabel("Thư mục lưu ảnh/video bệnh nhân", 10F, FontStyle.Bold), 0, 6);
+            layout.Controls.Add(WrapInput(BuildFileStoragePathInput()), 0, 7);
+            layout.Controls.Add(CreateLabel("Phương thức chụp", 10F, FontStyle.Bold), 0, 8);
+            layout.Controls.Add(_modalitiesTextBox, 0, 9);
 
             var hint = CreateLabel("Ví dụ: CR, CT, MR, US", 9F, FontStyle.Italic);
             hint.ForeColor = Color.FromArgb(108, 117, 125);
-            layout.Controls.Add(hint, 0, 8);
+            layout.Controls.Add(hint, 0, 10);
 
             var buttons = new FlowLayoutPanel
             {
@@ -103,9 +120,38 @@ namespace STM.MediaToPACS.Main.UI
             cancelButton.Click += (sender, args) => CloseRequested?.Invoke(this, EventArgs.Empty);
             buttons.Controls.Add(saveButton);
             buttons.Controls.Add(cancelButton);
-            layout.Controls.Add(buttons, 0, 10);
+            layout.Controls.Add(buttons, 0, 12);
 
             return layout;
+        }
+
+        private Control BuildFileStoragePathInput()
+        {
+            var panel = new TableLayoutPanel
+            {
+                ColumnCount = 2,
+                Dock = DockStyle.Fill,
+                RowCount = 1
+            };
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 42F));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            panel.Controls.Add(_fileStoragePathTextBox, 0, 0);
+            panel.Controls.Add(_browseFileStoragePathButton, 1, 0);
+            return panel;
+        }
+
+        private void BrowseFileStoragePathButton_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new FolderBrowserDialog())
+            {
+                dialog.Description = "Chọn thư mục lưu ảnh/video bệnh nhân";
+                if (Directory.Exists(_fileStoragePathTextBox.Text))
+                    dialog.SelectedPath = _fileStoragePathTextBox.Text;
+
+                if (dialog.ShowDialog(this) == DialogResult.OK)
+                    _fileStoragePathTextBox.Text = dialog.SelectedPath;
+            }
         }
 
         private static Control WrapInput(Control input)
@@ -124,6 +170,7 @@ namespace STM.MediaToPACS.Main.UI
 
             _gatewayTextBox.Text = systemConfig.UrlGateway ?? string.Empty;
             _hisPaymentTextBox.Text = systemConfig.CheckThanhToan ?? string.Empty;
+            _fileStoragePathTextBox.Text = systemConfig.FileStoragePath ?? string.Empty;
             _modalitiesTextBox.Text = modalities.ModalitiesList ?? string.Empty;
         }
 
@@ -136,6 +183,7 @@ namespace STM.MediaToPACS.Main.UI
                     ?? new SystemConfig();
                 systemConfig.UrlGateway = _gatewayTextBox.Text.Trim();
                 systemConfig.CheckThanhToan = _hisPaymentTextBox.Text.Trim();
+                systemConfig.FileStoragePath = _fileStoragePathTextBox.Text.Trim();
                 ServiceLocator.SystemConfig = systemConfig;
                 ServiceLocator.InitializeOptionalServices();
                 XmlSettingsHelper.SaveEncrypted(_systemConfigPath, systemConfig);

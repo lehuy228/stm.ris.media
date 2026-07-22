@@ -185,6 +185,27 @@ namespace MediaToPacs.Infrastructure.Services
             return pdfResponse;
         }
 
+        public async Task<string> SignHashPdfV2(SignhashRequestV2 request)
+        {
+            var json = JsonSerializer.Serialize(request, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(ApiEndpoints.Signature.SignHashPdfV2, content);
+            response.EnsureSuccessStatusCode();
+
+            var responseStr = await response.Content.ReadAsStringAsync();
+            var pdfResponse = JsonSerializer.Deserialize<string>(responseStr, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return pdfResponse;
+        }
+
         public async Task<UserDto> UploadCertToUser(CreateUserRequest input)
         {
             var json = JsonSerializer.Serialize(input, new JsonSerializerOptions

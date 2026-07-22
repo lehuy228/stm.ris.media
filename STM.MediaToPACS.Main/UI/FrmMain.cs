@@ -148,7 +148,7 @@ namespace STM.MediaToPACS.Main
                 InitClass();
                 InitListBoxImage();
                 InitializeComponent();
-                _baseFolder = ServiceLocator.GetAppDataBasePath();
+                _baseFolder = ServiceLocator.GetMediaStorageBasePath();
                 if (!Directory.Exists(_baseFolder))
                 {
                     Directory.CreateDirectory(_baseFolder);
@@ -172,7 +172,7 @@ namespace STM.MediaToPACS.Main
                 InitClass();
                 InitListBoxImage();
                 InitializeComponent();
-                _baseFolder = ServiceLocator.GetAppDataBasePath();
+                _baseFolder = ServiceLocator.GetMediaStorageBasePath();
                 if (!Directory.Exists(_baseFolder))
                 {
                     Directory.CreateDirectory(_baseFolder);

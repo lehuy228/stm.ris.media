@@ -68,6 +68,13 @@ namespace MediaToPacs.Core.Models
         #region Other Settings
         [XmlElement("CheckThanhToan")]
         public string CheckThanhToan { get; set; }
+
+        /// <summary>
+        /// Thư mục gốc lưu ảnh/video chụp của bệnh nhân (thay thế App.config File:BasePath).
+        /// Để trống sẽ dùng thư mục mặc định trong ProgramData.
+        /// </summary>
+        [XmlElement("FileStoragePath")]
+        public string FileStoragePath { get; set; }
         #endregion
     }
 }

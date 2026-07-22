@@ -1,7 +1,6 @@
 using MediaToPacs.Core.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -85,24 +84,6 @@ namespace STM.MediaToPACS.Main.Utilities
             }
         }
 
-
-        public static void InitializeDefaults()
-        {
-            // Base path từ app.config
-            string basePath = ConfigurationManager.AppSettings["File:BasePath"];
-
-            //// 1. Modalities
-            //string modalitiesFilePath = Path.Combine(basePath, ConfigurationManager.AppSettings["Modality"] ?? "Modalities.xml");
-            //XmlSettingsHelper.EnsureFileExists(modalitiesFilePath, () => Modalities.CreateDefault());
-
-            //// 2. PrinterDicomData
-            //string printerDicomFilePath = Path.Combine(basePath, ConfigurationManager.AppSettings["PrinterSettingFile"] ?? "PrinterDicomSettings.xml");
-            //XmlSettingsHelper.EnsureFileExists(printerDicomFilePath, () => PrinterDicomData.CreateDefault());
-
-            // 3. StorageServers
-            //string storageServersFilePath = Path.Combine(basePath, ConfigurationManager.AppSettings["File:PacsServerConfig"] ?? "PacsServerConfig.xml");
-            //XmlSettingsHelper.EnsureFileExists(storageServersFilePath, () => StorageServer.CreateDefaultList());
-        }
 
         #region xml bảo mật
 

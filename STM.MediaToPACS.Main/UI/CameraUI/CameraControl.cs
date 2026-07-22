@@ -41,7 +41,7 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
 
         private string CreateFilePath(bool isCheckCapture, string relativePath)
         {
-            string baseFolder = ServiceLocator.GetAppDataBasePath();
+            string baseFolder = ServiceLocator.GetMediaStorageBasePath();
             string appName = Application.ProductName;
             string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string folderPath = Path.Combine(baseFolder, "BenhNhan", relativePath);

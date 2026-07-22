@@ -31,7 +31,7 @@ using DevExpress.XtraSplashScreen;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using MediaToPacs.Core.Models.Ketluan;
-using System.Configuration;
+using MediaToPacs.Core.Utilities;
 using System.Threading.Tasks;
 
 namespace STM.MediaToPACS.Main.UI
@@ -139,7 +139,7 @@ namespace STM.MediaToPACS.Main.UI
             var defaultModalities = XmlSettingsHelper.Load<Modalities>(
                 Path.Combine(
                     ServiceLocator.GetAppDataBasePath(),
-                    ConfigurationManager.AppSettings["Modality"] ?? "Modalities.xml"
+                    FileStorageSettingsProvider.Current.Modality
                 )
             );
 
