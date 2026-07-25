@@ -33,11 +33,15 @@ using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using MediaToPacs.Core.Models.Ketluan;
 using MediaToPacs.Core.Utilities;
 using System.Threading.Tasks;
+using STM.MediaToPACS.Main.UI.V2;
+using STM.MediaToPACS.Main.UI.PatientSidebar;
+using STM.MediaToPACS.Main.UI.Configurations;
+using DevExpress.Utils;
+using DevExpress.XtraTab;
 
 namespace STM.MediaToPACS.Main.UI
 {
-    public partial class WorkListTable : DevExpress.XtraEditors.XtraForm
-    //public partial class WorkListTable : FormBase
+    public partial class MainForm : DevExpress.XtraEditors.XtraForm
     {
         public MySettings _mySettings = PacsSettings.Instance;
         private MyQueryRetrieveScu _find;
@@ -53,14 +57,21 @@ namespace STM.MediaToPACS.Main.UI
         private const string _sNewlineTab = "\r\n\t";
         private const string _sNewlineTabTab = "\r\n\t\t";
         private bool bCancelOperation = false;
+        private readonly Dictionary<string, XtraTabPage> _orderPages =
+            new Dictionary<string, XtraTabPage>(StringComparer.OrdinalIgnoreCase);
+        private bool _orderPagesCleanupDone;
 
         private List<ProcedureStep> listProcedureStep = new List<ProcedureStep>();
 
-        public WorkListTable()
+        public MainForm()
         {
             try
             {
                 InitializeComponent();
+                xtraTabControl1.ClosePageButtonShowMode = ClosePageButtonShowMode.InAllTabPageHeaders;
+                xtraTabPage1.ShowCloseButton = DefaultBoolean.False;
+                xtraTabPage2.ShowCloseButton = DefaultBoolean.False;
+                xtraTabControl1.CloseButtonClick += OrderTabs_CloseButtonClick;
                 InitPermissionControl();
                 PacsSettings.LogWindow = new LogWindow();
                 PacsSettings.LogWindow.Visible = false;
@@ -91,7 +102,7 @@ namespace STM.MediaToPACS.Main.UI
             //SetControlPermission(_btnMWLQuery, AppPermissions.RisWorklistList);
         }
 
-        private async void WorkListTable_Load(object sender, EventArgs e)
+        private async void MainForm_Load(object sender, EventArgs e)
         {
             _gridViewChiDinh.CustomColumnDisplayText += (s, ex) =>
             {
@@ -160,8 +171,24 @@ namespace STM.MediaToPACS.Main.UI
 
 
 
-        private void WorkListTable_FormClosing(object sender, FormClosingEventArgs e)
+        private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (!_orderPagesCleanupDone
+                && e.CloseReason != CloseReason.WindowsShutDown
+                && _orderPages.Count > 0)
+            {
+                e.Cancel = true;
+                var controls = _orderPages.Values
+                    .SelectMany(page => page.Controls.OfType<FormMainV2>())
+                    .ToList();
+                foreach (var control in controls)
+                    await control.StopCameraAsync();
+
+                _orderPagesCleanupDone = true;
+                Close();
+                return;
+            }
+
             try
             {
                 Utils.EngineShutdown();
@@ -1022,12 +1049,12 @@ namespace STM.MediaToPACS.Main.UI
 
         }
 
-        private void _btnLogout_Click(object sender, EventArgs e)
+        private void _tsmLogout_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private async void WorkListTable_FormClosed(object sender, FormClosedEventArgs e)
+        private async void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             try
             {
@@ -1178,12 +1205,8 @@ namespace STM.MediaToPACS.Main.UI
                                 SplashScreenManager.CloseForm(false);
                                 return;
                             }
-                            // Mở form xử lý
-                            FrmMain frmMain = new FrmMain(_tsmCbbVideoCapture.Text, soPhieu, maChiDinh);
-                            frmMain.Text = $"{parent.HoTen}-{(parent.GioiTinh == 1 ? "Nam" : "Nữ")}-{parent.NgaySinh.ToString("dd/MM/yyyy")}";
-
                             SplashScreenManager.CloseForm(false);
-                            frmMain.ShowDialog();
+                            OpenOrderPage(soPhieu, maChiDinh, parent.HoTen);
                         }
                     }
                 }
@@ -1270,10 +1293,7 @@ namespace STM.MediaToPACS.Main.UI
                         if (!allowOpen)
                             return;
 
-                        // Mở form xử lý
-                        FrmMain frmMain = new FrmMain(_tsmCbbVideoCapture.Text, obj.SoPhieuChiDinh, obj.MaChiDinh);
-                            frmMain.Text = $"{obj.HoTen}-{(obj.GioiTinh == 0 ? "Nam" : "Nữ")}-{obj.NgaySinh.ToString("dd/MM/yyyy")}";
-                            frmMain.ShowDialog();
+                        OpenOrderPage(obj.SoPhieuChiDinh, obj.MaChiDinh, obj.HoTen);
                         
                     }
                 }
@@ -1284,6 +1304,67 @@ namespace STM.MediaToPACS.Main.UI
             }
         }
 
+        private void OpenOrderPage(string soPhieu, string maChiDinh, string patientName)
+        {
+            if (string.IsNullOrWhiteSpace(maChiDinh))
+                return;
+
+            if (_orderPages.TryGetValue(maChiDinh, out var existingPage))
+            {
+                xtraTabControl1.SelectedTabPage = existingPage;
+                return;
+            }
+
+            var content = new FormMainV2(_tsmCbbVideoCapture.Text, soPhieu, maChiDinh)
+            {
+                Dock = DockStyle.Fill
+            };
+            content.OrderNavigationRequested += OrderContent_OrderNavigationRequested;
+
+            var page = new XtraTabPage
+            {
+                Text = BuildOrderPageCaption(patientName, maChiDinh),
+                Tag = maChiDinh,
+                ShowCloseButton = DefaultBoolean.True
+            };
+            page.Controls.Add(content);
+            xtraTabControl1.TabPages.Add(page);
+            _orderPages[maChiDinh] = page;
+            xtraTabControl1.SelectedTabPage = page;
+        }
+
+        private void OrderContent_OrderNavigationRequested(
+            object sender, OrderNavigationRequestedEventArgs e)
+        {
+            OpenOrderPage(e.OrderCode, e.PlacerOrderItemCode, e.PatientName);
+        }
+
+        private async void OrderTabs_CloseButtonClick(object sender, EventArgs e)
+        {
+            var page = xtraTabControl1.SelectedTabPage;
+            if (page == null || page == xtraTabPage1 || page == xtraTabPage2)
+                return;
+
+            string maChiDinh = page.Tag as string;
+            var content = page.Controls.OfType<FormMainV2>().FirstOrDefault();
+            if (content != null)
+            {
+                content.OrderNavigationRequested -= OrderContent_OrderNavigationRequested;
+                await content.StopCameraAsync();
+            }
+
+            if (!string.IsNullOrWhiteSpace(maChiDinh))
+                _orderPages.Remove(maChiDinh);
+            xtraTabControl1.TabPages.Remove(page);
+            page.Dispose();
+        }
+
+        private static string BuildOrderPageCaption(string patientName, string maChiDinh)
+        {
+            string name = string.IsNullOrWhiteSpace(patientName) ? "Bệnh nhân" : patientName.Trim();
+            return $"{name} - {maChiDinh}";
+        }
+
         private void _tsmCbbVideoCapture_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -1291,9 +1372,14 @@ namespace STM.MediaToPACS.Main.UI
 
         private void _tsmSetting_Click(object sender, EventArgs e)
         {
-            if (PacsSettings.DoOptions(0) != DialogResult.Cancel)
-                SetServersComboBox(false);
-            UpdateComboBoxes();
+            using (var dialog = new SystemSettingsDialog(_mySettings))
+            {
+                if (dialog.ShowDialog(this) == DialogResult.OK)
+                {
+                    SetServersComboBox(false);
+                    UpdateComboBoxes();
+                }
+            }
         }
 
         private void _tsmLog_Click(object sender, EventArgs e)

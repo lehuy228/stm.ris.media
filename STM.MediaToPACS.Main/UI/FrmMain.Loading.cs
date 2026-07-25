@@ -453,21 +453,13 @@ namespace STM.MediaToPACS.Main
         private int _cameraColDragStartX;
         private float _cameraColDragStartWidth;
 
-        /// <summary>
-        /// Bề rộng cột camera do người dùng tự kéo chỉnh (px hiển thị thực).
-        /// Khi > 0, cơ chế tự thu/nới cột theo sidebar chỉ số (SetCameraColumnShrink) bị vô hiệu
-        /// để bề rộng lưu/nạp luôn đúng như người dùng đã chọn.
-        /// </summary>
+        /// <summary>Bề rộng cột camera do người dùng tự kéo chỉnh (px hiển thị thực).</summary>
         private float _userCameraColWidth = -1f;
 
         /// <summary>Bề rộng tối thiểu cột camera khi kéo (còn đủ chỗ cho hàng nút bên dưới)</summary>
         private const float CameraColMinWidth = 480f;
         /// <summary>Vùng tab bên trái (Kết luận/DICOM...) giữ tối thiểu chừng này khi kéo</summary>
         private const float LeftAreaMinWidth = 520f;
-        /// <summary>Số px cột camera thu bớt khi sidebar chỉ số mở (dùng chung với SetCameraColumnShrink)</summary>
-        internal const float CameraColShrinkPx = 90f;
-        /// <summary>Bề rộng tối thiểu của cột camera ở trạng thái thu bớt</summary>
-        internal const float CameraColShrunkMinWidth = 560f;
 
         private static string UiLayoutSettingsPath => Path.Combine(
             ServiceLocator.GetAppDataBasePath(), "UiLayoutSettings.xml");
@@ -535,7 +527,6 @@ namespace STM.MediaToPACS.Main
                 // Nạp đúng bề rộng hiển thị người dùng đã chọn, không cộng/trừ theo sidebar
                 float width = ClampCameraColumnWidth(saved.CameraColumnWidth);
                 _userCameraColWidth = width;
-                _originalCameraColWidth = width;
                 style.Width = width;
 
                 Log.Information("Đã nạp bề rộng cột camera đã lưu: {Width}px", width);
@@ -585,9 +576,7 @@ namespace STM.MediaToPACS.Main
             if (style == null)
                 return;
 
-            // Lưu đúng bề rộng hiển thị; từ giờ sidebar chỉ số không tự thu/nới cột nữa
             _userCameraColWidth = style.Width;
-            _originalCameraColWidth = style.Width;
             SaveCameraColumnWidth(style.Width);
         }
 
@@ -614,19 +603,6 @@ namespace STM.MediaToPACS.Main
             {
                 Log.Warning(ex, "Lỗi khi lưu UiLayoutSettings");
             }
-        }
-
-        /// <summary>Bề rộng sidebar chỉ số đã lưu; -1 nếu chưa có</summary>
-        private static int GetSavedParamSidebarWidth()
-        {
-            var saved = XmlSettingsHelper.Load<UiLayoutSettings>(UiLayoutSettingsPath);
-            return saved != null && saved.ParamSidebarWidth > 0 ? saved.ParamSidebarWidth : -1;
-        }
-
-        private static void SaveParamSidebarWidth(int width)
-        {
-            SaveUiLayout(settings => settings.ParamSidebarWidth = width);
-            Log.Information("Đã lưu bề rộng sidebar chỉ số: {Width}px", width);
         }
 
         #endregion
@@ -677,9 +653,11 @@ namespace STM.MediaToPACS.Main
                 var loadKTVTask = InitDanhSachKTVAsync();
                 // Tra y lệnh bên RIS mới (best-effort, tự nuốt lỗi) để sync/khôi phục bảng chỉ số
                 var resolveRisV1Task = ResolveRisV1OrderItemAsync();
+                // Lịch sử khám bệnh nhân cho sidebar (best-effort, không ảnh hưởng luồng chính)
+                var loadHistoryTask = LoadPatientHistorySafeAsync();
 
                 // Chờ tất cả hoàn thành trước khi đụng vào UI
-                await Task.WhenAll(loadKTVTask, loadImageTask, resolveRisV1Task);
+                await Task.WhenAll(loadKTVTask, loadImageTask, resolveRisV1Task, loadHistoryTask);
 
                 // Các thao tác cần UI thread
                 this.Invoke((MethodInvoker)delegate

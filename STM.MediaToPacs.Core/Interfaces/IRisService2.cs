@@ -69,5 +69,11 @@ namespace MediaToPacs.Core.Interfaces
         Task<RisV1DiagnosticReportDetailDto> UpsertOrderItemConclusionAsync(
             Guid id,
             RisV1UpsertConclusionRequest request);
+
+        /// <summary>
+        /// Tra bệnh nhân theo mã chỉ định, trả lịch sử tối đa 50 lượt khám gần nhất
+        /// kèm chỉ định dịch vụ của từng lượt. Trả về null nếu không tìm thấy (404).
+        /// </summary>
+        Task<RisV1PatientOrderHistoryDto> GetPatientHistoryByOrderCodeAsync(string placerCode);
     }
 }

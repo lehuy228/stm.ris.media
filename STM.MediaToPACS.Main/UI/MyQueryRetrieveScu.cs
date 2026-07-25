@@ -14,7 +14,7 @@ namespace STM.MediaToPACS.Main
     public class MyQueryRetrieveScu : QueryRetrieveScu
     {
         private const string _sNewlineTab = "\r\n\t";
-        public WorkListTable _workListTable = null;
+        public MainForm _workListTable = null;
 
 
            // Summary:
@@ -24,13 +24,13 @@ namespace STM.MediaToPACS.Main
        {
        }
 
-       public MyQueryRetrieveScu(WorkListTable workListTable)
+       public MyQueryRetrieveScu(MainForm workListTable)
           : base()
        {
             _workListTable = workListTable;
        }
 
-       public MyQueryRetrieveScu(WorkListTable workListTable, string TemporaryDirectory, DicomNetSecurityeMode SecurityMode, DicomOpenSslContextCreationSettings openSslContextCreationSettings) :
+       public MyQueryRetrieveScu(MainForm workListTable, string TemporaryDirectory, DicomNetSecurityeMode SecurityMode, DicomOpenSslContextCreationSettings openSslContextCreationSettings) :
             base(TemporaryDirectory, SecurityMode, openSslContextCreationSettings)
             {
                _workListTable = workListTable;

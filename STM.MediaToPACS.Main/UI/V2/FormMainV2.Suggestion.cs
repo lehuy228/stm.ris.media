@@ -1,83 +1,30 @@
 using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Windows.Forms;
-using System.IO;
-using Leadtools;
-using Leadtools.Demos;
-using Leadtools.Forms.DocumentWriters;
-using Leadtools.Codecs;
-using Leadtools.Dicom;
-using System.Net;
-using System.Threading;
-using Leadtools.Dicom.Common.Extensions;
-using Leadtools.Dicom.Common.Editing;
-using Leadtools.Dicom.Scu.Common;
-using Leadtools.Dicom.Scu;
-using System.Diagnostics;
-using Leadtools.Dicom.Common.DataTypes.Modality;
-using STM.MediaToPACS.Main.UI;
-using Leadtools.DicomDemos;
 using System.Collections.Generic;
-using System.Collections;
-using System.Management;
-using Leadtools.WinForms.CommonDialogs.File;
-using System.Reflection;
-using Leadtools.Dicom.Common.Editing.Converters;
-using Leadtools.ImageProcessing;
-using Leadtools.Drawing;
-using Leadtools.ImageProcessing.Effects;
-using STM.MediaToPACS.Main.UI.CameraUI;
-using Leadtools.Medical.Worklist.DataAccessLayer;
-using Leadtools.Medical.DataAccessLayer;
-using Leadtools.Medical.DataAccessLayer.Configuration;
-using Leadtools.Medical.Worklist.DataAccessLayer.Configuration;
-using Leadtools.Medical.Winforms;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-//using VisioForge.Core.VideoEdit; // VisioForge đã gỡ (thay bằng FlashCap)
+using System.Windows.Forms;
 using MediaToPacs.Core.Models;
-using STM.MediaToPACS.Main.Utilities;
-using DevExpress.XtraPdfViewer;
-using System.Drawing.Printing;
-using DevExpress.XtraSplashScreen;
-using DevExpress.XtraEditors;
-using DevExpress.Pdf;
 using MediaToPacs.Core.Models.Ketluan;
-using DevExpress.XtraReports.UI;
-using System.Text;
-using MediaToPacs.Core.Enums;
-using System.Xml.Serialization;
+using STM.MediaToPACS.Main.UI;
+using STM.MediaToPACS.Main.Utilities;
 using Serilog;
-using System.Configuration;
-using System.Runtime.InteropServices;
-using STM.MediaToPACS.Main.UI.Configurations;
 
-namespace STM.MediaToPACS.Main
+namespace STM.MediaToPACS.Main.UI.V2
 {
-    public partial class FrmMain
+    /// <summary>
+    /// Gợi ý kết luận + form chỉ số động - chuyển thể nguyên vẹn từ FrmMain.Suggestion.cs.
+    /// ParamFormControl host vào _patientSidebar.ParamsHostPanel (tab "Tham số siêu âm").
+    /// </summary>
+    public partial class FormMainV2
     {
-        // Luồng gợi ý cũ (API goi-y-ketluan) - giữ làm fallback khi API risv1 chưa sẵn sàng
-        private List<GoiYKetLuanResponse> _listGoiYKetLuan { get; set; }
-
-        // Luồng gợi ý mới (API risv1 quick-suggestions)
+        private List<GoiYKetLuanResponse> _listGoiYKetLuan;
         private List<QuickSuggestionListItemDto> _listQuickSuggestions;
         private SuggestionPresenter _suggestionPresenter;
 
-        // Form chỉ số động cho suggestion Structured (tạo lazy, host trong tab "Tham số siêu âm"
-        // của sidebar trái FrmMain - xem UI\PatientSidebar\PatientSidebarControl)
         private ParamFormControl _paramFormControl;
-        // Khối text đã sinh lần trước - dùng để thay thế đúng khối đó trong ô Mô tả,
-        // không ghi đè phần bác sĩ gõ tay bên ngoài khối
         private string _lastGeneratedParamText = "";
 
-        // Y lệnh tương ứng bên RIS mới (tra theo _machidinh 1 lần lúc load form) -
-        // null nghĩa là RIS mới chưa có y lệnh/không kết nối được -> bỏ qua sync, luồng cũ không ảnh hưởng
         private RisV1OrderItemDetailDto _risV1OrderItem;
-
-        // Chi tiết suggestion Structured đang mở form chỉ số - dùng build snapshot khi lưu
         private QuickSuggestionPublicDetailDto _currentStructuredDetail;
 
         private SuggestionPresenter GetSuggestionPresenter()
@@ -87,10 +34,6 @@ namespace STM.MediaToPACS.Main
             return _suggestionPresenter;
         }
 
-        /// <summary>
-        /// Load danh sách gợi ý: thử API mới (risv1 quick-suggestions, lọc gender + modality server-side),
-        /// nếu lỗi hoặc rỗng thì fallback về API cũ (goi-y-ketluan, lọc gender client-side).
-        /// </summary>
         private async Task LoadSuggestionsSafeAsync(int? hisGioiTinh)
         {
             _listQuickSuggestions = null;
@@ -102,13 +45,10 @@ namespace STM.MediaToPACS.Main
                 string serviceCode = _chiDinhDichVuResponse?.MaDichVu;
                 int genderApi = SuggestionPresenter.MapHisGenderToApi(hisGioiTinh);
                 Log.Information(
-                    "Gọi quick-suggestions (risv1): baseUrl={BaseUrl}, modalityCode={Modality}, serviceCode={ServiceCode}, gender={Gender}",
-                    ServiceLocator.SystemConfig?.UrlApiRisV2, modality, serviceCode, genderApi);
+                    "Gọi quick-suggestions (risv1): modalityCode={Modality}, serviceCode={ServiceCode}, gender={Gender}",
+                    modality, serviceCode, genderApi);
 
                 _listQuickSuggestions = await GetSuggestionPresenter().LoadSuggestionsAsync(modality, hisGioiTinh, serviceCode);
-
-                Log.Information("quick-suggestions trả về {Count} item",
-                    _listQuickSuggestions != null ? _listQuickSuggestions.Count : 0);
             }
             catch (Exception ex)
             {
@@ -117,8 +57,6 @@ namespace STM.MediaToPACS.Main
 
             if (_listQuickSuggestions == null || _listQuickSuggestions.Count == 0)
             {
-                // TODO(legacy): gỡ nhánh fallback sau khi backend risv1 triển khai đủ dữ liệu ở các bệnh viện
-                Log.Information("Fallback sang API gợi ý kết luận cũ (goi-y-ketluan)");
                 var allGoiY = await ServiceLocator.RisService.GetDanhSachGoiYKetLuanResponseAsync(
                     madichvu: _chiDinhDichVuResponse.MaDichVu);
                 _listGoiYKetLuan = FilterGoiYKetLuanByGender(allGoiY?.data, hisGioiTinh ?? -1);
@@ -132,24 +70,18 @@ namespace STM.MediaToPACS.Main
             if (_listQuickSuggestions != null && _listQuickSuggestions.Count > 0)
             {
                 foreach (var item in _listQuickSuggestions)
-                {
                     _cbbMauGoiY.Properties.Items.Add(item);
-                }
             }
             else if (_listGoiYKetLuan != null)
             {
                 foreach (var item in _listGoiYKetLuan)
-                {
                     _cbbMauGoiY.Properties.Items.Add(item);
-                }
             }
 
-            if (_cbbMauGoiY.Properties.Items.Count > 0)
-            {
-                if (_kqChanDoanResponse == null)
-                    _cbbMauGoiY.SelectedIndex = 0;
-            }
+            if (_cbbMauGoiY.Properties.Items.Count > 0 && _kqChanDoanResponse == null)
+                _cbbMauGoiY.SelectedIndex = 0;
         }
+
         private List<GoiYKetLuanResponse> FilterGoiYKetLuanByGender(
             List<GoiYKetLuanResponse> allGoiY, int gioiTinh)
         {
@@ -162,26 +94,20 @@ namespace STM.MediaToPACS.Main
                     return true;
 
                 var g = x.gioitinh.Trim().ToLower();
-
-                if (gioiTinh == 0)          // Nam
-                    return g == "nam";
-
-                if (gioiTinh == 1)          // Nữ
-                    return g == "nữ" || g == "nu";
-
-                return true;                // Không xác định
+                if (gioiTinh == 0) return g == "nam";
+                if (gioiTinh == 1) return g == "nữ" || g == "nu";
+                return true;
             }).ToList();
         }
+
         private void _cbbReportTemplate_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Luồng mới: item là QuickSuggestionListItemDto - phải gọi API chi tiết để lấy nội dung
             if (_cbbMauGoiY.SelectedItem is QuickSuggestionListItemDto quickItem)
             {
                 ApplyQuickSuggestionAsync(quickItem.id);
                 return;
             }
 
-            // Luồng fallback (API cũ): giữ nguyên hành vi, không có form chỉ số
             if (_cbbMauGoiY.SelectedItem is GoiYKetLuanResponse selected)
             {
                 HideParamForm();
@@ -191,16 +117,10 @@ namespace STM.MediaToPACS.Main
 
                 var tb = _listThietBi?.FirstOrDefault(x => x.code == selected.mathietbi);
                 if (tb != null)
-                {
                     _cbbDSThietBi.EditValue = tb.id;
-                }
             }
         }
 
-        /// <summary>
-        /// Lấy chi tiết suggestion mới và đổ vào 3 ô rich text.
-        /// async void có chủ đích (fire-and-forget từ event handler) - mọi exception được nuốt tại chỗ kèm log.
-        /// </summary>
         private async void ApplyQuickSuggestionAsync(long id)
         {
             try
@@ -215,17 +135,12 @@ namespace STM.MediaToPACS.Main
                 _rtMoTa.Text = content.MoTa ?? "";
                 _rtKhuyenNghi.Text = content.KhuyenNghi ?? "";
                 _rtKetLuan.Text = content.KetLuan ?? "";
-                // Mô tả vừa bị thay mới hoàn toàn nên khối text sinh cũ không còn
                 _lastGeneratedParamText = "";
 
                 if (content.IsStructured)
-                {
                     OnStructuredSuggestionSelected(content.Detail);
-                }
                 else
-                {
                     HideParamForm();
-                }
             }
             catch (Exception ex)
             {
@@ -233,10 +148,6 @@ namespace STM.MediaToPACS.Main
             }
         }
 
-        /// <summary>
-        /// Suggestion Structured: render form chỉ số động từ detail.paramGroups vào tab
-        /// "Tham số siêu âm" của sidebar trái, và đồng bộ text sinh ra vào ô Mô tả.
-        /// </summary>
         private void OnStructuredSuggestionSelected(QuickSuggestionPublicDetailDto detail)
         {
             Log.Information("Suggestion Structured được chọn: {Title} (reportParam: {Code})",
@@ -248,13 +159,12 @@ namespace STM.MediaToPACS.Main
             _paramFormControl.Visible = true;
             _patientSidebar.ActivateParamsTab();
 
-            // Đồng bộ ngay lần đầu để các presetValue xuất hiện trong Mô tả
             SyncParamTextToMoTa();
         }
 
         /// <summary>
         /// Tạo form chỉ số (1 lần duy nhất) và gắn vào ParamsHostPanel của sidebar trái
-        /// (tab "Tham số siêu âm") - xem UI\PatientSidebar\PatientSidebarControl.
+        /// (tab "Tham số siêu âm") - xem UI/PatientSidebar/PatientSidebarControl.
         /// </summary>
         private void EnsureParamFormControl()
         {
@@ -264,7 +174,7 @@ namespace STM.MediaToPACS.Main
             _paramFormControl = new ParamFormControl
             {
                 Visible = false,
-                Dock = DockStyle.Fill
+                Dock = System.Windows.Forms.DockStyle.Fill
             };
             _paramFormControl.ParamValuesChanged += (s, e) => SyncParamTextToMoTa();
 
@@ -272,11 +182,6 @@ namespace STM.MediaToPACS.Main
             _paramFormControl.SetExpandedWidth(_patientSidebar.ParamsHostPanel.ClientSize.Width);
         }
 
-        /// <summary>
-        /// Cắt khối text chỉ số đã sinh (live-sync) ra khỏi Mô tả khi tạo báo cáo PDF:
-        /// trên màn hình và khi lưu về RIS vẫn giữ nguyên text, chỉ bản in dùng bảng chỉ số riêng.
-        /// Nếu form chỉ số không mở hoặc không tìm thấy khối đã sinh thì trả về nguyên văn.
-        /// </summary>
         private string StripGeneratedParamText(string moTa)
         {
             if (string.IsNullOrEmpty(moTa))
@@ -293,7 +198,6 @@ namespace STM.MediaToPACS.Main
             return moTa.Remove(idx, _lastGeneratedParamText.Length).TrimEnd('\r', '\n', ' ');
         }
 
-        /// <summary>Ẩn form chỉ số khi chọn suggestion Text/luồng cũ</summary>
         private void HideParamForm()
         {
             _currentStructuredDetail = null;
@@ -304,17 +208,11 @@ namespace STM.MediaToPACS.Main
             _lastGeneratedParamText = "";
         }
 
-        /// <summary>
-        /// Đồng bộ text sinh từ form chỉ số vào ô Mô tả theo cơ chế thay thế khối:
-        /// tìm và thay đúng khối đã sinh lần trước, phần bác sĩ gõ tay bên ngoài khối được giữ nguyên.
-        /// Nếu bác sĩ sửa tay vào giữa khối đã sinh thì khối mới sẽ được nối vào cuối.
-        /// </summary>
         private void SyncParamTextToMoTa()
         {
             if (_paramFormControl == null || !_paramFormControl.Visible)
                 return;
 
-            // Không tự sửa Mô tả khi đã ký số (ô bị khóa)
             if (!_rtMoTa.Enabled)
                 return;
 
@@ -337,22 +235,14 @@ namespace STM.MediaToPACS.Main
             _lastGeneratedParamText = newText;
         }
 
-        #region Sync kết luận + chỉ số sang RIS mới (risv1) - best-effort, không ảnh hưởng luồng lưu API cũ
+        #region Sync kết luận + chỉ số sang RIS mới (risv1) - best-effort
 
-        /// <summary>
-        /// Cờ tắt khẩn cấp việc sync sang RIS mới (app.config: Feature:RisV1ConclusionSync = "false").
-        /// Mặc định bật khi không khai báo key.
-        /// </summary>
         private static bool IsRisV1ConclusionSyncEnabled()
         {
-            var raw = ConfigurationManager.AppSettings["Feature:RisV1ConclusionSync"];
+            var raw = System.Configuration.ConfigurationManager.AppSettings["Feature:RisV1ConclusionSync"];
             return !string.Equals(raw, "false", StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <summary>
-        /// Tra y lệnh bên RIS mới theo mã chỉ định HIS (chạy nền lúc load form, kết quả cache
-        /// vào _risV1OrderItem). Thất bại chỉ log warning - không ném exception ra ngoài.
-        /// </summary>
         private async Task ResolveRisV1OrderItemAsync()
         {
             try
@@ -370,10 +260,6 @@ namespace STM.MediaToPACS.Main
             }
         }
 
-        /// <summary>
-        /// Sync kết luận + bảng chỉ số sang RIS mới sau khi API cũ đã lưu THÀNH CÔNG.
-        /// Best-effort: mọi lỗi chỉ ghi log, tuyệt đối không hiện popup/không ảnh hưởng luồng chính.
-        /// </summary>
         private async Task SyncConclusionToRisV1Async(string moTa, string ketLuan, string khuyenNghi)
         {
             try
@@ -381,7 +267,6 @@ namespace STM.MediaToPACS.Main
                 if (!IsRisV1ConclusionSyncEnabled())
                     return;
 
-                // Lần load đầu chưa resolve được (RIS mới khởi động chậm/mạng chập chờn) thì thử lại 1 lần
                 if (_risV1OrderItem == null)
                     await ResolveRisV1OrderItemAsync();
                 if (_risV1OrderItem == null)
@@ -405,10 +290,6 @@ namespace STM.MediaToPACS.Main
             }
         }
 
-        /// <summary>
-        /// Gom giá trị form chỉ số hiện tại thành input gửi lên RIS mới
-        /// (backend tự build Schema B); null nếu không mở form Structured.
-        /// </summary>
         private RisV1ReportParamsInput BuildParamValuesSnapshot()
         {
             if (_paramFormControl == null || !_paramFormControl.Visible || _currentStructuredDetail == null)
@@ -454,7 +335,6 @@ namespace STM.MediaToPACS.Main
                     snapshot.groups == null || snapshot.groups.Count == 0)
                     return;
 
-                // Schema B lồng theo nhóm - trải phẳng để đổ vào form theo paramCode
                 var savedValues = snapshot.groups
                     .Where(g => g.@params != null)
                     .SelectMany(g => g.@params)
@@ -476,8 +356,6 @@ namespace STM.MediaToPACS.Main
                 _currentStructuredDetail = content.Detail;
                 _paramFormControl.Visible = true;
 
-                // Khối text chỉ số đã nằm sẵn trong Mô tả lưu từ API cũ - chỉ ghi nhận lại
-                // để lần sửa chỉ số tiếp theo thay đúng khối, không chèn trùng
                 _lastGeneratedParamText = _paramFormControl.GenerateText();
 
                 Log.Information("Đã khôi phục {Count} chỉ số từ RIS mới (suggestion {Id})",

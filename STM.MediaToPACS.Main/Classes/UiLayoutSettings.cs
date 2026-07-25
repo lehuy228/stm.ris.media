@@ -16,5 +16,11 @@ namespace STM.MediaToPACS.Main
         /// Bề rộng sidebar form chỉ số (param) trong tab Kết luận (px), người dùng kéo bằng splitter.
         /// </summary>
         public int ParamSidebarWidth { get; set; }
+
+        /// <summary>
+        /// Sidebar "Thông tin bệnh nhân" (Lịch sử khám/Tham số siêu âm) có đang được ghim (📌)
+        /// hay không - ghim thì mở rộng sẵn mỗi khi mở form, không tự thu gọn khi rời focus.
+        /// </summary>
+        public bool PatientSidebarPinned { get; set; }
     }
 }

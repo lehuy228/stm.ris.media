@@ -79,6 +79,8 @@ namespace STM.MediaToPACS.Main
             this._miEventsEmf2 = new System.Windows.Forms.ToolStripMenuItem();
             this._miEventsJob2 = new System.Windows.Forms.ToolStripMenuItem();
             this._panelPictureBox = new System.Windows.Forms.Panel();
+            this._patientSidebar = new STM.MediaToPACS.Main.UI.PatientSidebar.PatientSidebarControl();
+            this._patientSidebarSplitter = new System.Windows.Forms.Splitter();
             this._tbTableLayout = new System.Windows.Forms.TableLayoutPanel();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this._btnLinkCamera = new DevExpress.XtraEditors.SimpleButton();
@@ -717,7 +719,33 @@ namespace STM.MediaToPACS.Main
             this._panelPictureBox.Name = "_panelPictureBox";
             this._panelPictureBox.Size = new System.Drawing.Size(1768, 920);
             this._panelPictureBox.TabIndex = 5;
-            // 
+            //
+            // _patientSidebar
+            //
+            // Dock=Left BÊN TRONG xtraTabPage1 (thêm vào Controls sau cùng, xem bên dưới) -
+            // chỉ chiếm đúng vùng Mô tả (giữa panel5/Top và groupControl1+2/Bottom), không
+            // tràn lên hàng thông tin chỉ định phía trên hay xuống footer phía dưới.
+            this._patientSidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this._patientSidebar.Location = new System.Drawing.Point(0, 49);
+            this._patientSidebar.Name = "_patientSidebar";
+            this._patientSidebar.Size = new System.Drawing.Size(32, 325);
+            this._patientSidebar.TabIndex = 4;
+            //
+            // _patientSidebarSplitter
+            //
+            // Kéo chỉnh bề rộng _patientSidebar khi đang mở rộng (ẩn khi thu gọn - xem
+            // FrmMain.PatientSidebar.cs, PatientSidebarControl.CollapsedChanged).
+            this._patientSidebarSplitter.Dock = System.Windows.Forms.DockStyle.Left;
+            this._patientSidebarSplitter.Location = new System.Drawing.Point(32, 49);
+            this._patientSidebarSplitter.MinExtra = 320;
+            this._patientSidebarSplitter.MinSize = 260;
+            this._patientSidebarSplitter.Name = "_patientSidebarSplitter";
+            this._patientSidebarSplitter.Size = new System.Drawing.Size(6, 325);
+            this._patientSidebarSplitter.TabIndex = 5;
+            this._patientSidebarSplitter.TabStop = false;
+            this._patientSidebarSplitter.Visible = false;
+            this._patientSidebarSplitter.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.PatientSidebarSplitter_SplitterMoved);
+            //
             // _tbTableLayout
             // 
             this._tbTableLayout.BackColor = System.Drawing.Color.Transparent;
@@ -888,6 +916,8 @@ namespace STM.MediaToPACS.Main
             this.xtraTabPage1.Controls.Add(this.groupControl1);
             this.xtraTabPage1.Controls.Add(this.groupControl2);
             this.xtraTabPage1.Controls.Add(this.panel5);
+            this.xtraTabPage1.Controls.Add(this._patientSidebarSplitter);
+            this.xtraTabPage1.Controls.Add(this._patientSidebar);
             this.xtraTabPage1.Margin = new System.Windows.Forms.Padding(1, 4, 1, 4);
             this.xtraTabPage1.Name = "xtraTabPage1";
             this.xtraTabPage1.Size = new System.Drawing.Size(978, 655);
@@ -2296,6 +2326,8 @@ namespace STM.MediaToPACS.Main
         private System.Windows.Forms.MenuStrip _mmMain;
         private ListImageBox _lstBoxPages;
         private System.Windows.Forms.Panel _panelPictureBox;
+        private STM.MediaToPACS.Main.UI.PatientSidebar.PatientSidebarControl _patientSidebar;
+        private System.Windows.Forms.Splitter _patientSidebarSplitter;
         private System.Windows.Forms.ToolStripMenuItem _miEventsEmf2;
         private System.Windows.Forms.ToolStripMenuItem _miEventsJob2;
         private System.Windows.Forms.ToolStripMenuItem _miView;

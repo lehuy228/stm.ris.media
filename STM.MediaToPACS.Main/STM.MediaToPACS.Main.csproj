@@ -560,6 +560,7 @@
     <Compile Include="UI\Configurations\Camera\ConfigCamera.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UI\Configurations\SystemSettingsDialog.cs" />
     <Compile Include="UI\Configurations\Camera\ConfigCamera.Designer.cs">
       <DependentUpon>ConfigCamera.cs</DependentUpon>
     </Compile>
@@ -641,6 +642,53 @@
     <Compile Include="UI\FrmMain.Helpers.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\V2\ImageThumbnailList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\V2\FormMainV2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\V2\FormMainV2.Designer.cs">
+      <DependentUpon>FormMainV2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\V2\FormMainV2.Camera.cs">
+      <DependentUpon>FormMainV2.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\V2\FormMainV2.Loading.cs">
+      <DependentUpon>FormMainV2.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\V2\FormMainV2.Suggestion.cs">
+      <DependentUpon>FormMainV2.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\V2\FormMainV2.SaveLoad.cs">
+      <DependentUpon>FormMainV2.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\V2\FormMainV2.Signature.cs">
+      <DependentUpon>FormMainV2.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\V2\FormMainV2.Print.cs">
+      <DependentUpon>FormMainV2.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\V2\FormMainV2.Helpers.cs">
+      <DependentUpon>FormMainV2.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\V2\FormMainV2.PatientSidebar.cs">
+      <DependentUpon>FormMainV2.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\V2\FrmMainV2Host.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\V2\FrmMainV2Host.Designer.cs">
+      <DependentUpon>FrmMainV2Host.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\PrintPage.cs" />
     <Compile Include="Classes\Page.cs" />
@@ -735,6 +783,14 @@
     <Compile Include="UI\DoctorQuickSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UI\PatientSidebar\PatientSidebarControl.cs" />
+    <Compile Include="UI\PatientSidebar\PatientSidebarControl.Designer.cs">
+      <DependentUpon>PatientSidebarControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FrmMain.PatientSidebar.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\FrmDoctorConfirm.Designer.cs">
       <DependentUpon>FrmDoctorConfirm.cs</DependentUpon>
     </Compile>
@@ -746,11 +802,11 @@
     </Compile>
     <Compile Include="Utilities\MyQueryRetrieveScu.cs" />
     <Compile Include="Utilities\PacsSettings.cs" />
-    <Compile Include="UI\WorkListTable.cs">
+    <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\WorkListTable.Designer.cs">
-      <DependentUpon>WorkListTable.cs</DependentUpon>
+    <Compile Include="UI\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MyQueryRetrieveScu.cs" />
     <Compile Include="Utilities\DicomFindQuery.cs">
@@ -796,8 +852,11 @@
       <DependentUpon>FrmProgress.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OptionsDialog.resx" />
-    <EmbeddedResource Include="UI\WorkListTable.resx">
-      <DependentUpon>WorkListTable.cs</DependentUpon>
+    <EmbeddedResource Include="UI\V2\FormMainV2.resx">
+      <DependentUpon>FormMainV2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FormPdfViewer.resx">
       <DependentUpon>FormPdfViewer.cs</DependentUpon>

@@ -2,7 +2,7 @@ using System.Windows.Forms;
 
 namespace STM.MediaToPACS.Main.UI
 {
-    partial class WorkListTable
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,9 +30,8 @@ namespace STM.MediaToPACS.Main.UI
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkListTable));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panel1 = new DevExpress.XtraEditors.PanelControl();
-            this._btnLogout = new DevExpress.XtraEditors.SimpleButton();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
@@ -138,10 +137,18 @@ namespace STM.MediaToPACS.Main.UI
             this.label15 = new DevExpress.XtraEditors.LabelControl();
             this.label16 = new DevExpress.XtraEditors.LabelControl();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.ngườiDùngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuAccount = new System.Windows.Forms.ToolStripMenuItem();
             this._tsmChangePassword = new System.Windows.Forms.ToolStripMenuItem();
+            this._accountSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this._tsmLogout = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuSystem = new System.Windows.Forms.ToolStripMenuItem();
             this._tsmSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this._systemSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this._menuCamera = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuWorklist = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuTools = new System.Windows.Forms.ToolStripMenuItem();
             this._tsmLog = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._tsmToUse = new System.Windows.Forms.ToolStripMenuItem();
             this._tsmCbbVideoCapture = new System.Windows.Forms.ToolStripComboBox();
             this._tsmCbbWorklist = new System.Windows.Forms.ToolStripComboBox();
@@ -222,7 +229,6 @@ namespace STM.MediaToPACS.Main.UI
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this._btnLogout);
             this.panel1.Controls.Add(this.xtraTabControl1);
             this.panel1.Controls.Add(this.menuStrip1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -231,17 +237,6 @@ namespace STM.MediaToPACS.Main.UI
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1795, 796);
             this.panel1.TabIndex = 0;
-            // 
-            // _btnLogout
-            // 
-            this._btnLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnLogout.Location = new System.Drawing.Point(1672, 4);
-            this._btnLogout.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this._btnLogout.Name = "_btnLogout";
-            this._btnLogout.Size = new System.Drawing.Size(118, 29);
-            this._btnLogout.TabIndex = 33;
-            this._btnLogout.Text = "Đăng xuất";
-            this._btnLogout.Click += new System.EventHandler(this._btnLogout_Click);
             // 
             // xtraTabControl1
             // 
@@ -1524,27 +1519,25 @@ namespace STM.MediaToPACS.Main.UI
             this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ngườiDùngToolStripMenuItem,
-            this._tsmSetting,
-            this._tsmLog,
-            this._tsmToUse,
-            this._tsmCbbVideoCapture,
-            this._tsmCbbWorklist});
+            this._menuAccount,
+            this._menuSystem,
+            this._menuTools,
+            this._menuHelp});
             this.menuStrip1.Location = new System.Drawing.Point(2, 2);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1791, 35);
             this.menuStrip1.TabIndex = 34;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // ngườiDùngToolStripMenuItem
+            // _menuAccount
             // 
-            this.ngườiDùngToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._tsmChangePassword});
-            this.ngườiDùngToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ngườiDùngToolStripMenuItem.Image = global::STM.MediaToPACS.Main.Properties.Resources.customer_16x16;
-            this.ngườiDùngToolStripMenuItem.Name = "ngườiDùngToolStripMenuItem";
-            this.ngườiDùngToolStripMenuItem.Size = new System.Drawing.Size(136, 31);
-            this.ngườiDùngToolStripMenuItem.Text = "Người dùng";
+            this._menuAccount.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._tsmChangePassword,
+            this._accountSeparator,
+            this._tsmLogout});
+            this._menuAccount.Image = global::STM.MediaToPACS.Main.Properties.Resources.customer_16x16;
+            this._menuAccount.Name = "_menuAccount";
+            this._menuAccount.Text = "Tài khoản";
             // 
             // _tsmChangePassword
             // 
@@ -1553,37 +1546,76 @@ namespace STM.MediaToPACS.Main.UI
             this._tsmChangePassword.Text = "Đổi mật khẩu";
             this._tsmChangePassword.Click += new System.EventHandler(this._tsmChangePassword_Click);
             // 
+            // _tsmLogout
+            // 
+            this._tsmLogout.Name = "_tsmLogout";
+            this._tsmLogout.Text = "Đăng xuất";
+            this._tsmLogout.Click += new System.EventHandler(this._tsmLogout_Click);
+            // 
+            // _menuSystem
+            // 
+            this._menuSystem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._tsmSetting,
+            this._systemSeparator,
+            this._menuCamera,
+            this._menuWorklist});
+            this._menuSystem.Image = global::STM.MediaToPACS.Main.Properties.Resources.properties_32x32;
+            this._menuSystem.Name = "_menuSystem";
+            this._menuSystem.Text = "Hệ thống";
+            // 
             // _tsmSetting
             // 
-            this._tsmSetting.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._tsmSetting.Image = global::STM.MediaToPACS.Main.Properties.Resources.properties_32x32;
             this._tsmSetting.Name = "_tsmSetting";
-            this._tsmSetting.Size = new System.Drawing.Size(98, 31);
-            this._tsmSetting.Text = "Cài đặt";
+            this._tsmSetting.Text = "Cấu hình hệ thống...";
             this._tsmSetting.Click += new System.EventHandler(this._tsmSetting_Click);
+            // 
+            // _menuCamera
+            // 
+            this._menuCamera.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._tsmCbbVideoCapture});
+            this._menuCamera.Name = "_menuCamera";
+            this._menuCamera.Text = "Nguồn camera";
+            // 
+            // _menuWorklist
+            // 
+            this._menuWorklist.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._tsmCbbWorklist});
+            this._menuWorklist.Name = "_menuWorklist";
+            this._menuWorklist.Text = "Máy chủ Worklist";
+            // 
+            // _menuTools
+            // 
+            this._menuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._tsmLog});
+            this._menuTools.Name = "_menuTools";
+            this._menuTools.Text = "Công cụ";
             // 
             // _tsmLog
             // 
-            this._tsmLog.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._tsmLog.Image = global::STM.MediaToPACS.Main.Properties.Resources.notes_16x16;
             this._tsmLog.Name = "_tsmLog";
-            this._tsmLog.Size = new System.Drawing.Size(103, 31);
-            this._tsmLog.Text = "Ghi chú";
+            this._tsmLog.Text = "Nhật ký hệ thống";
             this._tsmLog.Click += new System.EventHandler(this._tsmLog_Click);
+            // 
+            // _menuHelp
+            // 
+            this._menuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._tsmToUse});
+            this._menuHelp.Name = "_menuHelp";
+            this._menuHelp.Text = "Trợ giúp";
             // 
             // _tsmToUse
             // 
-            this._tsmToUse.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._tsmToUse.Image = global::STM.MediaToPACS.Main.Properties.Resources.about_16x16;
             this._tsmToUse.Name = "_tsmToUse";
-            this._tsmToUse.Size = new System.Drawing.Size(197, 31);
             this._tsmToUse.Text = "Hướng dẫn sử dụng";
             this._tsmToUse.Click += new System.EventHandler(this._tsmToUse_Click);
             // 
             // _tsmCbbVideoCapture
             // 
             this._tsmCbbVideoCapture.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._tsmCbbVideoCapture.Margin = new System.Windows.Forms.Padding(10, 0, 1, 0);
+            this._tsmCbbVideoCapture.Margin = new System.Windows.Forms.Padding(4);
             this._tsmCbbVideoCapture.Name = "_tsmCbbVideoCapture";
             this._tsmCbbVideoCapture.Size = new System.Drawing.Size(250, 31);
             this._tsmCbbVideoCapture.ToolTipText = "Chọn nguồn camera đầu vào";
@@ -1591,12 +1623,12 @@ namespace STM.MediaToPACS.Main.UI
             // _tsmCbbWorklist
             // 
             this._tsmCbbWorklist.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._tsmCbbWorklist.Margin = new System.Windows.Forms.Padding(15, 0, 1, 0);
+            this._tsmCbbWorklist.Margin = new System.Windows.Forms.Padding(4);
             this._tsmCbbWorklist.Name = "_tsmCbbWorklist";
             this._tsmCbbWorklist.Size = new System.Drawing.Size(121, 31);
             this._tsmCbbWorklist.ToolTipText = "Worklist";
             // 
-            // WorkListTable
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -1606,13 +1638,13 @@ namespace STM.MediaToPACS.Main.UI
             this.IconOptions.Image = global::STM.MediaToPACS.Main.Properties.Resources.stm;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "WorkListTable";
+            this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "STM-Media To PACS";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WorkListTable_FormClosing);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.WorkListTable_FormClosed);
-            this.Load += new System.EventHandler(this.WorkListTable_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.panel1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -1760,7 +1792,6 @@ namespace STM.MediaToPACS.Main.UI
         private DevExpress.XtraGrid.Views.Grid.GridView _gridViewChiDinh;
         private DevExpress.XtraEditors.PanelControl panelControl2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnTrangThaiPhieu;
-        private DevExpress.XtraEditors.SimpleButton _btnLogout;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnMaBenhNhan;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnTenBenhNhan;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnNgaySinh;
@@ -1816,7 +1847,15 @@ namespace STM.MediaToPACS.Main.UI
         private ComboBox _cbbTrangThai;
         private DevExpress.XtraEditors.LabelControl labelControl5;
         private MenuStrip menuStrip1;
-        private ToolStripMenuItem ngườiDùngToolStripMenuItem;
+        private ToolStripMenuItem _menuAccount;
+        private ToolStripSeparator _accountSeparator;
+        private ToolStripMenuItem _tsmLogout;
+        private ToolStripMenuItem _menuSystem;
+        private ToolStripSeparator _systemSeparator;
+        private ToolStripMenuItem _menuCamera;
+        private ToolStripMenuItem _menuWorklist;
+        private ToolStripMenuItem _menuTools;
+        private ToolStripMenuItem _menuHelp;
         private ToolStripMenuItem _tsmSetting;
         private ToolStripMenuItem _tsmLog;
         private ToolStripMenuItem _tsmToUse;

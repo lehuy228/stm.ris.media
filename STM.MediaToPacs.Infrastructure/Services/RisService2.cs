@@ -285,5 +285,25 @@ namespace MediaToPacs.Infrastructure.Services
                 return JsonSerializer.Deserialize<RisV1DiagnosticReportDetailDto>(json, _jsonOptions);
             }
         }
+
+        public async Task<RisV1PatientOrderHistoryDto> GetPatientHistoryByOrderCodeAsync(string placerCode)
+        {
+            if (string.IsNullOrWhiteSpace(placerCode))
+                throw new ArgumentException("placerCode không được để trống", nameof(placerCode));
+
+            var url = $"{_risV2Url}{ApiEndpoints.RisV2.PatientHistoryByOrderCode}/{Uri.EscapeDataString(placerCode.Trim())}";
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                return null;
+
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(json))
+                return null;
+
+            return JsonSerializer.Deserialize<RisV1PatientOrderHistoryDto>(json, _jsonOptions);
+        }
     }
 }

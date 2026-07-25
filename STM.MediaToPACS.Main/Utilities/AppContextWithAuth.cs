@@ -238,7 +238,7 @@ namespace STM.MediaToPACS.Main.Utilities
                     _splash?.CloseSplash();
                     _splash = null;
 
-                    var mainForm = new WorkListTable();
+                    var mainForm = new MainForm();
                     mainForm.FormClosed += OnMainFormClosed;
 
                     MainForm = mainForm;
