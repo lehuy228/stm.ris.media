@@ -34,6 +34,7 @@ using MediaToPacs.Core.Models.Ketluan;
 using MediaToPacs.Core.Utilities;
 using System.Threading.Tasks;
 using STM.MediaToPACS.Main.UI.V2;
+using STM.MediaToPACS.Main.UI.DiagnosticReports;
 using STM.MediaToPACS.Main.UI.PatientSidebar;
 using STM.MediaToPACS.Main.UI.Configurations;
 using DevExpress.Utils;
@@ -179,7 +180,7 @@ namespace STM.MediaToPACS.Main.UI
             {
                 e.Cancel = true;
                 var controls = _orderPages.Values
-                    .SelectMany(page => page.Controls.OfType<FormMainV2>())
+                    .SelectMany(page => page.Controls.OfType<DiagnosticReportConclusionControl>())
                     .ToList();
                 foreach (var control in controls)
                     await control.StopCameraAsync();
@@ -1315,7 +1316,7 @@ namespace STM.MediaToPACS.Main.UI
                 return;
             }
 
-            var content = new FormMainV2(_tsmCbbVideoCapture.Text, soPhieu, maChiDinh)
+            var content = new DiagnosticReportConclusionControl(_tsmCbbVideoCapture.Text, soPhieu, maChiDinh)
             {
                 Dock = DockStyle.Fill
             };
@@ -1346,7 +1347,7 @@ namespace STM.MediaToPACS.Main.UI
                 return;
 
             string maChiDinh = page.Tag as string;
-            var content = page.Controls.OfType<FormMainV2>().FirstOrDefault();
+            var content = page.Controls.OfType<DiagnosticReportConclusionControl>().FirstOrDefault();
             if (content != null)
             {
                 content.OrderNavigationRequested -= OrderContent_OrderNavigationRequested;

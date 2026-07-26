@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 
-namespace STM.MediaToPACS.Main.UI.V2
+namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 {
     /// <summary>
     /// Wiring cho sidebar trái (Lịch sử khám bệnh nhân + Tham số siêu âm) - chuyển thể từ
-    /// FrmMain.PatientSidebar.cs. FormMainV2 chỉ lo: đổ dữ liệu lịch sử, ẩn/hiện splitter kéo giãn
+    /// FrmMain.PatientSidebar.cs. DiagnosticReportConclusionControl chỉ lo: đổ dữ liệu lịch sử, ẩn/hiện splitter kéo giãn
     /// theo trạng thái, và lưu/nạp bề rộng + trạng thái ghim vào UiLayoutSettings.xml.
     /// </summary>
-    public partial class FormMainV2
+    public partial class DiagnosticReportConclusionControl
     {
         private const float CameraColumnMinWidth = 420F;
         private const float ReportColumnMinWidth = 420F;

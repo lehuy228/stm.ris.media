@@ -3,13 +3,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Serilog;
 
-namespace STM.MediaToPACS.Main.UI.V2
+namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 {
-    /// <summary>
-    /// Xử lý camera cho FormMainV2 - chuyển thể từ FrmMain.Camera.cs, bỏ phần ghi video (VisioForge
-    /// đã tắt trong bản gốc) và thay LoadRasterImage (Leadtools) bằng ImageThumbnailList.AddImage.
-    /// </summary>
-    public partial class FormMainV2
+    public partial class DiagnosticReportConclusionControl
     {
         private const int SnapshotDelayMs = 500;
 
@@ -24,13 +20,17 @@ namespace STM.MediaToPACS.Main.UI.V2
                 return;
             }
 
-            // Đợi một chút để đảm bảo file đã được ghi xong
             await Task.Delay(SnapshotDelayMs);
 
-            if (!_thumbnailList.AddImage(imagePath))
+            ImageThumbnailList.ThumbnailItem item;
+            if (!_thumbnailList.TryAddImage(imagePath, out item, true))
+            {
                 Log.Warning("Không nạp được ảnh vào danh sách thumbnail: {ImagePath}", imagePath);
-            else
-                Log.Information("Đã chụp và nạp ảnh: {ImagePath}", imagePath);
+                return;
+            }
+
+            Log.Information("Đã chụp và nạp ảnh: {ImagePath}", imagePath);
+            await TryUploadSnapshotAttachmentAsync(item);
         }
 
         private async void _btnSnapshot_Click(object sender, EventArgs e)
@@ -88,6 +88,25 @@ namespace STM.MediaToPACS.Main.UI.V2
             finally
             {
                 _btnLinkCamera.Enabled = true;
+            }
+        }
+
+        private async void _btnPushPacs_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _btnPushPacs.Enabled = false;
+                await PushSelectedPacsAttachmentsAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Lỗi khi đẩy ảnh PACS");
+                MessageBox.Show(this, $"Lỗi khi đẩy PACS: {ex.Message}", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                _btnPushPacs.Enabled = true;
             }
         }
     }

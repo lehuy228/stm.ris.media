@@ -1,6 +1,7 @@
 using MediaToPacs.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace MediaToPacs.Core.Interfaces
@@ -75,5 +76,27 @@ namespace MediaToPacs.Core.Interfaces
         /// kèm chỉ định dịch vụ của từng lượt. Trả về null nếu không tìm thấy (404).
         /// </summary>
         Task<RisV1PatientOrderHistoryDto> GetPatientHistoryByOrderCodeAsync(string placerCode);
+
+        Task<List<DiagnosticReportAttachmentDto>> GetDiagnosticReportAttachmentsAsync(Guid reportId);
+
+        Task<List<DiagnosticReportAttachmentDto>> UploadDiagnosticReportAttachmentsAsync(
+            Guid reportId,
+            IEnumerable<string> filePaths);
+
+        Task<List<DiagnosticReportAttachmentDto>> UpdateDocumentAttachmentSelectionAsync(
+            Guid reportId,
+            List<DocumentAttachmentSelectionItem> selections);
+
+        Task UpdatePacsAttachmentSelectionAsync(
+            Guid reportId,
+            List<Guid> attachmentIds);
+
+        Task<PacsPushResult> PushDiagnosticReportAttachmentsToPacsAsync(
+            Guid reportId,
+            string targetServer = "MainStorage");
+
+        Task<Stream> StreamDiagnosticReportAttachmentAsync(
+            Guid reportId,
+            Guid attachmentId);
     }
 }

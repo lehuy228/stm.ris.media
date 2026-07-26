@@ -9,18 +9,18 @@ using STM.MediaToPACS.Main.UI.PatientSidebar;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 
-namespace STM.MediaToPACS.Main.UI.V2
+namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 {
     /// <summary>
     /// Bản dựng tạm thời (không phụ thuộc Leadtools/DICOM) tái sử dụng logic Camera + Kết luận +
     /// Lịch sử bệnh nhân từ FrmMain.
     /// Bước 1: scaffold UserControl + camera + danh sách ảnh thumbnail (ImageThumbnailList thay
     /// cho ListImageBox vốn dựng trên Leadtools RasterImage).
-    /// Bước 2: kết luận (gợi ý/lưu/ký số/in) - xem FormMainV2.Suggestion.cs, .SaveLoad.cs,
+    /// Bước 2: kết luận (gợi ý/lưu/ký số/in) - xem DiagnosticReportConclusionControl.Suggestion.cs, .SaveLoad.cs,
     /// .Signature.cs, .Print.cs, .Loading.cs.
     /// Lịch sử bệnh nhân (bước 3) sẽ thêm sau.
     /// </summary>
-    public partial class FormMainV2 : UserControl
+    public partial class DiagnosticReportConclusionControl : UserControl
     {
         public event EventHandler<OrderNavigationRequestedEventArgs> OrderNavigationRequested;
         public event EventHandler TabCaptionChanged;
@@ -33,7 +33,7 @@ namespace STM.MediaToPACS.Main.UI.V2
 
         private CameraControl _cameraControl;
 
-        // Dữ liệu chỉ định/kết luận - xem FormMainV2.Loading.cs
+        // Dữ liệu chỉ định/kết luận - xem DiagnosticReportConclusionControl.Loading.cs
         private ChiDinhDichVuResponse _chiDinhDichVuResponse;
         private KetQuaChanDoanResponse _kqChanDoanResponse;
         private List<DeviceDto> _listThietBi;
@@ -43,7 +43,7 @@ namespace STM.MediaToPACS.Main.UI.V2
         private List<string> listImageKeyLocal = new List<string>();
         private const string FileNameXMLImage = "ImageSelected.xml";
 
-        public FormMainV2(string videoInputDevice, string soPhieu, string maChiDinh)
+        public DiagnosticReportConclusionControl(string videoInputDevice, string soPhieu, string maChiDinh)
         {
             _videoInputDevice = videoInputDevice;
             _sophieu = soPhieu;
@@ -57,7 +57,7 @@ namespace STM.MediaToPACS.Main.UI.V2
             InitThumbnailListCounter();
             _patientSidebar.OrderNavigationRequested += PatientSidebar_OrderNavigationRequested;
 
-            this.Load += FormMainV2_Load;
+            this.Load += DiagnosticReportConclusionControl_Load;
         }
 
         private void PatientSidebar_OrderNavigationRequested(
@@ -91,7 +91,7 @@ namespace STM.MediaToPACS.Main.UI.V2
             this.FindForm()?.Close();
         }
 
-        private async void FormMainV2_Load(object sender, EventArgs e)
+        private async void DiagnosticReportConclusionControl_Load(object sender, EventArgs e)
         {
             try
             {
@@ -103,7 +103,7 @@ namespace STM.MediaToPACS.Main.UI.V2
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Lỗi khi tải dữ liệu kết luận cho FormMainV2");
+                Log.Error(ex, "Lỗi khi tải dữ liệu kết luận cho DiagnosticReportConclusionControl");
                 MessageBox.Show(this, $"Lỗi khi tải dữ liệu: {ex.Message}", "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -122,7 +122,7 @@ namespace STM.MediaToPACS.Main.UI.V2
             }
             catch (Exception ex)
             {
-                Log.Warning(ex, "Lỗi khi dừng camera lúc đóng FormMainV2");
+                Log.Warning(ex, "Lỗi khi dừng camera lúc đóng DiagnosticReportConclusionControl");
             }
         }
     }

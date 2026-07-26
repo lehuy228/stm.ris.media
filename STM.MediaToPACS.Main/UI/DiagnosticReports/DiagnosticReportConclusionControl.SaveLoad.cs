@@ -8,14 +8,14 @@ using MediaToPacs.Core.Models.Ketluan;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 
-namespace STM.MediaToPACS.Main.UI.V2
+namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 {
     /// <summary>
     /// Lưu nháp kết luận - chuyển thể từ FrmMain.SaveLoad.cs. Khác biệt: lấy ảnh đã chọn từ
     /// _thumbnailList.GetCheckedFilePaths() (ImageThumbnailList) thay vì _lstBoxPages.ImageCollections
     /// (ListImageBox - Leadtools).
     /// </summary>
-    public partial class FormMainV2
+    public partial class DiagnosticReportConclusionControl
     {
         private void _btnSave_Click(object sender, EventArgs e)
         {
@@ -41,6 +41,8 @@ namespace STM.MediaToPACS.Main.UI.V2
                 if (layoutSelect != null)
                     ServiceLocator.ReportCache[_chiDinhDichVuResponse.Modality] = layoutSelect.Id;
 
+                // Legacy RIS endpoint vẫn nhận imageFileKeys dạng base64. Luồng mới dùng
+                // DiagnosticReport attachments làm nguồn chính; danh sách này chỉ giữ tương thích API cũ.
                 List<string> imageSelectedList = new List<string>();
                 listImageKeyLocal = new List<string>();
 
@@ -133,7 +135,8 @@ namespace STM.MediaToPACS.Main.UI.V2
 
                 if (_kqChanDoanResponse != null)
                 {
-                    _ = SyncConclusionToRisV1Async(mota, ketluan, khuyennghi);
+                    await SyncConclusionToRisV1Async(mota, ketluan, khuyennghi);
+                    await UploadPendingAttachmentsAndSyncDocumentSelectionSafeAsync();
 
                     XmlSettingsHelper.Save(Path.Combine($"{_baseFolder}\\BenhNhan\\{_machidinh}", FileNameXMLImage), listImageKeyLocal);
                     _btnSignature.Enabled = true;

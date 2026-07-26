@@ -5,10 +5,10 @@ using DevExpress.XtraSplashScreen;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 
-namespace STM.MediaToPACS.Main.UI.V2
+namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 {
     /// <summary>Helper hiển thị splash/thông báo - copy nguyên từ FrmMain.Helpers.cs.</summary>
-    public partial class FormMainV2
+    public partial class DiagnosticReportConclusionControl
     {
         private void ShowSplashScreen(Form parentForm, string caption, string description)
         {

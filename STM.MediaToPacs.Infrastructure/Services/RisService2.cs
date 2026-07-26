@@ -3,6 +3,7 @@ using MediaToPacs.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -304,6 +305,253 @@ namespace MediaToPacs.Infrastructure.Services
                 return null;
 
             return JsonSerializer.Deserialize<RisV1PatientOrderHistoryDto>(json, _jsonOptions);
+        }
+
+        public async Task<List<DiagnosticReportAttachmentDto>> GetDiagnosticReportAttachmentsAsync(Guid reportId)
+        {
+            EnsureReportId(reportId);
+
+            var url = GetDiagnosticReportAttachmentsUrl(reportId);
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                return new List<DiagnosticReportAttachmentDto>();
+
+            await EnsureSuccessWithBodyAsync(response);
+
+            var json = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(json))
+                return new List<DiagnosticReportAttachmentDto>();
+
+            return DeserializeAttachmentList(json);
+        }
+
+        public async Task<List<DiagnosticReportAttachmentDto>> UploadDiagnosticReportAttachmentsAsync(
+            Guid reportId,
+            IEnumerable<string> filePaths)
+        {
+            EnsureReportId(reportId);
+            if (filePaths == null)
+                throw new ArgumentNullException(nameof(filePaths));
+
+            var url = $"{GetDiagnosticReportAttachmentsUrl(reportId)}/batch";
+
+            using (var form = new MultipartFormDataContent())
+            {
+                var streams = new List<FileStream>();
+                try
+                {
+                    foreach (var filePath in filePaths)
+                    {
+                        var validatedPath = ValidateAttachmentFilePath(filePath);
+                        var stream = File.OpenRead(validatedPath);
+                        streams.Add(stream);
+
+                        var content = new StreamContent(stream);
+                        content.Headers.ContentType = new MediaTypeHeaderValue(GetContentType(validatedPath));
+                        form.Add(content, "files", Path.GetFileName(validatedPath));
+                    }
+
+                    if (streams.Count == 0)
+                        return new List<DiagnosticReportAttachmentDto>();
+
+                    var response = await _httpClient.PostAsync(url, form);
+                    await EnsureSuccessWithBodyAsync(response);
+
+                    var json = await response.Content.ReadAsStringAsync();
+                    if (string.IsNullOrWhiteSpace(json))
+                        return new List<DiagnosticReportAttachmentDto>();
+
+                    var result = JsonSerializer.Deserialize<UploadDiagnosticReportAttachmentsResult>(json, _jsonOptions);
+                    return result != null && result.uploaded != null
+                        ? result.uploaded
+                        : new List<DiagnosticReportAttachmentDto>();
+                }
+                finally
+                {
+                    foreach (var stream in streams)
+                        stream.Dispose();
+                }
+            }
+        }
+
+        public async Task<List<DiagnosticReportAttachmentDto>> UpdateDocumentAttachmentSelectionAsync(
+            Guid reportId,
+            List<DocumentAttachmentSelectionItem> selections)
+        {
+            EnsureReportId(reportId);
+
+            var request = new DocumentAttachmentSelectionRequest
+            {
+                selections = selections ?? new List<DocumentAttachmentSelectionItem>()
+            };
+
+            var url = $"{GetDiagnosticReportAttachmentsUrl(reportId)}/document-selection";
+            var payload = JsonSerializer.Serialize(request, _jsonOptions);
+
+            using (var content = new StringContent(payload, Encoding.UTF8, "application/json"))
+            {
+                var response = await _httpClient.PutAsync(url, content);
+                await EnsureSuccessWithBodyAsync(response);
+
+                var json = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(json))
+                    return new List<DiagnosticReportAttachmentDto>();
+
+                return DeserializeAttachmentList(json);
+            }
+        }
+
+        public async Task UpdatePacsAttachmentSelectionAsync(
+            Guid reportId,
+            List<Guid> attachmentIds)
+        {
+            EnsureReportId(reportId);
+
+            var request = new PacsAttachmentSelectionRequest
+            {
+                attachmentIds = attachmentIds ?? new List<Guid>()
+            };
+
+            var url = $"{GetDiagnosticReportAttachmentsUrl(reportId)}/pacs-selection";
+            var payload = JsonSerializer.Serialize(request, _jsonOptions);
+
+            using (var content = new StringContent(payload, Encoding.UTF8, "application/json"))
+            {
+                var response = await _httpClient.PutAsync(url, content);
+                await EnsureSuccessWithBodyAsync(response);
+            }
+        }
+
+        public async Task<PacsPushResult> PushDiagnosticReportAttachmentsToPacsAsync(
+            Guid reportId,
+            string targetServer = "MainStorage")
+        {
+            EnsureReportId(reportId);
+
+            var server = string.IsNullOrWhiteSpace(targetServer)
+                ? "MainStorage"
+                : targetServer.Trim();
+
+            var url = $"{GetDiagnosticReportAttachmentsUrl(reportId)}/pacs-push?targetServer={Uri.EscapeDataString(server)}";
+            var response = await _httpClient.PostAsync(url, new StringContent(string.Empty));
+            await EnsureSuccessWithBodyAsync(response);
+
+            var json = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(json))
+                return null;
+
+            var wrapped = JsonSerializer.Deserialize<PacsPushResponse>(json, _jsonOptions);
+            if (wrapped != null && wrapped.data != null)
+                return wrapped.data;
+
+            return JsonSerializer.Deserialize<PacsPushResult>(json, _jsonOptions);
+        }
+
+        public async Task<Stream> StreamDiagnosticReportAttachmentAsync(
+            Guid reportId,
+            Guid attachmentId)
+        {
+            EnsureReportId(reportId);
+            if (attachmentId == Guid.Empty)
+                throw new ArgumentException("attachmentId không hợp lệ", nameof(attachmentId));
+
+            var url = $"{GetDiagnosticReportAttachmentsUrl(reportId)}/{attachmentId:D}/stream";
+            var response = await _httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+            await EnsureSuccessWithBodyAsync(response);
+
+            return await response.Content.ReadAsStreamAsync();
+        }
+
+        private static void EnsureReportId(Guid reportId)
+        {
+            if (reportId == Guid.Empty)
+                throw new ArgumentException("reportId không hợp lệ", nameof(reportId));
+        }
+
+        private static string ValidateAttachmentFilePath(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                throw new ArgumentException("Đường dẫn file ảnh không được để trống", nameof(filePath));
+
+            var fullPath = Path.GetFullPath(filePath);
+            if (!File.Exists(fullPath))
+                throw new FileNotFoundException("File ảnh không tồn tại", fullPath);
+
+            var info = new FileInfo(fullPath);
+            if (info.Length <= 0)
+                throw new InvalidOperationException("File ảnh rỗng: " + fullPath);
+
+            GetContentType(fullPath);
+            return fullPath;
+        }
+
+        private static string GetContentType(string filePath)
+        {
+            var ext = Path.GetExtension(filePath);
+            if (string.IsNullOrWhiteSpace(ext))
+                throw new InvalidOperationException("File không có phần mở rộng: " + filePath);
+
+            switch (ext.ToLowerInvariant())
+            {
+                case ".jpg":
+                case ".jpeg":
+                    return "image/jpeg";
+                case ".png":
+                    return "image/png";
+                case ".gif":
+                    return "image/gif";
+                case ".bmp":
+                    return "image/bmp";
+                case ".webp":
+                    return "image/webp";
+                case ".mp4":
+                    return "video/mp4";
+                case ".mpeg":
+                case ".mpg":
+                    return "video/mpeg";
+                default:
+                    throw new InvalidOperationException("Định dạng file không hợp lệ cho attachment: " + ext);
+            }
+        }
+
+        private string GetDiagnosticReportAttachmentsUrl(Guid reportId)
+        {
+            return $"{_risV2Url}{ApiEndpoints.RisV2.DiagnosticReports}/{reportId:D}/attachments";
+        }
+
+        private static List<DiagnosticReportAttachmentDto> DeserializeAttachmentList(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                return new List<DiagnosticReportAttachmentDto>();
+
+            var trimmed = json.TrimStart();
+            if (trimmed.StartsWith("["))
+            {
+                return JsonSerializer.Deserialize<List<DiagnosticReportAttachmentDto>>(json, _jsonOptions)
+                    ?? new List<DiagnosticReportAttachmentDto>();
+            }
+
+            var listResult = JsonSerializer.Deserialize<DiagnosticReportAttachmentListResult>(json, _jsonOptions);
+            return listResult != null && listResult.items != null
+                ? listResult.items
+                : new List<DiagnosticReportAttachmentDto>();
+        }
+
+        private static async Task EnsureSuccessWithBodyAsync(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode)
+                return;
+
+            var body = response.Content == null
+                ? null
+                : await response.Content.ReadAsStringAsync();
+
+            if (string.IsNullOrWhiteSpace(body))
+                response.EnsureSuccessStatusCode();
+
+            throw new HttpRequestException(
+                $"API RIS lỗi. Status={(int)response.StatusCode} {response.ReasonPhrase}. Body={body}");
         }
     }
 }

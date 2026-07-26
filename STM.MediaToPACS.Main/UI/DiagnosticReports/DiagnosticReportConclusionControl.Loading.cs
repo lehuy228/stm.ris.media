@@ -9,13 +9,13 @@ using MediaToPacs.Core.Models.Ketluan;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 
-namespace STM.MediaToPACS.Main.UI.V2
+namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 {
     /// <summary>
-    /// Tải dữ liệu chỉ định/kết luận cho FormMainV2 - chuyển thể từ FrmMain.Loading.cs,
+    /// Tải dữ liệu chỉ định/kết luận cho DiagnosticReportConclusionControl - chuyển thể từ FrmMain.Loading.cs,
     /// bỏ hoàn toàn phần liên quan DICOM (SetupExcludedTags, InitTranfer/InitTranferRIS worklist...).
     /// </summary>
-    public partial class FormMainV2
+    public partial class DiagnosticReportConclusionControl
     {
         private async Task InitConclusionDataAsync()
         {
@@ -39,6 +39,7 @@ namespace STM.MediaToPACS.Main.UI.V2
             await Task.WhenAll(loadKTVTask, loadImageTask, resolveRisV1Task, loadHistoryTask);
 
             ApplyThietBiVaKTVSelectionFromResult();
+            await LoadReportAttachmentsSafeAsync();
             // Khôi phục form chỉ số từ snapshot đã lưu bên RIS mới (nếu có) - fire-and-forget
             _ = RestoreParamFormFromRisV1Async();
         }
@@ -54,6 +55,7 @@ namespace STM.MediaToPACS.Main.UI.V2
             _btnSnapshot.Text = $"Chụp nhanh ({keys.Snapshot})";
             _btnLinkCamera.Text = $"Liên kết ({keys.LinkCamera})";
             _btnStop.Text = $"Dừng ({keys.Stop})";
+            _btnPushPacs.Text = "Đẩy PACS";
         }
 
         private void InitCbbPrinters()

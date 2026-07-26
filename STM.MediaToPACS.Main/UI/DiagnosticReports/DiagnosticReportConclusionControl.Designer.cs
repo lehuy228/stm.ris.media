@@ -4,9 +4,9 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraTab;
 
-namespace STM.MediaToPACS.Main.UI.V2
+namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 {
-    partial class FormMainV2
+    partial class DiagnosticReportConclusionControl
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -66,7 +66,7 @@ namespace STM.MediaToPACS.Main.UI.V2
         private RichTextBox _rtKhuyenNghi;
 
         // Camera (đơn giản hoá: 1 panel, bỏ tab con "Video Media"/"Ảnh đã chụp" vì tính năng
-        // quay video đã tắt từ bản gốc - xem FormMainV2.Camera.cs)
+        // quay video đã tắt từ bản gốc - xem DiagnosticReportConclusionControl.Camera.cs)
         private PanelControl _panelCamera;
         private Panel _cameraHeader;
         private Label _cameraTitle;
@@ -79,6 +79,7 @@ namespace STM.MediaToPACS.Main.UI.V2
         private SimpleButton _btnSnapshot;
         private SimpleButton _btnStop;
         private SimpleButton _btnLinkCamera;
+        private SimpleButton _btnPushPacs;
 
         private Panel _panelImageList;
         private Panel _panelImage;
@@ -239,6 +240,7 @@ namespace STM.MediaToPACS.Main.UI.V2
             this._btnSnapshot = new SimpleButton();
             this._btnStop = new SimpleButton();
             this._btnLinkCamera = new SimpleButton();
+            this._btnPushPacs = new SimpleButton();
             this._panelImageList = new Panel();
             this._panelImage = new Panel();
             this._panel1 = new Panel();
@@ -585,11 +587,12 @@ namespace STM.MediaToPACS.Main.UI.V2
             this._panelControl1.Padding = new Padding(10, 3, 10, 3);
             this._panelControl1.Controls.Add(this._cameraButtonTable);
             this._cameraButtonTable.Dock = DockStyle.Fill;
-            this._cameraButtonTable.ColumnCount = 3;
+            this._cameraButtonTable.ColumnCount = 4;
             this._cameraButtonTable.RowCount = 1;
-            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.333F));
-            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.333F));
-            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.334F));
+            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             this._cameraButtonTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             StyleActionButton(this._btnSnapshot, 132);
             this._btnSnapshot.Anchor = AnchorStyles.None;
@@ -602,9 +605,15 @@ namespace STM.MediaToPACS.Main.UI.V2
             StyleActionButton(this._btnLinkCamera, 120);
             this._btnLinkCamera.Anchor = AnchorStyles.None;
             this._btnLinkCamera.Text = "Liên kết"; this._btnLinkCamera.Click += new System.EventHandler(this._btnLinkCamera_Click);
+            StyleActionButton(this._btnPushPacs, 120);
+            this._btnPushPacs.Anchor = AnchorStyles.None;
+            this._btnPushPacs.Appearance.BackColor = Color.FromArgb(22, 128, 61);
+            this._btnPushPacs.Appearance.ForeColor = Color.White;
+            this._btnPushPacs.Text = "Đẩy PACS"; this._btnPushPacs.Click += new System.EventHandler(this._btnPushPacs_Click);
             this._cameraButtonTable.Controls.Add(this._btnSnapshot, 0, 0);
             this._cameraButtonTable.Controls.Add(this._btnStop, 1, 0);
             this._cameraButtonTable.Controls.Add(this._btnLinkCamera, 2, 0);
+            this._cameraButtonTable.Controls.Add(this._btnPushPacs, 3, 0);
             //
             // _panelImageList: danh sách ảnh thumbnail + bộ đếm đã chọn
             //
@@ -712,10 +721,10 @@ namespace STM.MediaToPACS.Main.UI.V2
             this._patientSidebar.CollapsedChanged += (s, e) => this._patientSidebarSplitter.Visible = !this._patientSidebar.Collapsed;
             this._patientSidebar.PinnedChanged += this.PatientSidebar_PinnedChanged;
             //
-            // FormMainV2
+            // DiagnosticReportConclusionControl
             //
             this.Controls.Add(this._tbTableLayout);
-            this.Name = "FormMainV2";
+            this.Name = "DiagnosticReportConclusionControl";
             this.Size = new Size(1768, 920);
 
             ((System.ComponentModel.ISupportInitialize)(this._txMaBN.Properties)).EndInit();
@@ -769,3 +778,5 @@ namespace STM.MediaToPACS.Main.UI.V2
         }
     }
 }
+
+

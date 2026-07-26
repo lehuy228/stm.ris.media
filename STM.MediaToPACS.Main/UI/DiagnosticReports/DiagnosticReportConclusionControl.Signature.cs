@@ -14,10 +14,10 @@ using MediaToPacs.Core.Models.Ketluan;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 
-namespace STM.MediaToPACS.Main.UI.V2
+namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 {
     /// <summary>Ký số kết luận - chuyển thể nguyên vẹn từ FrmMain.Signature.cs (không liên quan DICOM).</summary>
-    public partial class FormMainV2
+    public partial class DiagnosticReportConclusionControl
     {
         private async void _btnSignature_Click(object sender, EventArgs e)
         {

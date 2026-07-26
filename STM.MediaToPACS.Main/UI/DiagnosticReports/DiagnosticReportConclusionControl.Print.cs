@@ -10,10 +10,10 @@ using MediaToPacs.Core.Models.Ketluan;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 
-namespace STM.MediaToPACS.Main.UI.V2
+namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 {
     /// <summary>In/Xem trước kết luận - copy nguyên từ FrmMain.Print.cs (không liên quan DICOM).</summary>
-    public partial class FormMainV2
+    public partial class DiagnosticReportConclusionControl
     {
         private void _btnPrint_Click(object sender, EventArgs e)
         {

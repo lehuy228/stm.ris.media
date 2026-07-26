@@ -648,45 +648,49 @@
       <DependentUpon>FrmMain.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\V2\ImageThumbnailList.cs">
+    <Compile Include="UI\DiagnosticReports\ImageThumbnailList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\V2\FormMainV2.cs">
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\V2\FormMainV2.Designer.cs">
-      <DependentUpon>FormMainV2.cs</DependentUpon>
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.Designer.cs">
+      <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\V2\FormMainV2.Camera.cs">
-      <DependentUpon>FormMainV2.cs</DependentUpon>
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.Camera.cs">
+      <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\V2\FormMainV2.Loading.cs">
-      <DependentUpon>FormMainV2.cs</DependentUpon>
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.Attachments.cs">
+      <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\V2\FormMainV2.Suggestion.cs">
-      <DependentUpon>FormMainV2.cs</DependentUpon>
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.Loading.cs">
+      <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\V2\FormMainV2.SaveLoad.cs">
-      <DependentUpon>FormMainV2.cs</DependentUpon>
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.Suggestion.cs">
+      <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\V2\FormMainV2.Signature.cs">
-      <DependentUpon>FormMainV2.cs</DependentUpon>
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.SaveLoad.cs">
+      <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\V2\FormMainV2.Print.cs">
-      <DependentUpon>FormMainV2.cs</DependentUpon>
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.Signature.cs">
+      <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\V2\FormMainV2.Helpers.cs">
-      <DependentUpon>FormMainV2.cs</DependentUpon>
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.Print.cs">
+      <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\V2\FormMainV2.PatientSidebar.cs">
-      <DependentUpon>FormMainV2.cs</DependentUpon>
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.Helpers.cs">
+      <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.PatientSidebar.cs">
+      <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\V2\FrmMainV2Host.cs">
@@ -857,8 +861,8 @@
       <DependentUpon>FrmProgress.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OptionsDialog.resx" />
-    <EmbeddedResource Include="UI\V2\FormMainV2.resx">
-      <DependentUpon>FormMainV2.cs</DependentUpon>
+    <EmbeddedResource Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.resx">
+      <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

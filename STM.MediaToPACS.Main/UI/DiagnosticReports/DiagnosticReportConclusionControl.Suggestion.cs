@@ -9,13 +9,13 @@ using STM.MediaToPACS.Main.UI;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 
-namespace STM.MediaToPACS.Main.UI.V2
+namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 {
     /// <summary>
     /// Gợi ý kết luận + form chỉ số động - chuyển thể nguyên vẹn từ FrmMain.Suggestion.cs.
     /// ParamFormControl host vào _patientSidebar.ParamsHostPanel (tab "Tham số siêu âm").
     /// </summary>
-    public partial class FormMainV2
+    public partial class DiagnosticReportConclusionControl
     {
         private List<GoiYKetLuanResponse> _listGoiYKetLuan;
         private List<QuickSuggestionListItemDto> _listQuickSuggestions;
@@ -260,17 +260,17 @@ namespace STM.MediaToPACS.Main.UI.V2
             }
         }
 
-        private async Task SyncConclusionToRisV1Async(string moTa, string ketLuan, string khuyenNghi)
+        private async Task<RisV1DiagnosticReportDetailDto> SyncConclusionToRisV1Async(string moTa, string ketLuan, string khuyenNghi)
         {
             try
             {
                 if (!IsRisV1ConclusionSyncEnabled())
-                    return;
+                    return null;
 
                 if (_risV1OrderItem == null)
                     await ResolveRisV1OrderItemAsync();
                 if (_risV1OrderItem == null)
-                    return;
+                    return null;
 
                 var request = new RisV1UpsertConclusionRequest
                 {
@@ -280,13 +280,17 @@ namespace STM.MediaToPACS.Main.UI.V2
                     parameters = BuildParamValuesSnapshot()
                 };
 
-                await ServiceLocator.RisService2.UpsertOrderItemConclusionAsync(_risV1OrderItem.id, request);
+                var report = await ServiceLocator.RisService2.UpsertOrderItemConclusionAsync(_risV1OrderItem.id, request);
+                if (report != null)
+                    _risV1OrderItem.report = report;
                 Log.Information("Đã sync kết luận sang RIS mới (y lệnh {OrderItemId}, có chỉ số: {HasParams})",
                     _risV1OrderItem.id, request.parameters != null);
+                return report;
             }
             catch (Exception ex)
             {
                 Log.Warning(ex, "Sync kết luận sang RIS mới thất bại - luồng lưu chính không bị ảnh hưởng");
+                return null;
             }
         }
 
@@ -370,3 +374,4 @@ namespace STM.MediaToPACS.Main.UI.V2
         #endregion
     }
 }
+
