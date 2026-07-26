@@ -560,7 +560,12 @@
     <Compile Include="UI\Configurations\Camera\ConfigCamera.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Configurations\SystemSettingsDialog.cs" />
+    <Compile Include="UI\Configurations\SystemSettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Configurations\SystemSettingsDialog.Designer.cs">
+      <DependentUpon>SystemSettingsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Configurations\Camera\ConfigCamera.Designer.cs">
       <DependentUpon>ConfigCamera.cs</DependentUpon>
     </Compile>
