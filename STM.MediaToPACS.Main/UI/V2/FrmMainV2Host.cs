@@ -37,6 +37,19 @@ namespace STM.MediaToPACS.Main.UI.V2
             if (_isCleanupDone || e.CloseReason == CloseReason.WindowsShutDown)
                 return;
 
+            var confirm = MessageBox.Show(
+                this,
+                "Bạn có chắc chắn muốn đóng màn hình kết luận không?",
+                "Xác nhận đóng",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             e.Cancel = true;
             try
             {

@@ -1,10 +1,16 @@
 using MediaToPacs.Core.Models;
+using MediaToPacs.Core.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraTreeList.Nodes;
 using DevExpress.XtraTreeList;
+using STM.MediaToPACS.Main.Utilities;
+using Serilog;
 
 namespace STM.MediaToPACS.Main.UI.PatientSidebar
 {
@@ -47,11 +53,23 @@ namespace STM.MediaToPACS.Main.UI.PatientSidebar
         public event EventHandler CollapsedChanged;
         public event EventHandler<OrderNavigationRequestedEventArgs> OrderNavigationRequested;
 
+        /// <summary>Người dùng mở tab "Nhật ký" hoặc bấm "Tải lại" - màn kết luận nghe để gọi API audit-log.</summary>
+        public event EventHandler LogRefreshRequested;
+
         public bool Collapsed => _collapsed;
         private string _currentOrderCode;
         private TreeListNode _currentOrderNode;
         private string _patientCode;
         private string _patientName;
+
+        /// <summary>
+        /// Danh mục phương thức chụp đã khai báo (Modality.xml) - nạp 1 lần rồi cache.
+        /// null = chưa nạp, rỗng = chưa khai báo gì (khi đó không chặn chỉ định nào).
+        /// </summary>
+        private HashSet<string> _declaredModalities;
+
+        /// <summary>Các node chỉ định bị khoá vì modality không nằm trong danh mục khai báo.</summary>
+        private readonly HashSet<TreeListNode> _unsupportedNodes = new HashSet<TreeListNode>();
 
         /// <summary>
         /// Bề rộng khi mở rộng (px). Splitter bên FrmMain chỉnh trực tiếp qua Width khi đang mở;
@@ -99,20 +117,150 @@ namespace STM.MediaToPACS.Main.UI.PatientSidebar
             };
 
             SetCollapsed(true);
+
+            // Chưa chọn mẫu gợi ý nào nên chưa có chỉ số - khoá sẵn tab "Tham số siêu âm"
+            SetParamsTabAvailable(false);
+
+            // Nhật ký chỉ nạp khi mở tab - lúc đầu chỉ hiện dòng trạng thái, chưa có lưới
+            SetLogPlaceholder("Chưa có nhật ký");
         }
 
         public void ActivateHistoryTab() => _tabControl.SelectedTabPage = _tabHistory;
 
         public void ActivateParamsTab()
         {
+            if (!_tabParams.PageEnabled)
+                return;
+
             _tabControl.SelectedTabPage = _tabParams;
+            SetCollapsed(false);
+        }
+
+        /// <summary>
+        /// Bật/khoá tab "Tham số siêu âm" theo mẫu gợi ý đang chọn: mẫu không có chỉ số
+        /// (Text/luồng cũ) thì khoá lại để không bấm vào tab rỗng được. Đang đứng ở tab này
+        /// mà bị khoá thì chuyển về tab lịch sử, giữ nguyên trạng thái thu gọn hiện tại.
+        /// </summary>
+        public void SetParamsTabAvailable(bool available)
+        {
+            if (_tabParams.PageEnabled == available)
+                return;
+
+            if (!available && _tabControl.SelectedTabPage == _tabParams)
+            {
+                bool wasCollapsed = _collapsed;
+                _tabControl.SelectedTabPage = _tabHistory;
+                SetCollapsed(wasCollapsed);
+            }
+
+            _tabParams.PageEnabled = available;
+        }
+
+        public void ActivateLogTab()
+        {
+            _tabControl.SelectedTabPage = _tabLog;
             SetCollapsed(false);
         }
 
         private void TabControl_SelectedPageChanged(object sender, DevExpress.XtraTab.TabPageChangedEventArgs e)
         {
             SetCollapsed(false);
+
+            // Nhật ký nạp theo yêu cầu (lazy) - vào tab mới gọi API, tránh gọi thừa mỗi lần mở chỉ định.
+            if (e.Page == _tabLog)
+                LogRefreshRequested?.Invoke(this, EventArgs.Empty);
         }
+
+        private void BtnReloadLog_Click(object sender, EventArgs e)
+        {
+            LogRefreshRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        #region Nhật ký (audit-log của chỉ định đang mở)
+
+        /// <summary>Dòng hiển thị trên lưới nhật ký - chỉ để bind, không dùng ngoài sidebar.</summary>
+        private sealed class AuditLogRow
+        {
+            public string TimeText { get; set; }
+            public string Content { get; set; }
+            public string UserText { get; set; }
+        }
+
+        public void ShowLogLoading()
+        {
+            SetLogPlaceholder("Đang tải nhật ký...");
+        }
+
+        public void ShowLogError(string message)
+        {
+            SetLogPlaceholder(message);
+        }
+
+        /// <summary>Đổ danh sách nhật ký (đã sắp mới nhất trước) lên lưới tab "Nhật ký".</summary>
+        public void ShowLogs(List<AuditLogListItemDto> logs)
+        {
+            if (logs == null || logs.Count == 0)
+            {
+                SetLogPlaceholder("Chưa có nhật ký cho chỉ định này");
+                return;
+            }
+
+            _gridLog.DataSource = logs.Select(x => new AuditLogRow
+            {
+                TimeText = FormatLogTime(x.timestampUtc),
+                Content = BuildLogContent(x),
+                UserText = FormatLogUser(x)
+            }).ToList();
+
+            _lblLogPlaceholder.Visible = false;
+            _gridLog.Visible = true;
+            _gridViewLog.BestFitColumns();
+        }
+
+        private void SetLogPlaceholder(string text)
+        {
+            _gridLog.DataSource = null;
+            _gridLog.Visible = false;
+            _lblLogPlaceholder.Text = text;
+            _lblLogPlaceholder.Visible = true;
+            _lblLogPlaceholder.BringToFront();
+        }
+
+        /// <summary>timestampUtc là giờ UTC - đổi về giờ máy để đối chiếu với thao tác vừa làm.</summary>
+        private static string FormatLogTime(DateTimeOffset value)
+        {
+            return value.ToLocalTime().ToString("dd/MM HH:mm:ss", CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Hiển thị tên người thực hiện; backend chỉ tra được userFullName khi userId là
+        /// Practitioner.Id dạng số, còn lại (vd "risv1", username Keycloak) thì hiện userId thô.
+        /// </summary>
+        private static string FormatLogUser(AuditLogListItemDto log)
+        {
+            if (!string.IsNullOrWhiteSpace(log.userFullName))
+                return log.userFullName.Trim();
+
+            if (string.Equals(log.userId, "risv1", StringComparison.OrdinalIgnoreCase))
+                return "Hệ thống (RIS V1)";
+
+            return log.userId ?? "";
+        }
+
+        /// <summary>
+        /// Ưu tiên message tiếng Việt do backend ghi; không có thì rơi về action/source để
+        /// dòng nhật ký không bị rỗng.
+        /// </summary>
+        private static string BuildLogContent(AuditLogListItemDto log)
+        {
+            if (!string.IsNullOrWhiteSpace(log.message))
+                return log.message.Trim();
+            if (!string.IsNullOrWhiteSpace(log.action))
+                return log.action.Trim();
+            return log.source ?? "";
+        }
+
+        #endregion
 
         private void BtnPin_Click(object sender, EventArgs e)
         {
@@ -161,6 +309,7 @@ namespace STM.MediaToPACS.Main.UI.PatientSidebar
             _treeHistory.Nodes.Clear();
             _currentOrderCode = currentOrderCode;
             _currentOrderNode = null;
+            _unsupportedNodes.Clear();
 
             if (history == null)
             {
@@ -215,6 +364,11 @@ namespace STM.MediaToPACS.Main.UI.PatientSidebar
                         visitNode.Id);
                     orderNode.Tag = item;
 
+                    // Chỉ định thuộc phương thức chụp không khai báo trên máy này thì khoá lại,
+                    // tránh mở nhầm chỉ định máy không xử lý được.
+                    if (!IsModalityDeclared(item.modalityCode))
+                        _unsupportedNodes.Add(orderNode);
+
                     if (string.Equals(item.placerOrderItemCode, currentOrderCode,
                         StringComparison.OrdinalIgnoreCase))
                     {
@@ -231,14 +385,72 @@ namespace STM.MediaToPACS.Main.UI.PatientSidebar
             }
         }
 
+        /// <summary>
+        /// Phương thức chụp có nằm trong danh mục khai báo trên máy này không.
+        /// Chưa khai báo danh mục nào = không giới hạn (cho mở tất cả).
+        /// </summary>
+        private bool IsModalityDeclared(string modalityCode)
+        {
+            var declared = GetDeclaredModalities();
+            if (declared.Count == 0)
+                return true;
+
+            if (string.IsNullOrWhiteSpace(modalityCode))
+                return false;
+
+            return declared.Contains(modalityCode.Trim());
+        }
+
+        /// <summary>
+        /// Nạp danh mục phương thức chụp từ Modality.xml (cùng nguồn với combobox
+        /// phương thức chụp - xem MainForm.InitializeModalityComboBox). Lỗi đọc file coi như
+        /// chưa khai báo để không chặn nhầm toàn bộ lịch sử.
+        /// </summary>
+        private HashSet<string> GetDeclaredModalities()
+        {
+            if (_declaredModalities != null)
+                return _declaredModalities;
+
+            _declaredModalities = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            try
+            {
+                var modalities = XmlSettingsHelper.Load<Modalities>(
+                    Path.Combine(
+                        ServiceLocator.GetAppDataBasePath(),
+                        FileStorageSettingsProvider.Current.Modality));
+
+                if (!string.IsNullOrWhiteSpace(modalities?.ModalitiesList))
+                {
+                    foreach (var modality in modalities.ModalitiesList
+                        .Split(new[] { "\r\n", "\n", ",", ";" }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(m => m.Trim())
+                        .Where(m => m.Length > 0))
+                    {
+                        _declaredModalities.Add(modality);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Không đọc được danh mục phương thức chụp - bỏ qua lọc modality ở lịch sử khám");
+            }
+
+            return _declaredModalities;
+        }
+
         private void TreeHistory_NodeCellStyle(object sender, GetCustomNodeCellStyleEventArgs e)
         {
-            if (e.Node != _currentOrderNode)
+            if (e.Node == _currentOrderNode)
+            {
+                e.Appearance.BackColor = Color.FromArgb(219, 238, 255);
+                e.Appearance.ForeColor = Color.FromArgb(0, 76, 140);
+                e.Appearance.FontStyleDelta = FontStyle.Bold;
                 return;
+            }
 
-            e.Appearance.BackColor = Color.FromArgb(219, 238, 255);
-            e.Appearance.ForeColor = Color.FromArgb(0, 76, 140);
-            e.Appearance.FontStyleDelta = FontStyle.Bold;
+            // Modality không khai báo: làm mờ như control bị disable
+            if (_unsupportedNodes.Contains(e.Node))
+                e.Appearance.ForeColor = Color.FromArgb(160, 160, 160);
         }
 
         private void TreeHistory_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -251,6 +463,14 @@ namespace STM.MediaToPACS.Main.UI.PatientSidebar
             if (string.Equals(item.placerOrderItemCode, _currentOrderCode,
                 StringComparison.OrdinalIgnoreCase))
                 return;
+
+            if (_unsupportedNodes.Contains(hitInfo.Node))
+            {
+                Log.Information(
+                    "Bỏ qua mở chỉ định {Code}: phương thức chụp {Modality} không có trong danh mục khai báo",
+                    item.placerOrderItemCode, item.modalityCode);
+                return;
+            }
 
             OrderNavigationRequested?.Invoke(this,
                 new OrderNavigationRequestedEventArgs(

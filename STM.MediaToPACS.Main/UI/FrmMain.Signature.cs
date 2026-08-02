@@ -194,6 +194,7 @@ namespace STM.MediaToPACS.Main
 
                     // Upload file đã ký
                     await ServiceLocator.RisService.UploadSignedFileAsync(_machidinh, "pdf", "", signedPdfBytes);
+                    _ = CompleteRisV2InBackgroundAsync(_machidinh);
 
                     // Cập nhật UI
                     _rtKetLuan.Enabled = false;
@@ -390,22 +391,23 @@ namespace STM.MediaToPACS.Main
 
             if (dialogResult != DialogResult.Yes) return;
 
-            // Nhập lý do hủy
-            string lyDoHuy = XtraInputBox.Show("Nhập lý do hủy ký số:", "Lý do hủy", "");
-            if (string.IsNullOrWhiteSpace(lyDoHuy))
+            string lyDoHuy;
+            using (var reasonDialog = new SignatureCancellationReasonDialog(this))
             {
-                XtraMessageBox.Show(this, "Bạn phải nhập lý do hủy ký số!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                if (reasonDialog.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                lyDoHuy = reasonDialog.Reason;
             }
 
-            // Gọi API hủy ký số
-            bool huyOk = await ServiceLocator.RisService.HuyKetQuaChanDoanAsync(_machidinh, lyDoHuy);
-
-            if (!huyOk)
+            var cancelled = await ServiceLocator.RisService.HuyKetQuaChanDoanAsync(_machidinh, lyDoHuy);
+            if (!cancelled)
             {
                 XtraMessageBox.Show(this, "Hủy ký số thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            _ = VoidRisV2InBackgroundAsync(_machidinh);
 
 
             _rtKetLuan.Enabled = true;
@@ -416,6 +418,38 @@ namespace STM.MediaToPACS.Main
             _btnSignature.Text = $"Ký số ({ServiceLocator.ShortcutAndFontSetting.ConclusionScreenKeys.Sign})";
             _kqChanDoanResponse.TrangThai = TrangThaiKetLuan.NHAP;
 
+        }
+
+        private async Task VoidRisV2InBackgroundAsync(string placerCode)
+        {
+            try
+            {
+                // userCode = mã nhân viên đang đăng nhập để audit log ghi đúng người hủy ký
+                var risV1Result = await ServiceLocator.RisService2.VoidSignatureByPlacerCodeAsync(
+                    placerCode,
+                    ServiceLocator.KeycloakUserInfo != null ? ServiceLocator.KeycloakUserInfo.HISCode : null);
+                if (risV1Result?.id != null && risV1Result.id != Guid.Empty)
+                    await ServiceLocator.RisService2.VoidDiagnosticReportAsync(risV1Result.id);
+            }
+            catch (Exception ex)
+            {
+                Serilog.Log.Warning(ex, "RIS v2 void report thất bại trong background. PlacerCode: {PlacerCode}", placerCode);
+            }
+        }
+
+        private async Task CompleteRisV2InBackgroundAsync(string placerCode)
+        {
+            try
+            {
+                // userCode = mã nhân viên đang đăng nhập để audit log ghi đúng người hoàn thành
+                await ServiceLocator.RisService2.CompleteOrderItemByPlacerCodeAsync(
+                    placerCode,
+                    ServiceLocator.KeycloakUserInfo != null ? ServiceLocator.KeycloakUserInfo.HISCode : null);
+            }
+            catch (Exception ex)
+            {
+                Serilog.Log.Warning(ex, "RIS v2 complete order item that bai trong background. PlacerCode: {PlacerCode}", placerCode);
+            }
         }
 
 

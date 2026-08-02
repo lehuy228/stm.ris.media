@@ -50,6 +50,13 @@ namespace MediaToPacs.Core.Models
         public List<DiagnosticReportAttachmentDto> uploaded { get; set; }
     }
 
+    public class UploadDiagnosticReportAttachmentsResponse
+    {
+        public object data { get; set; }
+        public List<DiagnosticReportAttachmentDto> uploaded { get; set; }
+        public List<DiagnosticReportAttachmentDto> items { get; set; }
+    }
+
     public class DocumentAttachmentSelectionRequest
     {
         public List<DocumentAttachmentSelectionItem> selections { get; set; }

@@ -159,11 +159,15 @@ namespace STM.MediaToPACS.Main
         {
             try
             {
-                var result = await ServiceLocator.RisService.SendKetQuaChanDoanToHisAsync(_machidinh);
+                var result = await ServiceLocator.RisService2.ResendOruToHisAsync(_machidinh);
 
-                if (result == null)
+                if (result == null || !result.success)
                 {
-                    ShowWarningMessage("Cảnh báo", "Không gửi được kết quả sang HIS.");
+                    Log.Warning("Gửi lại ORU thất bại. MaChiDinh={MaChiDinh}, ErrorCode={ErrorCode}, ErrorMessage={ErrorMessage}",
+                        _machidinh, result?.errorCode, result?.errorMessage);
+                    ShowWarningMessage("Cảnh báo", result != null
+                        ? result.BuildFailureMessage()
+                        : "Không gửi được kết quả sang HIS.");
                     return;
                 }
 

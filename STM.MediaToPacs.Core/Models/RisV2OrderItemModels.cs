@@ -113,6 +113,44 @@ namespace MediaToPacs.Core.Models
         /// <summary>Khuyến nghị. null = backend giữ nguyên giá trị hiện có</summary>
         public string recommendation { get; set; }
 
+        /// <summary>Mã bác sĩ đọc/kết luận — client tự khai (endpoint không xác thực). null = backend giữ nguyên</summary>
+        public string doctorPractitionerCode { get; set; }
+
+        /// <summary>Tên bác sĩ đọc/kết luận. null = backend giữ nguyên giá trị hiện có</summary>
+        public string doctorPractitionerName { get; set; }
+
+        /// <summary>ID nội bộ bác sĩ nếu client biết. null = backend giữ nguyên giá trị hiện có</summary>
+        public long? doctorPractitionerId { get; set; }
+
+        /// <summary>Mã KTV thực hiện. null = backend giữ nguyên giá trị hiện có</summary>
+        public string technologistPractitionerCode { get; set; }
+
+        /// <summary>Tên KTV thực hiện. null = backend giữ nguyên giá trị hiện có</summary>
+        public string technologistPractitionerName { get; set; }
+
+        /// <summary>ID nội bộ KTV nếu client biết. null = backend giữ nguyên giá trị hiện có</summary>
+        public long? technologistPractitionerId { get; set; }
+
+        /// <summary>ID nội bộ thiết bị. null = backend giữ nguyên giá trị hiện có</summary>
+        public long? deviceId { get; set; }
+
+        /// <summary>Mã thiết bị. null = backend giữ nguyên giá trị hiện có</summary>
+        public string deviceCode { get; set; }
+
+        /// <summary>Tên thiết bị. null = backend giữ nguyên giá trị hiện có</summary>
+        public string deviceName { get; set; }
+
+        /// <summary>
+        /// Thời điểm bắt đầu đọc. null = lần tạo report đầu tiên backend tự set giờ nhận request,
+        /// các lần sau giữ nguyên giá trị đã có.
+        /// </summary>
+        public DateTimeOffset? readStartedAt { get; set; }
+
+        /// <summary>
+        /// Thời điểm kết thúc đọc. null = backend giữ nguyên (backend KHÔNG tự set theo giờ nhận request).
+        /// </summary>
+        public DateTimeOffset? readCompletedAt { get; set; }
+
         /// <summary>
         /// Bảng chỉ số (ParamValuesSnapshot) — serialize nguyên văn vào DiagnosticReport.parameters.
         /// null = backend giữ nguyên giá trị hiện có.

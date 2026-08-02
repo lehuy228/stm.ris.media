@@ -11,11 +11,20 @@ namespace STM.MediaToPACS.Main.UI.PatientSidebar
         private DevExpress.XtraTab.XtraTabControl _tabControl;
         private DevExpress.XtraTab.XtraTabPage _tabHistory;
         private DevExpress.XtraTab.XtraTabPage _tabParams;
+        private DevExpress.XtraTab.XtraTabPage _tabLog;
         private DevExpress.XtraTreeList.TreeList _treeHistory;
         private DevExpress.XtraTreeList.Columns.TreeListColumn _colContent;
         private DevExpress.XtraTreeList.Columns.TreeListColumn _colDate;
         private DevExpress.XtraTreeList.Columns.TreeListColumn _colStatus;
         private System.Windows.Forms.Panel _paramsHostPanel;
+        private DevExpress.XtraEditors.LabelControl _lblLogPlaceholder;
+        private DevExpress.XtraGrid.GridControl _gridLog;
+        private DevExpress.XtraGrid.Views.Grid.GridView _gridViewLog;
+        private DevExpress.XtraGrid.Columns.GridColumn _colLogTime;
+        private DevExpress.XtraGrid.Columns.GridColumn _colLogContent;
+        private DevExpress.XtraGrid.Columns.GridColumn _colLogUser;
+        private System.Windows.Forms.Panel _logHeaderPanel;
+        private DevExpress.XtraEditors.LabelControl _btnReloadLog;
 
         protected override void Dispose(bool disposing)
         {
@@ -40,12 +49,25 @@ namespace STM.MediaToPACS.Main.UI.PatientSidebar
             this._colStatus = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this._tabParams = new DevExpress.XtraTab.XtraTabPage();
             this._paramsHostPanel = new System.Windows.Forms.Panel();
+            this._tabLog = new DevExpress.XtraTab.XtraTabPage();
+            this._lblLogPlaceholder = new DevExpress.XtraEditors.LabelControl();
+            this._gridLog = new DevExpress.XtraGrid.GridControl();
+            this._gridViewLog = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this._colLogTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this._colLogContent = new DevExpress.XtraGrid.Columns.GridColumn();
+            this._colLogUser = new DevExpress.XtraGrid.Columns.GridColumn();
+            this._logHeaderPanel = new System.Windows.Forms.Panel();
+            this._btnReloadLog = new DevExpress.XtraEditors.LabelControl();
+            ((System.ComponentModel.ISupportInitialize)(this._gridLog)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._gridViewLog)).BeginInit();
+            this._logHeaderPanel.SuspendLayout();
             this._headerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._tabControl)).BeginInit();
             this._tabControl.SuspendLayout();
             this._tabHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._treeHistory)).BeginInit();
             this._tabParams.SuspendLayout();
+            this._tabLog.SuspendLayout();
             this.SuspendLayout();
             //
             // _headerPanel
@@ -118,12 +140,13 @@ namespace STM.MediaToPACS.Main.UI.PatientSidebar
             this._tabControl.HeaderLocation = DevExpress.XtraTab.TabHeaderLocation.Left;
             this._tabControl.Location = new System.Drawing.Point(0, 30);
             this._tabControl.Name = "_tabControl";
-            this._tabControl.SelectedTabPage = this._tabHistory;
+            this._tabControl.SelectedTabPage = this._tabParams;
             this._tabControl.Size = new System.Drawing.Size(320, 595);
             this._tabControl.TabIndex = 1;
             this._tabControl.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
+            this._tabParams,
             this._tabHistory,
-            this._tabParams});
+            this._tabLog});
             this._tabControl.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.TabControl_SelectedPageChanged);
             //
             // _tabHistory
@@ -196,6 +219,104 @@ namespace STM.MediaToPACS.Main.UI.PatientSidebar
             this._paramsHostPanel.Size = new System.Drawing.Size(313, 553);
             this._paramsHostPanel.TabIndex = 0;
             //
+            // _tabLog
+            //
+            this._tabLog.Controls.Add(this._gridLog);
+            this._tabLog.Controls.Add(this._lblLogPlaceholder);
+            this._tabLog.Controls.Add(this._logHeaderPanel);
+            this._tabLog.Name = "_tabLog";
+            this._tabLog.Size = new System.Drawing.Size(313, 553);
+            this._tabLog.Text = "Nhật ký";
+            //
+            // _logHeaderPanel
+            //
+            this._logHeaderPanel.Controls.Add(this._btnReloadLog);
+            this._logHeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this._logHeaderPanel.Name = "_logHeaderPanel";
+            this._logHeaderPanel.Size = new System.Drawing.Size(313, 24);
+            //
+            // _btnReloadLog
+            //
+            this._btnReloadLog.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this._btnReloadLog.Appearance.ForeColor = System.Drawing.Color.FromArgb(15, 72, 116);
+            this._btnReloadLog.Appearance.Options.UseFont = true;
+            this._btnReloadLog.Appearance.Options.UseForeColor = true;
+            this._btnReloadLog.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnReloadLog.Dock = System.Windows.Forms.DockStyle.Right;
+            this._btnReloadLog.Name = "_btnReloadLog";
+            this._btnReloadLog.Size = new System.Drawing.Size(70, 24);
+            this._btnReloadLog.Text = "⟳ Tải lại";
+            this._btnReloadLog.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this._btnReloadLog.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this._btnReloadLog.Click += new System.EventHandler(this.BtnReloadLog_Click);
+            //
+            // _gridLog
+            //
+            this._gridLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._gridLog.MainView = this._gridViewLog;
+            this._gridLog.Name = "_gridLog";
+            this._gridLog.Size = new System.Drawing.Size(313, 529);
+            this._gridLog.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this._gridViewLog});
+            //
+            // _gridViewLog
+            //
+            this._gridViewLog.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this._colLogTime,
+            this._colLogContent,
+            this._colLogUser});
+            this._gridViewLog.GridControl = this._gridLog;
+            this._gridViewLog.Name = "_gridViewLog";
+            this._gridViewLog.OptionsBehavior.Editable = false;
+            this._gridViewLog.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this._gridViewLog.OptionsView.ShowGroupPanel = false;
+            this._gridViewLog.OptionsView.ShowIndicator = false;
+            this._gridViewLog.OptionsView.RowAutoHeight = true;
+            //
+            // _colLogTime
+            //
+            this._colLogTime.Caption = "Thời gian";
+            this._colLogTime.FieldName = "TimeText";
+            this._colLogTime.MinWidth = 80;
+            this._colLogTime.Name = "_colLogTime";
+            this._colLogTime.Visible = true;
+            this._colLogTime.VisibleIndex = 0;
+            this._colLogTime.Width = 95;
+            //
+            // _colLogContent
+            //
+            this._colLogContent.Caption = "Nội dung";
+            this._colLogContent.FieldName = "Content";
+            this._colLogContent.MinWidth = 110;
+            this._colLogContent.Name = "_colLogContent";
+            this._colLogContent.Visible = true;
+            this._colLogContent.VisibleIndex = 1;
+            this._colLogContent.Width = 150;
+            //
+            // _colLogUser
+            //
+            this._colLogUser.Caption = "Người thực hiện";
+            this._colLogUser.FieldName = "UserText";
+            this._colLogUser.MinWidth = 60;
+            this._colLogUser.Name = "_colLogUser";
+            this._colLogUser.Visible = true;
+            this._colLogUser.VisibleIndex = 2;
+            this._colLogUser.Width = 80;
+            //
+            // _lblLogPlaceholder
+            //
+            this._lblLogPlaceholder.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this._lblLogPlaceholder.Appearance.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128);
+            this._lblLogPlaceholder.Appearance.Options.UseFont = true;
+            this._lblLogPlaceholder.Appearance.Options.UseForeColor = true;
+            this._lblLogPlaceholder.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this._lblLogPlaceholder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._lblLogPlaceholder.Name = "_lblLogPlaceholder";
+            this._lblLogPlaceholder.Size = new System.Drawing.Size(313, 553);
+            this._lblLogPlaceholder.Text = "Chưa có nhật ký";
+            this._lblLogPlaceholder.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this._lblLogPlaceholder.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            //
             // PatientSidebarControl
             //
             this.Controls.Add(this._tabControl);
@@ -208,6 +329,10 @@ namespace STM.MediaToPACS.Main.UI.PatientSidebar
             this._tabHistory.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._treeHistory)).EndInit();
             this._tabParams.ResumeLayout(false);
+            this._logHeaderPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._gridViewLog)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._gridLog)).EndInit();
+            this._tabLog.ResumeLayout(false);
             this.ResumeLayout(false);
         }
     }

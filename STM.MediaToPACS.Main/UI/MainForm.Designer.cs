@@ -143,6 +143,7 @@ namespace STM.MediaToPACS.Main.UI
             this._tsmLogout = new System.Windows.Forms.ToolStripMenuItem();
             this._menuSystem = new System.Windows.Forms.ToolStripMenuItem();
             this._tsmSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this._tsmTemplateSuggestion = new System.Windows.Forms.ToolStripMenuItem();
             this._systemSeparator = new System.Windows.Forms.ToolStripSeparator();
             this._menuCamera = new System.Windows.Forms.ToolStripMenuItem();
             this._menuWorklist = new System.Windows.Forms.ToolStripMenuItem();
@@ -1556,9 +1557,7 @@ namespace STM.MediaToPACS.Main.UI
             // 
             this._menuSystem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._tsmSetting,
-            this._systemSeparator,
-            this._menuCamera,
-            this._menuWorklist});
+            this._tsmTemplateSuggestion});
             this._menuSystem.Image = global::STM.MediaToPACS.Main.Properties.Resources.properties_32x32;
             this._menuSystem.Name = "_menuSystem";
             this._menuSystem.Text = "Hệ thống";
@@ -1569,6 +1568,13 @@ namespace STM.MediaToPACS.Main.UI
             this._tsmSetting.Name = "_tsmSetting";
             this._tsmSetting.Text = "Cấu hình hệ thống...";
             this._tsmSetting.Click += new System.EventHandler(this._tsmSetting_Click);
+            // 
+            // _tsmTemplateSuggestion
+            // 
+            this._tsmTemplateSuggestion.Image = global::STM.MediaToPACS.Main.Properties.Resources.customer_16x16;
+            this._tsmTemplateSuggestion.Name = "_tsmTemplateSuggestion";
+            this._tsmTemplateSuggestion.Text = "Mẫu và gợi ý";
+            this._tsmTemplateSuggestion.Click += new System.EventHandler(this._tsmTemplateSuggestion_Click);
             // 
             // _menuCamera
             // 
@@ -1857,6 +1863,7 @@ namespace STM.MediaToPACS.Main.UI
         private ToolStripMenuItem _menuTools;
         private ToolStripMenuItem _menuHelp;
         private ToolStripMenuItem _tsmSetting;
+        private ToolStripMenuItem _tsmTemplateSuggestion;
         private ToolStripMenuItem _tsmLog;
         private ToolStripMenuItem _tsmToUse;
         private ToolStripComboBox _tsmCbbVideoCapture;

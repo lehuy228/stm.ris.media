@@ -337,6 +337,19 @@ namespace STM.MediaToPACS.Main
 
             // Hoãn việc đóng form: phải dừng camera (async) xong rồi mới đóng,
             // nếu không FormClosed sẽ dispose tài nguyên trong khi camera còn đang dừng
+            var confirm = MessageBox.Show(
+                this,
+                "Bạn có chắc chắn muốn đóng màn hình kết luận không?",
+                "Xác nhận đóng",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             e.Cancel = true;
             try
             {

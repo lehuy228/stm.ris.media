@@ -118,6 +118,8 @@
     <Compile Include="Models\RisV2QuickSuggestionModels.cs" />
     <Compile Include="Models\RisV1PatientHistoryModels.cs" />
     <Compile Include="Models\RisV1DiagnosticReportAttachmentModels.cs" />
+    <Compile Include="Models\AuditLogModels.cs" />
+    <Compile Include="Models\OruResendResultDto.cs" />
     <Compile Include="Models\RisV2OrderItemModels.cs" />
     <Compile Include="Models\Ketluan\ChiSoBaoCao.cs" />
     <Compile Include="Models\ShortcutAndFontSettings.cs" />

@@ -45,7 +45,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                     return;
                 }
 
-                if (_kqChanDoanResponse.TrangThai == TrangThaiKetLuan.NHAP)
+                if (!IsConclusionCompleted())
                 {
                     CloseSplashScreenOnce(ref isSplashVisible);
                     await HandleSignDraftAsync();
@@ -65,7 +65,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             finally
             {
                 CloseSplashScreenOnce(ref isSplashVisible);
-                _btnSignature.Enabled = true;
+                ApplyConclusionEditability();
             }
         }
 
@@ -119,16 +119,14 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 {
                     byte[] signedPdfBytes = Convert.FromBase64String(signedResult);
                     await ServiceLocator.RisService.UploadSignedFileAsync(_machidinh, "pdf", "", signedPdfBytes);
+                    _ = CompleteRisV2InBackgroundAsync(_machidinh);
 
                     _rtKetLuan.Enabled = false;
                     _rtKhuyenNghi.Enabled = false;
                     _rtMoTa.Enabled = false;
 
-                    _btnPrint.Enabled = true;
-                    _btnPreviewMain.Enabled = true;
-                    _btnSave.Enabled = false;
-                    _btnSignature.Text = $"Hủy Ký số({ServiceLocator.ShortcutAndFontSetting.ConclusionScreenKeys.Sign})";
-                    _kqChanDoanResponse.TrangThai = "Hoàn thành";
+                    _kqChanDoanResponse.TrangThai = TrangThaiKetLuan.HOAN_THANH;
+                    ApplyConclusionEditability();
 
                     CloseSplashScreenOnce(ref splashShown);
                     XtraMessageBox.Show(this, "Báo cáo đã được ký số thành công và lưu vào hệ thống.",
@@ -262,34 +260,63 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
             if (dialogResult != DialogResult.Yes) return;
 
-            string lyDoHuy = XtraInputBox.Show("Nhập lý do hủy ký số:", "Lý do hủy", "");
-            if (string.IsNullOrWhiteSpace(lyDoHuy))
+            using (var reasonDialog = new STM.MediaToPACS.Main.UI.SignatureCancellationReasonDialog(this))
             {
-                XtraMessageBox.Show(this, "Bạn phải nhập lý do hủy ký số!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (reasonDialog.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                var lyDoHuy = reasonDialog.Reason;
+                var cancelled = await ServiceLocator.RisService.HuyKetQuaChanDoanAsync(_machidinh, lyDoHuy);
+                if (!cancelled)
+                {
+                    XtraMessageBox.Show(this, "Hủy ký số thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                _ = VoidRisV2InBackgroundAsync(_machidinh);
+
+                _kqChanDoanResponse.TrangThai = TrangThaiKetLuan.NHAP;
+                ApplyConclusionEditability();
                 return;
             }
+        }
 
-            bool huyOk = await ServiceLocator.RisService.HuyKetQuaChanDoanAsync(_machidinh, lyDoHuy);
-
-            if (!huyOk)
+        private async Task VoidRisV2InBackgroundAsync(string placerCode)
+        {
+            try
             {
-                XtraMessageBox.Show(this, "Hủy ký số thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                // userCode = mã nhân viên đang đăng nhập để audit log ghi đúng người hủy ký
+                var risV1Result = await ServiceLocator.RisService2.VoidSignatureByPlacerCodeAsync(
+                    placerCode,
+                    ServiceLocator.KeycloakUserInfo != null ? ServiceLocator.KeycloakUserInfo.HISCode : null);
+                if (risV1Result?.id != null && risV1Result.id != Guid.Empty)
+                    await ServiceLocator.RisService2.VoidDiagnosticReportAsync(risV1Result.id);
             }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "RIS v2 void report that bai trong background. PlacerCode: {PlacerCode}", placerCode);
+            }
+        }
 
-            _rtKetLuan.Enabled = true;
-            _rtKhuyenNghi.Enabled = true;
-            _rtMoTa.Enabled = true;
-            _btnSave.Enabled = true;
-            _btnPrint.Enabled = true;
-            _btnSignature.Text = $"Ký số ({ServiceLocator.ShortcutAndFontSetting.ConclusionScreenKeys.Sign})";
-            _kqChanDoanResponse.TrangThai = TrangThaiKetLuan.NHAP;
+        private async Task CompleteRisV2InBackgroundAsync(string placerCode)
+        {
+            try
+            {
+                // userCode = mã nhân viên đang đăng nhập để audit log ghi đúng người hoàn thành
+                await ServiceLocator.RisService2.CompleteOrderItemByPlacerCodeAsync(
+                    placerCode,
+                    ServiceLocator.KeycloakUserInfo != null ? ServiceLocator.KeycloakUserInfo.HISCode : null);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "RIS v2 complete order item that bai trong background. PlacerCode: {PlacerCode}", placerCode);
+            }
         }
 
         private async Task HandleUnauthorizedUserAsync()
         {
             DevExpress.XtraSplashScreen.SplashScreenManager.CloseForm(false);
-            if (_kqChanDoanResponse.TrangThai != TrangThaiKetLuan.NHAP)
+            if (IsConclusionCompleted())
             {
                 var msg = "Bạn không có quyền ký hoặc hủy kết quả này.\n" +
                           "Vui lòng đăng nhập bằng tài khoản bác sĩ đã kết luận để thực hiện.";

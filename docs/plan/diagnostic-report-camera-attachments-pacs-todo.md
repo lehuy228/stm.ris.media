@@ -97,12 +97,13 @@ Kết quả kiểm tra:
 ## Phase 3: Bổ sung API client vào `IRisService2` / `RisService2`
 
 - [x] Thêm endpoint constant `DiagnosticReports = Root + "/diagnostic-reports"` trong `ApiEndpoints.RisV2`.
-- [x] Thêm method `GetDiagnosticReportAttachmentsAsync(Guid reportId)`.
-- [x] Thêm method `UploadDiagnosticReportAttachmentsAsync(Guid reportId, IEnumerable<string> filePaths)`.
-- [x] Thêm method `UpdateDocumentAttachmentSelectionAsync(Guid reportId, List<DocumentAttachmentSelectionItem> selections)`.
-- [x] Thêm method `UpdatePacsAttachmentSelectionAsync(Guid reportId, List<Guid> attachmentIds)`.
-- [x] Thêm method `PushDiagnosticReportAttachmentsToPacsAsync(Guid reportId, string targetServer = "MainStorage")`.
-- [x] Thêm method stream ảnh nếu UI cần load ảnh từ server: `StreamDiagnosticReportAttachmentAsync(Guid reportId, Guid attachmentId)`.
+- [x] Thêm method attachment dùng `orderItemId` theo route `/api/v1/order-items/{orderItemId}/attachments`.
+- [x] Thêm method `GetDiagnosticReportAttachmentsAsync(Guid orderItemId)`.
+- [x] Thêm method `UploadDiagnosticReportAttachmentsAsync(Guid orderItemId, IEnumerable<string> filePaths)`.
+- [x] Thêm method `UpdateDocumentAttachmentSelectionAsync(Guid orderItemId, List<DocumentAttachmentSelectionItem> selections)`.
+- [x] Thêm method `UpdatePacsAttachmentSelectionAsync(Guid orderItemId, List<Guid> attachmentIds)`.
+- [x] Thêm method `PushDiagnosticReportAttachmentsToPacsAsync(Guid orderItemId, string targetServer = "MainStorage")`.
+- [x] Thêm method stream ảnh nếu UI cần load ảnh từ server: `StreamDiagnosticReportAttachmentAsync(Guid orderItemId, Guid attachmentId)`.
 - [x] Implement upload bằng `MultipartFormDataContent`, field name `files`.
 - [x] Validate trước khi upload:
   - file tồn tại
@@ -161,11 +162,11 @@ Tiêu chí hoàn thành:
 
 ## Phase 5: Load attachment khi mở màn hình kết luận
 
-- [x] Sau `ResolveRisV1OrderItemAsync`, lấy `reportId` từ `_risOrderItem.report.id`.
-- [x] Nếu có `reportId`, gọi `GetDiagnosticReportAttachmentsAsync(reportId)`.
+- [x] Sau `ResolveRisV1OrderItemAsync`, lấy `orderItemId` từ `_risOrderItem.id`.
+- [x] Nếu có `orderItemId`, gọi `GetDiagnosticReportAttachmentsAsync(orderItemId)`.
 - [x] Bind attachment server vào thumbnail list.
 - [x] Với ảnh server, preview dùng endpoint stream:
-  - `/diagnostic-reports/{reportId}/attachments/{attachmentId}/stream`
+  - `/order-items/{orderItemId}/attachments/{attachmentId}/stream`
 - [x] Nếu chưa có report, giữ trạng thái ảnh local như hiện tại.
 - [x] Xử lý lỗi load attachment theo kiểu best-effort, không chặn load kết luận.
 
@@ -181,11 +182,11 @@ Tiêu chí hoàn thành:
 
 - [x] Giữ luồng snapshot local hiện tại để UI phản hồi nhanh.
 - [x] Sau khi snapshot, add ảnh vào thumbnail list với trạng thái local pending upload.
-- [x] Nếu đã có `reportId`, upload ngay ảnh vừa chụp lên attachments.
+- [x] Nếu đã có `orderItemId`, upload ngay ảnh vừa chụp lên attachments.
 - [x] Sau upload thành công, cập nhật `AttachmentId` cho thumbnail item.
 - [x] Mặc định chọn ảnh mới chụp vào destination `document`.
 - [x] Sau upload, gọi lại `document-selection` full-replace.
-- [x] Nếu chưa có `reportId`, chờ đến lúc lưu nháp rồi upload.
+- [x] Nếu chưa có `orderItemId`, chờ resolve y lệnh RIS mới rồi upload.
 - [x] Không tự chọn PACS cho ảnh mới chụp.
 
 Tiêu chí hoàn thành:
@@ -199,7 +200,7 @@ Tiêu chí hoàn thành:
 ## Phase 7: Sửa luồng lưu nháp kết luận
 
 - [x] Giữ phần lưu text kết luận hiện tại.
-- [x] Sau khi lưu/upsert kết luận, xác định chắc chắn `reportId`.
+- [x] Sau khi lưu/upsert kết luận, xác định chắc chắn `orderItemId`.
 - [x] Upload toàn bộ ảnh local chưa có `AttachmentId`.
 - [x] Sau khi upload, cập nhật thumbnail item bằng attachment trả về.
 - [x] Gọi `document-selection` bằng toàn bộ danh sách ảnh đang chọn PDF.
@@ -221,8 +222,8 @@ Tiêu chí hoàn thành:
 - [x] Thêm thao tác chọn/bỏ chọn PACS trên từng thumbnail.
 - [x] Chỉ cho chọn PACS với `image/jpeg`.
 - [x] Nếu user chọn file không phải JPEG vào PACS, hiển thị cảnh báo rõ.
-- [x] Khi bấm `Đẩy PACS`, kiểm tra có `reportId`.
-- [x] Nếu chưa có `reportId`, yêu cầu lưu nháp trước hoặc tự lưu nháp theo quyết định nghiệp vụ.
+- [x] Khi bấm `Đẩy PACS`, kiểm tra có `orderItemId`.
+- [x] Nếu chưa có `orderItemId`, báo chưa resolve được y lệnh RIS mới.
 - [x] Upload ảnh local pending trước khi push.
 - [x] Gọi `pacs-selection` full-replace với danh sách attachment chọn PACS.
 - [x] Gọi `pacs-push`.
@@ -289,7 +290,7 @@ Tiêu chí hoàn thành:
 ## Ghi chú kỹ thuật từ tài liệu API
 
 - Base route attachment:
-  - `/api/v1/diagnostic-reports/{reportId}/attachments`
+  - `/api/v1/order-items/{orderItemId}/attachments`
 - Upload:
   - `POST /attachments/batch`
   - multipart field `files`

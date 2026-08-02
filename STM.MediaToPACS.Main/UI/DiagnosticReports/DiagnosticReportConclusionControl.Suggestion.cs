@@ -102,6 +102,9 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private void _cbbReportTemplate_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (!CanEditConclusion())
+                return;
+
             if (_cbbMauGoiY.SelectedItem is QuickSuggestionListItemDto quickItem)
             {
                 ApplyQuickSuggestionAsync(quickItem.id);
@@ -123,6 +126,9 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private async void ApplyQuickSuggestionAsync(long id)
         {
+            if (!CanEditConclusion())
+                return;
+
             try
             {
                 var content = await GetSuggestionPresenter().GetContentAsync(id);
@@ -150,6 +156,9 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private void OnStructuredSuggestionSelected(QuickSuggestionPublicDetailDto detail)
         {
+            if (!CanEditConclusion())
+                return;
+
             Log.Information("Suggestion Structured được chọn: {Title} (reportParam: {Code})",
                 detail.title, detail.reportParamCode);
 
@@ -157,6 +166,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             _paramFormControl.SetData(detail);
             _currentStructuredDetail = detail;
             _paramFormControl.Visible = true;
+            _patientSidebar.SetParamsTabAvailable(true);
             _patientSidebar.ActivateParamsTab();
 
             SyncParamTextToMoTa();
@@ -174,6 +184,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             _paramFormControl = new ParamFormControl
             {
                 Visible = false,
+                Enabled = CanEditConclusion(),
                 Dock = System.Windows.Forms.DockStyle.Fill
             };
             _paramFormControl.ParamValuesChanged += (s, e) => SyncParamTextToMoTa();
@@ -201,6 +212,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         private void HideParamForm()
         {
             _currentStructuredDetail = null;
+            // Mẫu đang chọn không có chỉ số - khoá tab để không mở được form rỗng
+            _patientSidebar.SetParamsTabAvailable(false);
             if (_paramFormControl == null)
                 return;
             _paramFormControl.Visible = false;
@@ -210,6 +223,9 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private void SyncParamTextToMoTa()
         {
+            if (!CanEditConclusion())
+                return;
+
             if (_paramFormControl == null || !_paramFormControl.Visible)
                 return;
 
@@ -272,13 +288,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 if (_risV1OrderItem == null)
                     return null;
 
-                var request = new RisV1UpsertConclusionRequest
-                {
-                    conclusion = ketLuan,
-                    findings = moTa,
-                    recommendation = khuyenNghi,
-                    parameters = BuildParamValuesSnapshot()
-                };
+                var request = BuildRisV1ConclusionRequest(moTa, ketLuan, khuyenNghi);
 
                 var report = await ServiceLocator.RisService2.UpsertOrderItemConclusionAsync(_risV1OrderItem.id, request);
                 if (report != null)
@@ -292,6 +302,58 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 Log.Warning(ex, "Sync kết luận sang RIS mới thất bại - luồng lưu chính không bị ảnh hưởng");
                 return null;
             }
+        }
+
+        private RisV1UpsertConclusionRequest BuildRisV1ConclusionRequest(string moTa, string ketLuan, string khuyenNghi)
+        {
+            var request = new RisV1UpsertConclusionRequest
+            {
+                conclusion = ketLuan,
+                findings = moTa,
+                recommendation = khuyenNghi,
+                parameters = BuildParamValuesSnapshot(),
+                readStartedAt = ToOffsetOrNull(_dateTGThucHien.DateTime),
+                readCompletedAt = ToOffsetOrNull(_dateTGKetThuc.DateTime)
+            };
+
+            // Bác sĩ kết luận: cùng danh tính gửi cho RIS cũ (mabacsiketluan/bacsiketluan). Endpoint risv1
+            // không xác thực nên client tự khai; id nội bộ không có nên để null.
+            var doctor = ServiceLocator.KeycloakUserInfo;
+            if (doctor != null)
+            {
+                request.doctorPractitionerCode = doctor.HISCode;
+                request.doctorPractitionerName = $"{doctor.FirstName} {doctor.LastName}".Trim();
+            }
+
+            var selectedDevice = _cbbDSThietBi.Properties.GetDataSourceRowByKeyValue(_cbbDSThietBi.EditValue) as DeviceDto;
+            if (selectedDevice != null)
+            {
+                request.deviceId = selectedDevice.id;
+                request.deviceCode = selectedDevice.code;
+                request.deviceName = selectedDevice.name;
+            }
+
+            var selectedTechnologist = _cbbHisUser.Properties.GetDataSourceRowByKeyValue(_cbbHisUser.EditValue) as PractitionerListDto;
+            if (selectedTechnologist != null)
+            {
+                request.technologistPractitionerId = selectedTechnologist.id;
+                request.technologistPractitionerCode = selectedTechnologist.staffCode;
+                request.technologistPractitionerName = selectedTechnologist.fullName;
+            }
+
+            return request;
+        }
+
+        /// <summary>
+        /// DateEdit chưa nhập trả DateTime.MinValue - coi như không truyền để backend giữ nguyên
+        /// giá trị hiện có thay vì ghi đè mốc thời gian rác.
+        /// </summary>
+        private static DateTimeOffset? ToOffsetOrNull(DateTime value)
+        {
+            if (value == DateTime.MinValue || value == default(DateTime))
+                return null;
+
+            return new DateTimeOffset(DateTime.SpecifyKind(value, DateTimeKind.Local));
         }
 
         private RisV1ReportParamsInput BuildParamValuesSnapshot()
@@ -359,6 +421,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 _paramFormControl.SetParamValues(savedValues);
                 _currentStructuredDetail = content.Detail;
                 _paramFormControl.Visible = true;
+                _paramFormControl.Enabled = CanEditConclusion();
+                _patientSidebar.SetParamsTabAvailable(true);
 
                 _lastGeneratedParamText = _paramFormControl.GenerateText();
 

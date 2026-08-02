@@ -72,31 +72,64 @@ namespace MediaToPacs.Core.Interfaces
             RisV1UpsertConclusionRequest request);
 
         /// <summary>
+        /// Hủy ký số theo mã chỉ định HIS. <paramref name="userCode"/> (query `userCode`) là mã nhân
+        /// viên thực hiện - backend resolve sang Practitioner.Id để ghi audit log; không truyền thì
+        /// audit không xác định được người thực hiện.
+        /// </summary>
+        Task<RisV1DiagnosticReportDetailDto> VoidSignatureByPlacerCodeAsync(
+            string placerCode, string userCode = null);
+
+        /// <summary>
+        /// Đánh dấu hoàn thành y lệnh theo mã chỉ định HIS. <paramref name="userCode"/> (query
+        /// `userCode`) là mã nhân viên thực hiện - backend resolve sang Practitioner.Id để ghi audit log.
+        /// </summary>
+        Task<RisV1DiagnosticReportDetailDto> CompleteOrderItemByPlacerCodeAsync(
+            string placerCode, string userCode = null);
+
+        /// <summary>
+        /// Gửi lại ORU^R01 sang HIS (đồng bộ). Trả kết quả kèm mã lỗi/nội dung lỗi HIS trả về
+        /// (ACK ERR-5/ERR-7) để hiển thị cho người dùng; không bao giờ trả null.
+        /// </summary>
+        Task<OruResendResultDto> ResendOruToHisAsync(string orderItemCode);
+
+        Task VoidDiagnosticReportAsync(Guid reportId);
+
+        /// <summary>
+        /// Nhật ký hệ thống của 1 chỉ định (GET /api/v1/audit-logs?orderCode=...), sắp xếp theo
+        /// thời gian giảm dần. Trả danh sách rỗng nếu không có/lỗi đọc dữ liệu.
+        /// </summary>
+        Task<List<AuditLogListItemDto>> GetAuditLogsByOrderCodeAsync(string orderCode, int limit = 100);
+
+        /// <summary>
         /// Tra bệnh nhân theo mã chỉ định, trả lịch sử tối đa 50 lượt khám gần nhất
         /// kèm chỉ định dịch vụ của từng lượt. Trả về null nếu không tìm thấy (404).
         /// </summary>
         Task<RisV1PatientOrderHistoryDto> GetPatientHistoryByOrderCodeAsync(string placerCode);
 
-        Task<List<DiagnosticReportAttachmentDto>> GetDiagnosticReportAttachmentsAsync(Guid reportId);
+        Task<List<DiagnosticReportAttachmentDto>> GetDiagnosticReportAttachmentsAsync(Guid orderItemId);
 
         Task<List<DiagnosticReportAttachmentDto>> UploadDiagnosticReportAttachmentsAsync(
-            Guid reportId,
+            Guid orderItemId,
             IEnumerable<string> filePaths);
 
         Task<List<DiagnosticReportAttachmentDto>> UpdateDocumentAttachmentSelectionAsync(
-            Guid reportId,
+            Guid orderItemId,
             List<DocumentAttachmentSelectionItem> selections);
 
         Task UpdatePacsAttachmentSelectionAsync(
-            Guid reportId,
+            Guid orderItemId,
             List<Guid> attachmentIds);
 
         Task<PacsPushResult> PushDiagnosticReportAttachmentsToPacsAsync(
-            Guid reportId,
+            Guid orderItemId,
             string targetServer = "MainStorage");
 
         Task<Stream> StreamDiagnosticReportAttachmentAsync(
-            Guid reportId,
+            Guid orderItemId,
+            Guid attachmentId);
+
+        Task DeleteDiagnosticReportAttachmentAsync(
+            Guid orderItemId,
             Guid attachmentId);
     }
 }

@@ -566,6 +566,9 @@
     <Compile Include="UI\Configurations\SystemSettingsDialog.Designer.cs">
       <DependentUpon>SystemSettingsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Configurations\TemplateSuggestionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\Configurations\Camera\ConfigCamera.Designer.cs">
       <DependentUpon>ConfigCamera.cs</DependentUpon>
     </Compile>
@@ -651,6 +654,10 @@
     <Compile Include="UI\DiagnosticReports\ImageThumbnailList.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UI\SignatureCancellationReasonDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportAttachmentManifest.cs" />
     <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1144,6 +1151,7 @@
     </Content>
     <Content Include="Resources\ClearDICOM.ico" />
     <None Include="Resources\refresh_16x16.png" />
+    <None Include="Resources\logo120.png" />
     <None Include="Resources\deletesheetrows_16x16.png" />
     <None Include="Resources\deletesheetrows_16x161.png" />
     <None Include="Resources\show_16x16.png" />

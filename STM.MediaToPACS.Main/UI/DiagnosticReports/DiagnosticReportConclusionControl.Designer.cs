@@ -103,12 +103,17 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         private SimpleButton _btnPrint;
         private SimpleButton _btnSave;
         private SimpleButton _btnPreviewMain;
+        private SimpleButton _btnSyncHis;
 
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
             {
                 components.Dispose();
+            }
+            if (disposing)
+            {
+                _richTextContextMenu?.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -258,6 +263,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._btnPrint = new SimpleButton();
             this._btnSave = new SimpleButton();
             this._btnPreviewMain = new SimpleButton();
+            this._btnSyncHis = new SimpleButton();
             this._patientSidebar = new STM.MediaToPACS.Main.UI.PatientSidebar.PatientSidebarControl();
             this._patientSidebarSplitter = new Splitter();
 
@@ -561,9 +567,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._cameraHeader.Dock = DockStyle.Top;
             this._cameraHeader.Height = 32;
             this._cameraHeader.BackColor = Color.FromArgb(245, 247, 250);
-            this._cameraHeader.Padding = new Padding(10, 0, 8, 0);
+            this._cameraHeader.Padding = new Padding(10, 0, 10, 0);
             this._cameraHeader.Controls.Add(this._cameraTitle);
-            this._cameraHeader.Controls.Add(this._btnCameraSettings);
             this._cameraTitle.Dock = DockStyle.Fill;
             this._cameraTitle.Text = "CAMERA TRỰC TIẾP";
             this._cameraTitle.TextAlign = ContentAlignment.MiddleLeft;
@@ -660,7 +665,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             // _flowPanelControl2Left: combo layout in / máy in
             //
             this._flowPanelControl2Left.Dock = DockStyle.Left;
-            this._flowPanelControl2Left.Width = 500;
+            this._flowPanelControl2Left.Width = 460;
             this._flowPanelControl2Left.WrapContents = false;
             this._flowPanelControl2Left.Padding = new Padding(0, 3, 0, 2);
             this._cbbLayout.Properties.Buttons.AddRange(new EditorButton[] { ComboDropDownButton() });
@@ -669,7 +674,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             layoutField.Size = new Size(220, 34);
             layoutField.Dock = DockStyle.None;
             var printerField = CreateInlineField("Máy in:", this._cbbPrinters, 58);
-            printerField.Size = new Size(270, 34);
+            printerField.Size = new Size(230, 34);
             printerField.Dock = DockStyle.None;
             StyleActionButton(this._btnPrinterSettings, 28);
             this._btnPrinterSettings.Dock = DockStyle.Right;
@@ -678,7 +683,6 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._btnPrinterSettings.ToolTip = "Cài đặt máy in mặc định";
             this._btnPrinterSettings.Appearance.Font = new Font("Segoe UI Symbol", 10F);
             this._btnPrinterSettings.Appearance.Options.UseFont = true;
-            printerField.Controls.Add(this._btnPrinterSettings);
             this._flowPanelControl2Left.Controls.Add(layoutField);
             this._flowPanelControl2Left.Controls.Add(printerField);
             //
@@ -703,11 +707,14 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._btnSignature.Text = "Ký số"; this._btnSignature.Click += new System.EventHandler(this._btnSignature_Click);
             StyleActionButton(this._btnPreviewMain, 120);
             this._btnPreviewMain.Text = "Xem trước"; this._btnPreviewMain.Click += new System.EventHandler(this._btnPreviewMain_Click);
+            StyleActionButton(this._btnSyncHis, 112);
+            this._btnSyncHis.Text = "Gửi lại HIS"; this._btnSyncHis.Click += new System.EventHandler(this._btnSyncHis_Click);
             this._flowPanelControl2Right.Controls.Add(this._btnCancel);
             this._flowPanelControl2Right.Controls.Add(this._btnSave);
             this._flowPanelControl2Right.Controls.Add(this._btnPrint);
             this._flowPanelControl2Right.Controls.Add(this._btnSignature);
             this._flowPanelControl2Right.Controls.Add(this._btnPreviewMain);
+            this._flowPanelControl2Right.Controls.Add(this._btnSyncHis);
             //
             // _patientSidebar / _patientSidebarSplitter: dải sidebar trái của riêng _bodyPanel.
             //

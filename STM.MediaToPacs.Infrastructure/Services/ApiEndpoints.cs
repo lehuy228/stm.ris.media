@@ -40,10 +40,16 @@ namespace MediaToPacs.Infrastructure.Services
             public const string QuickSuggestions = Root + "/quick-suggestions";
             public const string OrderItems = Root + "/order-items";
             public const string OrderItemsByPlacerCode = OrderItems + "/by-placer-code";
-            public const string DiagnosticReports = Root + "/diagnostic-reports";
+            public const string DiagnosticReportOrderItems = "/api/v1/order-items";
+            public const string DiagnosticReports = "/api/v1/diagnostic-reports";
             public const string Conclusion = "/conclusion";
+            public const string Void = "/void";
+            public const string VoidSignature = "/void-signature";
+            public const string Complete = "/complete";
+            public const string Hl7OruResend = "/hl7/oru/resend";
             public const string PatientHistoryByOrderCode = Root + "/patients/history-by-order-code";
             public const string SystemUpdateConfig = "/api/v1/system-configs/system-update";
+            public const string AuditLogs = "/api/v1/audit-logs";
         }
 
         internal static class Signature

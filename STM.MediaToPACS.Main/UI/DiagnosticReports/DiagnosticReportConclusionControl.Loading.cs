@@ -30,13 +30,12 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             await InitCheckKetQuaChanDoanAsync();
 
             var loadKTVTask = InitDanhSachKTVAsync();
-            var loadImageTask = Task.Run(() => LoadImageData());
             // Tra y lệnh bên RIS mới (best-effort) để sync/khôi phục bảng chỉ số
             var resolveRisV1Task = ResolveRisV1OrderItemAsync();
             // Lịch sử khám bệnh nhân cho sidebar (best-effort, không ảnh hưởng luồng chính)
             var loadHistoryTask = LoadPatientHistorySafeAsync();
 
-            await Task.WhenAll(loadKTVTask, loadImageTask, resolveRisV1Task, loadHistoryTask);
+            await Task.WhenAll(loadKTVTask, resolveRisV1Task, loadHistoryTask);
 
             ApplyThietBiVaKTVSelectionFromResult();
             await LoadReportAttachmentsSafeAsync();
@@ -340,21 +339,12 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             {
                 _dateTGThucHien.DateTime = _kqChanDoanResponse.NgayKetQua.AddHours(7).AddMinutes(-2);
                 _dateTGKetThuc.DateTime = _kqChanDoanResponse.NgayKetQua.AddHours(7);
+                _txBSDoc.Text = _kqChanDoanResponse.BacSiKetLuan ?? "";
 
                 _rtMoTa.Text = _kqChanDoanResponse.Kqcls_MoTa ?? "";
                 _rtKetLuan.Text = _kqChanDoanResponse.Kqcls_KetLuan ?? "";
                 _rtKhuyenNghi.Text = _kqChanDoanResponse.Kqcls_DeNghi ?? "";
 
-                bool isNhap = _kqChanDoanResponse.TrangThai != null && _kqChanDoanResponse.TrangThai.Equals(TrangThaiKetLuan.NHAP);
-                _btnSave.Enabled = isNhap;
-                _btnPrint.Enabled = true;
-                _rtMoTa.Enabled = isNhap;
-                _rtKetLuan.Enabled = isNhap;
-                _rtKhuyenNghi.Enabled = isNhap;
-
-                _btnSignature.Text = isNhap
-                    ? $"Ký số ({ServiceLocator.ShortcutAndFontSetting.ConclusionScreenKeys.Sign})"
-                    : $"Hủy ký số({ServiceLocator.ShortcutAndFontSetting.ConclusionScreenKeys.Sign})";
             }
             else
             {
@@ -364,6 +354,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 _btnPrint.Enabled = false;
                 _btnSignature.Enabled = false;
             }
+
+            ApplyConclusionEditability();
         }
 
         /// <summary>
@@ -375,9 +367,6 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         {
             try
             {
-                string path = Path.Combine($"{_baseFolder}\\BenhNhan\\{_machidinh}", FileNameXMLImage);
-                XmlSettingsHelper.EnsureFileExists(path, () => new System.Collections.Generic.List<string>());
-                listImageKeyLocal = XmlSettingsHelper.Load<System.Collections.Generic.List<string>>(path);
             }
             catch (Exception ex)
             {

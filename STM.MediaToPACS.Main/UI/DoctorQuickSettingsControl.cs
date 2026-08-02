@@ -14,7 +14,7 @@ namespace STM.MediaToPACS.Main.UI
         private readonly TextBox _gatewayTextBox;
         private readonly TextBox _hisPaymentTextBox;
         private readonly TextBox _fileStoragePathTextBox;
-        private readonly Button _browseFileStoragePathButton;
+        private readonly SimpleButton _browseFileStoragePathButton;
         private readonly RichTextBox _modalitiesTextBox;
         private readonly string _systemConfigPath;
         private readonly string _modalitiesPath;
@@ -26,7 +26,7 @@ namespace STM.MediaToPACS.Main.UI
             BackColor = Color.White;
             Dock = DockStyle.Fill;
             Font = new Font("Segoe UI", 10F);
-            Padding = new Padding(24, 18, 24, 18);
+            Padding = new Padding(24, 16, 24, 18);
 
             string basePath = ServiceLocator.GetAppDataBasePath();
             var fileSettings = FileStorageSettingsProvider.Current;
@@ -36,7 +36,7 @@ namespace STM.MediaToPACS.Main.UI
             _gatewayTextBox = CreateTextBox();
             _hisPaymentTextBox = CreateTextBox();
             _fileStoragePathTextBox = CreateTextBox();
-            _browseFileStoragePathButton = CreateButton("...", Color.White, Color.FromArgb(55, 65, 81));
+            _browseFileStoragePathButton = CreateButton("...");
             _browseFileStoragePathButton.Size = new Size(38, 30);
             _browseFileStoragePathButton.Click += BrowseFileStoragePathButton_Click;
             _modalitiesTextBox = new RichTextBox
@@ -71,8 +71,8 @@ namespace STM.MediaToPACS.Main.UI
                 RowCount = 13
             };
             layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36F));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 46F));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
@@ -85,9 +85,9 @@ namespace STM.MediaToPACS.Main.UI
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 12F));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
 
-            var title = CreateLabel("Cấu hình hệ thống", 14F, FontStyle.Bold);
+            var title = CreateLabel("Kết nối dịch vụ", 12F, FontStyle.Bold);
             var description = CreateLabel(
-                "Thiết lập các kết nối cần thiết trước khi tiếp tục.", 9.5F, FontStyle.Regular);
+                "Cập nhật các thông số kết nối đang sử dụng.", 9F, FontStyle.Regular);
             description.ForeColor = Color.FromArgb(91, 100, 110);
 
             layout.Controls.Add(title, 0, 0);
@@ -113,10 +113,9 @@ namespace STM.MediaToPACS.Main.UI
                 Margin = Padding.Empty,
                 WrapContents = false
             };
-            var saveButton = CreateButton("Lưu cấu hình", Color.FromArgb(15, 72, 116), Color.White);
+            var saveButton = CreateButton("Lưu cấu hình");
             saveButton.Click += SaveButton_Click;
-            var cancelButton = CreateButton("Hủy", Color.White, Color.FromArgb(55, 65, 81));
-            cancelButton.FlatAppearance.BorderColor = Color.FromArgb(198, 207, 216);
+            var cancelButton = CreateButton("Hủy");
             cancelButton.Click += (sender, args) => CloseRequested?.Invoke(this, EventArgs.Empty);
             buttons.Controls.Add(saveButton);
             buttons.Controls.Add(cancelButton);
@@ -225,20 +224,20 @@ namespace STM.MediaToPACS.Main.UI
             };
         }
 
-        private static Button CreateButton(string text, Color backColor, Color foreColor)
+        private static SimpleButton CreateButton(string text)
         {
-            return new Button
+            var button = new SimpleButton
             {
-                BackColor = backColor,
+                AllowFocus = false,
                 Cursor = Cursors.Hand,
-                FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold),
-                ForeColor = foreColor,
                 Margin = new Padding(8, 2, 0, 2),
                 Size = new Size(120, 38),
-                Text = text,
-                UseVisualStyleBackColor = false
+                Text = text
             };
+            button.Appearance.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            button.Appearance.Options.UseFont = true;
+
+            return button;
         }
 
         private void InitializeComponent()

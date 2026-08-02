@@ -75,7 +75,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private async Task<byte[]> GetPdfBytesForPrintAsync()
         {
-            if (_kqChanDoanResponse.TrangThai == TrangThaiKetLuan.HOAN_THANH)
+            if (IsConclusionCompleted())
                 return await ServiceLocator.RisService.TaiFileKetQuaChanDoanAsync(_machidinh);
 
             return await GeneratePdfFromTemplateAsync();
@@ -157,7 +157,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private async Task<byte[]> GetPdfBytesForPreviewAsync()
         {
-            if (_kqChanDoanResponse.TrangThai == TrangThaiKetLuan.HOAN_THANH)
+            if (IsConclusionCompleted())
             {
                 var pdfBytes = await ServiceLocator.RisService.TaiFileKetQuaChanDoanAsync(_machidinh);
                 if (pdfBytes != null && pdfBytes.Length > 0)

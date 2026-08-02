@@ -7,9 +7,8 @@ namespace STM.MediaToPACS.Main.UI
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
+
             base.Dispose(disposing);
         }
 
@@ -17,118 +16,305 @@ namespace STM.MediaToPACS.Main.UI
 
         private void InitializeComponent()
         {
-            this.panelHeader = new System.Windows.Forms.Panel();
-            this.btnSystemSettings = new System.Windows.Forms.Button();
+            this.rootPanel = new DevExpress.XtraEditors.PanelControl();
+            this.mainLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.leftPanel = new DevExpress.XtraEditors.PanelControl();
+            this.brandPanel = new System.Windows.Forms.Panel();
             this.lblHeaderTitle = new DevExpress.XtraEditors.LabelControl();
-            this.lblHeaderSubtitle = new DevExpress.XtraEditors.LabelControl();
-            this.panelBody = new DevExpress.XtraEditors.PanelControl();
-            this.cboKhoa = new DevExpress.XtraEditors.LookUpEdit();
-            this.btnReloadKhoa = new System.Windows.Forms.Button();
-            this.lblKhoaError = new DevExpress.XtraEditors.LabelControl();
-            this.lblCapKhoa = new DevExpress.XtraEditors.LabelControl();
-            this.separator = new System.Windows.Forms.Panel();
-            this.lblEmailValue = new DevExpress.XtraEditors.LabelControl();
-            this.lblCapEmail = new DevExpress.XtraEditors.LabelControl();
-            this.lblDoctorCodeValue = new DevExpress.XtraEditors.LabelControl();
+            this.picLogo = new System.Windows.Forms.PictureBox();
+            this.rightPanel = new DevExpress.XtraEditors.PanelControl();
+            this.lblRightTitle = new DevExpress.XtraEditors.LabelControl();
+            this.lblRightSubtitle = new DevExpress.XtraEditors.LabelControl();
+            this.btnSystemSettings = new DevExpress.XtraEditors.SimpleButton();
+            this.detailPanel = new DevExpress.XtraEditors.PanelControl();
+            this.detailLayout = new System.Windows.Forms.TableLayoutPanel();
             this.lblCapCode = new DevExpress.XtraEditors.LabelControl();
-            this.lblDoctorNameValue = new DevExpress.XtraEditors.LabelControl();
+            this.lblDoctorCodeValue = new DevExpress.XtraEditors.LabelControl();
             this.lblCapName = new DevExpress.XtraEditors.LabelControl();
-            this.panelFooter = new System.Windows.Forms.Panel();
-            this.btnContinue = new System.Windows.Forms.Button();
-            this.panelHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelBody)).BeginInit();
-            this.panelBody.SuspendLayout();
+            this.lblDoctorNameValue = new DevExpress.XtraEditors.LabelControl();
+            this.lblCapKhoa = new DevExpress.XtraEditors.LabelControl();
+            this.khoaLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.cboKhoa = new DevExpress.XtraEditors.LookUpEdit();
+            this.btnReloadKhoa = new DevExpress.XtraEditors.SimpleButton();
+            this.lblKhoaError = new DevExpress.XtraEditors.LabelControl();
+            this.btnContinue = new DevExpress.XtraEditors.SimpleButton();
+            this.lblHeaderSubtitle = new DevExpress.XtraEditors.LabelControl();
+            this.lblCapEmail = new DevExpress.XtraEditors.LabelControl();
+            this.lblEmailValue = new DevExpress.XtraEditors.LabelControl();
+            this.separator = new System.Windows.Forms.Panel();
+            this.panelFooter = new DevExpress.XtraEditors.PanelControl();
+            ((System.ComponentModel.ISupportInitialize)(this.rootPanel)).BeginInit();
+            this.rootPanel.SuspendLayout();
+            this.mainLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.leftPanel)).BeginInit();
+            this.leftPanel.SuspendLayout();
+            this.brandPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rightPanel)).BeginInit();
+            this.rightPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.detailPanel)).BeginInit();
+            this.detailPanel.SuspendLayout();
+            this.detailLayout.SuspendLayout();
+            this.khoaLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboKhoa.Properties)).BeginInit();
-            this.panelFooter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelFooter)).BeginInit();
             this.SuspendLayout();
-            //
-            // panelHeader
-            //
-            this.panelHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(72)))), ((int)(((byte)(116)))));
-            this.panelHeader.Controls.Add(this.lblHeaderTitle);
-            this.panelHeader.Controls.Add(this.lblHeaderSubtitle);
-            this.panelHeader.Controls.Add(this.btnSystemSettings);
-            this.panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelHeader.Location = new System.Drawing.Point(0, 0);
-            this.panelHeader.Name = "panelHeader";
-            this.panelHeader.Size = new System.Drawing.Size(1120, 104);
-            this.panelHeader.TabIndex = 0;
             // 
-            // btnSystemSettings
-            //
-            this.btnSystemSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(91)))), ((int)(((byte)(139)))));
-            this.btnSystemSettings.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSystemSettings.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(92)))), ((int)(((byte)(145)))), ((int)(((byte)(181)))));
-            this.btnSystemSettings.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(9)))), ((int)(((byte)(52)))), ((int)(((byte)(86)))));
-            this.btnSystemSettings.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(107)))), ((int)(((byte)(157)))));
-            this.btnSystemSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSystemSettings.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.btnSystemSettings.ForeColor = System.Drawing.Color.White;
-            this.btnSystemSettings.Location = new System.Drawing.Point(24, 24);
-            this.btnSystemSettings.Name = "btnSystemSettings";
-            this.btnSystemSettings.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            this.btnSystemSettings.Size = new System.Drawing.Size(132, 42);
-            this.btnSystemSettings.TabIndex = 0;
-            this.btnSystemSettings.Text = "Cài đặt";
-            this.btnSystemSettings.UseVisualStyleBackColor = false;
-            this.btnSystemSettings.Click += new System.EventHandler(this.btnSystemSettings_Click);
-            //
+            // rootPanel
+            // 
+            this.rootPanel.Appearance.BackColor = System.Drawing.Color.White;
+            this.rootPanel.Appearance.Options.UseBackColor = true;
+            this.rootPanel.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            this.rootPanel.Controls.Add(this.mainLayout);
+            this.rootPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rootPanel.Location = new System.Drawing.Point(0, 0);
+            this.rootPanel.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.rootPanel.Name = "rootPanel";
+            this.rootPanel.Size = new System.Drawing.Size(800, 480);
+            this.rootPanel.TabIndex = 0;
+            // 
+            // mainLayout
+            // 
+            this.mainLayout.ColumnCount = 2;
+            this.mainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52F));
+            this.mainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 48F));
+            this.mainLayout.Controls.Add(this.leftPanel, 0, 0);
+            this.mainLayout.Controls.Add(this.rightPanel, 1, 0);
+            this.mainLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainLayout.Location = new System.Drawing.Point(2, 2);
+            this.mainLayout.Margin = new System.Windows.Forms.Padding(0);
+            this.mainLayout.Name = "mainLayout";
+            this.mainLayout.RowCount = 1;
+            this.mainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.mainLayout.Size = new System.Drawing.Size(796, 476);
+            this.mainLayout.TabIndex = 0;
+            // 
+            // leftPanel
+            // 
+            this.leftPanel.Appearance.BackColor = System.Drawing.Color.White;
+            this.leftPanel.Appearance.Options.UseBackColor = true;
+            this.leftPanel.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.leftPanel.Controls.Add(this.separator);
+            this.leftPanel.Controls.Add(this.brandPanel);
+            this.leftPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.leftPanel.Location = new System.Drawing.Point(0, 0);
+            this.leftPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.leftPanel.Name = "leftPanel";
+            this.leftPanel.Padding = new System.Windows.Forms.Padding(28);
+            this.leftPanel.Size = new System.Drawing.Size(413, 476);
+            this.leftPanel.TabIndex = 0;
+            // 
+            // brandPanel
+            // 
+            this.brandPanel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.brandPanel.Controls.Add(this.lblHeaderSubtitle);
+            this.brandPanel.Controls.Add(this.lblHeaderTitle);
+            this.brandPanel.Controls.Add(this.picLogo);
+            this.brandPanel.Location = new System.Drawing.Point(24, 180);
+            this.brandPanel.Name = "brandPanel";
+            this.brandPanel.Size = new System.Drawing.Size(360, 110);
+            this.brandPanel.TabIndex = 0;
+            // 
             // lblHeaderTitle
             // 
-            this.lblHeaderTitle.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold);
-            this.lblHeaderTitle.Appearance.ForeColor = System.Drawing.Color.White;
+            this.lblHeaderTitle.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.lblHeaderTitle.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(72)))), ((int)(((byte)(116)))));
             this.lblHeaderTitle.Appearance.Options.UseFont = true;
             this.lblHeaderTitle.Appearance.Options.UseForeColor = true;
-            this.lblHeaderTitle.Appearance.Options.UseTextOptions = true;
-            this.lblHeaderTitle.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
             this.lblHeaderTitle.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblHeaderTitle.Location = new System.Drawing.Point(184, 18);
+            this.lblHeaderTitle.Location = new System.Drawing.Point(88, 24);
             this.lblHeaderTitle.Name = "lblHeaderTitle";
-            this.lblHeaderTitle.Size = new System.Drawing.Size(900, 28);
+            this.lblHeaderTitle.Size = new System.Drawing.Size(268, 30);
             this.lblHeaderTitle.TabIndex = 1;
-            this.lblHeaderTitle.Text = "BỆNH VIỆN QUÂN Y 120";
+            this.lblHeaderTitle.Text = "Bệnh Viện Quân Y 120 - Quân Khu 9";
             // 
-            // lblHeaderSubtitle
+            // picLogo
             // 
-            this.lblHeaderSubtitle.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.lblHeaderSubtitle.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(214)))), ((int)(((byte)(230)))), ((int)(((byte)(242)))));
-            this.lblHeaderSubtitle.Appearance.Options.UseFont = true;
-            this.lblHeaderSubtitle.Appearance.Options.UseForeColor = true;
-            this.lblHeaderSubtitle.Appearance.Options.UseTextOptions = true;
-            this.lblHeaderSubtitle.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            this.lblHeaderSubtitle.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblHeaderSubtitle.Location = new System.Drawing.Point(185, 52);
-            this.lblHeaderSubtitle.Name = "lblHeaderSubtitle";
-            this.lblHeaderSubtitle.Size = new System.Drawing.Size(899, 22);
-            this.lblHeaderSubtitle.TabIndex = 2;
-            this.lblHeaderSubtitle.Text = "Xác nhận thông tin bác sĩ trước khi tiếp tục";
+            this.picLogo.Image = global::STM.MediaToPACS.Main.Properties.Resources.logo120;
+            this.picLogo.Location = new System.Drawing.Point(0, 16);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(72, 72);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLogo.TabIndex = 0;
+            this.picLogo.TabStop = false;
             // 
-            // panelBody
+            // rightPanel
             // 
-            this.panelBody.Appearance.BackColor = System.Drawing.Color.White;
-            this.panelBody.Appearance.Options.UseBackColor = true;
-            this.panelBody.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelBody.Controls.Add(this.lblKhoaError);
-            this.panelBody.Controls.Add(this.btnReloadKhoa);
-            this.panelBody.Controls.Add(this.cboKhoa);
-            this.panelBody.Controls.Add(this.lblCapKhoa);
-            this.panelBody.Controls.Add(this.separator);
-            this.panelBody.Controls.Add(this.lblEmailValue);
-            this.panelBody.Controls.Add(this.lblCapEmail);
-            this.panelBody.Controls.Add(this.lblDoctorCodeValue);
-            this.panelBody.Controls.Add(this.lblCapCode);
-            this.panelBody.Controls.Add(this.lblDoctorNameValue);
-            this.panelBody.Controls.Add(this.lblCapName);
-            this.panelBody.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelBody.Location = new System.Drawing.Point(0, 104);
-            this.panelBody.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelBody.Name = "panelBody";
-            this.panelBody.Size = new System.Drawing.Size(1120, 506);
-            this.panelBody.TabIndex = 1;
+            this.rightPanel.Appearance.BackColor = System.Drawing.Color.White;
+            this.rightPanel.Appearance.Options.UseBackColor = true;
+            this.rightPanel.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.rightPanel.Controls.Add(this.lblRightSubtitle);
+            this.rightPanel.Controls.Add(this.lblRightTitle);
+            this.rightPanel.Controls.Add(this.btnSystemSettings);
+            this.rightPanel.Controls.Add(this.detailPanel);
+            this.rightPanel.Controls.Add(this.btnContinue);
+            this.rightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rightPanel.Location = new System.Drawing.Point(413, 0);
+            this.rightPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.rightPanel.Name = "rightPanel";
+            this.rightPanel.Padding = new System.Windows.Forms.Padding(26, 24, 26, 24);
+            this.rightPanel.Size = new System.Drawing.Size(383, 476);
+            this.rightPanel.TabIndex = 1;
+            // 
+            // lblRightTitle
+            // 
+            this.lblRightTitle.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            this.lblRightTitle.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(24)))), ((int)(((byte)(39)))));
+            this.lblRightTitle.Appearance.Options.UseFont = true;
+            this.lblRightTitle.Appearance.Options.UseForeColor = true;
+            this.lblRightTitle.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblRightTitle.Location = new System.Drawing.Point(18, 28);
+            this.lblRightTitle.Name = "lblRightTitle";
+            this.lblRightTitle.Size = new System.Drawing.Size(200, 28);
+            this.lblRightTitle.TabIndex = 3;
+            this.lblRightTitle.Text = "Xác nhận phiên làm việc";
+            // 
+            // lblRightSubtitle
+            // 
+            this.lblRightSubtitle.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.lblRightSubtitle.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(100)))), ((int)(((byte)(110)))));
+            this.lblRightSubtitle.Appearance.Options.UseFont = true;
+            this.lblRightSubtitle.Appearance.Options.UseForeColor = true;
+            this.lblRightSubtitle.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblRightSubtitle.Location = new System.Drawing.Point(19, 56);
+            this.lblRightSubtitle.Name = "lblRightSubtitle";
+            this.lblRightSubtitle.Size = new System.Drawing.Size(224, 20);
+            this.lblRightSubtitle.TabIndex = 4;
+            this.lblRightSubtitle.Text = "Kiểm tra bác sĩ và khoa trước khi tiếp tục";
+            // 
+            // btnSystemSettings
+            // 
+            this.btnSystemSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSystemSettings.AllowFocus = false;
+            this.btnSystemSettings.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSystemSettings.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSystemSettings.Appearance.Options.UseFont = true;
+            this.btnSystemSettings.ImageOptions.Image = global::STM.MediaToPACS.Main.Properties.Resources.properties_16x16;
+            this.btnSystemSettings.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnSystemSettings.Location = new System.Drawing.Point(260, 31);
+            this.btnSystemSettings.Name = "btnSystemSettings";
+            this.btnSystemSettings.Size = new System.Drawing.Size(98, 30);
+            this.btnSystemSettings.TabIndex = 0;
+            this.btnSystemSettings.Text = "Cài đặt";
+            this.btnSystemSettings.Click += new System.EventHandler(this.btnSystemSettings_Click);
+            // 
+            // detailPanel
+            // 
+            this.detailPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.detailPanel.Appearance.BackColor = System.Drawing.Color.White;
+            this.detailPanel.Appearance.Options.UseBackColor = true;
+            this.detailPanel.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.detailPanel.Controls.Add(this.lblCapEmail);
+            this.detailPanel.Controls.Add(this.detailLayout);
+            this.detailPanel.Location = new System.Drawing.Point(18, 116);
+            this.detailPanel.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.detailPanel.Name = "detailPanel";
+            this.detailPanel.Padding = new System.Windows.Forms.Padding(0);
+            this.detailPanel.Size = new System.Drawing.Size(340, 234);
+            this.detailPanel.TabIndex = 1;
+            // 
+            // detailLayout
+            // 
+            this.detailLayout.ColumnCount = 1;
+            this.detailLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.detailLayout.Controls.Add(this.lblCapCode, 0, 0);
+            this.detailLayout.Controls.Add(this.lblDoctorCodeValue, 0, 1);
+            this.detailLayout.Controls.Add(this.lblCapName, 0, 2);
+            this.detailLayout.Controls.Add(this.lblDoctorNameValue, 0, 3);
+            this.detailLayout.Controls.Add(this.lblCapKhoa, 0, 4);
+            this.detailLayout.Controls.Add(this.khoaLayout, 0, 5);
+            this.detailLayout.Controls.Add(this.lblKhoaError, 0, 6);
+            this.detailLayout.Dock = System.Windows.Forms.DockStyle.Top;
+            this.detailLayout.Location = new System.Drawing.Point(0, 42);
+            this.detailLayout.Name = "detailLayout";
+            this.detailLayout.RowCount = 7;
+            this.detailLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.detailLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.detailLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.detailLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.detailLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
+            this.detailLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.detailLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
+            this.detailLayout.Size = new System.Drawing.Size(340, 192);
+            this.detailLayout.TabIndex = 0;
+            // 
+            // lblCapCode
+            // 
+            this.lblCapCode.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblCapCode.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(100)))), ((int)(((byte)(110)))));
+            this.lblCapCode.Appearance.Options.UseFont = true;
+            this.lblCapCode.Appearance.Options.UseForeColor = true;
+            this.lblCapCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblCapCode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCapCode.TabIndex = 0;
+            this.lblCapCode.Text = "Mã bác sĩ";
+            // 
+            // lblDoctorCodeValue
+            // 
+            this.lblDoctorCodeValue.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
+            this.lblDoctorCodeValue.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(24)))), ((int)(((byte)(39)))));
+            this.lblDoctorCodeValue.Appearance.Options.UseFont = true;
+            this.lblDoctorCodeValue.Appearance.Options.UseForeColor = true;
+            this.lblDoctorCodeValue.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblDoctorCodeValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDoctorCodeValue.TabIndex = 1;
+            this.lblDoctorCodeValue.Text = "-";
+            // 
+            // lblCapName
+            // 
+            this.lblCapName.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblCapName.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(100)))), ((int)(((byte)(110)))));
+            this.lblCapName.Appearance.Options.UseFont = true;
+            this.lblCapName.Appearance.Options.UseForeColor = true;
+            this.lblCapName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblCapName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCapName.TabIndex = 2;
+            this.lblCapName.Text = "Tên bác sĩ";
+            // 
+            // lblDoctorNameValue
+            // 
+            this.lblDoctorNameValue.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
+            this.lblDoctorNameValue.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(24)))), ((int)(((byte)(39)))));
+            this.lblDoctorNameValue.Appearance.Options.UseFont = true;
+            this.lblDoctorNameValue.Appearance.Options.UseForeColor = true;
+            this.lblDoctorNameValue.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblDoctorNameValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDoctorNameValue.TabIndex = 3;
+            this.lblDoctorNameValue.Text = "-";
+            // 
+            // lblCapKhoa
+            // 
+            this.lblCapKhoa.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblCapKhoa.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(100)))), ((int)(((byte)(110)))));
+            this.lblCapKhoa.Appearance.Options.UseFont = true;
+            this.lblCapKhoa.Appearance.Options.UseForeColor = true;
+            this.lblCapKhoa.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblCapKhoa.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCapKhoa.TabIndex = 4;
+            this.lblCapKhoa.Text = "Chọn khoa";
+            // 
+            // khoaLayout
+            // 
+            this.khoaLayout.ColumnCount = 2;
+            this.khoaLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.khoaLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.khoaLayout.Controls.Add(this.cboKhoa, 0, 0);
+            this.khoaLayout.Controls.Add(this.btnReloadKhoa, 1, 0);
+            this.khoaLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.khoaLayout.Location = new System.Drawing.Point(0, 122);
+            this.khoaLayout.Margin = new System.Windows.Forms.Padding(0);
+            this.khoaLayout.Name = "khoaLayout";
+            this.khoaLayout.RowCount = 1;
+            this.khoaLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.khoaLayout.Size = new System.Drawing.Size(340, 38);
+            this.khoaLayout.TabIndex = 5;
             // 
             // cboKhoa
             // 
-            this.cboKhoa.Location = new System.Drawing.Point(246, 290);
+            this.cboKhoa.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cboKhoa.Location = new System.Drawing.Point(0, 5);
+            this.cboKhoa.Margin = new System.Windows.Forms.Padding(0, 5, 8, 5);
             this.cboKhoa.Name = "cboKhoa";
             this.cboKhoa.Properties.Appearance.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cboKhoa.Properties.Appearance.Options.UseFont = true;
@@ -137,23 +323,21 @@ namespace STM.MediaToPACS.Main.UI
             this.cboKhoa.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboKhoa.Properties.NullText = "-- Chọn khoa --";
-            this.cboKhoa.Size = new System.Drawing.Size(587, 28);
-            this.cboKhoa.TabIndex = 8;
+            this.cboKhoa.Size = new System.Drawing.Size(294, 24);
+            this.cboKhoa.TabIndex = 0;
             // 
             // btnReloadKhoa
             // 
-            this.btnReloadKhoa.BackColor = System.Drawing.Color.White;
+            this.btnReloadKhoa.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnReloadKhoa.AllowFocus = false;
+            this.btnReloadKhoa.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.btnReloadKhoa.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnReloadKhoa.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(207)))), ((int)(((byte)(216)))));
-            this.btnReloadKhoa.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(235)))), ((int)(((byte)(241)))));
-            this.btnReloadKhoa.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(249)))));
-            this.btnReloadKhoa.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReloadKhoa.Image = global::STM.MediaToPACS.Main.Properties.Resources.refresh_16x16;
-            this.btnReloadKhoa.Location = new System.Drawing.Point(841, 290);
+            this.btnReloadKhoa.ImageOptions.Image = global::STM.MediaToPACS.Main.Properties.Resources.refresh_16x16;
+            this.btnReloadKhoa.Location = new System.Drawing.Point(302, 4);
+            this.btnReloadKhoa.Margin = new System.Windows.Forms.Padding(0, 4, 0, 4);
             this.btnReloadKhoa.Name = "btnReloadKhoa";
-            this.btnReloadKhoa.Size = new System.Drawing.Size(32, 28);
-            this.btnReloadKhoa.TabIndex = 9;
-            this.btnReloadKhoa.UseVisualStyleBackColor = false;
+            this.btnReloadKhoa.Size = new System.Drawing.Size(38, 30);
+            this.btnReloadKhoa.TabIndex = 1;
             this.btnReloadKhoa.Click += new System.EventHandler(this.btnReloadKhoa_Click);
             // 
             // lblKhoaError
@@ -163,182 +347,129 @@ namespace STM.MediaToPACS.Main.UI
             this.lblKhoaError.Appearance.Options.UseFont = true;
             this.lblKhoaError.Appearance.Options.UseForeColor = true;
             this.lblKhoaError.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblKhoaError.Location = new System.Drawing.Point(246, 326);
+            this.lblKhoaError.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblKhoaError.Location = new System.Drawing.Point(0, 160);
+            this.lblKhoaError.Margin = new System.Windows.Forms.Padding(0);
             this.lblKhoaError.Name = "lblKhoaError";
-            this.lblKhoaError.Size = new System.Drawing.Size(627, 40);
-            this.lblKhoaError.TabIndex = 10;
-            this.lblKhoaError.Text = "";
+            this.lblKhoaError.Size = new System.Drawing.Size(340, 42);
+            this.lblKhoaError.TabIndex = 6;
             this.lblKhoaError.Visible = false;
             // 
-            // lblCapKhoa
+            // btnContinue
             // 
-            this.lblCapKhoa.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.lblCapKhoa.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(100)))), ((int)(((byte)(110)))));
-            this.lblCapKhoa.Appearance.Options.UseFont = true;
-            this.lblCapKhoa.Appearance.Options.UseForeColor = true;
-            this.lblCapKhoa.Appearance.Options.UseTextOptions = true;
-            this.lblCapKhoa.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lblCapKhoa.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblCapKhoa.Location = new System.Drawing.Point(104, 293);
-            this.lblCapKhoa.Name = "lblCapKhoa";
-            this.lblCapKhoa.Size = new System.Drawing.Size(120, 24);
-            this.lblCapKhoa.TabIndex = 7;
-            this.lblCapKhoa.Text = "Khoa:";
+            this.btnContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.btnContinue.AllowFocus = false;
+            this.btnContinue.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnContinue.Appearance.Options.UseFont = true;
+            this.btnContinue.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnContinue.Location = new System.Drawing.Point(252, 414);
+            this.btnContinue.Name = "btnContinue";
+            this.btnContinue.Size = new System.Drawing.Size(106, 36);
+            this.btnContinue.TabIndex = 2;
+            this.btnContinue.Text = "Tiếp tục";
+            this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
+            // 
+            // lblHeaderSubtitle
+            // 
+            this.lblHeaderSubtitle.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblHeaderSubtitle.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.lblHeaderSubtitle.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(100)))), ((int)(((byte)(110)))));
+            this.lblHeaderSubtitle.Appearance.Options.UseFont = true;
+            this.lblHeaderSubtitle.Appearance.Options.UseForeColor = true;
+            this.lblHeaderSubtitle.Location = new System.Drawing.Point(89, 55);
+            this.lblHeaderSubtitle.Name = "lblHeaderSubtitle";
+            this.lblHeaderSubtitle.Size = new System.Drawing.Size(220, 24);
+            this.lblHeaderSubtitle.TabIndex = 2;
+            this.lblHeaderSubtitle.Text = "Stm MediaToPacs - v1.1";
+            // 
+            // lblCapEmail
+            // 
+            this.lblCapEmail.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblCapEmail.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCapEmail.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(72)))), ((int)(((byte)(116)))));
+            this.lblCapEmail.Appearance.Options.UseFont = true;
+            this.lblCapEmail.Appearance.Options.UseForeColor = true;
+            this.lblCapEmail.Location = new System.Drawing.Point(0, 0);
+            this.lblCapEmail.Name = "lblCapEmail";
+            this.lblCapEmail.Size = new System.Drawing.Size(260, 26);
+            this.lblCapEmail.TabIndex = 1;
+            this.lblCapEmail.Text = "Thông tin xác nhận";
+            // 
+            // lblEmailValue
+            // 
+            this.lblEmailValue.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblEmailValue.Location = new System.Drawing.Point(0, 0);
+            this.lblEmailValue.Name = "lblEmailValue";
+            this.lblEmailValue.Size = new System.Drawing.Size(0, 0);
+            this.lblEmailValue.TabIndex = 0;
+            this.lblEmailValue.Visible = false;
             // 
             // separator
             // 
             this.separator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
-            this.separator.Location = new System.Drawing.Point(104, 250);
+            this.separator.Dock = System.Windows.Forms.DockStyle.Right;
+            this.separator.Location = new System.Drawing.Point(412, 28);
             this.separator.Name = "separator";
-            this.separator.Size = new System.Drawing.Size(769, 1);
-            this.separator.TabIndex = 6;
-            // 
-            // lblEmailValue
-            // 
-            this.lblEmailValue.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.lblEmailValue.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
-            this.lblEmailValue.Appearance.Options.UseFont = true;
-            this.lblEmailValue.Appearance.Options.UseForeColor = true;
-            this.lblEmailValue.Appearance.Options.UseTextOptions = true;
-            this.lblEmailValue.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            this.lblEmailValue.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblEmailValue.Location = new System.Drawing.Point(246, 179);
-            this.lblEmailValue.Name = "lblEmailValue";
-            this.lblEmailValue.Size = new System.Drawing.Size(627, 24);
-            this.lblEmailValue.TabIndex = 5;
-            this.lblEmailValue.Text = "-";
-            // 
-            // lblCapEmail
-            // 
-            this.lblCapEmail.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.lblCapEmail.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(100)))), ((int)(((byte)(110)))));
-            this.lblCapEmail.Appearance.Options.UseFont = true;
-            this.lblCapEmail.Appearance.Options.UseForeColor = true;
-            this.lblCapEmail.Appearance.Options.UseTextOptions = true;
-            this.lblCapEmail.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lblCapEmail.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblCapEmail.Location = new System.Drawing.Point(104, 179);
-            this.lblCapEmail.Name = "lblCapEmail";
-            this.lblCapEmail.Size = new System.Drawing.Size(120, 24);
-            this.lblCapEmail.TabIndex = 4;
-            this.lblCapEmail.Text = "Email:";
-            // 
-            // lblDoctorCodeValue
-            // 
-            this.lblDoctorCodeValue.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.lblDoctorCodeValue.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
-            this.lblDoctorCodeValue.Appearance.Options.UseFont = true;
-            this.lblDoctorCodeValue.Appearance.Options.UseForeColor = true;
-            this.lblDoctorCodeValue.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblDoctorCodeValue.Location = new System.Drawing.Point(246, 124);
-            this.lblDoctorCodeValue.Name = "lblDoctorCodeValue";
-            this.lblDoctorCodeValue.Size = new System.Drawing.Size(627, 24);
-            this.lblDoctorCodeValue.TabIndex = 3;
-            this.lblDoctorCodeValue.Text = "-";
-            // 
-            // lblCapCode
-            // 
-            this.lblCapCode.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.lblCapCode.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(100)))), ((int)(((byte)(110)))));
-            this.lblCapCode.Appearance.Options.UseFont = true;
-            this.lblCapCode.Appearance.Options.UseForeColor = true;
-            this.lblCapCode.Appearance.Options.UseTextOptions = true;
-            this.lblCapCode.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lblCapCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblCapCode.Location = new System.Drawing.Point(104, 124);
-            this.lblCapCode.Name = "lblCapCode";
-            this.lblCapCode.Size = new System.Drawing.Size(120, 24);
-            this.lblCapCode.TabIndex = 2;
-            this.lblCapCode.Text = "Mã bác sĩ:";
-            // 
-            // lblDoctorNameValue
-            // 
-            this.lblDoctorNameValue.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
-            this.lblDoctorNameValue.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(24)))), ((int)(((byte)(39)))));
-            this.lblDoctorNameValue.Appearance.Options.UseFont = true;
-            this.lblDoctorNameValue.Appearance.Options.UseForeColor = true;
-            this.lblDoctorNameValue.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblDoctorNameValue.Location = new System.Drawing.Point(246, 69);
-            this.lblDoctorNameValue.Name = "lblDoctorNameValue";
-            this.lblDoctorNameValue.Size = new System.Drawing.Size(627, 26);
-            this.lblDoctorNameValue.TabIndex = 1;
-            this.lblDoctorNameValue.Text = "-";
-            // 
-            // lblCapName
-            // 
-            this.lblCapName.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.lblCapName.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(100)))), ((int)(((byte)(110)))));
-            this.lblCapName.Appearance.Options.UseFont = true;
-            this.lblCapName.Appearance.Options.UseForeColor = true;
-            this.lblCapName.Appearance.Options.UseTextOptions = true;
-            this.lblCapName.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lblCapName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblCapName.Location = new System.Drawing.Point(104, 70);
-            this.lblCapName.Name = "lblCapName";
-            this.lblCapName.Size = new System.Drawing.Size(120, 24);
-            this.lblCapName.TabIndex = 0;
-            this.lblCapName.Text = "Họ và tên:";
+            this.separator.Size = new System.Drawing.Size(1, 420);
+            this.separator.TabIndex = 0;
             // 
             // panelFooter
             // 
-            this.panelFooter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(251)))));
-            this.panelFooter.Controls.Add(this.btnContinue);
-            this.panelFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelFooter.Location = new System.Drawing.Point(0, 610);
+            this.panelFooter.Location = new System.Drawing.Point(0, 0);
             this.panelFooter.Name = "panelFooter";
-            this.panelFooter.Size = new System.Drawing.Size(1120, 70);
-            this.panelFooter.TabIndex = 2;
-            // 
-            // btnContinue
-            // 
-            this.btnContinue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(72)))), ((int)(((byte)(116)))));
-            this.btnContinue.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnContinue.FlatAppearance.BorderSize = 0;
-            this.btnContinue.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(9)))), ((int)(((byte)(52)))), ((int)(((byte)(86)))));
-            this.btnContinue.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(88)))), ((int)(((byte)(140)))));
-            this.btnContinue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnContinue.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.btnContinue.ForeColor = System.Drawing.Color.White;
-            this.btnContinue.Location = new System.Drawing.Point(946, 16);
-            this.btnContinue.Name = "btnContinue";
-            this.btnContinue.Size = new System.Drawing.Size(127, 38);
-            this.btnContinue.TabIndex = 0;
-            this.btnContinue.Text = "Tiếp tục";
-            this.btnContinue.UseVisualStyleBackColor = false;
-            this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
+            this.panelFooter.Size = new System.Drawing.Size(0, 0);
+            this.panelFooter.TabIndex = 0;
+            this.panelFooter.Visible = false;
             // 
             // FrmDoctorConfirm
             // 
             this.AcceptButton = this.btnContinue;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1120, 680);
-            this.Controls.Add(this.panelBody);
-            this.Controls.Add(this.panelFooter);
-            this.Controls.Add(this.panelHeader);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(800, 480);
+            this.Controls.Add(this.rootPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(800, 480);
             this.Name = "FrmDoctorConfirm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Xác nhận thông tin";
-            this.panelHeader.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelBody)).EndInit();
-            this.panelBody.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.rootPanel)).EndInit();
+            this.rootPanel.ResumeLayout(false);
+            this.mainLayout.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.leftPanel)).EndInit();
+            this.leftPanel.ResumeLayout(false);
+            this.brandPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rightPanel)).EndInit();
+            this.rightPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.detailPanel)).EndInit();
+            this.detailPanel.ResumeLayout(false);
+            this.detailLayout.ResumeLayout(false);
+            this.khoaLayout.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cboKhoa.Properties)).EndInit();
-            this.panelFooter.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.panelFooter)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panelHeader;
-        private System.Windows.Forms.Button btnSystemSettings;
+        private DevExpress.XtraEditors.PanelControl rootPanel;
+        private System.Windows.Forms.TableLayoutPanel mainLayout;
+        private DevExpress.XtraEditors.PanelControl leftPanel;
+        private System.Windows.Forms.Panel brandPanel;
+        private System.Windows.Forms.PictureBox picLogo;
+        private DevExpress.XtraEditors.PanelControl rightPanel;
+        private DevExpress.XtraEditors.LabelControl lblRightTitle;
+        private DevExpress.XtraEditors.LabelControl lblRightSubtitle;
+        private DevExpress.XtraEditors.PanelControl detailPanel;
+        private System.Windows.Forms.TableLayoutPanel detailLayout;
+        private System.Windows.Forms.TableLayoutPanel khoaLayout;
+        private DevExpress.XtraEditors.SimpleButton btnSystemSettings;
         private DevExpress.XtraEditors.LabelControl lblHeaderTitle;
         private DevExpress.XtraEditors.LabelControl lblHeaderSubtitle;
-        private DevExpress.XtraEditors.PanelControl panelBody;
         private DevExpress.XtraEditors.LabelControl lblCapName;
         private DevExpress.XtraEditors.LabelControl lblDoctorNameValue;
         private DevExpress.XtraEditors.LabelControl lblCapCode;
@@ -348,9 +479,9 @@ namespace STM.MediaToPACS.Main.UI
         private System.Windows.Forms.Panel separator;
         private DevExpress.XtraEditors.LabelControl lblCapKhoa;
         private DevExpress.XtraEditors.LookUpEdit cboKhoa;
-        private System.Windows.Forms.Button btnReloadKhoa;
+        private DevExpress.XtraEditors.SimpleButton btnReloadKhoa;
         private DevExpress.XtraEditors.LabelControl lblKhoaError;
-        private System.Windows.Forms.Panel panelFooter;
-        private System.Windows.Forms.Button btnContinue;
+        private DevExpress.XtraEditors.PanelControl panelFooter;
+        private DevExpress.XtraEditors.SimpleButton btnContinue;
     }
 }

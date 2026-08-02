@@ -24,6 +24,15 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private async void LuuNhap()
         {
+            if (!CanEditConclusion())
+            {
+                MessageBox.Show(this,
+                    "Kết luận đã hoàn thành nên không thể chỉnh sửa. Vui lòng hủy ký số trước khi lưu lại.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ApplyConclusionEditability();
+                return;
+            }
+
             if (_chiDinhDichVuResponse == null || _listThietBi == null || _listThietBi.Count == 0)
             {
                 MessageBox.Show(this,
@@ -36,17 +45,23 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             try
             {
                 _btnSave.Enabled = false;
+                await ReloadAttachmentManifestFromDiskSafeAsync();
 
                 var layoutSelect = _cbbLayout.SelectedItem as ReportTemplateGridViewModel;
                 if (layoutSelect != null)
                     ServiceLocator.ReportCache[_chiDinhDichVuResponse.Modality] = layoutSelect.Id;
 
+                SaveAttachmentManifestFromThumbnails();
+
                 // Legacy RIS endpoint vẫn nhận imageFileKeys dạng base64. Luồng mới dùng
                 // DiagnosticReport attachments làm nguồn chính; danh sách này chỉ giữ tương thích API cũ.
                 List<string> imageSelectedList = new List<string>();
-                listImageKeyLocal = new List<string>();
 
-                var checkedImagePaths = _thumbnailList.GetCheckedFilePaths();
+                var checkedImagePaths = (_attachmentManifest?.items ?? Enumerable.Empty<DiagnosticReportAttachmentManifestItem>())
+                    .Where(item => item.documentSelected && !string.IsNullOrWhiteSpace(item.filePath))
+                    .Select(item => item.filePath)
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToList();
                 var failedImages = new List<string>();
                 foreach (var filePath in checkedImagePaths)
                 {
@@ -54,7 +69,6 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                     {
                         byte[] fileBytes = File.ReadAllBytes(filePath);
                         string base64String = Convert.ToBase64String(fileBytes);
-                        listImageKeyLocal.Add(filePath);
                         imageSelectedList.Add(base64String);
                     }
                     catch (Exception ex)
@@ -136,13 +150,25 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 if (_kqChanDoanResponse != null)
                 {
                     await SyncConclusionToRisV1Async(mota, ketluan, khuyennghi);
-                    await UploadPendingAttachmentsAndSyncDocumentSelectionSafeAsync();
+                    var attachmentsSynced = await UploadPendingAttachmentsAndSyncDocumentSelectionSafeAsync();
 
-                    XmlSettingsHelper.Save(Path.Combine($"{_baseFolder}\\BenhNhan\\{_machidinh}", FileNameXMLImage), listImageKeyLocal);
-                    _btnSignature.Enabled = true;
-                    _btnPreviewMain.Enabled = true;
+                    ApplyConclusionEditability();
                     MessageBox.Show(this, "Lưu Kết Luận Chẩn Đoán Thành Công!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Sync ảnh sang RIS mới là luồng nền best-effort - không báo lên UI để người dùng
+                    // không thấy sự tồn tại của API mới; chỉ ghi log cho người vận hành tra cứu.
+                    if (!attachmentsSynced)
+                    {
+                        Log.Warning(
+                            "Đã lưu kết luận nhưng chưa upload được ảnh chụp sang RIS mới (mã chỉ định {MaChiDinh})",
+                            _machidinh);
+
+                        //MessageBox.Show(this,
+                        //    "Ket luan da luu, nhung anh chup chua duoc upload len RIS. Vui long thu luu lai khi API san sang.",
+                        //    "Anh chup chua upload",
+                        //    MessageBoxButtons.OK,
+                        //    MessageBoxIcon.Warning);
+                    }
                 }
                 else
                 {
@@ -156,7 +182,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             }
             finally
             {
-                _btnSave.Enabled = true;
+                ApplyConclusionEditability();
             }
         }
     }

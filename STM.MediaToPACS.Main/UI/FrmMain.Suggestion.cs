@@ -246,6 +246,7 @@ namespace STM.MediaToPACS.Main
             _paramFormControl.SetData(detail);
             _currentStructuredDetail = detail;
             _paramFormControl.Visible = true;
+            _patientSidebar.SetParamsTabAvailable(true);
             _patientSidebar.ActivateParamsTab();
 
             // Đồng bộ ngay lần đầu để các presetValue xuất hiện trong Mô tả
@@ -297,6 +298,8 @@ namespace STM.MediaToPACS.Main
         private void HideParamForm()
         {
             _currentStructuredDetail = null;
+            // Mẫu đang chọn không có chỉ số - khoá tab để không mở được form rỗng
+            _patientSidebar.SetParamsTabAvailable(false);
             if (_paramFormControl == null)
                 return;
             _paramFormControl.Visible = false;
@@ -387,13 +390,7 @@ namespace STM.MediaToPACS.Main
                 if (_risV1OrderItem == null)
                     return;
 
-                var request = new RisV1UpsertConclusionRequest
-                {
-                    conclusion = ketLuan,
-                    findings = moTa,
-                    recommendation = khuyenNghi,
-                    parameters = BuildParamValuesSnapshot()
-                };
+                var request = BuildRisV1ConclusionRequest(moTa, ketLuan, khuyenNghi);
 
                 await ServiceLocator.RisService2.UpsertOrderItemConclusionAsync(_risV1OrderItem.id, request);
                 Log.Information("Đã sync kết luận sang RIS mới (y lệnh {OrderItemId}, có chỉ số: {HasParams})",
@@ -409,6 +406,35 @@ namespace STM.MediaToPACS.Main
         /// Gom giá trị form chỉ số hiện tại thành input gửi lên RIS mới
         /// (backend tự build Schema B); null nếu không mở form Structured.
         /// </summary>
+        private RisV1UpsertConclusionRequest BuildRisV1ConclusionRequest(string moTa, string ketLuan, string khuyenNghi)
+        {
+            var request = new RisV1UpsertConclusionRequest
+            {
+                conclusion = ketLuan,
+                findings = moTa,
+                recommendation = khuyenNghi,
+                parameters = BuildParamValuesSnapshot()
+            };
+
+            var selectedDevice = _cbbDSThietBi.Properties.GetDataSourceRowByKeyValue(_cbbDSThietBi.EditValue) as DeviceDto;
+            if (selectedDevice != null)
+            {
+                request.deviceId = selectedDevice.id;
+                request.deviceCode = selectedDevice.code;
+                request.deviceName = selectedDevice.name;
+            }
+
+            var selectedTechnologist = _cbbHisUser.Properties.GetDataSourceRowByKeyValue(_cbbHisUser.EditValue) as PractitionerListDto;
+            if (selectedTechnologist != null)
+            {
+                request.technologistPractitionerId = selectedTechnologist.id;
+                request.technologistPractitionerCode = selectedTechnologist.staffCode;
+                request.technologistPractitionerName = selectedTechnologist.fullName;
+            }
+
+            return request;
+        }
+
         private RisV1ReportParamsInput BuildParamValuesSnapshot()
         {
             if (_paramFormControl == null || !_paramFormControl.Visible || _currentStructuredDetail == null)
@@ -475,6 +501,7 @@ namespace STM.MediaToPACS.Main
                 _paramFormControl.SetParamValues(savedValues);
                 _currentStructuredDetail = content.Detail;
                 _paramFormControl.Visible = true;
+                _patientSidebar.SetParamsTabAvailable(true);
 
                 // Khối text chỉ số đã nằm sẵn trong Mô tả lưu từ API cũ - chỉ ghi nhận lại
                 // để lần sửa chỉ số tiếp theo thay đúng khối, không chèn trùng

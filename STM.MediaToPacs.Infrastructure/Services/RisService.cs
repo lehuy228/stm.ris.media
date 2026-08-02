@@ -119,6 +119,7 @@ namespace MediaToPacs.Infrastructure.Services
             return response.IsSuccessStatusCode;
         }
 
+
         public async Task<ScheduleStepRIS> GetLichChupAsync(string machidinh)
         {
             if (string.IsNullOrEmpty(machidinh))
@@ -530,7 +531,7 @@ namespace MediaToPacs.Infrastructure.Services
             var filters = new List<FilterItem>();
 
             if (!string.IsNullOrWhiteSpace(madichvu))
-                filters.Add(new FilterItem { Field = "madichvu", Operator = "contains", Value = madichvu });
+                filters.Add(new FilterItem { Field = "madichvu", Operator = "eq", Value = madichvu });
 
             string filtersJson = JsonConvert.SerializeObject(filters);
             //string encodedFilters = HttpUtility.UrlEncode(filtersJson);

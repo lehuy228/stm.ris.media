@@ -128,8 +128,6 @@ namespace STM.MediaToPACS.Main.UI
             _collapsedStrip.Click += (s, e) => ToggleCollapsed();
 
             Controls.Add(_contentPanel);
-            Controls.Add(_headerPanel);
-            Controls.Add(_collapsedStrip);
         }
 
         /// <summary>

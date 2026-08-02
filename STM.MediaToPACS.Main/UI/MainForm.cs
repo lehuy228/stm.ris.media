@@ -174,6 +174,22 @@ namespace STM.MediaToPACS.Main.UI
 
         private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (!_orderPagesCleanupDone && e.CloseReason != CloseReason.WindowsShutDown)
+            {
+                var confirm = XtraMessageBox.Show(
+                    this,
+                    "Bạn có chắc chắn muốn đóng ứng dụng không?",
+                    "Xác nhận đóng ứng dụng",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (confirm != DialogResult.Yes)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
             if (!_orderPagesCleanupDone
                 && e.CloseReason != CloseReason.WindowsShutDown
                 && _orderPages.Count > 0)
@@ -1342,8 +1358,19 @@ namespace STM.MediaToPACS.Main.UI
 
         private async void OrderTabs_CloseButtonClick(object sender, EventArgs e)
         {
-            var page = xtraTabControl1.SelectedTabPage;
+            var closeArgs = e as DevExpress.XtraTab.ViewInfo.ClosePageButtonEventArgs;
+            var page = closeArgs?.Page as XtraTabPage ?? xtraTabControl1.SelectedTabPage;
             if (page == null || page == xtraTabPage1 || page == xtraTabPage2)
+                return;
+
+            var confirm = MessageBox.Show(
+                this,
+                $"Bạn có chắc chắn muốn đóng màn hình kết luận:\n{page.Text} không?",
+                "Xác nhận đóng",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes)
                 return;
 
             string maChiDinh = page.Tag as string;
@@ -1380,6 +1407,14 @@ namespace STM.MediaToPACS.Main.UI
                     SetServersComboBox(false);
                     UpdateComboBoxes();
                 }
+            }
+        }
+
+        private void _tsmTemplateSuggestion_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new TemplateSuggestionDialog())
+            {
+                dialog.ShowDialog(this);
             }
         }
 
