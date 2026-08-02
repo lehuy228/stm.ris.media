@@ -1085,6 +1085,7 @@
     <None Include="Resources\delete_link.png" />
     <None Include="Resources\edit_patient.png" />
     <None Include="Resources\irregular.png" />
+    <Content Include="Resources\logo120.png" />
     <Content Include="stm.ico" />
     <None Include="Resources\client_add_32.ico" />
     <None Include="Resources\client_remove_32.ico" />
