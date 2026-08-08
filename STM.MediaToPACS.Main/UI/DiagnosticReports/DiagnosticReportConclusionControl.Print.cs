@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing.Printing;
 using System.IO;
 using System.Threading.Tasks;
@@ -82,7 +82,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         private async Task<byte[]> GetPdfBytesForPrintAsync()
         {
             if (IsConclusionCompleted())
-                return await ServiceLocator.RisService.TaiFileKetQuaChanDoanAsync(_machidinh);
+                return await _risService.TaiFileKetQuaChanDoanAsync(_machidinh);
 
             return await GeneratePdfFromTemplateAsync();
         }
@@ -165,7 +165,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         {
             if (IsConclusionCompleted())
             {
-                var pdfBytes = await ServiceLocator.RisService.TaiFileKetQuaChanDoanAsync(_machidinh);
+                var pdfBytes = await _risService.TaiFileKetQuaChanDoanAsync(_machidinh);
                 if (pdfBytes != null && pdfBytes.Length > 0)
                     await SaveSignedPdfToFileAsync(pdfBytes);
                 return pdfBytes;
@@ -208,7 +208,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             if (string.IsNullOrEmpty(templateId))
                 throw new InvalidOperationException("Chưa chọn layout báo cáo.");
 
-            var template = await ServiceLocator.RisService.GetReportTemplateByIdAsync(templateId);
+            var template = await _risService.GetReportTemplateByIdAsync(templateId);
             if (template == null)
                 throw new InvalidOperationException("Không tìm thấy template báo cáo.");
 

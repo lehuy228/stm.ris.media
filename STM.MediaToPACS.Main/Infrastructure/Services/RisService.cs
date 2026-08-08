@@ -42,7 +42,7 @@ namespace MediaToPacs.Infrastructure.Services
         }
         public async Task<List<ScheduleStepRIS>> GetDanhSachLichChupAsync(
          int page = 1, int pageSize = 10,
-         string tenPatient = null,
+         string tenBenhNhan = null,
          string maChiDinh = null,
          string modality = null,
          string studyInstanceUID = null,
@@ -52,8 +52,8 @@ namespace MediaToPacs.Infrastructure.Services
         {
             var filters = new List<FilterItem>();
 
-            if (!string.IsNullOrWhiteSpace(tenPatient))
-                filters.Add(new FilterItem { Field = "tenPatient", Operator = "contains", Value = tenPatient });
+            if (!string.IsNullOrWhiteSpace(tenBenhNhan))
+                filters.Add(new FilterItem { Field = "tenBenhNhan", Operator = "contains", Value = tenBenhNhan });
 
             if (!string.IsNullOrWhiteSpace(maChiDinh))
                 filters.Add(new FilterItem { Field = "machidinh", Operator = "contains", Value = maChiDinh });
@@ -430,8 +430,8 @@ namespace MediaToPacs.Infrastructure.Services
         #region Danh sách chỉ định dịch vụ
 
         public async Task<ResultPage<ServiceOrderResponse>> GetDSChiDinhDichVuAsync(int page = 1, int pageSize = 50,
-           string maPatient = null,
-           string tenPatient = null,
+           string maBenhNhan = null,
+           string tenBenhNhan = null,
            string maChiDinh = null,
            string modality = null,
            string trangThai = null,
@@ -441,11 +441,11 @@ namespace MediaToPacs.Infrastructure.Services
         {
             var filters = new List<FilterItem>();
 
-            if (!string.IsNullOrWhiteSpace(maPatient))
-                filters.Add(new FilterItem { Field = "Patient.maPatient", Operator = "contains", Value = maPatient });
+            if (!string.IsNullOrWhiteSpace(maBenhNhan))
+                filters.Add(new FilterItem { Field = "benhnhan.maBenhNhan", Operator = "contains", Value = maBenhNhan });
 
-            if (!string.IsNullOrWhiteSpace(tenPatient))
-                filters.Add(new FilterItem { Field = "Patient.hoten", Operator = "contains", Value = tenPatient });
+            if (!string.IsNullOrWhiteSpace(tenBenhNhan))
+                filters.Add(new FilterItem { Field = "benhnhan.hoten", Operator = "contains", Value = tenBenhNhan });
 
             if (!string.IsNullOrWhiteSpace(maChiDinh))
                 filters.Add(new FilterItem { Field = "chidinh.sophieu", Operator = "contains", Value = maChiDinh });
@@ -974,9 +974,9 @@ namespace MediaToPacs.Infrastructure.Services
             return false;
         }
 
-        public async Task<Patient> GetPatientAsync(string maPatient)
+        public async Task<Patient> GetPatientAsync(string maBenhNhan)
         {
-            var response = await _httpClient.GetAsync($"{_risUrl}{ApiEndpoints.Ris.Patients}/{maPatient}");
+            var response = await _httpClient.GetAsync($"{_risUrl}{ApiEndpoints.Ris.Patients}/{maBenhNhan}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -1014,7 +1014,7 @@ namespace MediaToPacs.Infrastructure.Services
             {
                 Patient = new
                 {
-                    maPatient = Patient.MaPatient,
+                    maBenhNhan = Patient.MaBenhNhan,
                     ngaysinh = Patient.NgaySinh,
                     gioitinh = Patient.GioiTinh,
                     hoten = Patient.HoTen,

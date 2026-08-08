@@ -1,4 +1,4 @@
-using MediaToPacs.Core.Auths;
+﻿using MediaToPacs.Core.Auths;
 using MediaToPacs.Core.Interfaces;
 using MediaToPacs.Core.Models;
 using MediaToPacs.Core.Utilities;
@@ -32,12 +32,14 @@ namespace STM.MediaToPACS.Main.Utilities
         private static int _isReloadingSystemConfig;
 
         // ===================== SERVICES =====================
-        public static ISessionService SessionService { get; set; }
-        public static IStudyService StudyService { get; private set; }
-        public static IRisService RisService { get; private set; }
-        public static IRisService2 RisService2 { get; private set; }
-        public static ISignatureService SignatureService { get; private set; }
-        public static IHisService HisService { get; private set; }
+        // internal: chỉ ServiceLocator (khởi tạo/cấu hình) và CompositionRoot (đăng ký DI) được
+        // truy cập trực tiếp. Toàn bộ code UI phải nhận service qua constructor injection.
+        internal static ISessionService SessionService { get; private set; }
+        internal static IStudyService StudyService { get; private set; }
+        internal static IRisService RisService { get; private set; }
+        internal static IRisService2 RisService2 { get; private set; }
+        internal static ISignatureService SignatureService { get; private set; }
+        internal static IHisService HisService { get; private set; }
 
         // ===================== USER STATE =====================
         public static KeycloakUserInfo KeycloakUserInfo { get; set; }
@@ -286,7 +288,9 @@ namespace STM.MediaToPACS.Main.Utilities
 
         private static void InitializeServices()
         {
-            //SessionService = new SessionService();
+            // Khởi tạo sớm để CompositionRoot có instance đăng ký vào DI container;
+            // token thực sự được gán sau khi đăng nhập qua SessionService.SetToken(...).
+            SessionService = new SessionService();
             StudyService = new StudyService();
             RisService = new RisService();
             RisService2 = new RisService2();

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
@@ -86,7 +86,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         {
             try
             {
-                _ServiceOrderResponse = await ServiceLocator.RisService.GetChiDinhDichVuAsync(_machidinh);
+                _ServiceOrderResponse = await _risService.GetChiDinhDichVuAsync(_machidinh);
                 if (_ServiceOrderResponse == null)
                 {
                     Log.Warning("Không tìm thấy thông tin chỉ định cho MaChiDinh: {MaChiDinh}", _machidinh);
@@ -106,7 +106,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private async Task LoadDependentDataAsync()
         {
-            var bn = _ServiceOrderResponse.Patient;
+            var bn = _ServiceOrderResponse.BenhNhan;
 
             await LoadSuggestionsSafeAsync(bn?.GioiTinh);
 
@@ -123,7 +123,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
             try
             {
-                var response = await ServiceLocator.RisService.GetReportTemplateAsync(modality: modality);
+                var response = await _risService.GetReportTemplateAsync(modality: modality);
                 _listMauBaoCao = response?.data;
 
                 if (_listMauBaoCao == null || _listMauBaoCao.Count == 0)
@@ -171,7 +171,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private void PopulateFormData()
         {
-            var Patient = _ServiceOrderResponse.Patient;
+            var Patient = _ServiceOrderResponse.BenhNhan;
             if (Patient != null)
                 PopulatePatientInfo(Patient);
 
@@ -184,10 +184,10 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             _txMaChiDinh.Text = _ServiceOrderResponse.MaChiDinh ?? "";
             _dateNgayChiDinh.DateTime = _ServiceOrderResponse.Thoigianthuchien.AddHours(7);
             _txBSChiDinh.Text = _ServiceOrderResponse.TenBacSiChiDinh ?? "";
-            _txDoiTuong.Text = string.IsNullOrWhiteSpace(_ServiceOrderResponse.Patient.MaBHYT)
+            _txDoiTuong.Text = string.IsNullOrWhiteSpace(_ServiceOrderResponse.BenhNhan.MaBHYT)
                 ? "Viện phí"
                 : "BHYT";
-            _txMaBHYT.Text = _ServiceOrderResponse.Patient.MaBHYT;
+            _txMaBHYT.Text = _ServiceOrderResponse.BenhNhan.MaBHYT;
             _txDichVu.Text = _ServiceOrderResponse.TenDichVu ?? "";
             _txChanDoan.Text = _ServiceOrderResponse.ChanDoanSoBo ?? "";
 
@@ -201,12 +201,13 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             try
             {
                 using (var patientForm = new PatientForm(
-                    _ServiceOrderResponse.Patient,
+                    _risService,
+                    _ServiceOrderResponse.BenhNhan,
                     _ServiceOrderResponse.MaChiDinh))
                 {
                     if (patientForm.ShowDialog() == DialogResult.OK)
                     {
-                        PopulatePatientInfo(_ServiceOrderResponse.Patient);
+                        PopulatePatientInfo(_ServiceOrderResponse.BenhNhan);
                     }
                 }
             }
@@ -220,7 +221,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private void PopulatePatientInfo(dynamic Patient)
         {
-            _txMaBN.Text = Patient.MaPatient ?? "";
+            _txMaBN.Text = Patient.MaBenhNhan ?? "";
             _txTenBN.Text = Patient.HoTen ?? "";
             _dateBN.DateTime = Patient.NgaySinh;
             _txPatientGender.Text =
@@ -237,7 +238,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
             try
             {
-                _HisUserSignatureResponse = await ServiceLocator.SignatureService.GetByHisUserKySoIdAsync(
+                _HisUserSignatureResponse = await _signatureService.GetByHisUserKySoIdAsync(
                     _ServiceOrderResponse.MaBacSiChiDinh);
             }
             catch (Exception ex)
@@ -250,7 +251,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         {
             try
             {
-                _listThietBi = await ServiceLocator.RisService2.GetDevicesAsync(modality: _ServiceOrderResponse?.Modality);
+                _listThietBi = await _risService2.GetDevicesAsync(modality: _ServiceOrderResponse?.Modality);
 
                 if (_listThietBi == null || _listThietBi.Count == 0)
                 {
@@ -296,7 +297,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                     return;
                 }
 
-                _listHisUser = await ServiceLocator.RisService2.GetColleaguesAsync(
+                _listHisUser = await _risService2.GetColleaguesAsync(
                     orgCode,
                     titleCodes: new System.Collections.Generic.List<string> { "NURSE", "TECHNICIAN" });
 
@@ -350,7 +351,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         {
             try
             {
-                _kqChanDoanResponse = await ServiceLocator.RisService.GetKetQuaChanDoanAsync(_machidinh);
+                _kqChanDoanResponse = await _risService.GetKetQuaChanDoanAsync(_machidinh);
 
                 if (this.InvokeRequired)
                     this.Invoke((MethodInvoker)UpdateUIFromKetQuaChanDoan);

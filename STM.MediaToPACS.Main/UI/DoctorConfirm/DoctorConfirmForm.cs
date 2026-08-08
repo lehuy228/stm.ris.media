@@ -1,4 +1,6 @@
+﻿using MediaToPacs.Core.Interfaces;
 using Serilog;
+using STM.MediaToPACS.Main.App;
 using STM.MediaToPACS.Main.Utilities;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,7 @@ namespace STM.MediaToPACS.Main.UI
     public partial class DoctorConfirmForm : DevExpress.XtraEditors.XtraForm
     {
         private readonly DoctorConfirmDrawerController _drawerController;
+        private readonly IRisService2 _risService2;
 
         public string SelectedOrganizationCode => cboKhoa.EditValue as string;
 
@@ -19,8 +22,18 @@ namespace STM.MediaToPACS.Main.UI
             public string Name { get; set; }
         }
 
+        /// <summary>
+        /// Constructor không tham số: chỉ để WinForms Designer mở được form thiết kế.
+        /// Runtime luôn dùng constructor có injection bên dưới.
+        /// </summary>
         public DoctorConfirmForm()
+            : this(CompositionRoot.Provider == null ? null : CompositionRoot.Resolve<IRisService2>())
         {
+        }
+
+        public DoctorConfirmForm(IRisService2 risService2)
+        {
+            _risService2 = risService2;
             InitializeComponent();
             _drawerController = new DoctorConfirmDrawerController(this);
             LoadDoctorInfo();
@@ -63,7 +76,7 @@ namespace STM.MediaToPACS.Main.UI
 
             try
             {
-                var departments = await ServiceLocator.RisService2.GetDepartmentsAsync();
+                var departments = await _risService2.GetDepartmentsAsync();
                 var departmentItems = (departments ?? new List<global::MediaToPacs.Core.Models.OrganizationDto>())
                     .Where(x => !string.IsNullOrWhiteSpace(x.code) || !string.IsNullOrWhiteSpace(x.name))
                     .Select(x => new DepartmentLookupItem

@@ -1,5 +1,6 @@
-using DevExpress.XtraEditors;
+﻿using DevExpress.XtraEditors;
 using DevExpress.XtraReports.UI;
+using MediaToPacs.Core.Interfaces;
 using MediaToPacs.Core.Models;
 using MediaToPacs.Core.Models.Order;
 using MediaToPacs.Core.Models.ServiceCatalog;
@@ -23,12 +24,14 @@ namespace STM.MediaToPACS.Main.Utilities
 {
     public partial class TemplateSetting : XtraForm
     {
+        private readonly IRisService _risService;
         private readonly string _templateId;
         private readonly object _sampleReportData;
         private ReportTemplateResponse _currentTemplate;
 
-        public TemplateSetting(string templateId = null, object sampleReportData = null)
+        public TemplateSetting(IRisService risService, string templateId = null, object sampleReportData = null)
         {
+            _risService = risService;
             InitializeComponent();
             _templateId = templateId;
             _sampleReportData = sampleReportData;
@@ -75,9 +78,9 @@ namespace STM.MediaToPACS.Main.Utilities
                 UpdatedAt = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
                 Id = Guid.NewGuid().ToString(),
                 admissionType = "Thường",
-                Patient = new Patient
+                BenhNhan = new Patient
                 {
-                    MaPatient = "BN0001",
+                    MaBenhNhan = "BN0001",
                     HoTen = "Nguyễn Văn A",
                     NgaySinh = new DateTime(1985, 5, 20),
                     GioiTinh = 1, // Nam
@@ -100,7 +103,7 @@ namespace STM.MediaToPACS.Main.Utilities
         //        if (!string.IsNullOrEmpty(_templateId))
         //        {
 
-        //            _currentTemplate = await ServiceLocator.RisService.GetReportTemplateByIdAsync(_templateId);
+        //            _currentTemplate = await _risService.GetReportTemplateByIdAsync(_templateId);
         //        }
         //        // Nếu chưa có data truyền vào thì dùng sample
         //        var reportData = _sampleReportData ?? CreateSampleBaoCaoThuong();
@@ -156,7 +159,7 @@ namespace STM.MediaToPACS.Main.Utilities
         private async Task<XtraReport> LoadReportAsync()
         {
             if (!string.IsNullOrEmpty(_templateId))
-                _currentTemplate = await ServiceLocator.RisService.GetReportTemplateByIdAsync(_templateId);
+                _currentTemplate = await _risService.GetReportTemplateByIdAsync(_templateId);
 
             var reportData = _sampleReportData ?? CreateSampleBaoCaoThuong();
             var dataSource = new[] { reportData };
@@ -215,12 +218,12 @@ namespace STM.MediaToPACS.Main.Utilities
                 bool result;
                 if (!string.IsNullOrEmpty(_templateId))
                 {
-                    result = await ServiceLocator.RisService.UpdateReportTemplateAsync(request, _templateId);
+                    result = await _risService.UpdateReportTemplateAsync(request, _templateId);
                     if (result) ShowInfo("Cập nhật mấu kết luận thành công!");
                 }
                 else
                 {
-                    result = await ServiceLocator.RisService.CreateReportTemplateAsync(request);
+                    result = await _risService.CreateReportTemplateAsync(request);
                     if (result) ShowInfo("Lưu mấu kết luận mới thành công!");
                 }
             }

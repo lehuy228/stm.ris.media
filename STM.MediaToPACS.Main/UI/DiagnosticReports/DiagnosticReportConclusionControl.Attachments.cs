@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,7 +31,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 var orderItemId = GetCurrentRisV1OrderItemId();
                 if (orderItemId.HasValue)
                 {
-                    var attachments = await ServiceLocator.RisService2
+                    var attachments = await _risService2
                         .GetDiagnosticReportAttachmentsAsync(orderItemId.Value);
 
                     if (attachments != null && attachments.Count > 0)
@@ -315,7 +315,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                     return;
 
                 await SyncDocumentAttachmentSelectionAsync(orderItemId.Value);
-                await ServiceLocator.RisService2
+                await _risService2
                     .UpdatePacsAttachmentSelectionAsync(orderItemId.Value, _thumbnailList.GetPacsSelectedAttachmentIds());
             }
             catch (Exception ex)
@@ -333,7 +333,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             if (!orderItemId.HasValue)
                 return;
 
-            await ServiceLocator.RisService2
+            await _risService2
                 .DeleteDiagnosticReportAttachmentAsync(orderItemId.Value, attachmentId.Value);
         }
 
@@ -523,7 +523,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             if (File.Exists(localPath) && new FileInfo(localPath).Length > 0)
                 return localPath;
 
-            using (var stream = await ServiceLocator.RisService2
+            using (var stream = await _risService2
                        .StreamDiagnosticReportAttachmentAsync(orderItemId, attachment.id))
             using (var file = File.Create(localPath))
             {
@@ -692,7 +692,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
             try
             {
-                var uploaded = await ServiceLocator.RisService2
+                var uploaded = await _risService2
                     .UploadDiagnosticReportAttachmentsAsync(orderItemId, new[] { item.FilePath });
 
                 var attachment = uploaded?.FirstOrDefault();
@@ -756,7 +756,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 })
                 .ToList();
 
-            await ServiceLocator.RisService2
+            await _risService2
                 .UpdateDocumentAttachmentSelectionAsync(orderItemId, selections);
 
             // Đồng bộ thành công mới dán badge "D" - không tự ăn theo checkbox đang tick.
@@ -769,7 +769,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             if (pacsAttachmentIds.Count == 0)
                 return;
 
-            await ServiceLocator.RisService2
+            await _risService2
                 .UpdatePacsAttachmentSelectionAsync(orderItemId, pacsAttachmentIds);
         }
 
@@ -834,10 +834,10 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 return;
             }
 
-            await ServiceLocator.RisService2
+            await _risService2
                 .UpdatePacsAttachmentSelectionAsync(orderItemId.Value, pacsAttachmentIds);
 
-            var result = await ServiceLocator.RisService2
+            var result = await _risService2
                 .PushDiagnosticReportAttachmentsToPacsAsync(orderItemId.Value);
 
             // Chỉ đọc lại đúng phần PACS theo API - KHÔNG đụng tới Document, vì Document là lựa chọn
@@ -861,7 +861,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         // "Lưu Nháp". attachments == null nghĩa là request thất bại nên giữ nguyên UI hiện tại.
         private async Task RefreshPacsAttachmentStatusesAsync(Guid orderItemId)
         {
-            var attachments = await ServiceLocator.RisService2
+            var attachments = await _risService2
                 .GetDiagnosticReportAttachmentsAsync(orderItemId);
 
             if (attachments == null)

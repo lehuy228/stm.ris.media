@@ -1,4 +1,5 @@
-using DevExpress.XtraEditors;
+﻿using DevExpress.XtraEditors;
+using MediaToPacs.Core.Interfaces;
 using MediaToPacs.Core.Models.Order;
 using MediaToPacs.Core.Models.ServiceCatalog;
 using MediaToPacs.Core.Models.Conclusion;
@@ -18,6 +19,7 @@ namespace STM.MediaToPACS.Main.Utilities
 {
     public partial class SuggestionForm : XtraForm
     {
+        private readonly IRisService _risService;
         private string _id { get; set; }
         private ServiceCatalogGridView _dichVu { get; set; }
         private List<DeviceResponse> _listThietBi { get; set; }
@@ -27,8 +29,9 @@ namespace STM.MediaToPACS.Main.Utilities
 
         }
 
-        public SuggestionForm(string id = null, ServiceCatalogGridView dichVu = null)
+        public SuggestionForm(IRisService risService, string id = null, ServiceCatalogGridView dichVu = null)
         {
+            _risService = risService;
             InitializeComponent();
             _id = id;
             _dichVu = dichVu;
@@ -52,7 +55,7 @@ namespace STM.MediaToPACS.Main.Utilities
             try
             {
                 // Lấy danh sách thiết bị từ RIS Service
-                _listThietBi = (await ServiceLocator.RisService.GetDSThietBiAsync(loaiThietBi: "Máy chụp")).data;
+                _listThietBi = (await _risService.GetDSThietBiAsync(loaiThietBi: "Máy chụp")).data;
 
                 // Gán datasource cho LookUpEdit
                 _cbbDSThietBi.Properties.DataSource = _listThietBi;
@@ -89,7 +92,7 @@ namespace STM.MediaToPACS.Main.Utilities
 
                 if (_id != null)
                 {
-                    var goiY = await ServiceLocator.RisService.GetGoiYKetLuanById(_id);
+                    var goiY = await _risService.GetGoiYKetLuanById(_id);
                     if (goiY != null)
                     {
 
@@ -150,13 +153,13 @@ namespace STM.MediaToPACS.Main.Utilities
 
                 if (string.IsNullOrEmpty(_id))
                 {
-                    result = await ServiceLocator.RisService.TaoMoiGoiYKetLuanAsync(request);
+                    result = await _risService.TaoMoiGoiYKetLuanAsync(request);
                     XtraMessageBox.Show("Tạo mới gợi ý kết luận thành công!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    result = await ServiceLocator.RisService.CapNhatGoiYKetLuanAsync(request, _id);
+                    result = await _risService.CapNhatGoiYKetLuanAsync(request, _id);
                     XtraMessageBox.Show("Cập nhật gợi ý kết luận thành công!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

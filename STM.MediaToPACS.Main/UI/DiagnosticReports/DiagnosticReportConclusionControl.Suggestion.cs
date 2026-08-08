@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,7 +36,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         private SuggestionPresenter GetSuggestionPresenter()
         {
             if (_suggestionPresenter == null)
-                _suggestionPresenter = new SuggestionPresenter(ServiceLocator.RisService2);
+                _suggestionPresenter = new SuggestionPresenter(_risService2);
             return _suggestionPresenter;
         }
 
@@ -63,7 +63,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
             if (_listQuickSuggestions == null || _listQuickSuggestions.Count == 0)
             {
-                var allGoiY = await ServiceLocator.RisService.GetDanhSachConclusionSuggestionResponseAsync(
+                var allGoiY = await _risService.GetDanhSachConclusionSuggestionResponseAsync(
                     madichvu: _ServiceOrderResponse.MaDichVu);
                 _listGoiYKetLuan = FilterGoiYKetLuanByGender(allGoiY?.data, hisGioiTinh ?? -1);
             }
@@ -272,7 +272,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 if (!IsRisV1ConclusionSyncEnabled() || string.IsNullOrWhiteSpace(_machidinh))
                     return;
 
-                _risV1OrderItem = await ServiceLocator.RisService2.GetOrderItemByPlacerCodeAsync(_machidinh);
+                _risV1OrderItem = await _risService2.GetOrderItemByPlacerCodeAsync(_machidinh);
                 if (_risV1OrderItem == null)
                     Log.Warning("RIS mới chưa có y lệnh với mã chỉ định {MaChiDinh} - sẽ bỏ qua sync kết luận", _machidinh);
             }
@@ -296,7 +296,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
                 var request = BuildRisV1ConclusionRequest(moTa, ketLuan, khuyenNghi);
 
-                var report = await ServiceLocator.RisService2.UpsertOrderItemConclusionAsync(_risV1OrderItem.id, request);
+                var report = await _risService2.UpsertOrderItemConclusionAsync(_risV1OrderItem.id, request);
                 if (report != null)
                     _risV1OrderItem.report = report;
                 Log.Information("Đã sync kết luận sang RIS mới (y lệnh {OrderItemId}, có chỉ số: {HasParams})",

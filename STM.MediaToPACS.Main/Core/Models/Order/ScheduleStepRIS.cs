@@ -9,8 +9,8 @@ namespace MediaToPacs.Core.Models
 {
     public class ScheduleStepRIS
     {
-        public string MaPatient { get; set; }
-        public string TenPatient { get; set; }        
+        public string MaBenhNhan { get; set; }
+        public string TenBenhNhan { get; set; }        
         public int GioiTinh { get; set; }            
         public DateTime NgaySinh { get; set; }          
         public string MaChiDinh { get; set; }         

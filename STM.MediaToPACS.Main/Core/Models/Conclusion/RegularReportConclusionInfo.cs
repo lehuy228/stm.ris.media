@@ -25,19 +25,19 @@ namespace MediaToPacs.Core.Models.Conclusion
         public string Image4 { get; set; } = null;
 
         /// <summary>
-        /// B?ng ch? s? d?ng (suggestion Structured) - template c� DetailReportBand
-        /// bind DataMember n�y s? render b?ng; template cu kh�ng c� band v?n ch?y b�nh thu?ng.
+        /// Bảng chỉ số động (suggestion Structured) - template có DetailReportBand
+        /// bind DataMember này sẽ render bảng; template cũ không có band vẫn chạy bình thường.
         /// </summary>
         public List<ReportParameter> DanhSachChiSo { get; set; } = new List<ReportParameter>();
 
         /// <summary>
-        /// Tra c?u gi� tr? ch? s? theo M� param (vd "MV_VMAX") � d�ng cho script bind trong repx:
-        /// m?i � gi� tr? d?t Tag = m�, script g?i GetChiSo(Tag) d? l?y gi� tr?.
-        /// Mapping m�?� n?m trong repx n�n d?i template kh�ng c?n build l?i app.
+        /// Tra cứu giá trị chỉ số theo Mã param (vd "MV_VMAX") - dùng cho script bind trong repx:
+        /// mỗi ô giá trị đặt Tag = mã, script gọi GetChiSo(Tag) để lấy giá trị.
+        /// Mapping mã-ô nằm trong repx nên đổi template không cần build lại app.
         /// </summary>
         public Dictionary<string, string> ChiSoTheoMa { get; set; } = new Dictionary<string, string>();
 
-        /// <summary>Tr? gi� tr? ch? s? theo m�; r?ng n?u kh�ng c�. Script trong repx g?i h�m n�y.</summary>
+        /// <summary>Trả giá trị chỉ số theo mã; rỗng nếu không có. Script trong repx gọi hàm này.</summary>
         public string GetChiSo(string ma)
         {
 
@@ -48,13 +48,13 @@ namespace MediaToPacs.Core.Models.Conclusion
         }
 
         /// <summary>
-        /// Tr?ng th�i t�ch theo M� param � d�nh cho XRCheckBox trong repx:
-        /// XRCheckBox d?t Tag = m�, script g?i GetChiSoCheck(Tag) g�n v�o Checked.
-        /// Ch? ch?a param d?ng checkbox/checkbox_value; param d?ng value kh�ng c� trong dictionary.
+        /// Trạng thái tích theo Mã param - dành cho XRCheckBox trong repx:
+        /// XRCheckBox đặt Tag = mã, script gọi GetChiSoCheck(Tag) gán vào Checked.
+        /// Chỉ chứa param dạng checkbox/checkbox_value; param dạng value không có trong dictionary.
         /// </summary>
         public Dictionary<string, bool> ChiSoCheckTheoMa { get; set; } = new Dictionary<string, bool>();
 
-        /// <summary>Tr? tr?ng th�i t�ch c?a checkbox theo m�; false n?u kh�ng c�/kh�ng t�ch.</summary>
+        /// <summary>Trả trạng thái tích của checkbox theo mã; false nếu không có/không tích.</summary>
         public bool GetChiSoCheck(string ma)
         {
             if (string.IsNullOrEmpty(ma) || ChiSoCheckTheoMa == null)

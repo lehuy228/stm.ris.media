@@ -1,4 +1,5 @@
-using DevExpress.XtraEditors;
+﻿using DevExpress.XtraEditors;
+using MediaToPacs.Core.Interfaces;
 using MediaToPacs.Core.Models;
 using STM.MediaToPACS.Main.Utilities;
 using System;
@@ -15,11 +16,13 @@ namespace STM.MediaToPACS.Main.UI.Configurations
 {
     public partial class PatientForm : XtraForm
     {
+        private readonly IRisService _risService;
         private Patient _Patient;
         private readonly string _maChiDinh;
 
-        public PatientForm(Patient Patient, string maChiDinh)
+        public PatientForm(IRisService risService, Patient Patient, string maChiDinh)
         {
+            _risService = risService;
             InitializeComponent();
             _Patient = Patient;
             _maChiDinh = maChiDinh;
@@ -38,7 +41,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations
 
             try
             {
-                _txtMaPatient.Text = _Patient.MaPatient ?? "";
+                _txtMaBenhNhan.Text = _Patient.MaBenhNhan ?? "";
                 _txtHoTen.Text = _Patient.HoTen ?? "";
 
                 _dtpNgaySinh.EditValue =
@@ -99,7 +102,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             {
                 UpdateModelFromUI();
 
-                await ServiceLocator.RisService.UpdateChiDinhDichVu(_maChiDinh, _Patient);
+                await _risService.UpdateChiDinhDichVu(_maChiDinh, _Patient);
 
                 XtraMessageBox.Show(
                     "Cập nhật thông tin bệnh nhân thành công",

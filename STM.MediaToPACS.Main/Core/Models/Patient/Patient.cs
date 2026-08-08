@@ -8,7 +8,7 @@ namespace MediaToPacs.Core.Models
 {
     public class Patient
     {
-        public string MaPatient { get; set; }
+        public string MaBenhNhan { get; set; }
 
         public DateTime NgaySinh { get; set; }
 

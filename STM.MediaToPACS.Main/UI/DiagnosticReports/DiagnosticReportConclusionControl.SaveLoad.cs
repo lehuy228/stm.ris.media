@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -151,7 +151,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                     imageFileKeys = imageSelectedList,
                 };
 
-                _kqChanDoanResponse = await ServiceLocator.RisService.TaoKetQuaChanDoanAsync(DiagnosisResultRequest);
+                _kqChanDoanResponse = await _risService.TaoKetQuaChanDoanAsync(DiagnosisResultRequest);
 
                 if (_kqChanDoanResponse != null)
                 {

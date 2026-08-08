@@ -28,8 +28,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this._dtpNgaySinh = new DevExpress.XtraEditors.DateEdit();
             this.lblHoTen = new DevExpress.XtraEditors.LabelControl();
             this._txtHoTen = new DevExpress.XtraEditors.TextEdit();
-            this.lblMaPatient = new DevExpress.XtraEditors.LabelControl();
-            this._txtMaPatient = new DevExpress.XtraEditors.TextEdit();
+            this.lblMaBenhNhan = new DevExpress.XtraEditors.LabelControl();
+            this._txtMaBenhNhan = new DevExpress.XtraEditors.TextEdit();
             this.groupControlBHYT = new DevExpress.XtraEditors.GroupControl();
             this.lblDenNgayBHYT = new DevExpress.XtraEditors.LabelControl();
             this._dtpDenNgayBHYT = new DevExpress.XtraEditors.DateEdit();
@@ -54,7 +54,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             ((System.ComponentModel.ISupportInitialize)(this._dtpNgaySinh.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._dtpNgaySinh.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._txtHoTen.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._txtMaPatient.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._txtMaBenhNhan.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControlBHYT)).BeginInit();
             this.groupControlBHYT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._dtpDenNgayBHYT.Properties.CalendarTimeProperties)).BeginInit();
@@ -77,10 +77,10 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this.pnlMain.Controls.Add(this.groupControlDiaChi);
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMain.Location = new System.Drawing.Point(0, 0);
-            this.pnlMain.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
+            this.pnlMain.Margin = new System.Windows.Forms.Padding(10, 8, 10, 8);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Padding = new System.Windows.Forms.Padding(12, 11, 12, 11);
-            this.pnlMain.Size = new System.Drawing.Size(581, 576);
+            this.pnlMain.Padding = new System.Windows.Forms.Padding(15, 14, 15, 14);
+            this.pnlMain.Size = new System.Drawing.Size(581, 535);
             this.pnlMain.TabIndex = 1;
             // 
             // groupControlThongTinCoBan
@@ -95,13 +95,13 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this.groupControlThongTinCoBan.Controls.Add(this._dtpNgaySinh);
             this.groupControlThongTinCoBan.Controls.Add(this.lblHoTen);
             this.groupControlThongTinCoBan.Controls.Add(this._txtHoTen);
-            this.groupControlThongTinCoBan.Controls.Add(this.lblMaPatient);
-            this.groupControlThongTinCoBan.Controls.Add(this._txtMaPatient);
+            this.groupControlThongTinCoBan.Controls.Add(this.lblMaBenhNhan);
+            this.groupControlThongTinCoBan.Controls.Add(this._txtMaBenhNhan);
             this.groupControlThongTinCoBan.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupControlThongTinCoBan.Location = new System.Drawing.Point(14, 416);
-            this.groupControlThongTinCoBan.Margin = new System.Windows.Forms.Padding(0, 0, 0, 11);
+            this.groupControlThongTinCoBan.Location = new System.Drawing.Point(17, 520);
+            this.groupControlThongTinCoBan.Margin = new System.Windows.Forms.Padding(0, 0, 0, 14);
             this.groupControlThongTinCoBan.Name = "groupControlThongTinCoBan";
-            this.groupControlThongTinCoBan.Size = new System.Drawing.Size(553, 147);
+            this.groupControlThongTinCoBan.Size = new System.Drawing.Size(547, 0);
             this.groupControlThongTinCoBan.TabIndex = 0;
             this.groupControlThongTinCoBan.Text = "Thông tin cơ bản";
             // 
@@ -109,8 +109,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             // 
             this.lblDanToc.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDanToc.Appearance.Options.UseFont = true;
-            this.lblDanToc.Location = new System.Drawing.Point(12, 288);
-            this.lblDanToc.Margin = new System.Windows.Forms.Padding(0, 11, 0, 11);
+            this.lblDanToc.Location = new System.Drawing.Point(15, 360);
+            this.lblDanToc.Margin = new System.Windows.Forms.Padding(0, 14, 0, 14);
             this.lblDanToc.Name = "lblDanToc";
             this.lblDanToc.Size = new System.Drawing.Size(64, 21);
             this.lblDanToc.TabIndex = 18;
@@ -120,8 +120,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             // 
             this._cboDanToc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._cboDanToc.Location = new System.Drawing.Point(228, 281);
-            this._cboDanToc.Margin = new System.Windows.Forms.Padding(0, 11, 28, 11);
+            this._cboDanToc.Location = new System.Drawing.Point(285, 351);
+            this._cboDanToc.Margin = new System.Windows.Forms.Padding(0, 14, 35, 14);
             this._cboDanToc.Name = "_cboDanToc";
             this._cboDanToc.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._cboDanToc.Properties.Appearance.Options.UseFont = true;
@@ -139,15 +139,15 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             "H\'Mông",
             "Dao",
             "Gia Rai"});
-            this._cboDanToc.Size = new System.Drawing.Size(298, 26);
+            this._cboDanToc.Size = new System.Drawing.Size(228, 26);
             this._cboDanToc.TabIndex = 19;
             // 
             // lblGioiTinh
             // 
             this.lblGioiTinh.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGioiTinh.Appearance.Options.UseFont = true;
-            this.lblGioiTinh.Location = new System.Drawing.Point(12, 224);
-            this.lblGioiTinh.Margin = new System.Windows.Forms.Padding(0, 11, 0, 11);
+            this.lblGioiTinh.Location = new System.Drawing.Point(15, 280);
+            this.lblGioiTinh.Margin = new System.Windows.Forms.Padding(0, 14, 0, 14);
             this.lblGioiTinh.Name = "lblGioiTinh";
             this.lblGioiTinh.Size = new System.Drawing.Size(67, 21);
             this.lblGioiTinh.TabIndex = 6;
@@ -157,8 +157,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             // 
             this._cboGioiTinh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._cboGioiTinh.Location = new System.Drawing.Point(228, 218);
-            this._cboGioiTinh.Margin = new System.Windows.Forms.Padding(0, 11, 28, 11);
+            this._cboGioiTinh.Location = new System.Drawing.Point(285, 272);
+            this._cboGioiTinh.Margin = new System.Windows.Forms.Padding(0, 14, 35, 14);
             this._cboGioiTinh.Name = "_cboGioiTinh";
             this._cboGioiTinh.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._cboGioiTinh.Properties.Appearance.Options.UseFont = true;
@@ -170,15 +170,15 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             "Nữ",
             "Khác"});
             this._cboGioiTinh.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this._cboGioiTinh.Size = new System.Drawing.Size(298, 26);
+            this._cboGioiTinh.Size = new System.Drawing.Size(228, 26);
             this._cboGioiTinh.TabIndex = 7;
             // 
             // lblNgaySinh
             // 
             this.lblNgaySinh.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNgaySinh.Appearance.Options.UseFont = true;
-            this.lblNgaySinh.Location = new System.Drawing.Point(12, 161);
-            this.lblNgaySinh.Margin = new System.Windows.Forms.Padding(0, 11, 0, 11);
+            this.lblNgaySinh.Location = new System.Drawing.Point(15, 201);
+            this.lblNgaySinh.Margin = new System.Windows.Forms.Padding(0, 14, 0, 14);
             this.lblNgaySinh.Name = "lblNgaySinh";
             this.lblNgaySinh.Size = new System.Drawing.Size(76, 19);
             this.lblNgaySinh.TabIndex = 4;
@@ -189,8 +189,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this._dtpNgaySinh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._dtpNgaySinh.EditValue = null;
-            this._dtpNgaySinh.Location = new System.Drawing.Point(228, 155);
-            this._dtpNgaySinh.Margin = new System.Windows.Forms.Padding(0, 11, 28, 11);
+            this._dtpNgaySinh.Location = new System.Drawing.Point(285, 194);
+            this._dtpNgaySinh.Margin = new System.Windows.Forms.Padding(0, 14, 35, 14);
             this._dtpNgaySinh.Name = "_dtpNgaySinh";
             this._dtpNgaySinh.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._dtpNgaySinh.Properties.Appearance.Options.UseFont = true;
@@ -203,15 +203,15 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this._dtpNgaySinh.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this._dtpNgaySinh.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this._dtpNgaySinh.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this._dtpNgaySinh.Size = new System.Drawing.Size(298, 26);
+            this._dtpNgaySinh.Size = new System.Drawing.Size(228, 26);
             this._dtpNgaySinh.TabIndex = 5;
             // 
             // lblHoTen
             // 
             this.lblHoTen.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHoTen.Appearance.Options.UseFont = true;
-            this.lblHoTen.Location = new System.Drawing.Point(12, 98);
-            this.lblHoTen.Margin = new System.Windows.Forms.Padding(0, 11, 0, 11);
+            this.lblHoTen.Location = new System.Drawing.Point(15, 122);
+            this.lblHoTen.Margin = new System.Windows.Forms.Padding(0, 14, 0, 14);
             this.lblHoTen.Name = "lblHoTen";
             this.lblHoTen.Size = new System.Drawing.Size(77, 21);
             this.lblHoTen.TabIndex = 2;
@@ -221,36 +221,36 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             // 
             this._txtHoTen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._txtHoTen.Location = new System.Drawing.Point(228, 90);
-            this._txtHoTen.Margin = new System.Windows.Forms.Padding(0, 11, 28, 11);
+            this._txtHoTen.Location = new System.Drawing.Point(285, 112);
+            this._txtHoTen.Margin = new System.Windows.Forms.Padding(0, 14, 35, 14);
             this._txtHoTen.Name = "_txtHoTen";
             this._txtHoTen.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._txtHoTen.Properties.Appearance.Options.UseFont = true;
-            this._txtHoTen.Size = new System.Drawing.Size(298, 26);
+            this._txtHoTen.Size = new System.Drawing.Size(228, 26);
             this._txtHoTen.TabIndex = 3;
             // 
-            // lblMaPatient
+            // lblMaBenhNhan
             // 
-            this.lblMaPatient.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMaPatient.Appearance.Options.UseFont = true;
-            this.lblMaPatient.Location = new System.Drawing.Point(12, 35);
-            this.lblMaPatient.Margin = new System.Windows.Forms.Padding(0, 11, 0, 11);
-            this.lblMaPatient.Name = "lblMaPatient";
-            this.lblMaPatient.Size = new System.Drawing.Size(110, 21);
-            this.lblMaPatient.TabIndex = 0;
-            this.lblMaPatient.Text = "Mã bệnh nhân:";
+            this.lblMaBenhNhan.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMaBenhNhan.Appearance.Options.UseFont = true;
+            this.lblMaBenhNhan.Location = new System.Drawing.Point(15, 44);
+            this.lblMaBenhNhan.Margin = new System.Windows.Forms.Padding(0, 14, 0, 14);
+            this.lblMaBenhNhan.Name = "lblMaBenhNhan";
+            this.lblMaBenhNhan.Size = new System.Drawing.Size(110, 21);
+            this.lblMaBenhNhan.TabIndex = 0;
+            this.lblMaBenhNhan.Text = "Mã bệnh nhân:";
             // 
-            // _txtMaPatient
+            // _txtMaBenhNhan
             // 
-            this._txtMaPatient.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this._txtMaBenhNhan.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._txtMaPatient.Location = new System.Drawing.Point(228, 28);
-            this._txtMaPatient.Margin = new System.Windows.Forms.Padding(0, 11, 28, 11);
-            this._txtMaPatient.Name = "_txtMaPatient";
-            this._txtMaPatient.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._txtMaPatient.Properties.Appearance.Options.UseFont = true;
-            this._txtMaPatient.Size = new System.Drawing.Size(298, 26);
-            this._txtMaPatient.TabIndex = 1;
+            this._txtMaBenhNhan.Location = new System.Drawing.Point(285, 35);
+            this._txtMaBenhNhan.Margin = new System.Windows.Forms.Padding(0, 14, 35, 14);
+            this._txtMaBenhNhan.Name = "_txtMaBenhNhan";
+            this._txtMaBenhNhan.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._txtMaBenhNhan.Properties.Appearance.Options.UseFont = true;
+            this._txtMaBenhNhan.Size = new System.Drawing.Size(228, 26);
+            this._txtMaBenhNhan.TabIndex = 1;
             // 
             // groupControlBHYT
             // 
@@ -263,10 +263,10 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this.groupControlBHYT.Controls.Add(this.lblMaBHYT);
             this.groupControlBHYT.Controls.Add(this._txtMaBHYT);
             this.groupControlBHYT.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupControlBHYT.Location = new System.Drawing.Point(14, 188);
-            this.groupControlBHYT.Margin = new System.Windows.Forms.Padding(0, 0, 0, 11);
+            this.groupControlBHYT.Location = new System.Drawing.Point(17, 235);
+            this.groupControlBHYT.Margin = new System.Windows.Forms.Padding(0, 0, 0, 14);
             this.groupControlBHYT.Name = "groupControlBHYT";
-            this.groupControlBHYT.Size = new System.Drawing.Size(553, 228);
+            this.groupControlBHYT.Size = new System.Drawing.Size(547, 285);
             this.groupControlBHYT.TabIndex = 1;
             this.groupControlBHYT.Text = "Bảo hiểm y tế";
             // 
@@ -274,8 +274,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             // 
             this.lblDenNgayBHYT.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDenNgayBHYT.Appearance.Options.UseFont = true;
-            this.lblDenNgayBHYT.Location = new System.Drawing.Point(12, 161);
-            this.lblDenNgayBHYT.Margin = new System.Windows.Forms.Padding(0, 11, 0, 11);
+            this.lblDenNgayBHYT.Location = new System.Drawing.Point(15, 201);
+            this.lblDenNgayBHYT.Margin = new System.Windows.Forms.Padding(0, 14, 0, 14);
             this.lblDenNgayBHYT.Name = "lblDenNgayBHYT";
             this.lblDenNgayBHYT.Size = new System.Drawing.Size(120, 21);
             this.lblDenNgayBHYT.TabIndex = 12;
@@ -286,8 +286,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this._dtpDenNgayBHYT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._dtpDenNgayBHYT.EditValue = null;
-            this._dtpDenNgayBHYT.Location = new System.Drawing.Point(228, 155);
-            this._dtpDenNgayBHYT.Margin = new System.Windows.Forms.Padding(0, 11, 28, 11);
+            this._dtpDenNgayBHYT.Location = new System.Drawing.Point(285, 194);
+            this._dtpDenNgayBHYT.Margin = new System.Windows.Forms.Padding(0, 14, 35, 14);
             this._dtpDenNgayBHYT.Name = "_dtpDenNgayBHYT";
             this._dtpDenNgayBHYT.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._dtpDenNgayBHYT.Properties.Appearance.Options.UseFont = true;
@@ -300,15 +300,15 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this._dtpDenNgayBHYT.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this._dtpDenNgayBHYT.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this._dtpDenNgayBHYT.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this._dtpDenNgayBHYT.Size = new System.Drawing.Size(298, 26);
+            this._dtpDenNgayBHYT.Size = new System.Drawing.Size(228, 26);
             this._dtpDenNgayBHYT.TabIndex = 13;
             // 
             // lblTuNgayBHYT
             // 
             this.lblTuNgayBHYT.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTuNgayBHYT.Appearance.Options.UseFont = true;
-            this.lblTuNgayBHYT.Location = new System.Drawing.Point(12, 98);
-            this.lblTuNgayBHYT.Margin = new System.Windows.Forms.Padding(0, 11, 0, 11);
+            this.lblTuNgayBHYT.Location = new System.Drawing.Point(15, 122);
+            this.lblTuNgayBHYT.Margin = new System.Windows.Forms.Padding(0, 14, 0, 14);
             this.lblTuNgayBHYT.Name = "lblTuNgayBHYT";
             this.lblTuNgayBHYT.Size = new System.Drawing.Size(108, 21);
             this.lblTuNgayBHYT.TabIndex = 10;
@@ -319,8 +319,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this._dtpTuNgayBHYT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._dtpTuNgayBHYT.EditValue = null;
-            this._dtpTuNgayBHYT.Location = new System.Drawing.Point(228, 90);
-            this._dtpTuNgayBHYT.Margin = new System.Windows.Forms.Padding(0, 11, 28, 11);
+            this._dtpTuNgayBHYT.Location = new System.Drawing.Point(285, 112);
+            this._dtpTuNgayBHYT.Margin = new System.Windows.Forms.Padding(0, 14, 35, 14);
             this._dtpTuNgayBHYT.Name = "_dtpTuNgayBHYT";
             this._dtpTuNgayBHYT.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._dtpTuNgayBHYT.Properties.Appearance.Options.UseFont = true;
@@ -333,15 +333,15 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this._dtpTuNgayBHYT.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this._dtpTuNgayBHYT.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this._dtpTuNgayBHYT.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this._dtpTuNgayBHYT.Size = new System.Drawing.Size(298, 26);
+            this._dtpTuNgayBHYT.Size = new System.Drawing.Size(228, 26);
             this._dtpTuNgayBHYT.TabIndex = 11;
             // 
             // lblMaBHYT
             // 
             this.lblMaBHYT.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMaBHYT.Appearance.Options.UseFont = true;
-            this.lblMaBHYT.Location = new System.Drawing.Point(12, 35);
-            this.lblMaBHYT.Margin = new System.Windows.Forms.Padding(0, 11, 0, 11);
+            this.lblMaBHYT.Location = new System.Drawing.Point(15, 44);
+            this.lblMaBHYT.Margin = new System.Windows.Forms.Padding(0, 14, 0, 14);
             this.lblMaBHYT.Name = "lblMaBHYT";
             this.lblMaBHYT.Size = new System.Drawing.Size(71, 19);
             this.lblMaBHYT.TabIndex = 8;
@@ -351,12 +351,12 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             // 
             this._txtMaBHYT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._txtMaBHYT.Location = new System.Drawing.Point(228, 28);
-            this._txtMaBHYT.Margin = new System.Windows.Forms.Padding(0, 11, 28, 11);
+            this._txtMaBHYT.Location = new System.Drawing.Point(285, 35);
+            this._txtMaBHYT.Margin = new System.Windows.Forms.Padding(0, 14, 35, 14);
             this._txtMaBHYT.Name = "_txtMaBHYT";
             this._txtMaBHYT.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._txtMaBHYT.Properties.Appearance.Options.UseFont = true;
-            this._txtMaBHYT.Size = new System.Drawing.Size(298, 26);
+            this._txtMaBHYT.Size = new System.Drawing.Size(228, 26);
             this._txtMaBHYT.TabIndex = 9;
             // 
             // groupControlDiaChi
@@ -368,10 +368,10 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this.groupControlDiaChi.Controls.Add(this.lblTinhThanh);
             this.groupControlDiaChi.Controls.Add(this._cboTinhThanh);
             this.groupControlDiaChi.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupControlDiaChi.Location = new System.Drawing.Point(14, 13);
-            this.groupControlDiaChi.Margin = new System.Windows.Forms.Padding(0, 0, 0, 11);
+            this.groupControlDiaChi.Location = new System.Drawing.Point(17, 16);
+            this.groupControlDiaChi.Margin = new System.Windows.Forms.Padding(0, 0, 0, 14);
             this.groupControlDiaChi.Name = "groupControlDiaChi";
-            this.groupControlDiaChi.Size = new System.Drawing.Size(553, 175);
+            this.groupControlDiaChi.Size = new System.Drawing.Size(547, 219);
             this.groupControlDiaChi.TabIndex = 2;
             this.groupControlDiaChi.Text = "Địa chỉ";
             // 
@@ -379,8 +379,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             // 
             this.lblXaPhuong.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblXaPhuong.Appearance.Options.UseFont = true;
-            this.lblXaPhuong.Location = new System.Drawing.Point(12, 98);
-            this.lblXaPhuong.Margin = new System.Windows.Forms.Padding(0, 11, 0, 11);
+            this.lblXaPhuong.Location = new System.Drawing.Point(15, 122);
+            this.lblXaPhuong.Margin = new System.Windows.Forms.Padding(0, 14, 0, 14);
             this.lblXaPhuong.Name = "lblXaPhuong";
             this.lblXaPhuong.Size = new System.Drawing.Size(87, 21);
             this.lblXaPhuong.TabIndex = 16;
@@ -390,22 +390,22 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             // 
             this._cboXaPhuong.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._cboXaPhuong.Location = new System.Drawing.Point(228, 90);
-            this._cboXaPhuong.Margin = new System.Windows.Forms.Padding(0, 11, 28, 11);
+            this._cboXaPhuong.Location = new System.Drawing.Point(285, 112);
+            this._cboXaPhuong.Margin = new System.Windows.Forms.Padding(0, 14, 35, 14);
             this._cboXaPhuong.Name = "_cboXaPhuong";
             this._cboXaPhuong.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._cboXaPhuong.Properties.Appearance.Options.UseFont = true;
             this._cboXaPhuong.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this._cboXaPhuong.Size = new System.Drawing.Size(298, 26);
+            this._cboXaPhuong.Size = new System.Drawing.Size(228, 26);
             this._cboXaPhuong.TabIndex = 17;
             // 
             // lblTinhThanh
             // 
             this.lblTinhThanh.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTinhThanh.Appearance.Options.UseFont = true;
-            this.lblTinhThanh.Location = new System.Drawing.Point(12, 35);
-            this.lblTinhThanh.Margin = new System.Windows.Forms.Padding(0, 11, 0, 11);
+            this.lblTinhThanh.Location = new System.Drawing.Point(15, 44);
+            this.lblTinhThanh.Margin = new System.Windows.Forms.Padding(0, 14, 0, 14);
             this.lblTinhThanh.Name = "lblTinhThanh";
             this.lblTinhThanh.Size = new System.Drawing.Size(123, 21);
             this.lblTinhThanh.TabIndex = 14;
@@ -415,14 +415,14 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             // 
             this._cboTinhThanh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._cboTinhThanh.Location = new System.Drawing.Point(228, 28);
-            this._cboTinhThanh.Margin = new System.Windows.Forms.Padding(0, 11, 28, 11);
+            this._cboTinhThanh.Location = new System.Drawing.Point(285, 35);
+            this._cboTinhThanh.Margin = new System.Windows.Forms.Padding(0, 14, 35, 14);
             this._cboTinhThanh.Name = "_cboTinhThanh";
             this._cboTinhThanh.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._cboTinhThanh.Properties.Appearance.Options.UseFont = true;
             this._cboTinhThanh.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this._cboTinhThanh.Size = new System.Drawing.Size(298, 26);
+            this._cboTinhThanh.Size = new System.Drawing.Size(228, 26);
             this._cboTinhThanh.TabIndex = 15;
             // 
             // pnlButtons
@@ -430,11 +430,11 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this.pnlButtons.Controls.Add(this._btnCancel);
             this.pnlButtons.Controls.Add(this._btnSave);
             this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlButtons.Location = new System.Drawing.Point(0, 576);
-            this.pnlButtons.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
+            this.pnlButtons.Location = new System.Drawing.Point(0, 535);
+            this.pnlButtons.Margin = new System.Windows.Forms.Padding(10, 8, 10, 8);
             this.pnlButtons.Name = "pnlButtons";
-            this.pnlButtons.Padding = new System.Windows.Forms.Padding(12, 11, 12, 11);
-            this.pnlButtons.Size = new System.Drawing.Size(581, 98);
+            this.pnlButtons.Padding = new System.Windows.Forms.Padding(15, 14, 15, 14);
+            this.pnlButtons.Size = new System.Drawing.Size(581, 122);
             this.pnlButtons.TabIndex = 2;
             // 
             // _btnCancel
@@ -442,10 +442,10 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this._btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this._btnCancel.Appearance.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this._btnCancel.Appearance.Options.UseFont = true;
-            this._btnCancel.Location = new System.Drawing.Point(434, 10);
-            this._btnCancel.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
+            this._btnCancel.Location = new System.Drawing.Point(397, 12);
+            this._btnCancel.Margin = new System.Windows.Forms.Padding(10, 8, 10, 8);
             this._btnCancel.Name = "_btnCancel";
-            this._btnCancel.Size = new System.Drawing.Size(131, 48);
+            this._btnCancel.Size = new System.Drawing.Size(164, 60);
             this._btnCancel.TabIndex = 1;
             this._btnCancel.Text = "Hủy";
             this._btnCancel.Click += new System.EventHandler(this._btnCancel_Click);
@@ -459,10 +459,10 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this._btnSave.Appearance.Options.UseBackColor = true;
             this._btnSave.Appearance.Options.UseFont = true;
             this._btnSave.Appearance.Options.UseForeColor = true;
-            this._btnSave.Location = new System.Drawing.Point(279, 10);
-            this._btnSave.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
+            this._btnSave.Location = new System.Drawing.Point(204, 12);
+            this._btnSave.Margin = new System.Windows.Forms.Padding(10, 8, 10, 8);
             this._btnSave.Name = "_btnSave";
-            this._btnSave.Size = new System.Drawing.Size(139, 48);
+            this._btnSave.Size = new System.Drawing.Size(174, 60);
             this._btnSave.TabIndex = 0;
             this._btnSave.Text = "Lưu";
             this._btnSave.Click += new System.EventHandler(this._btnSave_Click);
@@ -472,7 +472,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             this.Appearance.Options.UseFont = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(581, 674);
+            this.ClientSize = new System.Drawing.Size(581, 657);
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.pnlButtons);
             this.Font = new System.Drawing.Font("Tahoma", 9F);
@@ -493,7 +493,7 @@ namespace STM.MediaToPACS.Main.UI.Configurations
             ((System.ComponentModel.ISupportInitialize)(this._dtpNgaySinh.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._dtpNgaySinh.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._txtHoTen.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._txtMaPatient.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._txtMaBenhNhan.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControlBHYT)).EndInit();
             this.groupControlBHYT.ResumeLayout(false);
             this.groupControlBHYT.PerformLayout();
@@ -516,8 +516,8 @@ namespace STM.MediaToPACS.Main.UI.Configurations
         #endregion
         private DevExpress.XtraEditors.PanelControl pnlMain;
         private DevExpress.XtraEditors.GroupControl groupControlThongTinCoBan;
-        private DevExpress.XtraEditors.LabelControl lblMaPatient;
-        private DevExpress.XtraEditors.TextEdit _txtMaPatient;
+        private DevExpress.XtraEditors.LabelControl lblMaBenhNhan;
+        private DevExpress.XtraEditors.TextEdit _txtMaBenhNhan;
         private DevExpress.XtraEditors.LabelControl lblHoTen;
         private DevExpress.XtraEditors.TextEdit _txtHoTen;
         private DevExpress.XtraEditors.LabelControl lblNgaySinh;

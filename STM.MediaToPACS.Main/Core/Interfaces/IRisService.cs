@@ -18,7 +18,7 @@ namespace MediaToPacs.Core.Interfaces
     {
         Task<List<ScheduleStepRIS>> GetDanhSachLichChupAsync(
              int page = 1, int pageSize = 10,
-             string tenPatient = null,
+             string tenBenhNhan = null,
              string maChiDinh = null,
              string modality = null,
              string studyInstanceUID = null,
@@ -54,12 +54,12 @@ namespace MediaToPacs.Core.Interfaces
         Task<bool> XoaGoiYKetLuanAsync(string id);
 
         //Bệnh nhân
-        Task<Patient> GetPatientAsync(string maPatient);
+        Task<Patient> GetPatientAsync(string maBenhNhan);
 
         //Danh sách chỉ định dịch vụ
         Task<ResultPage<ServiceOrderResponse>> GetDSChiDinhDichVuAsync(int page = 1, int pageSize = 50,
-            string maPatient = null,
-            string tenPatient = null,
+            string maBenhNhan = null,
+            string tenBenhNhan = null,
             string maChiDinh = null,
             string modality = null,
             string trangThai = null,

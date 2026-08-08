@@ -12,11 +12,11 @@ namespace MediaToPacs.Core.Models
     {
         [Category("Thông tin bệnh nhân")]
         [DisplayName("Mã Bệnh Nhân")]
-        public string maPatient { get; set; } = "";
+        public string maBenhNhan { get; set; } = "";
 
         [Category("Thông tin bệnh nhân")]
         [DisplayName("Tên Bệnh Nhân")]
-        public string tenPatient { get; set; } = "";
+        public string tenBenhNhan{ get; set; } = "";
 
         [Category("Thông tin bệnh nhân")]
         [DisplayName("Năm sinh")]

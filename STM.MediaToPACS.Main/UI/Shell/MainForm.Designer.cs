@@ -40,8 +40,8 @@ namespace STM.MediaToPACS.Main.UI
             this.gridColumnId = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnSoPhieuChiDinh = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMaChiDinh = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnMaPatient = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnTenPatient = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMaBenhNhan = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnTenBenhNhan = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnGioiTinh = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnNgaySinh = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnTenBacSiChiDinh = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -169,7 +169,7 @@ namespace STM.MediaToPACS.Main.UI
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1795, 796);
+            this.panel1.Size = new System.Drawing.Size(1554, 796);
             this.panel1.TabIndex = 0;
             // 
             // xtraTabControl1
@@ -179,7 +179,7 @@ namespace STM.MediaToPACS.Main.UI
             this.xtraTabControl1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.xtraTabControl1.Name = "xtraTabControl1";
             this.xtraTabControl1.SelectedTabPage = this.xtraTabPage1;
-            this.xtraTabControl1.Size = new System.Drawing.Size(1791, 759);
+            this.xtraTabControl1.Size = new System.Drawing.Size(1550, 759);
             this.xtraTabControl1.TabIndex = 27;
             this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage1});
@@ -191,7 +191,7 @@ namespace STM.MediaToPACS.Main.UI
             this.xtraTabPage1.Controls.Add(this.panelControl14);
             this.xtraTabPage1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.xtraTabPage1.Name = "xtraTabPage1";
-            this.xtraTabPage1.Size = new System.Drawing.Size(1789, 728);
+            this.xtraTabPage1.Size = new System.Drawing.Size(1540, 721);
             this.xtraTabPage1.Text = "Hệ thống RIS";
             // 
             // groupControl2
@@ -202,11 +202,11 @@ namespace STM.MediaToPACS.Main.UI
             this.groupControl2.AppearanceCaption.Options.UseForeColor = true;
             this.groupControl2.Controls.Add(this._gridControlChiDinh);
             this.groupControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupControl2.Location = new System.Drawing.Point(0, 83);
-            this.groupControl2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl2.Location = new System.Drawing.Point(0, 114);
+            this.groupControl2.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl2.Name = "groupControl2";
-            this.groupControl2.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.groupControl2.Size = new System.Drawing.Size(1118, 369);
+            this.groupControl2.Padding = new System.Windows.Forms.Padding(6);
+            this.groupControl2.Size = new System.Drawing.Size(1540, 552);
             this.groupControl2.TabIndex = 5;
             this.groupControl2.Text = "Danh sách chỉ định";
             // 
@@ -214,11 +214,11 @@ namespace STM.MediaToPACS.Main.UI
             // 
             this._gridControlChiDinh.Dock = System.Windows.Forms.DockStyle.Fill;
             this._gridControlChiDinh.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this._gridControlChiDinh.Location = new System.Drawing.Point(8, 34);
+            this._gridControlChiDinh.Location = new System.Drawing.Point(8, 37);
             this._gridControlChiDinh.MainView = this._gridViewChiDinh;
             this._gridControlChiDinh.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this._gridControlChiDinh.Name = "_gridControlChiDinh";
-            this._gridControlChiDinh.Size = new System.Drawing.Size(1102, 327);
+            this._gridControlChiDinh.Size = new System.Drawing.Size(1524, 507);
             this._gridControlChiDinh.TabIndex = 1;
             this._gridControlChiDinh.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this._gridViewChiDinh});
@@ -235,8 +235,8 @@ namespace STM.MediaToPACS.Main.UI
             this.gridColumnId,
             this.gridColumnSoPhieuChiDinh,
             this.gridColumnMaChiDinh,
-            this.gridColumnMaPatient,
-            this.gridColumnTenPatient,
+            this.gridColumnMaBenhNhan,
+            this.gridColumnTenBenhNhan,
             this.gridColumnGioiTinh,
             this.gridColumnNgaySinh,
             this.gridColumnTenBacSiChiDinh,
@@ -280,26 +280,26 @@ namespace STM.MediaToPACS.Main.UI
             this.gridColumnMaChiDinh.Name = "gridColumnMaChiDinh";
             this.gridColumnMaChiDinh.Width = 117;
             // 
-            // gridColumnMaPatient
+            // gridColumnMaBenhNhan
             // 
-            this.gridColumnMaPatient.Caption = "Mã BN";
-            this.gridColumnMaPatient.FieldName = "MaPatient";
-            this.gridColumnMaPatient.MaxWidth = 187;
-            this.gridColumnMaPatient.MinWidth = 30;
-            this.gridColumnMaPatient.Name = "gridColumnMaPatient";
-            this.gridColumnMaPatient.Visible = true;
-            this.gridColumnMaPatient.VisibleIndex = 1;
-            this.gridColumnMaPatient.Width = 117;
+            this.gridColumnMaBenhNhan.Caption = "Mã BN";
+            this.gridColumnMaBenhNhan.FieldName = "MaBenhNhan";
+            this.gridColumnMaBenhNhan.MaxWidth = 187;
+            this.gridColumnMaBenhNhan.MinWidth = 30;
+            this.gridColumnMaBenhNhan.Name = "gridColumnMaBenhNhan";
+            this.gridColumnMaBenhNhan.Visible = true;
+            this.gridColumnMaBenhNhan.VisibleIndex = 1;
+            this.gridColumnMaBenhNhan.Width = 117;
             // 
-            // gridColumnTenPatient
+            // gridColumnTenBenhNhan
             // 
-            this.gridColumnTenPatient.Caption = "Tên BN";
-            this.gridColumnTenPatient.FieldName = "HoTen";
-            this.gridColumnTenPatient.MinWidth = 30;
-            this.gridColumnTenPatient.Name = "gridColumnTenPatient";
-            this.gridColumnTenPatient.Visible = true;
-            this.gridColumnTenPatient.VisibleIndex = 2;
-            this.gridColumnTenPatient.Width = 166;
+            this.gridColumnTenBenhNhan.Caption = "Tên BN";
+            this.gridColumnTenBenhNhan.FieldName = "HoTen";
+            this.gridColumnTenBenhNhan.MinWidth = 30;
+            this.gridColumnTenBenhNhan.Name = "gridColumnTenBenhNhan";
+            this.gridColumnTenBenhNhan.Visible = true;
+            this.gridColumnTenBenhNhan.VisibleIndex = 2;
+            this.gridColumnTenBenhNhan.Width = 166;
             // 
             // gridColumnGioiTinh
             // 
@@ -375,14 +375,14 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl2.Location = new System.Drawing.Point(0, 0);
             this.panelControl2.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(1118, 83);
+            this.panelControl2.Size = new System.Drawing.Size(1540, 114);
             this.panelControl2.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 364F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 265F));
             this.tableLayoutPanel1.Controls.Add(this.tablePanel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panelControl4, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -391,17 +391,17 @@ namespace STM.MediaToPACS.Main.UI
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1114, 79);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1536, 110);
             this.tableLayoutPanel1.TabIndex = 36;
             // 
             // tablePanel1
             // 
             this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 18F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 18F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 18F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 18F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 19.4F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 16.8F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 19.2F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 16F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 21.4F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 10.6F)});
             this.tablePanel1.Controls.Add(this.panelControl3);
             this.tablePanel1.Controls.Add(this.panelControl13);
@@ -415,12 +415,12 @@ namespace STM.MediaToPACS.Main.UI
             this.tablePanel1.Controls.Add(this.panelControl5);
             this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablePanel1.Location = new System.Drawing.Point(4, 4);
-            this.tablePanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tablePanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tablePanel1.Name = "tablePanel1";
             this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 47.59998F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(742, 71);
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 51.59998F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 44F)});
+            this.tablePanel1.Size = new System.Drawing.Size(1263, 102);
             this.tablePanel1.TabIndex = 2;
             // 
             // panelControl3
@@ -429,13 +429,13 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl3.Controls.Add(this._cbbTrangThai);
             this.panelControl3.Controls.Add(this.labelControl5);
             this.panelControl3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl3.Location = new System.Drawing.Point(528, 4);
+            this.panelControl3.Location = new System.Drawing.Point(871, 4);
             this.panelControl3.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.panelControl3.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelControl3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl3.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl3.Name = "panelControl3";
             this.tablePanel1.SetRow(this.panelControl3, 0);
-            this.panelControl3.Size = new System.Drawing.Size(133, 51);
+            this.panelControl3.Size = new System.Drawing.Size(257, 44);
             this.panelControl3.TabIndex = 43;
             // 
             // _cbbTrangThai
@@ -450,18 +450,18 @@ namespace STM.MediaToPACS.Main.UI
             "Đã lên lịch",
             "Đã thực hiện",
             "Đã hủy"});
-            this._cbbTrangThai.Location = new System.Drawing.Point(101, 5);
+            this._cbbTrangThai.Location = new System.Drawing.Point(102, 4);
             this._cbbTrangThai.Margin = new System.Windows.Forms.Padding(2);
             this._cbbTrangThai.Name = "_cbbTrangThai";
-            this._cbbTrangThai.Size = new System.Drawing.Size(17, 30);
+            this._cbbTrangThai.Size = new System.Drawing.Size(147, 30);
             this._cbbTrangThai.TabIndex = 46;
             // 
             // labelControl5
             // 
             this.labelControl5.Location = new System.Drawing.Point(14, 11);
-            this.labelControl5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.labelControl5.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl5.Name = "labelControl5";
-            this.labelControl5.Size = new System.Drawing.Size(62, 17);
+            this.labelControl5.Size = new System.Drawing.Size(65, 18);
             this.labelControl5.TabIndex = 41;
             this.labelControl5.Text = "Trạng thái";
             // 
@@ -471,13 +471,13 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl13.Controls.Add(this._cbPageSize);
             this.panelControl13.Controls.Add(this.labelControl6);
             this.panelControl13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl13.Location = new System.Drawing.Point(669, 63);
+            this.panelControl13.Location = new System.Drawing.Point(1136, 56);
             this.panelControl13.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelControl13.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl13.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl13.Name = "panelControl13";
             this.tablePanel1.SetRow(this.panelControl13, 1);
-            this.panelControl13.Size = new System.Drawing.Size(69, 4);
+            this.panelControl13.Size = new System.Drawing.Size(123, 42);
             this.panelControl13.TabIndex = 43;
             // 
             // _cbPageSize
@@ -485,7 +485,7 @@ namespace STM.MediaToPACS.Main.UI
             this._cbPageSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._cbPageSize.EditValue = "1000";
-            this._cbPageSize.Location = new System.Drawing.Point(85, 6);
+            this._cbPageSize.Location = new System.Drawing.Point(38, 8);
             this._cbPageSize.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this._cbPageSize.Name = "_cbPageSize";
             this._cbPageSize.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -498,14 +498,14 @@ namespace STM.MediaToPACS.Main.UI
             "100",
             "500",
             "1000"});
-            this._cbPageSize.Size = new System.Drawing.Size(0, 28);
+            this._cbPageSize.Size = new System.Drawing.Size(78, 28);
             this._cbPageSize.TabIndex = 35;
             // 
             // labelControl6
             // 
             this.labelControl6.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl6.Appearance.Options.UseFont = true;
-            this.labelControl6.Location = new System.Drawing.Point(8, 18);
+            this.labelControl6.Location = new System.Drawing.Point(8, 12);
             this.labelControl6.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl6.Name = "labelControl6";
             this.labelControl6.Size = new System.Drawing.Size(22, 18);
@@ -518,13 +518,13 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl12.Controls.Add(this._ccbModalities);
             this.panelControl12.Controls.Add(this.labelControl3);
             this.panelControl12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl12.Location = new System.Drawing.Point(528, 63);
+            this.panelControl12.Location = new System.Drawing.Point(871, 56);
             this.panelControl12.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.panelControl12.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelControl12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl12.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl12.Name = "panelControl12";
             this.tablePanel1.SetRow(this.panelControl12, 1);
-            this.panelControl12.Size = new System.Drawing.Size(133, 4);
+            this.panelControl12.Size = new System.Drawing.Size(257, 42);
             this.panelControl12.TabIndex = 1;
             // 
             // _ccbModalities
@@ -541,18 +541,18 @@ namespace STM.MediaToPACS.Main.UI
             "MR",
             "US",
             "PT"});
-            this._ccbModalities.Location = new System.Drawing.Point(175, 8);
-            this._ccbModalities.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._ccbModalities.Location = new System.Drawing.Point(164, 9);
+            this._ccbModalities.Margin = new System.Windows.Forms.Padding(4);
             this._ccbModalities.Name = "_ccbModalities";
-            this._ccbModalities.Size = new System.Drawing.Size(0, 25);
+            this._ccbModalities.Size = new System.Drawing.Size(84, 26);
             this._ccbModalities.TabIndex = 42;
             // 
             // labelControl3
             // 
             this.labelControl3.Location = new System.Drawing.Point(14, 11);
-            this.labelControl3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.labelControl3.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(122, 17);
+            this.labelControl3.Size = new System.Drawing.Size(123, 18);
             this.labelControl3.TabIndex = 41;
             this.labelControl3.Text = "Phương thức chụp:";
             // 
@@ -562,13 +562,13 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl11.Controls.Add(this._nudPage);
             this.panelControl11.Controls.Add(this.labelControl7);
             this.panelControl11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl11.Location = new System.Drawing.Point(669, 4);
+            this.panelControl11.Location = new System.Drawing.Point(1136, 4);
             this.panelControl11.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.panelControl11.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelControl11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl11.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl11.Name = "panelControl11";
             this.tablePanel1.SetRow(this.panelControl11, 0);
-            this.panelControl11.Size = new System.Drawing.Size(69, 51);
+            this.panelControl11.Size = new System.Drawing.Size(123, 44);
             this.panelControl11.TabIndex = 1;
             // 
             // _nudPage
@@ -576,7 +576,7 @@ namespace STM.MediaToPACS.Main.UI
             this._nudPage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._nudPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._nudPage.Location = new System.Drawing.Point(85, 6);
+            this._nudPage.Location = new System.Drawing.Point(59, 4);
             this._nudPage.Margin = new System.Windows.Forms.Padding(4, 2, 16, 2);
             this._nudPage.Minimum = new decimal(new int[] {
             1,
@@ -584,7 +584,7 @@ namespace STM.MediaToPACS.Main.UI
             0,
             0});
             this._nudPage.Name = "_nudPage";
-            this._nudPage.Size = new System.Drawing.Size(0, 28);
+            this._nudPage.Size = new System.Drawing.Size(54, 28);
             this._nudPage.TabIndex = 27;
             this._nudPage.Value = new decimal(new int[] {
             1,
@@ -596,7 +596,7 @@ namespace STM.MediaToPACS.Main.UI
             // 
             this.labelControl7.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl7.Appearance.Options.UseFont = true;
-            this.labelControl7.Location = new System.Drawing.Point(8, 15);
+            this.labelControl7.Location = new System.Drawing.Point(8, 10);
             this.labelControl7.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl7.Name = "labelControl7";
             this.labelControl7.Size = new System.Drawing.Size(42, 18);
@@ -609,20 +609,20 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl10.Controls.Add(this.labelControl9);
             this.panelControl10.Controls.Add(this._dtDateToRis);
             this.panelControl10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl10.Location = new System.Drawing.Point(397, 63);
+            this.panelControl10.Location = new System.Drawing.Point(673, 56);
             this.panelControl10.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.panelControl10.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelControl10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl10.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl10.Name = "panelControl10";
             this.tablePanel1.SetRow(this.panelControl10, 1);
-            this.panelControl10.Size = new System.Drawing.Size(123, 4);
+            this.panelControl10.Size = new System.Drawing.Size(190, 42);
             this.panelControl10.TabIndex = 3;
             // 
             // labelControl9
             // 
             this.labelControl9.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl9.Appearance.Options.UseFont = true;
-            this.labelControl9.Location = new System.Drawing.Point(12, 16);
+            this.labelControl9.Location = new System.Drawing.Point(12, 14);
             this.labelControl9.Margin = new System.Windows.Forms.Padding(24, 5, 4, 5);
             this.labelControl9.Name = "labelControl9";
             this.labelControl9.Size = new System.Drawing.Size(31, 18);
@@ -634,7 +634,7 @@ namespace STM.MediaToPACS.Main.UI
             this._dtDateToRis.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._dtDateToRis.EditValue = null;
-            this._dtDateToRis.Location = new System.Drawing.Point(59, 9);
+            this._dtDateToRis.Location = new System.Drawing.Point(60, 9);
             this._dtDateToRis.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this._dtDateToRis.Name = "_dtDateToRis";
             this._dtDateToRis.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -647,7 +647,7 @@ namespace STM.MediaToPACS.Main.UI
             this._dtDateToRis.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this._dtDateToRis.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this._dtDateToRis.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this._dtDateToRis.Size = new System.Drawing.Size(56, 28);
+            this._dtDateToRis.Size = new System.Drawing.Size(122, 28);
             this._dtDateToRis.TabIndex = 36;
             // 
             // panelControl9
@@ -656,20 +656,20 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl9.Controls.Add(this.labelControl8);
             this.panelControl9.Controls.Add(this._dtDateFromRis);
             this.panelControl9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl9.Location = new System.Drawing.Point(266, 63);
+            this.panelControl9.Location = new System.Drawing.Point(435, 56);
             this.panelControl9.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.panelControl9.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelControl9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl9.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl9.Name = "panelControl9";
             this.tablePanel1.SetRow(this.panelControl9, 1);
-            this.panelControl9.Size = new System.Drawing.Size(123, 4);
+            this.panelControl9.Size = new System.Drawing.Size(230, 42);
             this.panelControl9.TabIndex = 1;
             // 
             // labelControl8
             // 
             this.labelControl8.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl8.Appearance.Options.UseFont = true;
-            this.labelControl8.Location = new System.Drawing.Point(12, 16);
+            this.labelControl8.Location = new System.Drawing.Point(10, 11);
             this.labelControl8.Margin = new System.Windows.Forms.Padding(24, 5, 4, 5);
             this.labelControl8.Name = "labelControl8";
             this.labelControl8.Size = new System.Drawing.Size(21, 18);
@@ -694,7 +694,7 @@ namespace STM.MediaToPACS.Main.UI
             this._dtDateFromRis.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this._dtDateFromRis.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this._dtDateFromRis.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this._dtDateFromRis.Size = new System.Drawing.Size(69, 28);
+            this._dtDateFromRis.Size = new System.Drawing.Size(176, 28);
             this._dtDateFromRis.TabIndex = 33;
             // 
             // panelControl8
@@ -703,20 +703,20 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl8.Controls.Add(this.labelControl4);
             this.panelControl8.Controls.Add(this._txMaCD);
             this.panelControl8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl8.Location = new System.Drawing.Point(135, 63);
+            this.panelControl8.Location = new System.Drawing.Point(227, 56);
             this.panelControl8.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.panelControl8.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelControl8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl8.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl8.Name = "panelControl8";
             this.tablePanel1.SetRow(this.panelControl8, 1);
-            this.panelControl8.Size = new System.Drawing.Size(123, 4);
+            this.panelControl8.Size = new System.Drawing.Size(200, 42);
             this.panelControl8.TabIndex = 1;
             // 
             // labelControl4
             // 
             this.labelControl4.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl4.Appearance.Options.UseFont = true;
-            this.labelControl4.Location = new System.Drawing.Point(8, 16);
+            this.labelControl4.Location = new System.Drawing.Point(6, 11);
             this.labelControl4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl4.Name = "labelControl4";
             this.labelControl4.Size = new System.Drawing.Size(51, 18);
@@ -727,12 +727,12 @@ namespace STM.MediaToPACS.Main.UI
             // 
             this._txMaCD.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._txMaCD.Location = new System.Drawing.Point(78, 9);
+            this._txMaCD.Location = new System.Drawing.Point(78, 6);
             this._txMaCD.Margin = new System.Windows.Forms.Padding(16, 5, 4, 5);
             this._txMaCD.Name = "_txMaCD";
             this._txMaCD.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._txMaCD.Properties.Appearance.Options.UseFont = true;
-            this._txMaCD.Size = new System.Drawing.Size(36, 28);
+            this._txMaCD.Size = new System.Drawing.Size(112, 28);
             this._txMaCD.TabIndex = 29;
             this._txMaCD.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textEdit_KeyDown);
             // 
@@ -742,20 +742,20 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl7.Controls.Add(this.labelControl10);
             this.panelControl7.Controls.Add(this._txPatientCodeRis);
             this.panelControl7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl7.Location = new System.Drawing.Point(4, 63);
+            this.panelControl7.Location = new System.Drawing.Point(4, 56);
             this.panelControl7.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.panelControl7.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelControl7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl7.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl7.Name = "panelControl7";
             this.tablePanel1.SetRow(this.panelControl7, 1);
-            this.panelControl7.Size = new System.Drawing.Size(123, 4);
+            this.panelControl7.Size = new System.Drawing.Size(215, 42);
             this.panelControl7.TabIndex = 2;
             // 
             // labelControl10
             // 
             this.labelControl10.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl10.Appearance.Options.UseFont = true;
-            this.labelControl10.Location = new System.Drawing.Point(12, 16);
+            this.labelControl10.Location = new System.Drawing.Point(12, 11);
             this.labelControl10.Margin = new System.Windows.Forms.Padding(16, 15, 4, 5);
             this.labelControl10.Name = "labelControl10";
             this.labelControl10.Size = new System.Drawing.Size(50, 18);
@@ -766,12 +766,12 @@ namespace STM.MediaToPACS.Main.UI
             // 
             this._txPatientCodeRis.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._txPatientCodeRis.Location = new System.Drawing.Point(92, 8);
+            this._txPatientCodeRis.Location = new System.Drawing.Point(92, 6);
             this._txPatientCodeRis.Margin = new System.Windows.Forms.Padding(16, 5, 4, 5);
             this._txPatientCodeRis.Name = "_txPatientCodeRis";
             this._txPatientCodeRis.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._txPatientCodeRis.Properties.Appearance.Options.UseFont = true;
-            this._txPatientCodeRis.Size = new System.Drawing.Size(23, 28);
+            this._txPatientCodeRis.Size = new System.Drawing.Size(115, 28);
             this._txPatientCodeRis.TabIndex = 40;
             this._txPatientCodeRis.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textEdit_KeyDown);
             // 
@@ -782,20 +782,20 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl6.Controls.Add(this.labelControl2);
             this.panelControl6.Controls.Add(this._txBSCDRis);
             this.panelControl6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl6.Location = new System.Drawing.Point(266, 4);
+            this.panelControl6.Location = new System.Drawing.Point(435, 4);
             this.panelControl6.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.panelControl6.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelControl6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl6.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl6.Name = "panelControl6";
             this.tablePanel1.SetRow(this.panelControl6, 0);
-            this.panelControl6.Size = new System.Drawing.Size(254, 51);
+            this.panelControl6.Size = new System.Drawing.Size(428, 44);
             this.panelControl6.TabIndex = 1;
             // 
             // labelControl2
             // 
             this.labelControl2.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl2.Appearance.Options.UseFont = true;
-            this.labelControl2.Location = new System.Drawing.Point(12, 15);
+            this.labelControl2.Location = new System.Drawing.Point(10, 10);
             this.labelControl2.Margin = new System.Windows.Forms.Padding(24, 5, 4, 5);
             this.labelControl2.Name = "labelControl2";
             this.labelControl2.Size = new System.Drawing.Size(84, 18);
@@ -806,12 +806,12 @@ namespace STM.MediaToPACS.Main.UI
             // 
             this._txBSCDRis.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._txBSCDRis.Location = new System.Drawing.Point(138, 6);
+            this._txBSCDRis.Location = new System.Drawing.Point(116, 5);
             this._txBSCDRis.Margin = new System.Windows.Forms.Padding(16, 5, 4, 5);
             this._txBSCDRis.Name = "_txBSCDRis";
             this._txBSCDRis.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._txBSCDRis.Properties.Appearance.Options.UseFont = true;
-            this._txBSCDRis.Size = new System.Drawing.Size(109, 28);
+            this._txBSCDRis.Size = new System.Drawing.Size(304, 28);
             this._txBSCDRis.TabIndex = 25;
             this._txBSCDRis.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textEdit_KeyDown);
             // 
@@ -825,17 +825,17 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl5.Location = new System.Drawing.Point(4, 4);
             this.panelControl5.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.panelControl5.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelControl5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl5.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl5.Name = "panelControl5";
             this.tablePanel1.SetRow(this.panelControl5, 0);
-            this.panelControl5.Size = new System.Drawing.Size(254, 51);
+            this.panelControl5.Size = new System.Drawing.Size(423, 44);
             this.panelControl5.TabIndex = 0;
             // 
             // labelControl1
             // 
             this.labelControl1.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl1.Appearance.Options.UseFont = true;
-            this.labelControl1.Location = new System.Drawing.Point(12, 15);
+            this.labelControl1.Location = new System.Drawing.Point(10, 9);
             this.labelControl1.Margin = new System.Windows.Forms.Padding(16, 15, 4, 5);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(54, 18);
@@ -846,12 +846,12 @@ namespace STM.MediaToPACS.Main.UI
             // 
             this._txPatientNameRis.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._txPatientNameRis.Location = new System.Drawing.Point(92, 6);
+            this._txPatientNameRis.Location = new System.Drawing.Point(91, 5);
             this._txPatientNameRis.Margin = new System.Windows.Forms.Padding(16, 5, 4, 5);
             this._txPatientNameRis.Name = "_txPatientNameRis";
             this._txPatientNameRis.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._txPatientNameRis.Properties.Appearance.Options.UseFont = true;
-            this._txPatientNameRis.Size = new System.Drawing.Size(153, 28);
+            this._txPatientNameRis.Size = new System.Drawing.Size(322, 28);
             this._txPatientNameRis.TabIndex = 23;
             this._txPatientNameRis.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textEdit_KeyDown);
             // 
@@ -859,11 +859,11 @@ namespace STM.MediaToPACS.Main.UI
             // 
             this.panelControl4.Controls.Add(this._btnSearchRIS);
             this.panelControl4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl4.Location = new System.Drawing.Point(754, 2);
+            this.panelControl4.Location = new System.Drawing.Point(1275, 2);
             this.panelControl4.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.panelControl4.Name = "panelControl4";
-            this.panelControl4.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.panelControl4.Size = new System.Drawing.Size(356, 75);
+            this.panelControl4.Padding = new System.Windows.Forms.Padding(6);
+            this.panelControl4.Size = new System.Drawing.Size(257, 106);
             this.panelControl4.TabIndex = 36;
             // 
             // _btnSearchRIS
@@ -876,7 +876,7 @@ namespace STM.MediaToPACS.Main.UI
             this._btnSearchRIS.Location = new System.Drawing.Point(8, 8);
             this._btnSearchRIS.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this._btnSearchRIS.Name = "_btnSearchRIS";
-            this._btnSearchRIS.Size = new System.Drawing.Size(340, 59);
+            this._btnSearchRIS.Size = new System.Drawing.Size(241, 90);
             this._btnSearchRIS.TabIndex = 33;
             this._btnSearchRIS.Text = "Tìm kiếm";
             this._btnSearchRIS.Click += new System.EventHandler(this._btnSearchRIS_Click);
@@ -886,12 +886,12 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl14.Controls.Add(this.panelControl21);
             this.panelControl14.Controls.Add(this.statusStrip1);
             this.panelControl14.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelControl14.Location = new System.Drawing.Point(0, 400);
+            this.panelControl14.Location = new System.Drawing.Point(0, 666);
             this.panelControl14.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
             this.panelControl14.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelControl14.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl14.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl14.Name = "panelControl14";
-            this.panelControl14.Size = new System.Drawing.Size(1118, 55);
+            this.panelControl14.Size = new System.Drawing.Size(1540, 55);
             this.panelControl14.TabIndex = 35;
             // 
             // panelControl21
@@ -899,8 +899,8 @@ namespace STM.MediaToPACS.Main.UI
             this.panelControl21.Controls.Add(this.labelControl13);
             this.panelControl21.Controls.Add(this._lbSLCaChup);
             this.panelControl21.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelControl21.Location = new System.Drawing.Point(959, 3);
-            this.panelControl21.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControl21.Location = new System.Drawing.Point(1381, 3);
+            this.panelControl21.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl21.Name = "panelControl21";
             this.panelControl21.Size = new System.Drawing.Size(156, 49);
             this.panelControl21.TabIndex = 34;
@@ -913,7 +913,7 @@ namespace STM.MediaToPACS.Main.UI
             this.labelControl13.Appearance.Options.UseFont = true;
             this.labelControl13.Appearance.Options.UseForeColor = true;
             this.labelControl13.Location = new System.Drawing.Point(-88, 16);
-            this.labelControl13.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.labelControl13.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl13.Name = "labelControl13";
             this.labelControl13.Size = new System.Drawing.Size(83, 21);
             this.labelControl13.TabIndex = 6;
@@ -927,7 +927,7 @@ namespace STM.MediaToPACS.Main.UI
             this._lbSLCaChup.Appearance.Options.UseFont = true;
             this._lbSLCaChup.Appearance.Options.UseForeColor = true;
             this._lbSLCaChup.Location = new System.Drawing.Point(24, 16);
-            this._lbSLCaChup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._lbSLCaChup.Margin = new System.Windows.Forms.Padding(4);
             this._lbSLCaChup.Name = "_lbSLCaChup";
             this._lbSLCaChup.Size = new System.Drawing.Size(11, 21);
             this._lbSLCaChup.TabIndex = 7;
@@ -945,7 +945,7 @@ namespace STM.MediaToPACS.Main.UI
             this.statusStrip1.Location = new System.Drawing.Point(3, 3);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 18, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1112, 49);
+            this.statusStrip1.Size = new System.Drawing.Size(1534, 49);
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -997,7 +997,7 @@ namespace STM.MediaToPACS.Main.UI
             this._menuHelp});
             this.menuStrip1.Location = new System.Drawing.Point(2, 2);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1791, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(1550, 33);
             this.menuStrip1.TabIndex = 34;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1113,12 +1113,12 @@ namespace STM.MediaToPACS.Main.UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1795, 796);
+            this.ClientSize = new System.Drawing.Size(1554, 796);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.IconOptions.Image = global::STM.MediaToPACS.Main.Properties.Resources.stm;
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "STM-Media To PACS";
@@ -1206,8 +1206,8 @@ namespace STM.MediaToPACS.Main.UI
         private DevExpress.XtraGrid.Views.Grid.GridView _gridViewChiDinh;
         private DevExpress.XtraEditors.PanelControl panelControl2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnTrangThaiPhieu;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMaPatient;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumnTenPatient;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMaBenhNhan;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnTenBenhNhan;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnNgaySinh;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnGioiTinh;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnTenDichVu;

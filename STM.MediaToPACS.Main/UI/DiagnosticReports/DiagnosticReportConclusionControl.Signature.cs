@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -113,18 +113,18 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 ShowSplashScreen(parentForm, "Đang tải dữ liệu...", "Vui lòng chờ trong giây lát...");
                 splashShown = true;
 
-                var template = await ServiceLocator.RisService.GetReportTemplateByIdAsync(templateId);
+                var template = await _risService.GetReportTemplateByIdAsync(templateId);
                 var reportData = CreateBaoCaoKetLuan();
 
                 byte[] pdfBytes = await ExportReportToPdfBytesAsync(template.XmlTemplate, reportData);
 
                 var request = BuildSignRequest(pdfBytes);
-                var signedResult = await ServiceLocator.SignatureService.SignHashPdfV2(request);
+                var signedResult = await _signatureService.SignHashPdfV2(request);
 
                 if (!string.IsNullOrEmpty(signedResult))
                 {
                     byte[] signedPdfBytes = Convert.FromBase64String(signedResult);
-                    await ServiceLocator.RisService.UploadSignedFileAsync(_machidinh, "pdf", "", signedPdfBytes);
+                    await _risService.UploadSignedFileAsync(_machidinh, "pdf", "", signedPdfBytes);
                     _ = CompleteRisV2InBackgroundAsync(_machidinh);
 
                     _rtKetLuan.Enabled = false;
@@ -228,12 +228,12 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private string BuildSignFileName()
         {
-            string tenPatient = RemoveDiacriticsForFileName(_ServiceOrderResponse?.Patient?.HoTen);
+            string tenBenhNhan = RemoveDiacriticsForFileName(_ServiceOrderResponse?.BenhNhan?.HoTen);
             string maChiDinh = _machidinh ?? string.Empty;
 
-            return string.IsNullOrEmpty(tenPatient)
+            return string.IsNullOrEmpty(tenBenhNhan)
                 ? $"{maChiDinh}.pdf"
-                : $"{tenPatient}_{maChiDinh}.pdf";
+                : $"{tenBenhNhan}_{maChiDinh}.pdf";
         }
 
         private static string RemoveDiacriticsForFileName(string input)
@@ -272,7 +272,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                     return;
 
                 var lyDoHuy = reasonDialog.Reason;
-                var cancelled = await ServiceLocator.RisService.HuyKetQuaChanDoanAsync(_machidinh, lyDoHuy);
+                var cancelled = await _risService.HuyKetQuaChanDoanAsync(_machidinh, lyDoHuy);
                 if (!cancelled)
                 {
                     XtraMessageBox.Show(this, "Hủy ký số thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -292,11 +292,11 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             try
             {
                 // userCode = mã nhân viên đang đăng nhập để audit log ghi đúng người hủy ký
-                var risV1Result = await ServiceLocator.RisService2.VoidSignatureByPlacerCodeAsync(
+                var risV1Result = await _risService2.VoidSignatureByPlacerCodeAsync(
                     placerCode,
                     ServiceLocator.KeycloakUserInfo != null ? ServiceLocator.KeycloakUserInfo.HISCode : null);
                 if (risV1Result?.id != null && risV1Result.id != Guid.Empty)
-                    await ServiceLocator.RisService2.VoidDiagnosticReportAsync(risV1Result.id);
+                    await _risService2.VoidDiagnosticReportAsync(risV1Result.id);
             }
             catch (Exception ex)
             {
@@ -309,7 +309,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             try
             {
                 // userCode = mã nhân viên đang đăng nhập để audit log ghi đúng người hoàn thành
-                await ServiceLocator.RisService2.CompleteOrderItemByPlacerCodeAsync(
+                await _risService2.CompleteOrderItemByPlacerCodeAsync(
                     placerCode,
                     ServiceLocator.KeycloakUserInfo != null ? ServiceLocator.KeycloakUserInfo.HISCode : null);
             }
@@ -372,7 +372,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             var selectedImagePaths = GetSelectedImagePaths();
             AssignImagesToKetLuan(ketluan, selectedImagePaths);
             ketluan.AnhChuKy = GetAnhChuKy();
-            ketluan.GioiTinhConvert = ConvertGioiTinh(ketluan.ChiDinhDichVu?.Patient?.GioiTinh);
+            ketluan.GioiTinhConvert = ConvertGioiTinh(ketluan.ChiDinhDichVu?.BenhNhan?.GioiTinh);
 
             return ketluan;
         }

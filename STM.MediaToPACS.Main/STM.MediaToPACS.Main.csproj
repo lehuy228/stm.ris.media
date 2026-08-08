@@ -625,6 +625,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="App\ServiceLocator.cs" />
+    <Compile Include="App\CompositionRoot.cs" />
     <Compile Include="App\XmlSettingsHelper.cs" />
     <Compile Include="Infrastructure\Connection\AuthSDK\Token.cs" />
     <Compile Include="Infrastructure\Connection\AuthSDK\TokenData.cs" />
@@ -735,6 +736,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Shell\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Viewers\FormPdfViewer.resx">
       <DependentUpon>FormPdfViewer.cs</DependentUpon>

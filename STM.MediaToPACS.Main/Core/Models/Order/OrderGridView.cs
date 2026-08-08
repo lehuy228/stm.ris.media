@@ -59,7 +59,7 @@ namespace MediaToPacs.Core.Models.Order
 
     public class OrderGridView
     {
-        public string MaPatient { get; set; }
+        public string MaBenhNhan { get; set; }
         public DateTime NgaySinh { get; set; }
         public int GioiTinh { get; set; }
         public string HoTen { get; set; }

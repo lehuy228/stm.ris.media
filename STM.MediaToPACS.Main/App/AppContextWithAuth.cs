@@ -1,3 +1,5 @@
+﻿using MediaToPacs.Core.Auths;
+using MediaToPacs.Core.Interfaces;
 using MediaToPacs.Infrastructure.Auths;
 using MediaToPacs.Infrastructure.Services;
 using STM.MediaToPACS.Main.UI;
@@ -13,12 +15,28 @@ namespace STM.MediaToPACS.Main.Utilities
     public class AppContextWithAuth : ApplicationContext
     {
         private readonly SynchronizationContext _uiContext;
+        private readonly ISessionService _sessionService;
+        private readonly IRisService _risService;
+        private readonly IRisService2 _risService2;
+        private readonly ISignatureService _signatureService;
+        private readonly IHisService _hisService;
         private CancellationTokenSource _authCts;
         private bool _isAuthenticationInProgress;
         private SplashForm _splash;
 
-        public AppContextWithAuth()
+        public AppContextWithAuth(
+            ISessionService sessionService,
+            IRisService risService,
+            IRisService2 risService2,
+            ISignatureService signatureService,
+            IHisService hisService)
         {
+            _sessionService = sessionService;
+            _risService = risService;
+            _risService2 = risService2;
+            _signatureService = signatureService;
+            _hisService = hisService;
+
             _uiContext = SynchronizationContext.Current ?? new WindowsFormsSynchronizationContext();
 
             _splash = new SplashForm();
@@ -60,7 +78,7 @@ namespace STM.MediaToPACS.Main.Utilities
             try
             {
                 Log.Information("Kiểm tra cập nhật ứng dụng...");
-                return await Updater.CheckAndUpdate(_splash.SetStatus, _splash.SetProgress);
+                return await Updater.CheckAndUpdate(_risService2, _splash.SetStatus, _splash.SetProgress);
             }
             catch (Exception ex)
             {
@@ -187,9 +205,8 @@ namespace STM.MediaToPACS.Main.Utilities
 
                 Log.Information($"Đăng nhập thành công với user: {ServiceLocator.KeycloakUserInfo.Username}");
 
-                // Khởi tạo session service
-                ServiceLocator.SessionService = new SessionService();
-                ServiceLocator.SessionService.SetToken(
+                // Gán token vào session service (instance đã được tạo sẵn ở ServiceLocator.Initialize())
+                _sessionService.SetToken(
                     tokenData.access_token,
                     tokenData.refresh_token,
                     DateTime.Now.AddSeconds(tokenData.expires_in)
@@ -212,7 +229,7 @@ namespace STM.MediaToPACS.Main.Utilities
             {
                 try
                 {
-                    using (var frm = new DoctorConfirmForm())
+                    using (var frm = new DoctorConfirmForm(_risService2))
                     {
                         var result = frm.ShowDialog();
                         tcs.SetResult(result == DialogResult.OK);
@@ -238,7 +255,7 @@ namespace STM.MediaToPACS.Main.Utilities
                     _splash?.CloseSplash();
                     _splash = null;
 
-                    var mainForm = new MainForm();
+                    var mainForm = new MainForm(_sessionService, _risService, _risService2, _signatureService, _hisService);
                     mainForm.FormClosed += OnMainFormClosed;
 
                     MainForm = mainForm;

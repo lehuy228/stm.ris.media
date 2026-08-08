@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -30,7 +30,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             try
             {
                 var staffCode = ServiceLocator.KeycloakUserInfo?.HISCode;
-                viewers = await ServiceLocator.RisService2.GetViewerAccessesAsync(staffCode);
+                viewers = await _risService2.GetViewerAccessesAsync(staffCode);
             }
             catch (Exception ex)
             {
@@ -113,7 +113,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                     return;
                 }
 
-                var launchUrl = await ServiceLocator.RisService2
+                var launchUrl = await _risService2
                     .GetViewerLinkByPlacerCodeAsync(_machidinh, staffCode, viewerName);
                 if (string.IsNullOrWhiteSpace(launchUrl))
                 {

@@ -1,6 +1,9 @@
 ﻿using DevExpress.LookAndFeel;
 using DevExpress.Skins;
 using DevExpress.UserSkins;
+using MediaToPacs.Core.Auths;
+using MediaToPacs.Core.Interfaces;
+using STM.MediaToPACS.Main.App;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 using System;
@@ -48,6 +51,7 @@ namespace STM.MediaToPACS.Main
             catch { }
 
             ServiceLocator.Initialize();
+            CompositionRoot.Build();
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
@@ -57,7 +61,12 @@ namespace STM.MediaToPACS.Main
             ServiceLocator.Initialize();
 
 
-            System.Windows.Forms.Application.Run(new AppContextWithAuth());
+            System.Windows.Forms.Application.Run(new AppContextWithAuth(
+                CompositionRoot.Resolve<ISessionService>(),
+                CompositionRoot.Resolve<IRisService>(),
+                CompositionRoot.Resolve<IRisService2>(),
+                CompositionRoot.Resolve<ISignatureService>(),
+                CompositionRoot.Resolve<IHisService>()));
         }
         static bool ReadCommandLine(string[] args)
         {

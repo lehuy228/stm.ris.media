@@ -8,7 +8,7 @@ namespace MediaToPacs.Core.Models.Order
 {
     public class ServiceOrderResponse
     {
-        public Patient Patient { get; set; }
+        public Patient BenhNhan { get; set; }
 
         public string admissionType { get; set; }
         public string Sovaovien { get; set; }

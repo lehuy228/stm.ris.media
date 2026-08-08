@@ -1,3 +1,4 @@
+﻿using MediaToPacs.Core.Interfaces;
 using Serilog;
 using System;
 using System.Threading.Tasks;
@@ -8,12 +9,13 @@ namespace STM.MediaToPACS.Main.Utilities
 {
     public static class Updater
     {
-        public static async Task<bool> CheckAndUpdate(Action<string> onStatus = null, Action<int> onProgress = null)
+        public static async Task<bool> CheckAndUpdate(
+            IRisService2 risService2, Action<string> onStatus = null, Action<int> onProgress = null)
         {
             try
             {
                 onStatus?.Invoke("Đang tải cấu hình cập nhật...");
-                var updateConfig = await ServiceLocator.RisService2.GetSystemUpdateConfigAsync();
+                var updateConfig = await risService2.GetSystemUpdateConfigAsync();
                 if (updateConfig == null || !updateConfig.HasUpdateConfiguration)
                 {
                     Log.Information("API không có cấu hình cập nhật hệ thống, bỏ qua kiểm tra cập nhật.");

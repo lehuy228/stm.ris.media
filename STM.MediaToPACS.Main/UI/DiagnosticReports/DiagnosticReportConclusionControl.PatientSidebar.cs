@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 using STM.MediaToPACS.Main.Utilities;
@@ -162,7 +162,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
             try
             {
-                var history = await ServiceLocator.RisService2.GetPatientHistoryByOrderCodeAsync(_machidinh);
+                var history = await _risService2.GetPatientHistoryByOrderCodeAsync(_machidinh);
                 _patientSidebar.ShowHistory(history, _machidinh);
                 var patient = history?.patient;
                 if (patient != null)

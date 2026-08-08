@@ -1,7 +1,8 @@
-using DevExpress.XtraEditors;
+﻿using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraSplashScreen;
+using MediaToPacs.Core.Interfaces;
 using MediaToPacs.Core.Models.Order;
 using MediaToPacs.Core.Models.ServiceCatalog;
 using MediaToPacs.Core.Models.Conclusion;
@@ -9,6 +10,7 @@ using MediaToPacs.Core.Models.Suggestion;
 using MediaToPacs.Core.Models.Template;
 using MediaToPacs.Core.Models.Device;
 using MediaToPacs.Core.Models.Signature;
+using STM.MediaToPACS.Main.App;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -24,8 +26,20 @@ namespace STM.MediaToPACS.Main.Utilities
 {
     public partial class ReportTemplateManager : UserControl
     {
+        private readonly IRisService _risService;
+
+        /// <summary>
+        /// Constructor không tham số: chỉ để WinForms Designer mở được UserControl thiết kế.
+        /// Runtime luôn dùng constructor có injection bên dưới.
+        /// </summary>
         public ReportTemplateManager()
+            : this(CompositionRoot.Provider == null ? null : CompositionRoot.Resolve<IRisService>())
         {
+        }
+
+        public ReportTemplateManager(IRisService risService)
+        {
+            _risService = risService;
             InitializeComponent();
         }
 
@@ -46,7 +60,7 @@ namespace STM.MediaToPACS.Main.Utilities
 
                 gridControlReportTemplate.DataSource = null;
 
-                var reports = await ServiceLocator.RisService.GetReportTemplateAsync();
+                var reports = await _risService.GetReportTemplateAsync();
 
                 gridControlReportTemplate.DataSource = reports.data;
                 gridControlReportTemplate.RefreshDataSource();
@@ -74,7 +88,7 @@ namespace STM.MediaToPACS.Main.Utilities
             try
             {
                 SplashScreenManager.ShowDefaultWaitForm("Đang tải", "Vui lòng chờ...");
-                TemplateSetting templateSetting = new TemplateSetting();
+                TemplateSetting templateSetting = new TemplateSetting(_risService);
 
                 templateSetting.Show();
             }
@@ -125,7 +139,7 @@ namespace STM.MediaToPACS.Main.Utilities
             try
             {
                 SplashScreenManager.ShowDefaultWaitForm("Đang tải", "Vui lòng chờ...");
-                TemplateSetting templateSetting = new TemplateSetting(id);
+                TemplateSetting templateSetting = new TemplateSetting(_risService, id);
 
                 templateSetting.Show();
             }
@@ -150,8 +164,8 @@ namespace STM.MediaToPACS.Main.Utilities
                 }
 
                 SuggestionForm suggestionForm = string.IsNullOrEmpty(id)
-                    ? new SuggestionForm(dichVu: dichvu)
-                    : new SuggestionForm(id, dichvu);
+                    ? new SuggestionForm(_risService, dichVu: dichvu)
+                    : new SuggestionForm(_risService, id, dichvu);
                 suggestionForm.ShowDialog();
             }
             finally
@@ -193,7 +207,7 @@ namespace STM.MediaToPACS.Main.Utilities
                         {
                             try
                             {
-                                var success = await ServiceLocator.RisService.XoaReportTemplateAsync(id);
+                                var success = await _risService.XoaReportTemplateAsync(id);
 
                                 if (success)
                                 {
@@ -279,7 +293,7 @@ namespace STM.MediaToPACS.Main.Utilities
                         {
                             try
                             {
-                                var success = await ServiceLocator.RisService.XoaGoiYKetLuanAsync(id);
+                                var success = await _risService.XoaGoiYKetLuanAsync(id);
 
                                 if (success)
                                 {
@@ -315,7 +329,7 @@ namespace STM.MediaToPACS.Main.Utilities
                 var tenDichVu = _txtTenDV.Text;
                 var maDichVu = _txMaDV.Text;
                 var modality = _cbbModality.Text;
-                var dsDichVu = await ServiceLocator.RisService.GetDanhSachDichVuAsync(tenDichVu: tenDichVu, maDichVu: maDichVu, modality: modality, pageSize: int.Parse(_cbbPagesizeDV.Text));
+                var dsDichVu = await _risService.GetDanhSachDichVuAsync(tenDichVu: tenDichVu, maDichVu: maDichVu, modality: modality, pageSize: int.Parse(_cbbPagesizeDV.Text));
                 gridControlDSDV.DataSource = dsDichVu;
                 gridControlDSDV.RefreshDataSource();
             }
@@ -357,7 +371,7 @@ namespace STM.MediaToPACS.Main.Utilities
                 SplashScreenManager.Default.SetWaitFormDescription("Vui lòng chờ trong giây lát...");
 
                 gridControlGoiYKL.DataSource = null;
-                var dsDichVu = await ServiceLocator.RisService.GetDanhSachGoiYKetLuanAsync(madichvu: obj.madichvu);
+                var dsDichVu = await _risService.GetDanhSachGoiYKetLuanAsync(madichvu: obj.madichvu);
                 gridControlGoiYKL.DataSource = dsDichVu.data;
                 gridControlGoiYKL.RefreshDataSource();
             }

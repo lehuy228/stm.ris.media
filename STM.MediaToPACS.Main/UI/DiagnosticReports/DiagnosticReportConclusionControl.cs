@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -16,6 +16,7 @@ using STM.MediaToPACS.Main.UI.PatientSidebar;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 using MediaToPacs.Core.Enums;
+using MediaToPacs.Core.Interfaces;
 
 namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 {
@@ -34,6 +35,9 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         public event EventHandler TabCaptionChanged;
         public string PatientTabCaption { get; private set; }
 
+        private readonly IRisService _risService;
+        private readonly IRisService2 _risService2;
+        private readonly ISignatureService _signatureService;
         private readonly string _videoInputDevice;
         private readonly string _sophieu;
         private readonly string _machidinh;
@@ -58,8 +62,17 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         private ContextMenuStrip _richTextContextMenu;
         private bool _isLoadingAuditLogs;
 
-        public DiagnosticReportConclusionControl(string videoInputDevice, string soPhieu, string maChiDinh)
+        public DiagnosticReportConclusionControl(
+            IRisService risService,
+            IRisService2 risService2,
+            ISignatureService signatureService,
+            string videoInputDevice,
+            string soPhieu,
+            string maChiDinh)
         {
+            _risService = risService;
+            _risService2 = risService2;
+            _signatureService = signatureService;
             _videoInputDevice = videoInputDevice;
             _sophieu = soPhieu;
             _machidinh = maChiDinh;
@@ -119,7 +132,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 _isLoadingAuditLogs = true;
                 _patientSidebar.ShowLogLoading();
 
-                var logs = await ServiceLocator.RisService2.GetAuditLogsByOrderCodeAsync(_machidinh);
+                var logs = await _risService2.GetAuditLogsByOrderCodeAsync(_machidinh);
                 _patientSidebar.ShowLogs(logs);
             }
             catch (Exception ex)
@@ -310,7 +323,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             try
             {
                 _btnSyncHis.Enabled = false;
-                var result = await ServiceLocator.RisService2.ResendOruToHisAsync(_machidinh);
+                var result = await _risService2.ResendOruToHisAsync(_machidinh);
                 if (result == null || !result.success)
                 {
                     var message = result != null

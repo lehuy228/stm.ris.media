@@ -1,15 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using System.Xml.Serialization;
-using System.Threading;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Drawing;
 using Application = System.Windows.Forms.Application;
-using Font = System.Drawing.Font;
-//using VisioForge.Core.VideoCapture; // VisioForge đã thay bằng FlashCap
 using STM.MediaToPACS.Main.UI.CameraUI;
 using DevExpress.XtraGrid.Views.Grid;
 using STM.MediaToPACS.Main.Utilities;
@@ -20,12 +14,6 @@ using DevExpress.XtraSplashScreen;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using MediaToPacs.Core.Models.Order;
-using MediaToPacs.Core.Models.ServiceCatalog;
-using MediaToPacs.Core.Models.Conclusion;
-using MediaToPacs.Core.Models.Suggestion;
-using MediaToPacs.Core.Models.Template;
-using MediaToPacs.Core.Models.Device;
-using MediaToPacs.Core.Models.Signature;
 using MediaToPacs.Core.Utilities;
 using System.Threading.Tasks;
 using STM.MediaToPACS.Main.UI.DiagnosticReports;
@@ -33,6 +21,9 @@ using STM.MediaToPACS.Main.UI.PatientSidebar;
 using STM.MediaToPACS.Main.UI.Configurations;
 using DevExpress.Utils;
 using DevExpress.XtraTab;
+using MediaToPacs.Core.Auths;
+using MediaToPacs.Core.Interfaces;
+using STM.MediaToPACS.Main.App;
 
 namespace STM.MediaToPACS.Main.UI
 {
@@ -42,8 +33,39 @@ namespace STM.MediaToPACS.Main.UI
             new Dictionary<string, XtraTabPage>(StringComparer.OrdinalIgnoreCase);
         private bool _orderPagesCleanupDone;
 
+        private readonly ISessionService _sessionService;
+        private readonly IRisService _risService;
+        private readonly IRisService2 _risService2;
+        private readonly ISignatureService _signatureService;
+        private readonly IHisService _hisService;
+
+        /// <summary>
+        /// Constructor không tham số: chỉ để WinForms Designer mở được form thiết kế.
+        /// Runtime luôn dùng constructor có injection bên dưới.
+        /// </summary>
         public MainForm()
+            : this(
+                CompositionRoot.Provider == null ? null : CompositionRoot.Resolve<ISessionService>(),
+                CompositionRoot.Provider == null ? null : CompositionRoot.Resolve<IRisService>(),
+                CompositionRoot.Provider == null ? null : CompositionRoot.Resolve<IRisService2>(),
+                CompositionRoot.Provider == null ? null : CompositionRoot.Resolve<ISignatureService>(),
+                CompositionRoot.Provider == null ? null : CompositionRoot.Resolve<IHisService>())
         {
+        }
+
+        public MainForm(
+            ISessionService sessionService,
+            IRisService risService,
+            IRisService2 risService2,
+            ISignatureService signatureService,
+            IHisService hisService)
+        {
+            _sessionService = sessionService;
+            _risService = risService;
+            _risService2 = risService2;
+            _signatureService = signatureService;
+            _hisService = hisService;
+
             try
             {
                 InitializeComponent();
@@ -66,7 +88,7 @@ namespace STM.MediaToPACS.Main.UI
         
         private void InitPermissionControl()
         {
-            var userInfo = ServiceLocator.SessionService.GetCurrentUser();
+            var userInfo = _sessionService.GetCurrentUser();
             string fullName = string.Join(" ", new[] { userInfo.LastName, userInfo.FirstName }
                 .Where(s => !string.IsNullOrWhiteSpace(s)));
 
@@ -185,7 +207,7 @@ namespace STM.MediaToPACS.Main.UI
         {
             try
             {
-                bool result = await Token.Logout(ServiceLocator.SessionService.GetCurrentUser().RefreshToken);
+                bool result = await Token.Logout(_sessionService.GetCurrentUser().RefreshToken);
                 Token.Cancel();
                 Application.Exit();
                 Environment.Exit(0);
@@ -219,12 +241,12 @@ namespace STM.MediaToPACS.Main.UI
             {
                 if (item == null) continue;
 
-                var bn = item.Patient;
+                var bn = item.BenhNhan;
 
                 var gridItem = new OrderGridView
                 {
                     // ===== Bệnh nhân =====
-                    MaPatient = bn?.MaPatient ?? "",
+                    MaBenhNhan = bn?.MaBenhNhan ?? "",
                     HoTen = bn?.HoTen ?? "",
                     NgaySinh = bn?.NgaySinh ?? DateTime.MinValue,
                     GioiTinh = bn?.GioiTinh ?? 0, // 1 = Nam, 0 = Nữ
@@ -269,21 +291,21 @@ namespace STM.MediaToPACS.Main.UI
 
                 _gridControlChiDinh.DataSource = null;
 
-                string maPatient = string.IsNullOrWhiteSpace(_txPatientCodeRis.Text) ? null : _txPatientCodeRis.Text;
-                string tenPatient = string.IsNullOrWhiteSpace(_txPatientNameRis.Text) ? null : _txPatientNameRis.Text;
+                string maBenhNhan = string.IsNullOrWhiteSpace(_txPatientCodeRis.Text) ? null : _txPatientCodeRis.Text;
+                string tenBenhNhan = string.IsNullOrWhiteSpace(_txPatientNameRis.Text) ? null : _txPatientNameRis.Text;
                 string maChiDinh = string.IsNullOrWhiteSpace(_txMaCD.Text) ? null : _txMaCD.Text;
                 string tenBacSiChiDinh = string.IsNullOrWhiteSpace(_txBSCDRis.Text) ? null : _txBSCDRis.Text;
                 DateTime dateTimeFrom = _dtDateFromRis.DateTime;
                 DateTime dateTo = _dtDateToRis.DateTime;
                 string trangThai = string.IsNullOrWhiteSpace(_cbbTrangThai.Text) ? null : _cbbTrangThai.Text;
-                var dsCD = await ServiceLocator.RisService.GetDSChiDinhDichVuAsync(
+                var dsCD = await _risService.GetDSChiDinhDichVuAsync(
                         page: (int)_nudPage.Value,
                         pageSize: int.Parse(_cbPageSize.Text),
-                        maPatient: maPatient,
+                        maBenhNhan: maBenhNhan,
                         maChiDinh: maChiDinh,
                         modality: _ccbModalities.Text,
                         tenBacSiChiDinh: tenBacSiChiDinh,
-                        tenPatient: tenPatient,
+                        tenBenhNhan: tenBenhNhan,
                         dateTimeFrom: dateTimeFrom,
                         dateTimeTo: dateTo,
                         trangThai: trangThai
@@ -349,7 +371,7 @@ namespace STM.MediaToPACS.Main.UI
         {
             try
             {
-                bool duTien = await ServiceLocator.HisService
+                bool duTien = await _hisService
                     .KiemTraDuTienAsync(ServiceLocator.SystemConfig.CheckThanhToan, maChiDinh);
 
                 // Đã thanh toán → đi tiếp luôn
@@ -442,7 +464,8 @@ namespace STM.MediaToPACS.Main.UI
                 return;
             }
 
-            var content = new DiagnosticReportConclusionControl(_tsmCbbVideoCapture.Text, soPhieu, maChiDinh)
+            var content = new DiagnosticReportConclusionControl(
+                _risService, _risService2, _signatureService, _tsmCbbVideoCapture.Text, soPhieu, maChiDinh)
             {
                 Dock = DockStyle.Fill
             };
@@ -518,7 +541,7 @@ namespace STM.MediaToPACS.Main.UI
 
         private void _tsmTemplateSuggestion_Click(object sender, EventArgs e)
         {
-            using (var dialog = new TemplateSuggestionDialog())
+            using (var dialog = new TemplateSuggestionDialog(_risService))
             {
                 dialog.ShowDialog(this);
             }
@@ -533,7 +556,7 @@ namespace STM.MediaToPACS.Main.UI
         {
             try
             {
-                ServiceLocator.SessionService?.OpenChangePasswordPage();
+                _sessionService?.OpenChangePasswordPage();
             }
             catch (Exception ex)
             {
