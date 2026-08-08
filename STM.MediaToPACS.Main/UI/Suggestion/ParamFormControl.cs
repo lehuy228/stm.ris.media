@@ -6,7 +6,13 @@ using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using MediaToPacs.Core.Models;
-using MediaToPacs.Core.Models.Ketluan;
+using MediaToPacs.Core.Models.Order;
+using MediaToPacs.Core.Models.ServiceCatalog;
+using MediaToPacs.Core.Models.Conclusion;
+using MediaToPacs.Core.Models.Suggestion;
+using MediaToPacs.Core.Models.Template;
+using MediaToPacs.Core.Models.Device;
+using MediaToPacs.Core.Models.Signature;
 using Serilog;
 
 namespace STM.MediaToPACS.Main.UI
@@ -582,9 +588,9 @@ namespace STM.MediaToPACS.Main.UI
         /// trong báo cáo PDF (DetailReportBand bind DanhSachChiSo).
         /// Kèm nhãn đánh giá + mã màu theo dải ngưỡng để template tô màu cột giá trị.
         /// </summary>
-        public List<ChiSoBaoCao> GetReportItems()
+        public List<ReportParameter> GetReportItems()
         {
-            var items = new List<ChiSoBaoCao>();
+            var items = new List<ReportParameter>();
 
             foreach (var entry in _entries)
             {
@@ -594,7 +600,7 @@ namespace STM.MediaToPACS.Main.UI
                 {
                     if (entry.CheckBox == null || !entry.CheckBox.Checked)
                         continue;
-                    items.Add(new ChiSoBaoCao
+                    items.Add(new ReportParameter
                     {
                         NhomChiSo = entry.Group.groupName,
                         TenChiSo = field.presetLabel ?? field.label,
@@ -614,7 +620,7 @@ namespace STM.MediaToPACS.Main.UI
                     continue;
 
                 var range = FindMatchedRange(entry);
-                items.Add(new ChiSoBaoCao
+                items.Add(new ReportParameter
                 {
                     NhomChiSo = entry.Group.groupName,
                     TenChiSo = field.label,

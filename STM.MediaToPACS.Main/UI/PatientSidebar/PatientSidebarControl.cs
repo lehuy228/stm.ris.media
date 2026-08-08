@@ -116,6 +116,16 @@ namespace STM.MediaToPACS.Main.UI.PatientSidebar
                     SetCollapsed(true);
             };
 
+            // Đang thu gọn mà bấm đúng tab đang được chọn sẵn (vd Text/luồng cũ chỉ có 1 tab dùng
+            // được) thì XtraTabControl không bắn SelectedPageChanged (không đổi tab) - mở rộng
+            // không xảy ra, splitter kéo giãn cũng vì thế không hiện. Bắt thêm MouseDown trên chính
+            // dải tab để luôn mở rộng khi đang thu gọn, không phụ thuộc việc tab có đổi hay không.
+            _tabControl.MouseDown += (s, e) =>
+            {
+                if (_collapsed)
+                    SetCollapsed(false);
+            };
+
             SetCollapsed(true);
 
             // Chưa chọn mẫu gợi ý nào nên chưa có chỉ số - khoá sẵn tab "Tham số siêu âm"

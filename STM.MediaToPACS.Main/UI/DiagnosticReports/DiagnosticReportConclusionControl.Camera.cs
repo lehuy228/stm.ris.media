@@ -83,8 +83,10 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                     {
                         var localPath = ImportAttachmentFileToPatientFolder(fileName);
 
+                        // scrollToEnd:false - thêm nhiều file cùng lúc, tự cuộn từng cái gây giật;
+                        // cuộn 1 lần sau khi thêm hết.
                         ImageThumbnailList.ThumbnailItem item;
-                        if (_thumbnailList.TryAddImage(localPath, out item, false))
+                        if (_thumbnailList.TryAddImage(localPath, out item, false, scrollToEnd: false))
                             addedCount++;
                         else
                             Log.Warning("Khong nap duoc file anh vao danh sach thumbnail: {FilePath}", localPath);
@@ -92,6 +94,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
                     if (addedCount > 0)
                     {
+                        _thumbnailList.ScrollToLastItem();
                         SaveAttachmentManifestFromThumbnails();
                         RequestPendingAttachmentUploadQueue();
                     }
@@ -189,26 +192,5 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             }
         }
 
-        private async void _btnPushPacs_Click(object sender, EventArgs e)
-        {
-            if (!CanEditConclusion())
-                return;
-
-            try
-            {
-                _btnPushPacs.Enabled = false;
-                await PushSelectedPacsAttachmentsAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Lỗi khi đẩy ảnh PACS");
-                MessageBox.Show(this, $"Lỗi khi đẩy PACS: {ex.Message}", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                ApplyConclusionEditability();
-            }
-        }
     }
 }

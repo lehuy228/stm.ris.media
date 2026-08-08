@@ -1,5 +1,11 @@
 using DevExpress.XtraEditors;
-using MediaToPacs.Core.Models.Ketluan;
+using MediaToPacs.Core.Models.Order;
+using MediaToPacs.Core.Models.ServiceCatalog;
+using MediaToPacs.Core.Models.Conclusion;
+using MediaToPacs.Core.Models.Suggestion;
+using MediaToPacs.Core.Models.Template;
+using MediaToPacs.Core.Models.Device;
+using MediaToPacs.Core.Models.Signature;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,15 +19,15 @@ namespace STM.MediaToPACS.Main.Utilities
     public partial class SuggestionForm : XtraForm
     {
         private string _id { get; set; }
-        private DanhMucDichVuGridView _dichVu { get; set; }
-        private List<ThietBiResponse> _listThietBi { get; set; }
+        private ServiceCatalogGridView _dichVu { get; set; }
+        private List<DeviceResponse> _listThietBi { get; set; }
         private RichTextBox GetCurrentBox()
         {
             return ActiveControl as RichTextBox;
 
         }
 
-        public SuggestionForm(string id = null, DanhMucDichVuGridView dichVu = null)
+        public SuggestionForm(string id = null, ServiceCatalogGridView dichVu = null)
         {
             InitializeComponent();
             _id = id;
@@ -119,7 +125,7 @@ namespace STM.MediaToPACS.Main.Utilities
                 if (selectedValue != null)
                 {
                     var thietBiSelect = _cbbDSThietBi.Properties
-                        .GetDataSourceRowByKeyValue(selectedValue) as ThietBiResponse;
+                        .GetDataSourceRowByKeyValue(selectedValue) as DeviceResponse;
                     maThietBi = thietBiSelect?.maThietBi ?? "";
                 }
 
@@ -129,7 +135,7 @@ namespace STM.MediaToPACS.Main.Utilities
                     _txName.Focus();
                     return;
                 }
-                var request = new GoiYKetLuanRequest
+                var request = new ConclusionSuggestionRequest
                 {
                     name = _txName.Text,
                     madichvu = _dichVu.madichvu,
@@ -140,7 +146,7 @@ namespace STM.MediaToPACS.Main.Utilities
                     mathietbi = maThietBi
                 };
 
-                GoiYKetLuanResponse result;
+                ConclusionSuggestionResponse result;
 
                 if (string.IsNullOrEmpty(_id))
                 {

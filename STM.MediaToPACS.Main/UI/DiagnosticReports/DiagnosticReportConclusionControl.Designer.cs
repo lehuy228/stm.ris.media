@@ -10,25 +10,25 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
     {
         private System.ComponentModel.IContainer components = null;
 
-        // Layout gốc - bê nguyên bố cục của FrmMain.Designer.cs (panelControl4 trên cùng,
-        // tab Kết luận bên trái, camera+nút+ảnh bên phải, thanh nút dưới cùng), bỏ MenuStrip,
-        // ToolStrip DICOM, tab "Tập dữ liệu DICOM" và nút "Tải ảnh lên PACS".
+        // Layout g?c - b� nguy�n b? c?c c?a FrmMain.Designer.cs (panelControl4 tr�n c�ng,
+        // tab K?t lu?n b�n tr�i, camera+n�t+?nh b�n ph?i, thanh n�t du?i c�ng), b? MenuStrip,
+        // ToolStrip DICOM, tab "T?p d? li?u DICOM" v� n�t "T?i ?nh l�n PACS".
         private TableLayoutPanel _tbTableLayout;
         private Panel _bodyPanel;
         private TableLayoutPanel _contentTable;
 
-        // Sidebar trái: lịch sử khám bệnh nhân + tham số siêu âm (bước 3)
+        // Sidebar tr�i: l?ch s? kh�m b?nh nh�n + tham s? si�u �m (bu?c 3)
         private STM.MediaToPACS.Main.UI.PatientSidebar.PatientSidebarControl _patientSidebar;
         private Splitter _patientSidebarSplitter;
 
-        // panelControl4: thông tin bệnh nhân/chỉ định (hàng trên cùng, colspan 2) - bố cục gọn
-        // bằng FlowLayoutPanel tự xuống dòng (CreateLabeledField) thay vì toạ độ tuyệt đối,
-        // để không bị tràn/khuất khi chiều rộng thực tế nhỏ hơn thiết kế gốc.
+        // panelControl4: th�ng tin b?nh nh�n/ch? d?nh (h�ng tr�n c�ng, colspan 2) - b? c?c g?n
+        // b?ng FlowLayoutPanel t? xu?ng d�ng (CreateLabeledField) thay v� to? d? tuy?t d?i,
+        // d? kh�ng b? tr�n/khu?t khi chi?u r?ng th?c t? nh? hon thi?t k? g?c.
         private PanelControl _panelControl4;
         private Panel _patientActionBar;
         private Label _patientSectionTitle;
         private FlowLayoutPanel _patientActionButtons;
-        private SimpleButton _btnViewPacs;
+        private CheckBox _cbHoverPreview;
         private SimpleButton _btnEditPatient;
         private SimpleButton _btnAddFile;
         private TableLayoutPanel _patientInfoTable;
@@ -52,7 +52,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         private LabelControl _labelControl24;
         private TextEdit _txChanDoan;
 
-        // xtraTabControlReport: tab "Kết luận" (bỏ tab "Tập dữ liệu DICOM")
+        // xtraTabControlReport: tab "K?t lu?n" (b? tab "T?p d? li?u DICOM")
         private XtraTabControl _xtraTabControlReport;
         private XtraTabPage _xtraTabPage1;
         private Panel _panelReport;
@@ -65,8 +65,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         private GroupControl _groupControl2;
         private RichTextBox _rtKhuyenNghi;
 
-        // Camera (đơn giản hoá: 1 panel, bỏ tab con "Video Media"/"Ảnh đã chụp" vì tính năng
-        // quay video đã tắt từ bản gốc - xem DiagnosticReportConclusionControl.Camera.cs)
+        // Camera (don gi?n ho�: 1 panel, b? tab con "Video Media"/"?nh d� ch?p" v� t�nh nang
+        // quay video d� t?t t? b?n g?c - xem DiagnosticReportConclusionControl.Camera.cs)
         private PanelControl _panelCamera;
         private Panel _cameraHeader;
         private Label _cameraTitle;
@@ -79,7 +79,6 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         private SimpleButton _btnSnapshot;
         private SimpleButton _btnStop;
         private SimpleButton _btnLinkCamera;
-        private SimpleButton _btnPushPacs;
 
         private Panel _panelImageList;
         private Panel _panelImage;
@@ -88,10 +87,10 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         private Label _lbImageSelect;
         private ImageThumbnailList _thumbnailList;
 
-        // panelControl2: thanh nút hành động dưới cùng (colspan 2) - bỏ nút "Tải ảnh lên" (PACS)
-        // và panel thông tin bác sĩ đăng nhập (đã bỏ theo yêu cầu). Responsive: FlowLayoutPanel
-        // 2 vùng (trái = combo layout/máy in, phải = nút - FlowDirection.RightToLeft) thay vì
-        // toạ độ Location/Anchor tuyệt đối (từng gây lệch khi cửa sổ không đúng 1768px thiết kế).
+        // panelControl2: thanh n�t h�nh d?ng du?i c�ng (colspan 2) - b? n�t "T?i ?nh l�n" (PACS)
+        // v� panel th�ng tin b�c si dang nh?p (d� b? theo y�u c?u). Responsive: FlowLayoutPanel
+        // 2 v�ng (tr�i = combo layout/m�y in, ph?i = n�t - FlowDirection.RightToLeft) thay v�
+        // to? d? Location/Anchor tuy?t d?i (t?ng g�y l?ch khi c?a s? kh�ng d�ng 1768px thi?t k?).
         private PanelControl _panelControl2;
         private FlowLayoutPanel _flowPanelControl2Left;
         private FlowLayoutPanel _flowPanelControl2Right;
@@ -102,6 +101,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         private SimpleButton _btnCancel;
         private SimpleButton _btnPrint;
         private SimpleButton _btnSave;
+        private SimpleButton _btnPushPacs;
         private SimpleButton _btnPreviewMain;
         private SimpleButton _btnSyncHis;
 
@@ -118,13 +118,13 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             base.Dispose(disposing);
         }
 
-        /// <summary>Nút mũi tên xổ xuống cho combo/lookup/date - DevExpress không tự thêm nếu không khai báo.</summary>
+        /// <summary>N�t mui t�n x? xu?ng cho combo/lookup/date - DevExpress kh�ng t? th�m n?u kh�ng khai b�o.</summary>
         private static EditorButton ComboDropDownButton()
         {
             return new EditorButton(ButtonPredefines.Combo);
         }
 
-        /// <summary>Khối gọn: label nhỏ phía trên + control phía dưới, dùng cho panel thông tin bệnh nhân/chỉ định.</summary>
+        /// <summary>Kh?i g?n: label nh? ph�a tr�n + control ph�a du?i, d�ng cho panel th�ng tin b?nh nh�n/ch? d?nh.</summary>
         private Panel CreateLabeledField(string label, Control editor, int width, int height = 40)
         {
             var panel = new Panel
@@ -186,8 +186,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             button.Margin = new Padding(3, 1, 3, 1);
             button.Appearance.Font = new Font("Tahoma", 8F, FontStyle.Regular);
             button.Appearance.Options.UseFont = true;
-            // Không ép Flat/BackColor/BorderColor: để McSkin hiện tại của ứng dụng
-            // tự render border, hover, pressed và disabled nhất quán.
+            // Kh�ng �p Flat/BackColor/BorderColor: d? McSkin hi?n t?i c?a ?ng d?ng
+            // t? render border, hover, pressed v� disabled nh?t qu�n.
             button.LookAndFeel.UseDefaultLookAndFeel = true;
         }
 
@@ -200,7 +200,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._patientActionBar = new Panel();
             this._patientSectionTitle = new Label();
             this._patientActionButtons = new FlowLayoutPanel();
-            this._btnViewPacs = new SimpleButton();
+            this._cbHoverPreview = new CheckBox();
             this._btnEditPatient = new SimpleButton();
             this._btnAddFile = new SimpleButton();
             this._patientInfoTable = new TableLayoutPanel();
@@ -245,7 +245,6 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._btnSnapshot = new SimpleButton();
             this._btnStop = new SimpleButton();
             this._btnLinkCamera = new SimpleButton();
-            this._btnPushPacs = new SimpleButton();
             this._panelImageList = new Panel();
             this._panelImage = new Panel();
             this._panel1 = new Panel();
@@ -262,6 +261,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._btnCancel = new SimpleButton();
             this._btnPrint = new SimpleButton();
             this._btnSave = new SimpleButton();
+            this._btnPushPacs = new SimpleButton();
             this._btnPreviewMain = new SimpleButton();
             this._btnSyncHis = new SimpleButton();
             this._patientSidebar = new STM.MediaToPACS.Main.UI.PatientSidebar.PatientSidebarControl();
@@ -315,8 +315,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._contentTable.SuspendLayout();
             this.SuspendLayout();
             //
-            // _tbTableLayout: row0 = panelControl4 (colspan2) | row1..3 col0 = tab Kết luận (rowspan3),
-            // col1 = camera(row1) + nút camera(row2) + danh sách ảnh(row3) | row4 = thanh nút (colspan2)
+            // _tbTableLayout: row0 = panelControl4 (colspan2) | row1..3 col0 = tab K?t lu?n (rowspan3),
+            // col1 = camera(row1) + n�t camera(row2) + danh s�ch ?nh(row3) | row4 = thanh n�t (colspan2)
             //
             this._tbTableLayout.Dock = DockStyle.Fill;
             this._tbTableLayout.BackColor = Color.FromArgb(236, 239, 243);
@@ -327,7 +327,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._tbTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             this._tbTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             this._tbTableLayout.RowCount = 5;
-            // Toolbar + hai hàng compact + chẩn đoán.
+            // Toolbar + hai h�ng compact + ch?n do�n.
             this._tbTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 134F));
             this._tbTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             this._tbTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
@@ -341,8 +341,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._tbTableLayout.Controls.Add(this._panelControl2, 0, 4);
             this._tbTableLayout.SetColumnSpan(this._panelControl2, 2);
             //
-            // _bodyPanel: sidebar chỉ thuộc vùng làm việc, không che bên trái
-            // thông tin bệnh nhân phía trên hay thanh hành động phía dưới.
+            // _bodyPanel: sidebar ch? thu?c v�ng l�m vi?c, kh�ng che b�n tr�i
+            // th�ng tin b?nh nh�n ph�a tr�n hay thanh h�nh d?ng ph�a du?i.
             //
             this._bodyPanel.Dock = DockStyle.Fill;
             this._bodyPanel.Margin = Padding.Empty;
@@ -350,7 +350,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._bodyPanel.Controls.Add(this._patientSidebarSplitter);
             this._bodyPanel.Controls.Add(this._patientSidebar);
             //
-            // _contentTable: Mô tả/Kết luận bên trái, camera/ảnh bên phải.
+            // _contentTable: M� t?/K?t lu?n b�n tr�i, camera/?nh b�n ph?i.
             //
             this._contentTable.Dock = DockStyle.Fill;
             this._contentTable.Margin = Padding.Empty;
@@ -377,18 +377,18 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._cameraColumnSplitter.MouseMove += new MouseEventHandler(this.CameraColumnSplitter_MouseMove);
             this._cameraColumnSplitter.MouseUp += new MouseEventHandler(this.CameraColumnSplitter_MouseUp);
             //
-            // _panelControl4: thông tin bệnh nhân/chỉ định - gọn bằng FlowLayoutPanel tự xuống dòng
+            // _panelControl4: th�ng tin b?nh nh�n/ch? d?nh - g?n b?ng FlowLayoutPanel t? xu?ng d�ng
             //
             this._panelControl4.Dock = DockStyle.Fill;
             this._panelControl4.Margin = new Padding(2);
             this._panelControl4.Padding = new Padding(6, 5, 6, 5);
             this._panelControl4.Controls.Add(this._patientInfoTable);
-            // Thêm panel Dock.Bottom sau cùng để WinForms dành chỗ cho nó trước
-            // khi bố trí vùng thông tin Dock.Fill.
+            // Th�m panel Dock.Bottom sau c�ng d? WinForms d�nh ch? cho n� tru?c
+            // khi b? tr� v�ng th�ng tin Dock.Fill.
             this._panelControl4.Controls.Add(this._panelChanDoan);
             this._panelControl4.Controls.Add(this._patientActionBar);
             //
-            // _patientActionBar: tiêu đề hồ sơ và các thao tác liên quan bệnh nhân.
+            // _patientActionBar: ti�u d? h? so v� c�c thao t�c li�n quan b?nh nh�n.
             //
             this._patientActionBar.Dock = DockStyle.Top;
             this._patientActionBar.Height = 30;
@@ -397,27 +397,39 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._patientActionBar.Controls.Add(this._patientSectionTitle);
             this._patientActionBar.Controls.Add(this._patientActionButtons);
             this._patientSectionTitle.Dock = DockStyle.Fill;
-            this._patientSectionTitle.Text = "THÔNG TIN BỆNH NHÂN & CHỈ ĐỊNH";
+            this._patientSectionTitle.Text = "TH�NG TIN B?NH NH�N & CH? �?NH";
+            this._patientSectionTitle.AutoEllipsis = true;
             this._patientSectionTitle.TextAlign = ContentAlignment.MiddleLeft;
             this._patientSectionTitle.Font = new Font("Tahoma", 8F, FontStyle.Bold);
             this._patientSectionTitle.ForeColor = Color.FromArgb(55, 65, 81);
             this._patientActionButtons.Dock = DockStyle.Right;
-            this._patientActionButtons.Width = 370;
+            // AutoSize thay v� Width c? d?nh: s? n�t viewer PACS thay d?i tu? b�c si dang nh?p
+            // (RenderViewerButtons ? DiagnosticReportConclusionControl.Viewer.cs) n�n b? r?ng
+            // v�ng n�t ph?i t? co gi�n theo d�ng s? n�t dang c�, kh�ng b? c?t/th?a ch?.
+            this._patientActionButtons.AutoSize = true;
+            this._patientActionButtons.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this._patientActionButtons.MaximumSize = new Size(900, 0);
             this._patientActionButtons.FlowDirection = FlowDirection.RightToLeft;
             this._patientActionButtons.WrapContents = false;
             StyleActionButton(this._btnAddFile, 88);
-            this._btnAddFile.Text = "Thêm file";
+            this._btnAddFile.Text = "Th�m file";
             StyleActionButton(this._btnEditPatient, 122);
-            this._btnEditPatient.Text = "Sửa thông tin";
-            StyleActionButton(this._btnViewPacs, 112);
-            this._btnViewPacs.Text = "Xem ảnh PACS";
+            this._btnEditPatient.Text = "S?a th�ng tin";
+            this._cbHoverPreview.AutoSize = false;
+            this._cbHoverPreview.Size = new Size(128, 26);
+            this._cbHoverPreview.Margin = new Padding(3, 1, 3, 1);
+            this._cbHoverPreview.Text = "Xem tru?c khi hover";
+            this._cbHoverPreview.TextAlign = ContentAlignment.MiddleLeft;
+            this._cbHoverPreview.Font = new Font("Tahoma", 8F, FontStyle.Regular);
+            this._cbHoverPreview.ForeColor = Color.FromArgb(70, 78, 88);
+            this._cbHoverPreview.Checked = true;
             this._patientActionButtons.Controls.Add(this._btnAddFile);
             this._patientActionButtons.Controls.Add(this._btnEditPatient);
-            this._patientActionButtons.Controls.Add(this._btnViewPacs);
+            this._patientActionButtons.Controls.Add(this._cbHoverPreview);
             //
-            // _patientInfoTable: lưới 10 cột x 2 hàng. Tỷ trọng cột được tối ưu
-            // theo độ dài dữ liệu thực tế để không lãng phí một hàng riêng cho
-            // thiết bị/thời gian thực hiện.
+            // _patientInfoTable: lu?i 10 c?t x 2 h�ng. T? tr?ng c?t du?c t?i uu
+            // theo d? d�i d? li?u th?c t? d? kh�ng l�ng ph� m?t h�ng ri�ng cho
+            // thi?t b?/th?i gian th?c hi?n.
             //
             this._patientInfoTable.Dock = DockStyle.Fill;
             this._patientInfoTable.ColumnCount = 10;
@@ -458,31 +470,31 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._dateTGKetThuc.Properties.DisplayFormat.FormatString = "HH:mm dd/MM/yyyy";
             this._dateTGKetThuc.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this._dateTGKetThuc.Properties.Buttons.AddRange(new EditorButton[] { ComboDropDownButton() });
-            this._cbbHisUser.Properties.NullText = "Chọn KTV...";
+            this._cbbHisUser.Properties.NullText = "Ch?n KTV...";
             this._cbbHisUser.Properties.Buttons.AddRange(new EditorButton[] { ComboDropDownButton() });
-            this._cbbDSThietBi.Properties.NullText = "Chọn thiết bị...";
+            this._cbbDSThietBi.Properties.NullText = "Ch?n thi?t b?...";
             this._cbbDSThietBi.Properties.Buttons.AddRange(new EditorButton[] { ComboDropDownButton() });
-            // Hàng 1: nhận diện bệnh nhân và thông tin bảo hiểm.
-            this.AddPatientField("Mã BN:", this._txMaBN, 0, 0, 1, 46);
-            this.AddPatientField("Tên BN:", this._txTenBN, 1, 0, 2, 54);
-            this.AddPatientField("Ngày sinh:", this._dateBN, 3, 0, 1, 62);
-            this.AddPatientField("Giới tính:", this._txPatientGender, 4, 0, 1, 60);
-            this.AddPatientField("Quê quán:", this._txQueQuan, 5, 0, 2, 62);
-            this.AddPatientField("Đối tượng:", this._txDoiTuong, 7, 0, 1, 64);
-            this.AddPatientField("Mã BHYT:", this._txMaBHYT, 8, 0, 2, 62);
+            // H�ng 1: nh?n di?n b?nh nh�n v� th�ng tin b?o hi?m.
+            this.AddPatientField("M� BN:", this._txMaBN, 0, 0, 1, 46);
+            this.AddPatientField("T�n BN:", this._txTenBN, 1, 0, 2, 54);
+            this.AddPatientField("Ng�y sinh:", this._dateBN, 3, 0, 1, 62);
+            this.AddPatientField("Gi?i t�nh:", this._txPatientGender, 4, 0, 1, 60);
+            this.AddPatientField("Qu� qu�n:", this._txQueQuan, 5, 0, 2, 62);
+            this.AddPatientField("�?i tu?ng:", this._txDoiTuong, 7, 0, 1, 64);
+            this.AddPatientField("M� BHYT:", this._txMaBHYT, 8, 0, 2, 62);
 
-            // Hàng 2: thông tin chỉ định và quá trình thực hiện theo thứ tự nghiệp vụ.
-            this.AddPatientField("Mã CĐ:", this._txMaChiDinh, 0, 1, 1, 46);
-            this.AddPatientField("TG CĐ:", this._dateNgayChiDinh, 1, 1, 1, 48);
-            this.AddPatientField("BS CĐ:", this._txBSChiDinh, 2, 1, 1, 48);
-            this.AddPatientField("Dịch vụ:", this._txDichVu, 3, 1, 2, 54);
-            this.AddPatientField("BS đọc:", this._txBSDoc, 5, 1, 1, 52);
+            // H�ng 2: th�ng tin ch? d?nh v� qu� tr�nh th?c hi?n theo th? t? nghi?p v?.
+            this.AddPatientField("M� C�:", this._txMaChiDinh, 0, 1, 1, 46);
+            this.AddPatientField("TG C�:", this._dateNgayChiDinh, 1, 1, 1, 48);
+            this.AddPatientField("BS C�:", this._txBSChiDinh, 2, 1, 1, 48);
+            this.AddPatientField("D?ch v?:", this._txDichVu, 3, 1, 2, 54);
+            this.AddPatientField("BS d?c:", this._txBSDoc, 5, 1, 1, 52);
             this.AddPatientField("KTV:", this._cbbHisUser, 6, 1, 1, 36);
-            this.AddPatientField("Thiết bị:", this._cbbDSThietBi, 7, 1, 1, 54);
-            this.AddPatientField("Bắt đầu:", this._dateTGThucHien, 8, 1, 1, 52);
-            this.AddPatientField("Kết thúc:", this._dateTGKetThuc, 9, 1, 1, 56);
+            this.AddPatientField("Thi?t b?:", this._cbbDSThietBi, 7, 1, 1, 54);
+            this.AddPatientField("B?t d?u:", this._dateTGThucHien, 8, 1, 1, 52);
+            this.AddPatientField("K?t th�c:", this._dateTGKetThuc, 9, 1, 1, 56);
             //
-            // _panelChanDoan: Chẩn đoán (1 hàng, đầy chiều rộng, nằm dưới _flowPatientInfo)
+            // _panelChanDoan: Ch?n do�n (1 h�ng, d?y chi?u r?ng, n?m du?i _flowPatientInfo)
             //
             this._panelChanDoan.Dock = DockStyle.Bottom;
             this._panelChanDoan.Height = 30;
@@ -490,15 +502,15 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._panelChanDoan.Controls.Add(this._txChanDoan);
             this._panelChanDoan.Controls.Add(this._labelControl24);
             this._labelControl24.Dock = DockStyle.Left;
-            this._labelControl24.Text = "Chẩn đoán:";
+            this._labelControl24.Text = "Ch?n do�n:";
             this._labelControl24.Size = new Size(76, 21);
             this._labelControl24.Appearance.ForeColor = Color.FromArgb(70, 78, 88);
             this._labelControl24.Appearance.Options.UseForeColor = true;
             this._txChanDoan.Dock = DockStyle.Fill;
             this._txChanDoan.Properties.ReadOnly = true;
             //
-            // _panelReport: tab chỉ bao phần Mô tả; Kết luận và Khuyến nghị là
-            // hai khối cùng cấp bên dưới, không nằm trong chiều cao của tab.
+            // _panelReport: tab ch? bao ph?n M� t?; K?t lu?n v� Khuy?n ngh? l�
+            // hai kh?i c�ng c?p b�n du?i, kh�ng n?m trong chi?u cao c?a tab.
             //
             this._panelReport.Dock = DockStyle.Fill;
             this._panelReport.Margin = new Padding(2);
@@ -509,12 +521,12 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._xtraTabControlReport.Margin = Padding.Empty;
             this._xtraTabControlReport.SelectedTabPage = this._xtraTabPage1;
             this._xtraTabControlReport.TabPages.AddRange(new XtraTabPage[] { this._xtraTabPage1 });
-            this._xtraTabPage1.Text = "Kết luận";
+            this._xtraTabPage1.Text = "K?t lu?n";
             this._xtraTabPage1.Padding = new Padding(3);
             this._xtraTabPage1.Controls.Add(this._rtMoTa);
             this._xtraTabPage1.Controls.Add(this._panel5);
             //
-            // _panel5: combo gợi ý kết luận
+            // _panel5: combo g?i � k?t lu?n
             //
             this._panel5.Dock = DockStyle.Top;
             this._panel5.Height = 38;
@@ -522,12 +534,12 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._panel5.Controls.Add(this._cbbMauGoiY);
             this._panel5.Controls.Add(this._label2);
             this._label2.Dock = DockStyle.Left;
-            this._label2.Text = "Mô tả:";
+            this._label2.Text = "M� t?:";
             this._label2.Size = new Size(67, 25);
             this._label2.Appearance.Font = new Font("Microsoft Sans Serif", 12F);
             this._label2.Appearance.Options.UseFont = true;
             this._cbbMauGoiY.Dock = DockStyle.Fill;
-            this._cbbMauGoiY.Properties.NullText = "Chọn mẫu gợi ý kết luận...";
+            this._cbbMauGoiY.Properties.NullText = "Ch?n m?u g?i � k?t lu?n...";
             this._cbbMauGoiY.Properties.Buttons.AddRange(new EditorButton[] { ComboDropDownButton() });
             this._cbbMauGoiY.SelectedIndexChanged += new System.EventHandler(this._cbbReportTemplate_SelectedIndexChanged);
             //
@@ -537,25 +549,25 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._rtMoTa.Dock = DockStyle.Fill;
             this._rtMoTa.Font = new Font("Microsoft Sans Serif", 12F);
             //
-            // _groupControl1 "Kết luận"
+            // _groupControl1 "K?t lu?n"
             //
             this._groupControl1.Dock = DockStyle.Bottom;
             this._groupControl1.Height = 166;
-            this._groupControl1.Text = "Kết luận";
+            this._groupControl1.Text = "K?t lu?n";
             this._groupControl1.Controls.Add(this._rtKetLuan);
             this._rtKetLuan.Dock = DockStyle.Fill;
             this._rtKetLuan.Font = new Font("Microsoft Sans Serif", 12F);
             //
-            // _groupControl2 "Khuyến nghị"
+            // _groupControl2 "Khuy?n ngh?"
             //
             this._groupControl2.Dock = DockStyle.Bottom;
             this._groupControl2.Height = 115;
-            this._groupControl2.Text = "Khuyến nghị";
+            this._groupControl2.Text = "Khuy?n ngh?";
             this._groupControl2.Controls.Add(this._rtKhuyenNghi);
             this._rtKhuyenNghi.Dock = DockStyle.Fill;
             this._rtKhuyenNghi.Font = new Font("Microsoft Sans Serif", 12F);
             //
-            // _panelCamera: header riêng + viewport camera, tạo phân cấp rõ ràng.
+            // _panelCamera: header ri�ng + viewport camera, t?o ph�n c?p r� r�ng.
             //
             this._panelCamera.Appearance.BackColor = Color.White;
             this._panelCamera.Appearance.Options.UseBackColor = true;
@@ -570,57 +582,50 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._cameraHeader.Padding = new Padding(10, 0, 10, 0);
             this._cameraHeader.Controls.Add(this._cameraTitle);
             this._cameraTitle.Dock = DockStyle.Fill;
-            this._cameraTitle.Text = "CAMERA TRỰC TIẾP";
+            this._cameraTitle.Text = "CAMERA TR?C TI?P";
             this._cameraTitle.TextAlign = ContentAlignment.MiddleLeft;
             this._cameraTitle.Font = new Font("Tahoma", 8.5F, FontStyle.Bold);
             this._cameraTitle.ForeColor = Color.FromArgb(55, 65, 81);
             StyleActionButton(this._btnCameraSettings, 28);
             this._btnCameraSettings.Dock = DockStyle.Right;
             this._btnCameraSettings.Margin = Padding.Empty;
-            this._btnCameraSettings.Text = "⚙";
-            this._btnCameraSettings.ToolTip = "Cài đặt camera";
+            this._btnCameraSettings.Text = "?";
+            this._btnCameraSettings.ToolTip = "C�i d?t camera";
             this._btnCameraSettings.Appearance.Font = new Font("Segoe UI Symbol", 10F);
             this._btnCameraSettings.Appearance.Options.UseFont = true;
             this._cameraViewport.Dock = DockStyle.Fill;
             this._cameraViewport.BackColor = Color.Black;
             this._cameraViewport.Padding = new Padding(2);
             //
-            // _panelControl1: ba nút cân theo cột, không lệch trái khi đổi độ rộng.
+            // _panelControl1: ba n�t c�n theo c?t, kh�ng l?ch tr�i khi d?i d? r?ng.
             //
             this._panelControl1.Dock = DockStyle.Fill;
             this._panelControl1.Margin = new Padding(2);
             this._panelControl1.Padding = new Padding(10, 3, 10, 3);
             this._panelControl1.Controls.Add(this._cameraButtonTable);
             this._cameraButtonTable.Dock = DockStyle.Fill;
-            this._cameraButtonTable.ColumnCount = 4;
+            this._cameraButtonTable.ColumnCount = 3;
             this._cameraButtonTable.RowCount = 1;
-            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            this._cameraButtonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.34F));
             this._cameraButtonTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             StyleActionButton(this._btnSnapshot, 132);
             this._btnSnapshot.Anchor = AnchorStyles.None;
             this._btnSnapshot.Appearance.BackColor = Color.FromArgb(0, 120, 212);
             this._btnSnapshot.Appearance.ForeColor = Color.White;
-            this._btnSnapshot.Text = "Chụp nhanh"; this._btnSnapshot.Click += new System.EventHandler(this._btnSnapshot_Click);
+            this._btnSnapshot.Text = "Ch?p nhanh"; this._btnSnapshot.Click += new System.EventHandler(this._btnSnapshot_Click);
             StyleActionButton(this._btnStop, 104);
             this._btnStop.Anchor = AnchorStyles.None;
-            this._btnStop.Text = "Dừng"; this._btnStop.Click += new System.EventHandler(this._btnStop_Click);
+            this._btnStop.Text = "D?ng"; this._btnStop.Click += new System.EventHandler(this._btnStop_Click);
             StyleActionButton(this._btnLinkCamera, 120);
             this._btnLinkCamera.Anchor = AnchorStyles.None;
-            this._btnLinkCamera.Text = "Liên kết"; this._btnLinkCamera.Click += new System.EventHandler(this._btnLinkCamera_Click);
-            StyleActionButton(this._btnPushPacs, 120);
-            this._btnPushPacs.Anchor = AnchorStyles.None;
-            this._btnPushPacs.Appearance.BackColor = Color.FromArgb(22, 128, 61);
-            this._btnPushPacs.Appearance.ForeColor = Color.White;
-            this._btnPushPacs.Text = "Đẩy PACS"; this._btnPushPacs.Click += new System.EventHandler(this._btnPushPacs_Click);
+            this._btnLinkCamera.Text = "Li�n k?t"; this._btnLinkCamera.Click += new System.EventHandler(this._btnLinkCamera_Click);
             this._cameraButtonTable.Controls.Add(this._btnSnapshot, 0, 0);
             this._cameraButtonTable.Controls.Add(this._btnStop, 1, 0);
             this._cameraButtonTable.Controls.Add(this._btnLinkCamera, 2, 0);
-            this._cameraButtonTable.Controls.Add(this._btnPushPacs, 3, 0);
             //
-            // _panelImageList: danh sách ảnh thumbnail + bộ đếm đã chọn
+            // _panelImageList: danh s�ch ?nh thumbnail + b? d?m d� ch?n
             //
             this._panelImageList.Dock = DockStyle.Fill;
             this._panelImageList.Margin = new Padding(2);
@@ -634,7 +639,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._panel1.Controls.Add(this._lbImageTitle);
             this._panel1.Controls.Add(this._lbImageSelect);
             this._lbImageTitle.Dock = DockStyle.Fill;
-            this._lbImageTitle.Text = "ẢNH ĐÃ CHỤP";
+            this._lbImageTitle.Text = "?NH �� CH?P";
             this._lbImageTitle.TextAlign = ContentAlignment.MiddleLeft;
             this._lbImageTitle.Font = new Font("Tahoma", 8.5F, FontStyle.Bold);
             this._lbImageTitle.ForeColor = Color.FromArgb(55, 65, 81);
@@ -650,9 +655,9 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._panelImage.Controls.Add(this._thumbnailList);
             this._thumbnailList.Dock = DockStyle.Fill;
             //
-            // _panelControl2: thanh nút hành động dưới cùng - responsive bằng 2 FlowLayoutPanel
-            // (trái = Dock.Left chứa combo layout/máy in; phải = Dock.Fill, FlowDirection
-            // RightToLeft chứa các nút) thay vì Location/Anchor tuyệt đối.
+            // _panelControl2: thanh n�t h�nh d?ng du?i c�ng - responsive b?ng 2 FlowLayoutPanel
+            // (tr�i = Dock.Left ch?a combo layout/m�y in; ph?i = Dock.Fill, FlowDirection
+            // RightToLeft ch?a c�c n�t) thay v� Location/Anchor tuy?t d?i.
             //
             this._panelControl2.Appearance.BackColor = Color.White;
             this._panelControl2.Appearance.Options.UseBackColor = true;
@@ -662,7 +667,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._panelControl2.Controls.Add(this._flowPanelControl2Right);
             this._panelControl2.Controls.Add(this._flowPanelControl2Left);
             //
-            // _flowPanelControl2Left: combo layout in / máy in
+            // _flowPanelControl2Left: combo layout in / m�y in
             //
             this._flowPanelControl2Left.Dock = DockStyle.Left;
             this._flowPanelControl2Left.Width = 460;
@@ -670,53 +675,58 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             this._flowPanelControl2Left.Padding = new Padding(0, 3, 0, 2);
             this._cbbLayout.Properties.Buttons.AddRange(new EditorButton[] { ComboDropDownButton() });
             this._cbbPrinters.Properties.Buttons.AddRange(new EditorButton[] { ComboDropDownButton() });
-            var layoutField = CreateInlineField("Mẫu in:", this._cbbLayout, 58);
+            var layoutField = CreateInlineField("M?u in:", this._cbbLayout, 58);
             layoutField.Size = new Size(220, 34);
             layoutField.Dock = DockStyle.None;
-            var printerField = CreateInlineField("Máy in:", this._cbbPrinters, 58);
+            var printerField = CreateInlineField("M�y in:", this._cbbPrinters, 58);
             printerField.Size = new Size(230, 34);
             printerField.Dock = DockStyle.None;
             StyleActionButton(this._btnPrinterSettings, 28);
             this._btnPrinterSettings.Dock = DockStyle.Right;
             this._btnPrinterSettings.Margin = new Padding(2, 0, 0, 0);
-            this._btnPrinterSettings.Text = "⚙";
-            this._btnPrinterSettings.ToolTip = "Cài đặt máy in mặc định";
+            this._btnPrinterSettings.Text = "?";
+            this._btnPrinterSettings.ToolTip = "C�i d?t m�y in m?c d?nh";
             this._btnPrinterSettings.Appearance.Font = new Font("Segoe UI Symbol", 10F);
             this._btnPrinterSettings.Appearance.Options.UseFont = true;
             this._flowPanelControl2Left.Controls.Add(layoutField);
             this._flowPanelControl2Left.Controls.Add(printerField);
             //
-            // _flowPanelControl2Right: các nút hành động, FlowDirection.RightToLeft nên thêm
-            // theo thứ tự từ phải sang trái (Thoát thêm trước cùng ra ngoài cùng bên phải).
+            // _flowPanelControl2Right: c�c n�t h�nh d?ng, FlowDirection.RightToLeft n�n th�m
+            // theo th? t? t? ph?i sang tr�i (Tho�t th�m tru?c c�ng ra ngo�i c�ng b�n ph?i).
             //
             this._flowPanelControl2Right.Dock = DockStyle.Fill;
             this._flowPanelControl2Right.FlowDirection = FlowDirection.RightToLeft;
             this._flowPanelControl2Right.WrapContents = false;
             this._flowPanelControl2Right.Padding = new Padding(0, 3, 0, 2);
             StyleActionButton(this._btnCancel, 104);
-            this._btnCancel.Text = "Thoát"; this._btnCancel.Click += new System.EventHandler(this._btnCancel_Click);
+            this._btnCancel.Text = "Tho�t"; this._btnCancel.Click += new System.EventHandler(this._btnCancel_Click);
             StyleActionButton(this._btnSave, 120);
             this._btnSave.Appearance.BackColor = Color.FromArgb(0, 120, 212);
             this._btnSave.Appearance.ForeColor = Color.White;
-            this._btnSave.Text = "Lưu Nháp"; this._btnSave.Click += new System.EventHandler(this._btnSave_Click);
+            this._btnSave.Text = "Luu Nh�p"; this._btnSave.Click += new System.EventHandler(this._btnSave_Click);
+            StyleActionButton(this._btnPushPacs, 120);
+            this._btnPushPacs.Appearance.BackColor = Color.FromArgb(22, 128, 61);
+            this._btnPushPacs.Appearance.ForeColor = Color.White;
+            this._btnPushPacs.Text = "�?y PACS"; this._btnPushPacs.Click += new System.EventHandler(this._btnPushPacs_Click);
             StyleActionButton(this._btnPrint, 82);
             this._btnPrint.Text = "In"; this._btnPrint.Click += new System.EventHandler(this._btnPrint_Click);
             StyleActionButton(this._btnSignature, 116);
             this._btnSignature.Appearance.BackColor = Color.FromArgb(24, 133, 92);
             this._btnSignature.Appearance.ForeColor = Color.White;
-            this._btnSignature.Text = "Ký số"; this._btnSignature.Click += new System.EventHandler(this._btnSignature_Click);
+            this._btnSignature.Text = "K� s?"; this._btnSignature.Click += new System.EventHandler(this._btnSignature_Click);
             StyleActionButton(this._btnPreviewMain, 120);
-            this._btnPreviewMain.Text = "Xem trước"; this._btnPreviewMain.Click += new System.EventHandler(this._btnPreviewMain_Click);
+            this._btnPreviewMain.Text = "Xem tru?c"; this._btnPreviewMain.Click += new System.EventHandler(this._btnPreviewMain_Click);
             StyleActionButton(this._btnSyncHis, 112);
-            this._btnSyncHis.Text = "Gửi lại HIS"; this._btnSyncHis.Click += new System.EventHandler(this._btnSyncHis_Click);
+            this._btnSyncHis.Text = "G?i l?i HIS"; this._btnSyncHis.Click += new System.EventHandler(this._btnSyncHis_Click);
             this._flowPanelControl2Right.Controls.Add(this._btnCancel);
             this._flowPanelControl2Right.Controls.Add(this._btnSave);
+            this._flowPanelControl2Right.Controls.Add(this._btnPushPacs);
             this._flowPanelControl2Right.Controls.Add(this._btnPrint);
             this._flowPanelControl2Right.Controls.Add(this._btnSignature);
             this._flowPanelControl2Right.Controls.Add(this._btnPreviewMain);
             this._flowPanelControl2Right.Controls.Add(this._btnSyncHis);
             //
-            // _patientSidebar / _patientSidebarSplitter: dải sidebar trái của riêng _bodyPanel.
+            // _patientSidebar / _patientSidebarSplitter: d?i sidebar tr�i c?a ri�ng _bodyPanel.
             //
             this._patientSidebarSplitter.Dock = DockStyle.Left;
             this._patientSidebarSplitter.MinExtra = 320;

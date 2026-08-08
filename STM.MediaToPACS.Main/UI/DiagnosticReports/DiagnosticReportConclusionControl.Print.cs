@@ -6,7 +6,13 @@ using System.Windows.Forms;
 using DevExpress.XtraPdfViewer;
 using MediaToPacs.Core.Enums;
 using MediaToPacs.Core.Models;
-using MediaToPacs.Core.Models.Ketluan;
+using MediaToPacs.Core.Models.Order;
+using MediaToPacs.Core.Models.ServiceCatalog;
+using MediaToPacs.Core.Models.Conclusion;
+using MediaToPacs.Core.Models.Suggestion;
+using MediaToPacs.Core.Models.Template;
+using MediaToPacs.Core.Models.Device;
+using MediaToPacs.Core.Models.Signature;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 
@@ -174,7 +180,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             {
                 try
                 {
-                    string saveFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BenhNhan", _machidinh, "KQChanDoan");
+                    string saveFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Patient", _machidinh, "KQChanDoan");
                     if (!Directory.Exists(saveFolder))
                         Directory.CreateDirectory(saveFolder);
 

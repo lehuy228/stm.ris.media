@@ -2,7 +2,13 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraSplashScreen;
-using MediaToPacs.Core.Models.Ketluan;
+using MediaToPacs.Core.Models.Order;
+using MediaToPacs.Core.Models.ServiceCatalog;
+using MediaToPacs.Core.Models.Conclusion;
+using MediaToPacs.Core.Models.Suggestion;
+using MediaToPacs.Core.Models.Template;
+using MediaToPacs.Core.Models.Device;
+using MediaToPacs.Core.Models.Signature;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -341,7 +347,7 @@ namespace STM.MediaToPACS.Main.Utilities
             LoadDanhSachGoiY(obj);
         }
 
-        private async void LoadDanhSachGoiY(DanhMucDichVuGridView obj)
+        private async void LoadDanhSachGoiY(ServiceCatalogGridView obj)
         {
             var parentForm = this.FindForm();
             try
@@ -367,14 +373,14 @@ namespace STM.MediaToPACS.Main.Utilities
             }
         }
 
-        private DanhMucDichVuGridView GetSelectedDichVu()
+        private ServiceCatalogGridView GetSelectedDichVu()
         {
             if (_gridViewDSDV == null) return null;
 
             int rowHandle = _gridViewDSDV.FocusedRowHandle;
             if (rowHandle < 0) return null;
 
-            return _gridViewDSDV.GetRow(rowHandle) as DanhMucDichVuGridView;
+            return _gridViewDSDV.GetRow(rowHandle) as ServiceCatalogGridView;
         }
     }
 }

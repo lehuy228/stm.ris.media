@@ -44,7 +44,7 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
             string baseFolder = ServiceLocator.GetMediaStorageBasePath();
             string appName = Application.ProductName;
             string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            string folderPath = Path.Combine(baseFolder, "BenhNhan", relativePath);
+            string folderPath = Path.Combine(baseFolder, "Patient", relativePath);
 
             // Đảm bảo folder tồn tại
             Directory.CreateDirectory(folderPath);

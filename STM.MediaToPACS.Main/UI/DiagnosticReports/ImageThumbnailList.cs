@@ -26,23 +26,28 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             public string PacsStatus { get; set; }
             public string ErrorDetail { get; set; }
 
+            /// <summary>
+            /// Đã đẩy thành công vào docs hay chưa - chỉ do đồng bộ docs (Lưu nháp) đặt lại,
+            /// KHÔNG tự đổi theo checkbox tick/bỏ tick (checkbox chỉ dùng để chọn ảnh sẽ đẩy).
+            /// </summary>
+            public bool DocPushed { get; set; }
+
             internal Panel Container { get; set; }
-            internal Label StatusLabel { get; set; }
+            internal Label PacsBadge { get; set; }
+            internal Label DocBadge { get; set; }
             internal CheckBox DocumentCheckBox { get; set; }
             internal Button DeleteButton { get; set; }
         }
 
         private const int ThumbSize = 110;
         private const int BorderThickness = 3;
-        private const int StatusHeight = 18;
+        private const int BadgeSize = 18;
 
         /// <summary>Bề ngang tối đa của ô xem trước khi hover - chiều cao tự tính theo tỷ lệ ảnh.</summary>
         private const int PreviewMaxWidth = 480;
         private const int PreviewGap = 8;
 
-        private readonly Panel _viewport;
         private readonly FlowLayoutPanel _flow;
-        private readonly HScrollBar _hScroll;
         private readonly ToolTip _toolTip = new ToolTip();
         private readonly List<ThumbnailItem> _items = new List<ThumbnailItem>();
         private readonly ContextMenuStrip _itemMenu = new ContextMenuStrip();
@@ -60,56 +65,31 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         public bool ReadOnly { get; private set; }
 
+        /// <summary>Bật/tắt ô xem trước ảnh khi rê chuột (hover) - một số người dùng thấy phiền nên có thể tắt.</summary>
+        public bool HoverPreviewEnabled { get; set; } = true;
+
         public ImageThumbnailList()
         {
-            var layout = new TableLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                ColumnCount = 1,
-                RowCount = 2,
-                Margin = Padding.Empty,
-                Padding = Padding.Empty
-            };
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, SystemInformation.HorizontalScrollBarHeight));
-            Controls.Add(layout);
-
-            _viewport = new Panel
-            {
-                Dock = DockStyle.Fill,
-                BackColor = SystemColors.AppWorkspace,
-                Margin = Padding.Empty,
-                Padding = Padding.Empty
-            };
-
-            _hScroll = new HScrollBar
-            {
-                Dock = DockStyle.Fill,
-                Visible = false,
-                Margin = Padding.Empty
-            };
-
+            // FlowLayoutPanel tự hỗ trợ AutoScroll ngang sẵn (WrapContents=false + AutoScroll=true)
+            // - dùng thẳng cơ chế cuộn gốc của Windows, bỏ hẳn kiểu tự tính Width/Left/Maximum thủ
+            // công (từng gây kéo không ăn, layout lệch, kích thước ảnh gấp đôi mỗi lần thêm ảnh).
             _flow = new FlowLayoutPanel
             {
-                AutoScroll = false,
+                Dock = DockStyle.Fill,
+                AutoScroll = true,
                 FlowDirection = FlowDirection.LeftToRight,
                 WrapContents = false,
                 BackColor = SystemColors.AppWorkspace,
                 Margin = Padding.Empty,
                 Padding = Padding.Empty
             };
-            _viewport.Controls.Add(_flow);
-            layout.Controls.Add(_viewport, 0, 0);
-            layout.Controls.Add(_hScroll, 0, 1);
+            Controls.Add(_flow);
 
-            _viewport.Resize += (s, e) => ResizeThumbnailItems();
+            _flow.Resize += (s, e) => ResizeThumbnailItems();
             // Cuộn/đổi kích thước làm ô xem trước lệch vị trí - đóng lại cho gọn
-            _viewport.Resize += (s, e) => HidePreview();
-            _hScroll.ValueChanged += (s, e) => { HidePreview(); ApplyHorizontalScrollOffset(); };
+            _flow.Resize += (s, e) => HidePreview();
+            _flow.Scroll += (s, e) => HidePreview();
             VisibleChanged += (s, e) => { if (!Visible) HidePreview(); };
-            _flow.ControlAdded += (s, e) => UpdateScrollRange();
-            _flow.ControlRemoved += (s, e) => UpdateScrollRange();
-            _viewport.MouseUp += ShowListMenu;
             _flow.MouseUp += ShowListMenu;
 
             _itemMenu.Items.Add("Xoa anh", null, (s, e) =>
@@ -154,7 +134,6 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
             _items.Clear();
             _flow.Controls.Clear();
-            UpdateScrollRange();
             ItemAdded?.Invoke(this, EventArgs.Empty);
             SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -192,7 +171,12 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         public bool AddImage(string filePath, bool isChecked = false)
             => TryAddImage(filePath, out _, isChecked);
 
-        public bool TryAddImage(string filePath, out ThumbnailItem item, bool isChecked = false)
+        /// <summary>Cuộn tới ảnh cuối cùng - gọi sau khi thêm hàng loạt ảnh bằng
+        /// <see cref="TryAddImage"/> với scrollToEnd=false (mỗi item tự cuộn giữa chừng khi thêm
+        /// hàng loạt gây giật/lệch vị trí cuộn cuối cùng).</summary>
+        public void ScrollToLastItem() => ScrollToEnd();
+
+        public bool TryAddImage(string filePath, out ThumbnailItem item, bool isChecked = false, bool scrollToEnd = true)
         {
             item = null;
             if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
@@ -239,11 +223,28 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             };
             container.Size = GetContainerSize(container.Margin);
 
-            var statusLabel = new Label
+            // Nhãn "P" (đã gán PACS, góc phải dưới) và "D" (đã tải lên docs, góc trái dưới) -
+            // nhỏ gọn như checkbox/nút xoá ở 2 góc trên, không che khuất ảnh.
+            var pacsBadge = new Label
             {
-                Height = StatusHeight,
+                Width = BadgeSize,
+                Height = BadgeSize,
+                Text = "P",
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Tahoma", 7.5F, FontStyle.Bold),
+                Font = new Font("Tahoma", 8F, FontStyle.Bold),
+                BackColor = Color.FromArgb(37, 99, 235),
+                ForeColor = Color.White,
+                Visible = false,
+                Tag = item
+            };
+
+            var docBadge = new Label
+            {
+                Width = BadgeSize,
+                Height = BadgeSize,
+                Text = "D",
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Tahoma", 8F, FontStyle.Bold),
                 BackColor = Color.FromArgb(55, 65, 81),
                 ForeColor = Color.White,
                 Visible = false,
@@ -302,26 +303,31 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             };
             pictureBox.MouseUp += (s, e) => ShowItemMenu(thumbnailItem, e);
             container.MouseUp += (s, e) => ShowItemMenu(thumbnailItem, e);
-            statusLabel.MouseUp += (s, e) => ShowItemMenu(thumbnailItem, e);
+            pacsBadge.MouseUp += (s, e) => ShowItemMenu(thumbnailItem, e);
+            docBadge.MouseUp += (s, e) => ShowItemMenu(thumbnailItem, e);
             documentCheckBox.MouseUp += (s, e) => ShowItemMenu(thumbnailItem, e);
             deleteButton.MouseUp += (s, e) => ShowItemMenu(thumbnailItem, e);
 
-            AttachPreviewHandlers(thumbnailItem, container, pictureBox, statusLabel, documentCheckBox, deleteButton);
+            AttachPreviewHandlers(thumbnailItem, container, pictureBox, pacsBadge, docBadge, documentCheckBox, deleteButton);
 
             container.Controls.Add(pictureBox);
-            container.Controls.Add(statusLabel);
+            pictureBox.Controls.Add(pacsBadge);
+            pictureBox.Controls.Add(docBadge);
             pictureBox.Controls.Add(documentCheckBox);
             pictureBox.Controls.Add(deleteButton);
-            statusLabel.BringToFront();
+            pacsBadge.BringToFront();
+            docBadge.BringToFront();
             documentCheckBox.BringToFront();
             deleteButton.BringToFront();
             item.Container = container;
-            item.StatusLabel = statusLabel;
+            item.PacsBadge = pacsBadge;
+            item.DocBadge = docBadge;
             item.DocumentCheckBox = documentCheckBox;
             item.DeleteButton = deleteButton;
 
             ResizeThumbnailItems();
-            LayoutStatusLabel(item);
+            LayoutPacsBadge(item);
+            LayoutDocBadge(item);
             LayoutDocumentCheckBox(item);
             LayoutDeleteButton(item);
             UpdateVisualState(item);
@@ -329,8 +335,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             _items.Add(item);
             _flow.Controls.Add(container);
             UpdateInteractiveState(item);
-            UpdateScrollRange();
-            ScrollToEnd();
+            if (scrollToEnd)
+                ScrollToEnd();
 
             ItemAdded?.Invoke(this, EventArgs.Empty);
             return true;
@@ -374,6 +380,35 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>Đặt trực tiếp trạng thái đã đẩy docs cho một ảnh (dùng khi nạp lại từ server).</summary>
+        public void SetDocPushed(ThumbnailItem item, bool pushed)
+        {
+            if (item == null || item.DocPushed == pushed)
+                return;
+
+            item.DocPushed = pushed;
+            UpdateVisualState(item);
+        }
+
+        /// <summary>
+        /// Cập nhật badge "D" sau khi đồng bộ docs thành công: các ảnh có attachment id nằm trong
+        /// <paramref name="pushedAttachmentIds"/> được đánh dấu đã đẩy docs, ảnh nào trước đó có
+        /// dấu nhưng lần này không còn trong danh sách (bị bỏ tích rồi đồng bộ lại) thì bỏ dấu.
+        /// </summary>
+        public void ApplyDocPushResult(IEnumerable<Guid> pushedAttachmentIds)
+        {
+            var pushedSet = new HashSet<Guid>(pushedAttachmentIds ?? Enumerable.Empty<Guid>());
+            foreach (var item in _items)
+            {
+                bool shouldBePushed = item.AttachmentId.HasValue && pushedSet.Contains(item.AttachmentId.Value);
+                if (item.DocPushed == shouldBePushed)
+                    continue;
+
+                item.DocPushed = shouldBePushed;
+                UpdateVisualState(item);
+            }
+        }
+
         public void SetPacsSelected(ThumbnailItem item, bool selected)
         {
             if (item == null)
@@ -382,6 +417,38 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             item.PacsSelected = selected;
             UpdateVisualState(item);
             SelectionChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Tự động gán PACS cho các ảnh JPEG đang được tick checkbox mà chưa gán PACS -
+        /// dùng khi bấm "Đẩy PACS" để gộp bước "chọn PACS" + "đẩy" làm một, khỏi cần chuột phải chọn PACS riêng.
+        /// Trả về true nếu có ít nhất 1 ảnh vừa được gán.
+        /// </summary>
+        /// <summary>
+        /// Đồng bộ TOÀN PHẦN cờ PacsSelected theo đúng checkbox đang tick tại thời điểm gọi:
+        /// ảnh JPEG nào đang tick thì bật, ảnh nào không tick (kể cả đã bật từ trước - do lần lưu
+        /// trước hoặc do server trả sẵn destination) thì tắt. Không tính lịch sử/tồn đọng.
+        /// PacsStatus/ErrorDetail (kết quả đẩy thật) giữ nguyên - không xoá theo, vì đó là dấu vết
+        /// đã đẩy thành công/thất bại trước đó, độc lập với đang tick hay không.
+        /// </summary>
+        public bool SyncPacsSelectionWithCheckedItems()
+        {
+            bool changedAny = false;
+            foreach (var item in _items)
+            {
+                bool shouldBeSelected = (item.Checked || item.DocumentSelected) && IsJpeg(item);
+                if (item.PacsSelected == shouldBeSelected)
+                    continue;
+
+                item.PacsSelected = shouldBeSelected;
+                UpdateVisualState(item);
+                changedAny = true;
+            }
+
+            if (changedAny)
+                SelectionChanged?.Invoke(this, EventArgs.Empty);
+
+            return changedAny;
         }
 
         private void TogglePacsSelected(ThumbnailItem item)
@@ -434,6 +501,9 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private void ShowPreview(ThumbnailItem item)
         {
+            if (!HoverPreviewEnabled)
+                return;
+
             if (item == null || item.Container == null || item.Container.IsDisposed)
                 return;
 
@@ -650,19 +720,25 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 ? Color.LimeGreen
                 : Color.Transparent;
 
-            if (item.StatusLabel == null)
+            if (item.PacsBadge == null || item.DocBadge == null)
                 return;
 
-            var statusText = BuildStatusText(item);
-            LayoutStatusLabel(item);
+            LayoutPacsBadge(item);
+            LayoutDocBadge(item);
             LayoutDocumentCheckBox(item);
             LayoutDeleteButton(item);
             SetDocumentCheckBoxValue(item, item.DocumentSelected || item.Checked);
-            item.StatusLabel.Text = statusText;
-            item.StatusLabel.Visible = !string.IsNullOrWhiteSpace(statusText);
-            item.StatusLabel.BackColor = GetStatusBackColor(item);
-            item.StatusLabel.ForeColor = Color.White;
-            _toolTip.SetToolTip(item.StatusLabel, item.ErrorDetail);
+
+            // "P" chỉ hiện khi đã có kết quả đẩy PACS thực sự (server trả về status) - không
+            // hiện chỉ vì ảnh đang được đánh dấu chọn PACS mà chưa đẩy.
+            item.PacsBadge.Visible = !string.IsNullOrWhiteSpace(item.PacsStatus);
+            item.PacsBadge.BackColor = GetStatusBackColor(item);
+            _toolTip.SetToolTip(item.PacsBadge, item.ErrorDetail);
+
+            // "D" chỉ hiện khi ảnh đã đẩy thành công vào docs (DocPushed do đồng bộ docs đặt) -
+            // không tự đổi theo checkbox tick/bỏ tick, checkbox chỉ dùng để chọn ảnh sẽ đẩy.
+            item.DocBadge.Visible = item.DocPushed;
+
             UpdateInteractiveState(item);
         }
 
@@ -684,12 +760,12 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 if (item.Container != null)
                 {
                     item.Container.Size = GetContainerSize(item.Container.Margin);
-                    LayoutStatusLabel(item);
+                    LayoutPacsBadge(item);
+                    LayoutDocBadge(item);
                     LayoutDocumentCheckBox(item);
                     LayoutDeleteButton(item);
                 }
             }
-            UpdateScrollRange();
         }
 
         private void SetDocumentCheckBoxValue(ThumbnailItem item, bool selected)
@@ -710,7 +786,13 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private Size GetContainerSize(Padding margin)
         {
-            var availableHeight = _viewport.ClientSize.Height
+            // Dùng _flow.Height (kích thước ngoài, không đổi) thay vì ClientSize.Height (co lại khi
+            // thanh cuộn ngang hiện ra) - nếu không, kích thước ảnh sẽ phụ thuộc ngược vào chính
+            // trạng thái thanh cuộn, gây vòng lặp: ảnh to -> tràn -> hiện scroll -> ảnh nhỏ lại ->
+            // hết tràn -> ẩn scroll -> ảnh to lại -> tràn... khiến bề rộng nội dung tính sai mỗi lần
+            // thêm ảnh (chụp nhanh).
+            var availableHeight = _flow.Height
+                - SystemInformation.HorizontalScrollBarHeight
                 - margin.Vertical
                 - 2;
 
@@ -721,82 +803,38 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             return new Size(thumbSize, thumbSize);
         }
 
-        private void UpdateScrollRange()
-        {
-            var viewportWidth = _viewport.ClientSize.Width;
-            var viewportHeight = _viewport.ClientSize.Height;
-
-            _flow.SetBounds(
-                0,
-                0,
-                Math.Max(1, _flow.Controls.Count * (ThumbSize + 16)),
-                viewportHeight);
-            _flow.PerformLayout();
-
-            var totalWidth = CalculateContentWidth();
-
-            var maxOffset = Math.Max(0, totalWidth - viewportWidth);
-            _hScroll.Visible = maxOffset > 0;
-            _hScroll.Minimum = 0;
-            _hScroll.LargeChange = Math.Max(1, viewportWidth);
-            _hScroll.SmallChange = Math.Max(16, viewportWidth / 10);
-            _hScroll.Maximum = maxOffset == 0
-                ? 0
-                : maxOffset + _hScroll.LargeChange - 1;
-
-            var maxScrollValue = GetMaxScrollValue();
-            if (_hScroll.Value > maxScrollValue)
-                _hScroll.Value = maxScrollValue;
-
-            ApplyHorizontalScrollOffset();
-        }
-
-        private void ApplyHorizontalScrollOffset()
-        {
-            _flow.Left = -Math.Min(_hScroll.Value, GetMaxScrollValue());
-        }
-
+        // FlowLayoutPanel.AutoScroll tự tính vùng cuộn theo control con - cuộn tới ảnh cuối chỉ cần
+        // gọi ScrollControlIntoView (API chuẩn cho control có AutoScroll), không cần tự tính Width/Left.
         private void ScrollToEnd()
         {
-            UpdateScrollRange();
-            var maxScrollValue = GetMaxScrollValue();
-            if (maxScrollValue <= 0)
-                return;
-
-            _hScroll.Value = maxScrollValue;
-            ApplyHorizontalScrollOffset();
-        }
-
-        private int CalculateContentWidth()
-        {
             if (_flow.Controls.Count == 0)
-                return 0;
-
-            var rightMost = _flow.Controls
-                .Cast<Control>()
-                .Max(c => c.Right + c.Margin.Right);
-
-            return Math.Max(0, rightMost);
-        }
-
-        private int GetMaxScrollValue()
-        {
-            return _hScroll.Visible
-                ? Math.Max(0, _hScroll.Maximum - _hScroll.LargeChange + 1)
-                : 0;
-        }
-
-        private void LayoutStatusLabel(ThumbnailItem item)
-        {
-            if (item?.Container == null || item.StatusLabel == null)
                 return;
 
-            var labelHeight = Math.Min(StatusHeight, Math.Max(0, item.Container.ClientSize.Height - BorderThickness * 2));
-            item.StatusLabel.Bounds = new Rectangle(
-                BorderThickness,
-                item.Container.ClientSize.Height - BorderThickness - labelHeight,
-                Math.Max(0, item.Container.ClientSize.Width - BorderThickness * 2),
-                labelHeight);
+            _flow.ScrollControlIntoView(_flow.Controls[_flow.Controls.Count - 1]);
+        }
+
+        /// <summary>Nhãn "D" (đã tải lên docs) neo góc trái dưới ảnh.</summary>
+        private void LayoutDocBadge(ThumbnailItem item)
+        {
+            if (item?.Container == null || item.DocBadge == null)
+                return;
+
+            var parentHeight = item.DocBadge.Parent?.ClientSize.Height ?? item.Container.ClientSize.Height;
+            item.DocBadge.Location = new Point(0, Math.Max(0, parentHeight - item.DocBadge.Height));
+        }
+
+        /// <summary>Nhãn "P" (đã gán/đẩy PACS) neo góc phải dưới ảnh.</summary>
+        private void LayoutPacsBadge(ThumbnailItem item)
+        {
+            if (item?.Container == null || item.PacsBadge == null)
+                return;
+
+            var parent = item.PacsBadge.Parent;
+            var parentWidth = parent?.ClientSize.Width ?? item.Container.ClientSize.Width;
+            var parentHeight = parent?.ClientSize.Height ?? item.Container.ClientSize.Height;
+            item.PacsBadge.Location = new Point(
+                Math.Max(0, parentWidth - item.PacsBadge.Width),
+                Math.Max(0, parentHeight - item.PacsBadge.Height));
         }
 
         private void LayoutDocumentCheckBox(ThumbnailItem item)
@@ -826,6 +864,10 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             if (_previewItem == item)
                 HidePreview();
 
+            // Xoá xong giữ nguyên vị trí đang xem quanh ảnh vừa xoá (ảnh liền trước, hoặc ảnh liền
+            // sau nếu xoá ảnh đầu) - không để FlowLayoutPanel tự nhảy cuộn về đầu danh sách.
+            var removedIndex = _items.IndexOf(item);
+
             _items.Remove(item);
             if (item.Container != null)
             {
@@ -833,18 +875,13 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 DisposeItemContainer(item);
             }
 
-            UpdateScrollRange();
+            var neighborIndex = Math.Min(removedIndex, _items.Count - 1);
+            if (neighborIndex >= 0)
+                _flow.ScrollControlIntoView(_items[neighborIndex].Container);
+
             ItemAdded?.Invoke(this, EventArgs.Empty);
             SelectionChanged?.Invoke(this, EventArgs.Empty);
             return true;
-        }
-
-        private static string BuildStatusText(ThumbnailItem item)
-        {
-            if (!string.IsNullOrWhiteSpace(item.PacsStatus))
-                return "PACS: " + item.PacsStatus;
-
-            return item.PacsSelected ? "PACS" : null;
         }
 
         private static Color GetStatusBackColor(ThumbnailItem item)
@@ -928,7 +965,6 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
             _items.Clear();
             _flow.Controls.Clear();
-            UpdateScrollRange();
             ItemAdded?.Invoke(this, EventArgs.Empty);
             SelectionChanged?.Invoke(this, EventArgs.Empty);
         }

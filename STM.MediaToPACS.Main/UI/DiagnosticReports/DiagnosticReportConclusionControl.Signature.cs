@@ -10,7 +10,13 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraReports.UI;
 using MediaToPacs.Core.Enums;
 using MediaToPacs.Core.Models;
-using MediaToPacs.Core.Models.Ketluan;
+using MediaToPacs.Core.Models.Order;
+using MediaToPacs.Core.Models.ServiceCatalog;
+using MediaToPacs.Core.Models.Conclusion;
+using MediaToPacs.Core.Models.Suggestion;
+using MediaToPacs.Core.Models.Template;
+using MediaToPacs.Core.Models.Device;
+using MediaToPacs.Core.Models.Signature;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 
@@ -222,12 +228,12 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private string BuildSignFileName()
         {
-            string tenBenhNhan = RemoveDiacriticsForFileName(_chiDinhDichVuResponse?.BenhNhan?.HoTen);
+            string tenPatient = RemoveDiacriticsForFileName(_ServiceOrderResponse?.Patient?.HoTen);
             string maChiDinh = _machidinh ?? string.Empty;
 
-            return string.IsNullOrEmpty(tenBenhNhan)
+            return string.IsNullOrEmpty(tenPatient)
                 ? $"{maChiDinh}.pdf"
-                : $"{tenBenhNhan}_{maChiDinh}.pdf";
+                : $"{tenPatient}_{maChiDinh}.pdf";
         }
 
         private static string RemoveDiacriticsForFileName(string input)
@@ -331,16 +337,16 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             await Task.CompletedTask;
         }
 
-        private ThongTinKetLuanBaoCaoThuong CreateBaoCaoKetLuan()
+        private RegularReportConclusionInfo CreateBaoCaoKetLuan()
         {
-            var ketluan = new ThongTinKetLuanBaoCaoThuong
+            var ketluan = new RegularReportConclusionInfo
             {
-                TGBacSiChiDinh = FormatDateTime(_chiDinhDichVuResponse?.Thoigianthuchien ?? DateTime.Now),
+                TGBacSiChiDinh = FormatDateTime(_ServiceOrderResponse?.Thoigianthuchien ?? DateTime.Now),
                 TGBacSiKetLuan = FormatDateTime(_dateTGKetThuc?.DateTime ?? DateTime.Now),
                 MoTa = StripGeneratedParamText(_kqChanDoanResponse?.Kqcls_MoTa),
                 KetLuan = _kqChanDoanResponse?.Kqcls_KetLuan,
                 KhuyenNghi = _kqChanDoanResponse?.Kqcls_DeNghi,
-                ChiDinhDichVu = _chiDinhDichVuResponse,
+                ChiDinhDichVu = _ServiceOrderResponse,
                 TenBacSiKetLuan = GetBacSiKetLuanName()
             };
 
@@ -366,7 +372,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             var selectedImagePaths = GetSelectedImagePaths();
             AssignImagesToKetLuan(ketluan, selectedImagePaths);
             ketluan.AnhChuKy = GetAnhChuKy();
-            ketluan.GioiTinhConvert = ConvertGioiTinh(ketluan.ChiDinhDichVu?.BenhNhan?.GioiTinh);
+            ketluan.GioiTinhConvert = ConvertGioiTinh(ketluan.ChiDinhDichVu?.Patient?.GioiTinh);
 
             return ketluan;
         }
@@ -387,7 +393,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             return _thumbnailList.GetCheckedFilePaths();
         }
 
-        private void AssignImagesToKetLuan(ThongTinKetLuanBaoCaoThuong ketluan, List<string> imagePaths)
+        private void AssignImagesToKetLuan(RegularReportConclusionInfo ketluan, List<string> imagePaths)
         {
             if (imagePaths == null || imagePaths.Count == 0)
                 return;
@@ -438,8 +444,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private string GetAnhChuKy()
         {
-            return _hisUserKySoResponse != null && !string.IsNullOrEmpty(_hisUserKySoResponse.AnhChuKy)
-                ? _hisUserKySoResponse.AnhChuKy
+            return _HisUserSignatureResponse != null && !string.IsNullOrEmpty(_HisUserSignatureResponse.AnhChuKy)
+                ? _HisUserSignatureResponse.AnhChuKy
                 : null;
         }
 

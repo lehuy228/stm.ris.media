@@ -226,7 +226,7 @@ namespace STM.MediaToPACS.Main.UI.CameraUI
 
         private async void toolStripButtonSnapshot_Click(object sender, EventArgs e)
         {
-            string filePath = $"D:\\BenhNhan1\\{Guid.NewGuid()}.jpg";
+            string filePath = $"D:\\Patient1\\{Guid.NewGuid()}.jpg";
             string directoryPath = Path.GetDirectoryName(filePath);
             SnapshotMedia = filePath;
 

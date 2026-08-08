@@ -49,11 +49,26 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 // để hiện splitter) - gọi sau khi đã nạp ExpandedWidth ở trên.
                 _patientSidebar.RestorePinned(saved != null && saved.PatientSidebarPinned);
                 RestoreCameraColumnWidth(saved);
+                RestoreThumbnailHoverPreview(saved);
             }
             catch (Exception ex)
             {
                 Log.Warning(ex, "Không nạp được trạng thái sidebar bệnh nhân đã lưu");
             }
+        }
+
+        /// <summary>Nạp trạng thái bật/tắt hover xem trước ảnh đã lưu theo máy này.</summary>
+        private void RestoreThumbnailHoverPreview(UiLayoutSettings settings)
+        {
+            bool enabled = settings == null || !settings.ThumbnailHoverPreviewDisabled;
+            _cbHoverPreview.Checked = enabled;
+            _thumbnailList.HoverPreviewEnabled = enabled;
+        }
+
+        private void CbHoverPreview_CheckedChanged(object sender, EventArgs e)
+        {
+            _thumbnailList.HoverPreviewEnabled = _cbHoverPreview.Checked;
+            SaveUiLayout(settings => settings.ThumbnailHoverPreviewDisabled = !_cbHoverPreview.Checked);
         }
 
         private System.Windows.Forms.ColumnStyle CameraColumnStyle =>

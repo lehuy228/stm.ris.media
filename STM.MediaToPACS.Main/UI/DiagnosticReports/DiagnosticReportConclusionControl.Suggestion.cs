@@ -4,7 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MediaToPacs.Core.Models;
-using MediaToPacs.Core.Models.Ketluan;
+using MediaToPacs.Core.Models.Order;
+using MediaToPacs.Core.Models.ServiceCatalog;
+using MediaToPacs.Core.Models.Conclusion;
+using MediaToPacs.Core.Models.Suggestion;
+using MediaToPacs.Core.Models.Template;
+using MediaToPacs.Core.Models.Device;
+using MediaToPacs.Core.Models.Signature;
 using STM.MediaToPACS.Main.UI;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
@@ -17,7 +23,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
     /// </summary>
     public partial class DiagnosticReportConclusionControl
     {
-        private List<GoiYKetLuanResponse> _listGoiYKetLuan;
+        private List<ConclusionSuggestionResponse> _listGoiYKetLuan;
         private List<QuickSuggestionListItemDto> _listQuickSuggestions;
         private SuggestionPresenter _suggestionPresenter;
 
@@ -41,8 +47,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
             try
             {
-                string modality = _chiDinhDichVuResponse?.Modality;
-                string serviceCode = _chiDinhDichVuResponse?.MaDichVu;
+                string modality = _ServiceOrderResponse?.Modality;
+                string serviceCode = _ServiceOrderResponse?.MaDichVu;
                 int genderApi = SuggestionPresenter.MapHisGenderToApi(hisGioiTinh);
                 Log.Information(
                     "Gọi quick-suggestions (risv1): modalityCode={Modality}, serviceCode={ServiceCode}, gender={Gender}",
@@ -57,8 +63,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
             if (_listQuickSuggestions == null || _listQuickSuggestions.Count == 0)
             {
-                var allGoiY = await ServiceLocator.RisService.GetDanhSachGoiYKetLuanResponseAsync(
-                    madichvu: _chiDinhDichVuResponse.MaDichVu);
+                var allGoiY = await ServiceLocator.RisService.GetDanhSachConclusionSuggestionResponseAsync(
+                    madichvu: _ServiceOrderResponse.MaDichVu);
                 _listGoiYKetLuan = FilterGoiYKetLuanByGender(allGoiY?.data, hisGioiTinh ?? -1);
             }
         }
@@ -82,11 +88,11 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 _cbbMauGoiY.SelectedIndex = 0;
         }
 
-        private List<GoiYKetLuanResponse> FilterGoiYKetLuanByGender(
-            List<GoiYKetLuanResponse> allGoiY, int gioiTinh)
+        private List<ConclusionSuggestionResponse> FilterGoiYKetLuanByGender(
+            List<ConclusionSuggestionResponse> allGoiY, int gioiTinh)
         {
             if (allGoiY == null || allGoiY.Count == 0)
-                return new List<GoiYKetLuanResponse>();
+                return new List<ConclusionSuggestionResponse>();
 
             return allGoiY.Where(x =>
             {
@@ -111,7 +117,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 return;
             }
 
-            if (_cbbMauGoiY.SelectedItem is GoiYKetLuanResponse selected)
+            if (_cbbMauGoiY.SelectedItem is ConclusionSuggestionResponse selected)
             {
                 HideParamForm();
                 _rtMoTa.Text = selected.kqcls_mota;

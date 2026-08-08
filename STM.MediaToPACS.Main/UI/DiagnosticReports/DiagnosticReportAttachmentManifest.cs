@@ -140,6 +140,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         public string fileName { get; set; }
         public string contentType { get; set; }
         public bool documentSelected { get; set; }
+        public bool docPushed { get; set; }
         public bool pacsSelected { get; set; }
         public bool uploaded { get; set; }
         public string uploadStatus { get; set; }

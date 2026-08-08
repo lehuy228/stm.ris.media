@@ -108,8 +108,10 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                     if (string.IsNullOrWhiteSpace(manifestItem.filePath) || !File.Exists(manifestItem.filePath))
                         continue;
 
+                    // scrollToEnd:false - thêm hàng loạt từ manifest, tự cuộn từng ảnh giữa chừng
+                    // gây giật/lệch vị trí cuộn cuối cùng; cuộn 1 lần duy nhất sau khi nạp xong.
                     ImageThumbnailList.ThumbnailItem item;
-                    if (!_thumbnailList.TryAddImage(manifestItem.filePath, out item, manifestItem.documentSelected))
+                    if (!_thumbnailList.TryAddImage(manifestItem.filePath, out item, manifestItem.documentSelected, scrollToEnd: false))
                         continue;
 
                     if (manifestItem.attachmentId.HasValue)
@@ -122,9 +124,12 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                     }
 
                     _thumbnailList.SetDocumentSelected(item, manifestItem.documentSelected);
+                    _thumbnailList.SetDocPushed(item, manifestItem.docPushed);
                     _thumbnailList.SetPacsSelected(item, manifestItem.pacsSelected);
                     _thumbnailList.SetPacsStatus(item, manifestItem.pacsStatus, manifestItem.errorDetail);
                 }
+
+                _thumbnailList.ScrollToLastItem();
             }
             finally
             {
@@ -180,6 +185,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 manifestItem.contentType = thumbnail.ContentType;
                 manifestItem.attachmentId = thumbnail.AttachmentId;
                 manifestItem.documentSelected = thumbnail.DocumentSelected || thumbnail.Checked;
+                manifestItem.docPushed = thumbnail.DocPushed;
                 manifestItem.pacsSelected = thumbnail.PacsSelected;
                 manifestItem.uploaded = thumbnail.AttachmentId.HasValue;
                 manifestItem.pacsStatus = thumbnail.PacsStatus;
@@ -401,8 +407,10 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             if (string.IsNullOrWhiteSpace(localPath))
                 return;
 
+            // scrollToEnd:false - hàm này được gọi lặp cho từng attachment trong LoadReportAttachmentsSafeAsync,
+            // tự cuộn giữa chừng mỗi lần gây giật/lệch cuộn cuối cùng.
             ImageThumbnailList.ThumbnailItem item;
-            if (!_thumbnailList.TryAddImage(localPath, out item, HasDocumentDestination(attachment)))
+            if (!_thumbnailList.TryAddImage(localPath, out item, HasDocumentDestination(attachment), scrollToEnd: false))
                 return;
 
             _thumbnailList.SetAttachmentMetadata(
@@ -474,27 +482,27 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             return null;
         }
 
+        // Trạng thái Document/PACS của ảnh đã upload lấy hoàn toàn theo API (bật/tắt đúng theo
+        // destination trả về) - không giữ lại trạng thái local cũ. Nơi gọi hàm này phải đảm bảo lựa
+        // chọn Document/PACS hiện tại đã được đồng bộ lên server trước đó (xem SaveAndPushSelectedPacsAttachmentsAsync).
         private void ApplyAttachmentSelectionState(
             ImageThumbnailList.ThumbnailItem item,
             DiagnosticReportAttachmentDto attachment)
         {
-            if (item == null || attachment == null)
+            if (item == null)
                 return;
 
-            var documentDestination = attachment.destinations?.FirstOrDefault(d =>
+            var documentDestination = attachment?.destinations?.FirstOrDefault(d =>
                 string.Equals(d.destinationType, DiagnosticReportAttachmentDestinationTypes.Document, StringComparison.OrdinalIgnoreCase));
 
-            if (documentDestination != null)
-                _thumbnailList.SetDocumentSelected(item, true);
+            _thumbnailList.SetDocumentSelected(item, documentDestination != null);
+            _thumbnailList.SetDocPushed(item, documentDestination != null);
 
-            var pacsDestination = attachment.destinations?.FirstOrDefault(d =>
+            var pacsDestination = attachment?.destinations?.FirstOrDefault(d =>
                 string.Equals(d.destinationType, DiagnosticReportAttachmentDestinationTypes.Pacs, StringComparison.OrdinalIgnoreCase));
 
-            if (pacsDestination != null)
-            {
-                _thumbnailList.SetPacsSelected(item, true);
-                _thumbnailList.SetPacsStatus(item, pacsDestination.status, pacsDestination.errorDetail);
-            }
+            _thumbnailList.SetPacsSelected(item, pacsDestination != null);
+            _thumbnailList.SetPacsStatus(item, pacsDestination?.status, pacsDestination?.ErrorMessage);
         }
 
         private static bool HasDocumentDestination(DiagnosticReportAttachmentDto attachment)
@@ -528,7 +536,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         private string GetAttachmentPreviewFilePath(DiagnosticReportAttachmentDto attachment)
         {
             var extension = GuessExtension(attachment.contentType, attachment.fileName);
-            var folder = Path.Combine(_baseFolder, "BenhNhan", _machidinh, "Attachments");
+            var folder = Path.Combine(_baseFolder, "Patient", _machidinh, "Attachments");
             var fileName = attachment.id.ToString("D") + extension;
             return Path.Combine(folder, fileName);
         }
@@ -750,6 +758,9 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
             await ServiceLocator.RisService2
                 .UpdateDocumentAttachmentSelectionAsync(orderItemId, selections);
+
+            // Đồng bộ thành công mới dán badge "D" - không tự ăn theo checkbox đang tick.
+            _thumbnailList.ApplyDocPushResult(selections.Select(s => s.attachmentId));
         }
 
         private async Task SyncPacsAttachmentSelectionIfAnyAsync(Guid orderItemId)
@@ -762,7 +773,32 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 .UpdatePacsAttachmentSelectionAsync(orderItemId, pacsAttachmentIds);
         }
 
-        private async Task PushSelectedPacsAttachmentsAsync()
+        /// <summary>"Đẩy PACS": gán PACS theo đúng ảnh JPEG đang tích chọn TẠI THỜI ĐIỂM BẤM (không
+        /// tính lịch sử tick trước đó), upload ảnh còn thiếu, lưu danh sách lên server rồi gửi thật
+        /// sang hệ thống PACS - gộp chung 1 bước, không còn tách "Lưu PACS" riêng.</summary>
+        private async void _btnPushPacs_Click(object sender, EventArgs e)
+        {
+            if (!CanEditConclusion())
+                return;
+
+            try
+            {
+                _btnPushPacs.Enabled = false;
+                await SaveAndPushSelectedPacsAttachmentsAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Lỗi khi đẩy ảnh PACS");
+                MessageBox.Show(this, $"Lỗi khi đẩy PACS: {ex.Message}", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ApplyConclusionEditability();
+            }
+        }
+
+        private async Task SaveAndPushSelectedPacsAttachmentsAsync()
         {
             await ReloadAttachmentManifestFromDiskSafeAsync();
 
@@ -780,6 +816,10 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 return;
             }
 
+            // Danh sách PACS luôn đồng bộ đúng theo checkbox đang tick ngay lúc bấm (ảnh JPEG tick
+            // thì vào, không tick thì loại ra), không cộng dồn từ trước.
+            _thumbnailList.SyncPacsSelectionWithCheckedItems();
+
             await UploadPendingAttachmentsAsync(orderItemId.Value);
 
             var pacsAttachmentIds = _thumbnailList.GetPacsSelectedAttachmentIds();
@@ -787,7 +827,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             {
                 MessageBox.Show(
                     this,
-                    "Chưa có ảnh JPEG nào được chọn để đẩy PACS. Nhấn chuột phải trên thumbnail và chọn PACS.",
+                    "Chưa có ảnh JPEG nào được tick chọn cho PACS. Hãy tick chọn ảnh JPEG cần đẩy trước.",
                     "Chưa chọn ảnh PACS",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -800,10 +840,12 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             var result = await ServiceLocator.RisService2
                 .PushDiagnosticReportAttachmentsToPacsAsync(orderItemId.Value);
 
-            await RefreshAttachmentStatusesAsync(orderItemId.Value);
+            // Chỉ đọc lại đúng phần PACS theo API - KHÔNG đụng tới Document, vì Document là lựa chọn
+            // độc lập, chỉ đồng bộ lên server khi "Lưu Nháp", bấm PACS không được tự ý đẩy/đổi nó.
+            await RefreshPacsAttachmentStatusesAsync(orderItemId.Value);
 
             var message = result == null
-                ? "Đã gửi yêu cầu đẩy PACS."
+                ? $"Đã lưu và gửi yêu cầu đẩy PACS cho {pacsAttachmentIds.Count} ảnh."
                 : $"Đẩy PACS hoàn tất.\nThành công: {result.pushed}\nĐã hoàn thành từ trước: {result.alreadyCompleted}\nThất bại: {result.failed}";
 
             MessageBox.Show(
@@ -814,12 +856,15 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 result != null && result.failed > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Information);
         }
 
-        private async Task RefreshAttachmentStatusesAsync(Guid orderItemId)
+        // Đọc lại đúng phần PACS (SetPacsSelected/SetPacsStatus) theo API sau khi Lưu/Đẩy PACS -
+        // KHÔNG đụng tới Document, vì Document là lựa chọn độc lập, chỉ đồng bộ lên server lúc
+        // "Lưu Nháp". attachments == null nghĩa là request thất bại nên giữ nguyên UI hiện tại.
+        private async Task RefreshPacsAttachmentStatusesAsync(Guid orderItemId)
         {
             var attachments = await ServiceLocator.RisService2
                 .GetDiagnosticReportAttachmentsAsync(orderItemId);
 
-            if (attachments == null || attachments.Count == 0)
+            if (attachments == null)
                 return;
 
             foreach (var item in _thumbnailList.Items)
@@ -831,11 +876,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 var pacsDestination = attachment?.destinations?.FirstOrDefault(d =>
                     string.Equals(d.destinationType, DiagnosticReportAttachmentDestinationTypes.Pacs, StringComparison.OrdinalIgnoreCase));
 
-                if (pacsDestination == null)
-                    continue;
-
-                _thumbnailList.SetPacsSelected(item, true);
-                _thumbnailList.SetPacsStatus(item, pacsDestination.status, pacsDestination.errorDetail);
+                _thumbnailList.SetPacsSelected(item, pacsDestination != null);
+                _thumbnailList.SetPacsStatus(item, pacsDestination?.status, pacsDestination?.ErrorMessage);
             }
 
             SaveAttachmentManifestFromThumbnails();

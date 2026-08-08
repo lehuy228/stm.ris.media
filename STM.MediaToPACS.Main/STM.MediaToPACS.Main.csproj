@@ -148,106 +148,6 @@
     <Reference Include="Infragistics2.Win.UltraWinToolbars.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
     <Reference Include="Infragistics2.Win.UltraWinTree.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
     <Reference Include="Infragistics2.Win.v12.1, Version=12.1.20121.1001, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
-    <Reference Include="Leadtools">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.Controls.WinForms, Version=19.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Controls.WinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Leadtools.Drawing">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Drawing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.Codecs">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Codecs.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.Dicom">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Dicom.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.Dicom.Common">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Dicom.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.Dicom.Scu">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Dicom.Scu.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.Drawing">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Drawing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.Forms.DocumentWriters">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Forms.DocumentWriters.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.Forms.Processing">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Forms.Processing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.ImageProcessing.Effects">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.ImageProcessing.Effects.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.Medical.DataAccessLayer, Version=19.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Medical.DataAccessLayer.dll</HintPath>
-    </Reference>
-    <Reference Include="Leadtools.Medical.UserManagementDataAccessLayer, Version=19.0.4.0, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Medical.UserManagementDataAccessLayer.dll</HintPath>
-    </Reference>
-    <Reference Include="Leadtools.Medical.Winforms, Version=19.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Medical.Winforms.dll</HintPath>
-    </Reference>
-    <Reference Include="Leadtools.Medical.Worklist.DataAccessLayer, Version=19.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Medical.Worklist.DataAccessLayer.dll</HintPath>
-    </Reference>
-    <Reference Include="Leadtools.Printer">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Printer.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.ScreenCapture">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.ScreenCapture.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.Twain">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Twain.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.Wia">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.Wia.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.WinForms">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.WinForms.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Leadtools.WinForms.CommonDialogs.File">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\Leadtools.WinForms.CommonDialogs.File.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.4\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -288,6 +188,12 @@
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualC" />
+    <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.3351.48, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.3351.48\lib\net462\Microsoft.Web.WebView2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.WinForms, Version=1.0.3351.48, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.3351.48\lib\net462\Microsoft.Web.WebView2.WinForms.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Win32.Registry, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Registry.4.7.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
     </Reference>
@@ -506,44 +412,46 @@
     </Reference>
     -->
     <Reference Include="WindowsBase" />
+    <Reference Include="Crc32.NET, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dc0b95cf99bf4e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\Crc32.NET.1.2.0\lib\net20\Crc32.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.TimeProvider, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.TimeProvider.8.0.1\lib\net462\Microsoft.Bcl.TimeProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Abstractions, Version=8.13.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Abstractions.8.13.0\lib\net472\Microsoft.IdentityModel.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=8.13.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.8.13.0\lib\net472\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=8.13.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.8.13.0\lib\net472\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=8.13.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.8.13.0\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Minio, Version=4.0.0.0, Culture=neutral, PublicKeyToken=348239ebd7debb4c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Minio.4.0.0\lib\net46\Minio.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=8.13.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.8.13.0\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Linq.4.0.0\lib\net46\System.Reactive.Linq.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\Demos.cs" />
-    <Compile Include="Common\DialogUtilities.cs" />
-    <Compile Include="Common\Globalization.cs" />
-    <Compile Include="Common\Messager.cs" />
-    <Compile Include="Common\TextBoxTraceListener.cs" />
-    <Compile Include="Common\UnlockSupport.cs" />
-    <Compile Include="Common\Utils.cs" />
-    <Compile Include="Common\WaitCursor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Scanning\Twain\ErrorList.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Scanning\Twain\TwainScanning.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="Queries\BroadBasedQuery.cs" />
-    <Compile Include="Queries\PatientBasedQuery.cs" />
-    <Compile Include="Classes\ScreenCapture.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Scanning\Twain\SupportedCaps.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Scanning\Twain\Template.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\CameraUI\CameraControl.cs">
       <SubType>UserControl</SubType>
@@ -560,22 +468,22 @@
     <Compile Include="UI\Configurations\Camera\ConfigCamera.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Configurations\SystemSettingsDialog.cs">
+    <Compile Include="UI\Configurations\Systems\SystemSettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Configurations\SystemSettingsDialog.Designer.cs">
+    <Compile Include="UI\Configurations\Systems\SystemSettingsDialog.Designer.cs">
       <DependentUpon>SystemSettingsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Configurations\TemplateSuggestionDialog.cs">
+    <Compile Include="UI\Configurations\Template\TemplateSuggestionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\Configurations\Camera\ConfigCamera.Designer.cs">
       <DependentUpon>ConfigCamera.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Configurations\PatientForm.cs">
+    <Compile Include="UI\Configurations\Patient\PatientForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Configurations\PatientForm.Designer.cs">
+    <Compile Include="UI\Configurations\Patient\PatientForm.Designer.cs">
       <DependentUpon>PatientForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Configurations\Systems\SystemSetup.cs">
@@ -584,77 +492,10 @@
     <Compile Include="UI\Configurations\Systems\SystemSetup.Designer.cs">
       <DependentUpon>SystemSetup.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\FormBase.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FormBase.Designer.cs">
-      <DependentUpon>FormBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FormRecognizing.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FormRecognizing.Designer.cs">
-      <DependentUpon>FormRecognizing.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FrmMain.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.Loading.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.Suggestion.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.MenuEvents.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.ListBoxEvents.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.Viewer.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.SaveLoad.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.Camera.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.Print.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.Signature.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.ImageOps.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.Dicom.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.StoreScu.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmMain.Helpers.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UI\DiagnosticReports\ImageThumbnailList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\SignatureCancellationReasonDialog.cs">
+    <Compile Include="UI\DiagnosticReports\SignatureCancellationReasonDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\DiagnosticReports\DiagnosticReportAttachmentManifest.cs" />
@@ -665,6 +506,10 @@
       <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.Camera.cs">
+      <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.Viewer.cs">
       <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
@@ -700,58 +545,19 @@
       <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\V2\FrmMainV2Host.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\V2\FrmMainV2Host.Designer.cs">
-      <DependentUpon>FrmMainV2Host.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\PrintPage.cs" />
-    <Compile Include="Classes\Page.cs" />
-    <Compile Include="Classes\IPrintToPACSFile.cs" />
-    <Compile Include="Classes\ProcedureStep.cs" />
-    <Compile Include="Classes\ObjectCopyExtensions.cs" />
-    <Compile Include="Classes\UiLayoutSettings.cs" />
+    <Compile Include="App\UiLayoutSettings.cs" />
     <Compile Include="UI\Suggestion\SuggestionPresenter.cs" />
     <Compile Include="UI\Suggestion\ParamFormControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\FrmMain.Designer.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FrmOperation.cs">
+    <Compile Include="App\AppContextWithAuth.cs" />
+    <Compile Include="UI\Viewers\FormViewerBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\FrmOperation.Designer.cs">
-      <DependentUpon>FrmOperation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FrmProgress.cs">
+    <Compile Include="UI\Viewers\FormPdfViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\FrmProgress.designer.cs">
-      <DependentUpon>FrmProgress.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\InputDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ListImageBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\LogWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\LogWindow.Designer.cs">
-      <DependentUpon>LogWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Configurations\OptionsDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Utilities\AppContextWithAuth.cs" />
-    <Compile Include="Utilities\DicomModalities.cs" />
-    <Compile Include="UI\FormPdfViewer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FormPdfViewer.Designer.cs">
+    <Compile Include="UI\Viewers\FormPdfViewer.Designer.cs">
       <DependentUpon>FormPdfViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Configurations\Template\ReportTemplateManager.cs">
@@ -772,7 +578,7 @@
     <Compile Include="UI\Configurations\Shortcut\SetUpKeyShortcuts.Designer.cs">
       <DependentUpon>SetUpKeyShortcuts.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\ShortcutSettingsManager.cs" />
+    <Compile Include="App\ShortcutSettingsManager.cs" />
     <Compile Include="UI\Configurations\Template\SuggestionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -785,52 +591,119 @@
     <Compile Include="UI\Configurations\Template\TemplateSetting.Designer.cs">
       <DependentUpon>TemplateSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\Updater.cs" />
-    <Compile Include="UI\FrmSplash.cs">
+    <Compile Include="App\Updater.cs" />
+    <Compile Include="UI\Shell\SplashForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\FrmSplash.Designer.cs">
-      <DependentUpon>FrmSplash.cs</DependentUpon>
+    <Compile Include="UI\Shell\SplashForm.Designer.cs">
+      <DependentUpon>SplashForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\FrmDoctorConfirm.cs">
+    <Compile Include="UI\DoctorConfirm\DoctorConfirmForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\DoctorConfirmDrawerController.cs" />
-    <Compile Include="UI\DoctorQuickSettingsControl.cs">
+    <Compile Include="UI\DoctorConfirm\DoctorConfirmDrawerController.cs" />
+    <Compile Include="UI\DoctorConfirm\DoctorQuickSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\PatientSidebar\PatientSidebarControl.cs" />
     <Compile Include="UI\PatientSidebar\PatientSidebarControl.Designer.cs">
       <DependentUpon>PatientSidebarControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\FrmMain.PatientSidebar.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
+    <Compile Include="UI\DoctorConfirm\DoctorConfirmForm.Designer.cs">
+      <DependentUpon>DoctorConfirmForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Shell\WaitFormLoading.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\FrmDoctorConfirm.Designer.cs">
-      <DependentUpon>FrmDoctorConfirm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\WaitFormLoading.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\WaitFormLoading.Designer.cs">
+    <Compile Include="UI\Shell\WaitFormLoading.Designer.cs">
       <DependentUpon>WaitFormLoading.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\MyQueryRetrieveScu.cs" />
-    <Compile Include="Utilities\PacsSettings.cs" />
-    <Compile Include="UI\MainForm.cs">
+    <Compile Include="UI\Shell\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\MainForm.Designer.cs">
+    <Compile Include="UI\Shell\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\MyQueryRetrieveScu.cs" />
-    <Compile Include="Utilities\DicomFindQuery.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Utilities\ServiceLocator.cs" />
-    <Compile Include="Utilities\UtilClass.cs" />
-    <Compile Include="Utilities\XmlSettingsHelper.cs" />
+    <Compile Include="App\ServiceLocator.cs" />
+    <Compile Include="App\XmlSettingsHelper.cs" />
+    <Compile Include="Infrastructure\Connection\AuthSDK\Token.cs" />
+    <Compile Include="Infrastructure\Connection\AuthSDK\TokenData.cs" />
+    <Compile Include="Core\Auth\IPermissionService.cs" />
+    <Compile Include="Core\Auth\ISessionService.cs" />
+    <Compile Include="Core\Enums\Genders.cs" />
+    <Compile Include="Core\Enums\TrangThaiKetLuan.cs" />
+    <Compile Include="Core\Interfaces\IHisService.cs" />
+    <Compile Include="Core\Interfaces\IKeycloakService.cs" />
+    <Compile Include="Core\Interfaces\IMinIOService.cs" />
+    <Compile Include="Core\Interfaces\IRisService.cs" />
+    <Compile Include="Core\Interfaces\IRisService2.cs" />
+    <Compile Include="Core\Interfaces\ISignatureService.cs" />
+    <Compile Include="Core\Interfaces\IStudyService.cs" />
+    <Compile Include="Core\Models\Auth\AppPermissions.cs" />
+    <Compile Include="Core\Models\Auth\AuditLogModels.cs" />
+    <Compile Include="Core\Models\Signature\CertBO.cs" />
+    <Compile Include="Core\Models\Auth\LoginResponseBO.cs" />
+    <Compile Include="Core\Models\Signature\PdfResponse.cs" />
+    <Compile Include="Core\Models\Signature\SignhashRequest.cs" />
+    <Compile Include="Core\Models\Signature\SignhashRequestV2.cs" />
+    <Compile Include="Core\Models\Auth\UserDto.cs" />
+    <Compile Include="Core\Models\Camera\CameraSettings.cs" />
+    <Compile Include="Core\Models\Auth\CreateUserRequest.cs" />
+    <Compile Include="Core\Models\System\FileStorageSettings.cs" />
+    <Compile Include="Core\Models\His\PaymentCheckRequest.cs" />
+    <Compile Include="Core\Models\His\PaymentCheckResponse.cs" />
+    <Compile Include="Core\Models\Conclusion\ApiResponse.cs" />
+    <Compile Include="Core\Models\Patient\Patient.cs" />
+    <Compile Include="Core\Models\Order\ServiceOrderResponse.cs" />
+    <Compile Include="Core\Models\Order\OrderGridView.cs" />
+    <Compile Include="Core\Models\Conclusion\ReportParameter.cs" />
+    <Compile Include="Core\Models\ServiceCatalog\ServiceCatalogGridView.cs" />
+    <Compile Include="Core\Models\ServiceCatalog\ServiceCatalogResponse.cs" />
+    <Compile Include="Core\Models\Suggestion\ConclusionSuggestionGridView.cs" />
+    <Compile Include="Core\Models\Suggestion\ConclusionSuggestionRequest.cs" />
+    <Compile Include="Core\Models\Suggestion\ConclusionSuggestionResponse.cs" />
+    <Compile Include="Core\Models\Signature\HisUserSignatureRequest.cs" />
+    <Compile Include="Core\Models\Signature\HisUserSignatureResponse.cs" />
+    <Compile Include="Core\Models\Signature\HisUserResponse.cs" />
+    <Compile Include="Core\Models\Conclusion\DiagnosisResultRequest.cs" />
+    <Compile Include="Core\Models\Conclusion\DiagnosisResultResponse.cs" />
+    <Compile Include="Core\Models\Conclusion\MedicalReport.cs" />
+    <Compile Include="Core\Models\Conclusion\ParamValuesSnapshot.cs" />
+    <Compile Include="Core\Models\Template\ReportTemplate.cs" />
+    <Compile Include="Core\Models\Template\ReportTemplateGridViewModel.cs" />
+    <Compile Include="Core\Models\Template\ReportTemplateRequest.cs" />
+    <Compile Include="Core\Models\Template\ReportTemplateResponse.cs" />
+    <Compile Include="Core\Models\Conclusion\ResultPage.cs" />
+    <Compile Include="Core\Models\Order\ScheduleStepRIS.cs" />
+    <Compile Include="Core\Models\Device\DeviceResponse.cs" />
+    <Compile Include="Core\Models\Conclusion\RegularReportConclusionInfo.cs" />
+    <Compile Include="Core\Models\Auth\KeycloakUserInfo.cs" />
+    <Compile Include="Core\Models\Camera\Modalities.cs" />
+    <Compile Include="Core\Models\His\OruResendResultDto.cs" />
+    <Compile Include="Core\Models\ResponseResult.cs" />
+    <Compile Include="Core\Models\RisV1\RisV1DiagnosticReportAttachmentModels.cs" />
+    <Compile Include="Core\Models\RisV1\RisV1PatientHistoryModels.cs" />
+    <Compile Include="Core\Models\RisV1\RisV1ViewerModels.cs" />
+    <Compile Include="Core\Models\RisV2\RisV2Models.cs" />
+    <Compile Include="Core\Models\RisV2\RisV2OrderItemModels.cs" />
+    <Compile Include="Core\Models\RisV2\RisV2QuickSuggestionModels.cs" />
+    <Compile Include="Core\Models\System\ShortcutAndFontSettings.cs" />
+    <Compile Include="Core\Models\Order\StudyOr.cs" />
+    <Compile Include="Core\Models\System\SystemConfig.cs" />
+    <Compile Include="Core\Models\System\SystemUpdateConfig.cs" />
+    <Compile Include="Core\Models\Auth\User.cs" />
+    <Compile Include="App\AppDataPaths.cs" />
+    <Compile Include="App\FileStorageSettingsProvider.cs" />
+    <Compile Include="Infrastructure\Auth\MinIOService.cs" />
+    <Compile Include="Infrastructure\Auth\PermissionService.cs" />
+    <Compile Include="Infrastructure\Auth\SessionService.cs" />
+    <Compile Include="Infrastructure\Services\ApiEndpoints.cs" />
+    <Compile Include="Infrastructure\Services\HisService.cs" />
+    <Compile Include="Infrastructure\Services\KeycloakService.cs" />
+    <Compile Include="Infrastructure\Services\RisService.cs" />
+    <Compile Include="Infrastructure\Services\RisService2.cs" />
+    <Compile Include="Infrastructure\Services\SignatureService.cs" />
+    <Compile Include="Infrastructure\Services\StudyService.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />
@@ -848,33 +721,22 @@
     <EmbeddedResource Include="UI\Configurations\Camera\ConfigCamera.resx">
       <DependentUpon>ConfigCamera.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Configurations\OptionsDialog.resx">
-      <DependentUpon>OptionsDialog.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Configurations\Patient\PatientForm.resx">
+      <DependentUpon>PatientForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Configurations\Systems\SystemSetup.resx">
       <DependentUpon>SystemSetup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\DoctorQuickSettingsControl.resx">
+    <EmbeddedResource Include="UI\DoctorConfirm\DoctorQuickSettingsControl.resx">
       <DependentUpon>DoctorQuickSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\FormRecognizing.resx">
-      <DependentUpon>FormRecognizing.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\FrmMain.resx">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\FrmProgress.resx">
-      <DependentUpon>FrmProgress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\OptionsDialog.resx" />
     <EmbeddedResource Include="UI\DiagnosticReports\DiagnosticReportConclusionControl.resx">
       <DependentUpon>DiagnosticReportConclusionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\MainForm.resx">
+    <EmbeddedResource Include="UI\Shell\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\FormPdfViewer.resx">
+    <EmbeddedResource Include="UI\Viewers\FormPdfViewer.resx">
       <DependentUpon>FormPdfViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Configurations\Template\ReportTemplateManager.resx">
@@ -892,13 +754,13 @@
     <EmbeddedResource Include="UI\Configurations\Template\TemplateSetting.resx">
       <DependentUpon>TemplateSetting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\FrmSplash.resx">
-      <DependentUpon>FrmSplash.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Shell\SplashForm.resx">
+      <DependentUpon>SplashForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\FrmDoctorConfirm.resx">
-      <DependentUpon>FrmDoctorConfirm.cs</DependentUpon>
+    <EmbeddedResource Include="UI\DoctorConfirm\DoctorConfirmForm.resx">
+      <DependentUpon>DoctorConfirmForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\WaitFormLoading.resx">
+    <EmbeddedResource Include="UI\Shell\WaitFormLoading.resx">
       <DependentUpon>WaitFormLoading.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -918,32 +780,8 @@
     <EmbeddedResource Include="Resources\StudyRoot_Study_Level_IHE_C-Find.dcm" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Images\Minus.PNG" />
-    <EmbeddedResource Include="Images\Plus.PNG" />
-    <EmbeddedResource Include="Scanning\Twain\ErrorList.resx">
-      <DependentUpon>ErrorList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Scanning\Twain\SupportedCaps.resx">
-      <DependentUpon>SupportedCaps.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Scanning\Twain\Template.resx">
-      <DependentUpon>Template.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\InputDialog.resx">
-      <DependentUpon>InputDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\LogWindow.resx">
-      <DependentUpon>LogWindow.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\MwlIheCFindScu.dcm" />
-    <EmbeddedResource Include="Resources\StudyRootIheCFind.dcm" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="UI\FrmOperation.resx">
-      <DependentUpon>FrmOperation.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
@@ -1000,20 +838,6 @@
     <None Include="Resources\information.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\STM.MediaToPacs.Connection.AuthSDK\STM.MediaToPacs.Connection.AuthSDK.csproj">
-      <Project>{A45792ED-D9FC-4948-BB9F-78E8BE0212D0}</Project>
-      <Name>STM.MediaToPacs.Connection.AuthSDK</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\STM.MediaToPacs.Core\STM.MediaToPacs.Core.csproj">
-      <Project>{2A73C8D7-D1DE-47F7-9371-9DA718514F35}</Project>
-      <Name>STM.MediaToPacs.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\STM.MediaToPacs.Infrastructure\STM.MediaToPacs.Infrastructure.csproj">
-      <Project>{60895A3D-2A6B-43EF-876C-15E73E7A7813}</Project>
-      <Name>STM.MediaToPacs.Infrastructure</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
@@ -1026,124 +850,15 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\packages\Microsoft.Web.WebView2.1.0.3351.48\runtimes\win-x64\native\WebView2Loader.dll" Condition="'$(Platform)' == 'x64'">
+      <Link>WebView2Loader.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\packages\Microsoft.Web.WebView2.1.0.3351.48\runtimes\win-x86\native\WebView2Loader.dll" Condition="'$(Platform)' == 'x86'">
+      <Link>WebView2Loader.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Libraries\DocumentFormat.OpenXml.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Annotations.Core.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Svg.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Codecs.Bmp.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Codecs.Cmp.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Codecs.Cmw.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Codecs.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Codecs.Fax.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Codecs.Gif.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Codecs.J2k.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Codecs.Jb2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Codecs.Jbg.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Codecs.Png.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Codecs.Raw.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Codecs.Tif.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.ColorConversion.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Controls.WinForms.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Dicom.Common.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Dicom.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Dicom.Scu.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Drawing.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Forms.DocumentWriters.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Forms.Processing.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.ImageProcessing.Color.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.ImageProcessing.Core.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.ImageProcessing.Effects.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.ImageProcessing.Utilities.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Medical.DataAccessLayer.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Medical.UserManagementDataAccessLayer.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Medical.Winforms.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Medical.Worklist.DataAccessLayer.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Printer.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.ScreenCapture.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Twain.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Vector.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Wia.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.Windows.Media.TransitionBase.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.WinForms.CommonDialogs.File.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Libraries\Leadtools.WinForms.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Libraries\SkiaSharp.dll">
@@ -1171,7 +886,6 @@
     <Content Include="Resources\log.png" />
     <Content Include="Resources\Rotate.ico" />
     <Content Include="Resources\SaveDICOM.ico" />
-    <Content Include="Resources\ScreenCapture.ico" />
     <Content Include="Resources\setting.png" />
     <Content Include="Resources\StorePACS_32.ico" />
     <Content Include="Resources\StorePACS_48.ico" />

@@ -5,7 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MediaToPacs.Core.Enums;
-using MediaToPacs.Core.Models.Ketluan;
+using MediaToPacs.Core.Models.Order;
+using MediaToPacs.Core.Models.ServiceCatalog;
+using MediaToPacs.Core.Models.Conclusion;
+using MediaToPacs.Core.Models.Suggestion;
+using MediaToPacs.Core.Models.Template;
+using MediaToPacs.Core.Models.Device;
+using MediaToPacs.Core.Models.Signature;
+using STM.MediaToPACS.Main.UI.Configurations;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 
@@ -34,8 +41,10 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             var resolveRisV1Task = ResolveRisV1OrderItemAsync();
             // Lịch sử khám bệnh nhân cho sidebar (best-effort, không ảnh hưởng luồng chính)
             var loadHistoryTask = LoadPatientHistorySafeAsync();
+            // Danh sách viewer PACS được phép, để đổi text nút "Xem ảnh PACS" nếu chỉ có 1 viewer
+            var loadViewerAccessesTask = LoadViewerAccessesBestEffortAsync();
 
-            await Task.WhenAll(loadKTVTask, resolveRisV1Task, loadHistoryTask);
+            await Task.WhenAll(loadKTVTask, resolveRisV1Task, loadHistoryTask, loadViewerAccessesTask);
 
             ApplyThietBiVaKTVSelectionFromResult();
             await LoadReportAttachmentsSafeAsync();
@@ -77,8 +86,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         {
             try
             {
-                _chiDinhDichVuResponse = await ServiceLocator.RisService.GetChiDinhDichVuAsync(_machidinh);
-                if (_chiDinhDichVuResponse == null)
+                _ServiceOrderResponse = await ServiceLocator.RisService.GetChiDinhDichVuAsync(_machidinh);
+                if (_ServiceOrderResponse == null)
                 {
                     Log.Warning("Không tìm thấy thông tin chỉ định cho MaChiDinh: {MaChiDinh}", _machidinh);
                     return;
@@ -97,13 +106,13 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private async Task LoadDependentDataAsync()
         {
-            var bn = _chiDinhDichVuResponse.BenhNhan;
+            var bn = _ServiceOrderResponse.Patient;
 
             await LoadSuggestionsSafeAsync(bn?.GioiTinh);
 
             await Task.WhenAll(
                 InitDanhSachThietbiAsync(),
-                InitLayoutMauAsync(_chiDinhDichVuResponse.Modality)
+                InitLayoutMauAsync(_ServiceOrderResponse.Modality)
             );
         }
 
@@ -162,9 +171,9 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private void PopulateFormData()
         {
-            var benhNhan = _chiDinhDichVuResponse.BenhNhan;
-            if (benhNhan != null)
-                PopulatePatientInfo(benhNhan);
+            var Patient = _ServiceOrderResponse.Patient;
+            if (Patient != null)
+                PopulatePatientInfo(Patient);
 
             PopulateChiDinhInfo();
             LoadSignatureInfo();
@@ -172,45 +181,68 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
         private void PopulateChiDinhInfo()
         {
-            _txMaChiDinh.Text = _chiDinhDichVuResponse.MaChiDinh ?? "";
-            _dateNgayChiDinh.DateTime = _chiDinhDichVuResponse.Thoigianthuchien.AddHours(7);
-            _txBSChiDinh.Text = _chiDinhDichVuResponse.TenBacSiChiDinh ?? "";
-            _txDoiTuong.Text = string.IsNullOrWhiteSpace(_chiDinhDichVuResponse.BenhNhan.MaBHYT)
+            _txMaChiDinh.Text = _ServiceOrderResponse.MaChiDinh ?? "";
+            _dateNgayChiDinh.DateTime = _ServiceOrderResponse.Thoigianthuchien.AddHours(7);
+            _txBSChiDinh.Text = _ServiceOrderResponse.TenBacSiChiDinh ?? "";
+            _txDoiTuong.Text = string.IsNullOrWhiteSpace(_ServiceOrderResponse.Patient.MaBHYT)
                 ? "Viện phí"
                 : "BHYT";
-            _txMaBHYT.Text = _chiDinhDichVuResponse.BenhNhan.MaBHYT;
-            _txDichVu.Text = _chiDinhDichVuResponse.TenDichVu ?? "";
-            _txChanDoan.Text = _chiDinhDichVuResponse.ChanDoanSoBo ?? "";
+            _txMaBHYT.Text = _ServiceOrderResponse.Patient.MaBHYT;
+            _txDichVu.Text = _ServiceOrderResponse.TenDichVu ?? "";
+            _txChanDoan.Text = _ServiceOrderResponse.ChanDoanSoBo ?? "";
 
             if (ServiceLocator.KeycloakUserInfo != null)
                 _txBSDoc.Text = $"{ServiceLocator.KeycloakUserInfo.FirstName} {ServiceLocator.KeycloakUserInfo.LastName}";
         }
 
-        private void PopulatePatientInfo(dynamic benhNhan)
+        // Mang từ FrmMain._tsmEditPatient_Click sang, gắn vào nút "Sửa thông tin" của màn kết luận.
+        private void _btnEditPatient_Click(object sender, EventArgs e)
         {
-            _txMaBN.Text = benhNhan.MaBenhNhan ?? "";
-            _txTenBN.Text = benhNhan.HoTen ?? "";
-            _dateBN.DateTime = benhNhan.NgaySinh;
+            try
+            {
+                using (var patientForm = new PatientForm(
+                    _ServiceOrderResponse.Patient,
+                    _ServiceOrderResponse.MaChiDinh))
+                {
+                    if (patientForm.ShowDialog() == DialogResult.OK)
+                    {
+                        PopulatePatientInfo(_ServiceOrderResponse.Patient);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Lỗi khi sửa thông tin bệnh nhân");
+                MessageBox.Show(this, $"Lỗi khi sửa thông tin bệnh nhân: {ex.Message}", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void PopulatePatientInfo(dynamic Patient)
+        {
+            _txMaBN.Text = Patient.MaPatient ?? "";
+            _txTenBN.Text = Patient.HoTen ?? "";
+            _dateBN.DateTime = Patient.NgaySinh;
             _txPatientGender.Text =
-                benhNhan.GioiTinh == 1 ? "Nữ" :
-                benhNhan.GioiTinh == 0 ? "Nam" :
+                Patient.GioiTinh == 1 ? "Nữ" :
+                Patient.GioiTinh == 0 ? "Nam" :
                 "";
-            _txQueQuan.Text = $"{benhNhan.XaPhuong ?? ""}-{benhNhan.TinhThanh ?? ""}";
+            _txQueQuan.Text = $"{Patient.XaPhuong ?? ""}-{Patient.TinhThanh ?? ""}";
         }
 
         private async void LoadSignatureInfo()
         {
-            if (string.IsNullOrEmpty(_chiDinhDichVuResponse.MaBacSiChiDinh))
+            if (string.IsNullOrEmpty(_ServiceOrderResponse.MaBacSiChiDinh))
                 return;
 
             try
             {
-                _hisUserKySoResponse = await ServiceLocator.SignatureService.GetByHisUserKySoIdAsync(
-                    _chiDinhDichVuResponse.MaBacSiChiDinh);
+                _HisUserSignatureResponse = await ServiceLocator.SignatureService.GetByHisUserKySoIdAsync(
+                    _ServiceOrderResponse.MaBacSiChiDinh);
             }
             catch (Exception ex)
             {
-                Log.Warning(ex, "Không thể load thông tin ký số cho: {MaBacSi}", _chiDinhDichVuResponse.MaBacSiChiDinh);
+                Log.Warning(ex, "Không thể load thông tin ký số cho: {MaBacSi}", _ServiceOrderResponse.MaBacSiChiDinh);
             }
         }
 
@@ -218,7 +250,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         {
             try
             {
-                _listThietBi = await ServiceLocator.RisService2.GetDevicesAsync(modality: _chiDinhDichVuResponse?.Modality);
+                _listThietBi = await ServiceLocator.RisService2.GetDevicesAsync(modality: _ServiceOrderResponse?.Modality);
 
                 if (_listThietBi == null || _listThietBi.Count == 0)
                 {

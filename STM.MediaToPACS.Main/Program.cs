@@ -1,8 +1,6 @@
 ﻿using DevExpress.LookAndFeel;
 using DevExpress.Skins;
 using DevExpress.UserSkins;
-using Leadtools.Demos;
-using Leadtools.DicomDemos;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 using System;
@@ -41,13 +39,6 @@ namespace STM.MediaToPACS.Main
                 .CreateLogger();
 
 
-            Support.SetLicense();
-#if LEADTOOLS_V175_OR_LATER
-            Support.SetLicense();
-#else
-                                 Support.Unlock(false);
-#endif
-
             try
             {
                 bool bConfigure = ReadCommandLine(args);
@@ -56,22 +47,7 @@ namespace STM.MediaToPACS.Main
             }
             catch { }
 
-
-
-            //if (Support.KernelExpired)
-            //    return;
-
-            if (args.Length > 0)
-            {
-                FrmMain.StartedPrinter = args[0];
-                MySettings mySettings = new MySettings();
-                mySettings.Load();
-                if (FrmMain.StartedPrinter != mySettings._settings.printerName)
-                    return;
-            }
             ServiceLocator.Initialize();
-            Utils.EngineStartup();
-            Utils.DicomNetStartup();
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 

@@ -4,7 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using MediaToPacs.Core.Models;
-using MediaToPacs.Core.Models.Ketluan;
+using MediaToPacs.Core.Models.Order;
+using MediaToPacs.Core.Models.ServiceCatalog;
+using MediaToPacs.Core.Models.Conclusion;
+using MediaToPacs.Core.Models.Suggestion;
+using MediaToPacs.Core.Models.Template;
+using MediaToPacs.Core.Models.Device;
+using MediaToPacs.Core.Models.Signature;
 using STM.MediaToPACS.Main.Utilities;
 using Serilog;
 
@@ -33,7 +39,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                 return;
             }
 
-            if (_chiDinhDichVuResponse == null || _listThietBi == null || _listThietBi.Count == 0)
+            if (_ServiceOrderResponse == null || _listThietBi == null || _listThietBi.Count == 0)
             {
                 MessageBox.Show(this,
                     "Chưa tải được thông tin chỉ định hoặc danh sách thiết bị.\n" +
@@ -49,7 +55,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
 
                 var layoutSelect = _cbbLayout.SelectedItem as ReportTemplateGridViewModel;
                 if (layoutSelect != null)
-                    ServiceLocator.ReportCache[_chiDinhDichVuResponse.Modality] = layoutSelect.Id;
+                    ServiceLocator.ReportCache[_ServiceOrderResponse.Modality] = layoutSelect.Id;
 
                 SaveAttachmentManifestFromThumbnails();
 
@@ -126,7 +132,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                     }
                 }
 
-                var ketQuaChanDoanRequest = new KetQuaChanDoanRequest()
+                var DiagnosisResultRequest = new DiagnosisResultRequest()
                 {
                     kqcls_mota = string.IsNullOrWhiteSpace(mota) ? "_" : mota,
                     kqcls_denghi = string.IsNullOrWhiteSpace(khuyennghi) ? "_" : khuyennghi,
@@ -145,7 +151,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
                     imageFileKeys = imageSelectedList,
                 };
 
-                _kqChanDoanResponse = await ServiceLocator.RisService.TaoKetQuaChanDoanAsync(ketQuaChanDoanRequest);
+                _kqChanDoanResponse = await ServiceLocator.RisService.TaoKetQuaChanDoanAsync(DiagnosisResultRequest);
 
                 if (_kqChanDoanResponse != null)
                 {

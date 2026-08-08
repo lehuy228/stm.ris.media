@@ -4,7 +4,13 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using MediaToPacs.Core.Models;
-using MediaToPacs.Core.Models.Ketluan;
+using MediaToPacs.Core.Models.Order;
+using MediaToPacs.Core.Models.ServiceCatalog;
+using MediaToPacs.Core.Models.Conclusion;
+using MediaToPacs.Core.Models.Suggestion;
+using MediaToPacs.Core.Models.Template;
+using MediaToPacs.Core.Models.Device;
+using MediaToPacs.Core.Models.Signature;
 using STM.MediaToPACS.Main.UI.CameraUI;
 using STM.MediaToPACS.Main.UI.PatientSidebar;
 using STM.MediaToPACS.Main.Utilities;
@@ -36,12 +42,12 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
         private CameraControl _cameraControl;
 
         // Dữ liệu chỉ định/kết luận - xem DiagnosticReportConclusionControl.Loading.cs
-        private ChiDinhDichVuResponse _chiDinhDichVuResponse;
-        private KetQuaChanDoanResponse _kqChanDoanResponse;
+        private ServiceOrderResponse _ServiceOrderResponse;
+        private DiagnosisResultResponse _kqChanDoanResponse;
         private List<DeviceDto> _listThietBi;
         private List<ReportTemplateGridViewModel> _listMauBaoCao;
         private List<PractitionerListDto> _listHisUser;
-        private HisUserKySoResponse _hisUserKySoResponse;
+        private HisUserSignatureResponse _HisUserSignatureResponse;
         private readonly string _patientOrderFolder;
         private DiagnosticReportAttachmentManifest _attachmentManifest;
         private bool _suppressAttachmentManifestSave;
@@ -60,7 +66,7 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             _baseFolder = ServiceLocator.GetMediaStorageBasePath();
             if (!Directory.Exists(_baseFolder))
                 Directory.CreateDirectory(_baseFolder);
-            _patientOrderFolder = Path.Combine(_baseFolder, "BenhNhan", _machidinh);
+            _patientOrderFolder = Path.Combine(_baseFolder, "Patient", _machidinh);
             _attachmentManifest = DiagnosticReportAttachmentManifest.Load(_patientOrderFolder, _machidinh);
 
             InitializeComponent();
@@ -70,6 +76,8 @@ namespace STM.MediaToPACS.Main.UI.DiagnosticReports
             InitCamera();
             InitThumbnailListCounter();
             _btnAddFile.Click += _btnAddFile_Click;
+            _btnEditPatient.Click += _btnEditPatient_Click;
+            _cbHoverPreview.CheckedChanged += CbHoverPreview_CheckedChanged;
             _thumbnailList.ItemAdded += (s, e) => SaveAttachmentManifestFromThumbnails();
             _thumbnailList.SelectionChanged += (s, e) => SaveAttachmentManifestFromThumbnails();
             _thumbnailList.DeleteRequested += ThumbnailList_DeleteRequested;

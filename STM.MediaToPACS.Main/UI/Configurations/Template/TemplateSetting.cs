@@ -1,7 +1,13 @@
 using DevExpress.XtraEditors;
 using DevExpress.XtraReports.UI;
 using MediaToPacs.Core.Models;
-using MediaToPacs.Core.Models.Ketluan;
+using MediaToPacs.Core.Models.Order;
+using MediaToPacs.Core.Models.ServiceCatalog;
+using MediaToPacs.Core.Models.Conclusion;
+using MediaToPacs.Core.Models.Suggestion;
+using MediaToPacs.Core.Models.Template;
+using MediaToPacs.Core.Models.Device;
+using MediaToPacs.Core.Models.Signature;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,9 +36,9 @@ namespace STM.MediaToPACS.Main.Utilities
 
         #region Sample Data
 
-        private ThongTinKetLuanBaoCaoThuong CreateSampleBaoCaoThuong()
+        private RegularReportConclusionInfo CreateSampleBaoCaoThuong()
         {
-            return new ThongTinKetLuanBaoCaoThuong
+            return new RegularReportConclusionInfo
             {
                 TGBacSiChiDinh = "00 giờ 00 phút, Ngày ... Tháng ... Năm ...",
                 TGBacSiKetLuan = "00 giờ 00 phút, Ngày ... Tháng ... Năm ...",
@@ -46,9 +52,9 @@ namespace STM.MediaToPACS.Main.Utilities
             };
         }
 
-        private ChiDinhDichVuResponse CreateSampleChiDinh()
+        private ServiceOrderResponse CreateSampleChiDinh()
         {
-            return new ChiDinhDichVuResponse
+            return new ServiceOrderResponse
             {
                 Sovaovien = "SV001",
                 MaChiDinh = "CD12345",
@@ -69,9 +75,9 @@ namespace STM.MediaToPACS.Main.Utilities
                 UpdatedAt = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
                 Id = Guid.NewGuid().ToString(),
                 admissionType = "Thường",
-                BenhNhan = new BenhNhan
+                Patient = new Patient
                 {
-                    MaBenhNhan = "BN0001",
+                    MaPatient = "BN0001",
                     HoTen = "Nguyễn Văn A",
                     NgaySinh = new DateTime(1985, 5, 20),
                     GioiTinh = 1, // Nam
